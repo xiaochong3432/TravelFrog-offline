@@ -9,6 +9,10 @@ retail artifact we keep comparing against.
 Step 1 detects which serialization reproduces the ORIGINAL blob bytes for each table
 (proof, not assumption), then step 2 re-writes the merged bundle with that style.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import json
 import os
 import sys
@@ -17,7 +21,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import eab_decrypt as E      # noqa: E402
 import eab_encode as ENC     # noqa: E402
 
-ROOT = r"H:\AI\frog"
+ROOT = str(PROJECT_ROOT)
 MERGED = os.path.join(ROOT, "work", "run", "web", "resource", "China", "eab", "config.eab")
 BACKUP = os.path.join(ROOT, "work", "merge-backup", "20260912-202751",
                       "resource", "China", "eab", "config.eab")

@@ -2,10 +2,14 @@
 # -*- coding: utf-8 -*-
 """How do sub_id / tab / sub_name relate inside encyclopedia.list?
 Decides which variant a species should default to in the show_sub payload."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 import json
 
-ROOT = r"H:\AI\frog"
+ROOT = str(PROJECT_ROOT)
 GD = json.load(open(ROOT + r"\work\run\engine\data\gamedata.json", encoding="utf-8"))
 LST = GD["tables"]["encyclopedia"]["list"]
 

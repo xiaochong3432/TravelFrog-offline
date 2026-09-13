@@ -7,12 +7,16 @@ so it is not in the H5 bundle. Scanning the apk's own text should reveal it -- a
 host still resolves, the official activity/公告 data (including the album's 地图 URL) may
 still be fetchable before the shut-down.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 import os
 import re
 import zipfile
 
-APK = r"H:\AI\frog\base.apk"
+APK = str(PROJECT_ROOT) + "/base.apk"
 NEEDLES = [b"launcher.ejoy.com", b"-launcher", b"gameId", b"game_id", b"lxqw", b"lingxi"]
 out = io.StringIO()
 
@@ -46,6 +50,6 @@ for nd in NEEDLES:
         out.write("  %-46s %s\n" % (n, txt))
     out.write("\n")
 
-sys_out = io.open(r"H:\AI\frog\work\logs\apk_gameid.txt", "w", encoding="utf-8")
+sys_out = io.open(str(PROJECT_ROOT) + "/work/logs/apk_gameid.txt", "w", encoding="utf-8")
 sys_out.write(out.getvalue())
 print("wrote logs/apk_gameid.txt")

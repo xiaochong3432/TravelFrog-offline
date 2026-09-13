@@ -5,12 +5,16 @@ The food blurbs already hint that items carry a destination/terrain quality
 ("短途观光的美味餐点" vs "出门远行的最佳选择", "在沙漠享用味道更佳"), so the
 encoding is probably sub_type. This dumps the distributions.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import collections
 import json
 import os
 
-D = r"H:\AI\frog\work\run\engine\data\tables"
-OUT = r"H:\AI\frog\work\build\item_probe.txt"
+D = str(PROJECT_ROOT) + "/work/run/engine/data/tables"
+OUT = str(PROJECT_ROOT) + "/work/build/item_probe.txt"
 
 items = json.load(open(os.path.join(D, "Item.json"), encoding="utf-8"))
 specialty = json.load(open(os.path.join(D, "Specialty.json"), encoding="utf-8"))

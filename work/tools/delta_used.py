@@ -7,13 +7,17 @@ Two questions decide whether merging the 1.0.21 art buys anything:
      (back_mainout_2_*, courtyard spine, icon2/icon3 sheets, furniture_xw3 sheet)?
      Art a client never loads is not a merge, it is dead weight.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 import json
 import os
 import re
 import sys
 
-ROOT = r"H:\AI\frog\work"
+ROOT = str(PROJECT_ROOT) + "/work"
 EAB = os.path.join(ROOT, "run", "web", "resource", "China", "eab")
 CLIENT = io.open(os.path.join(ROOT, "run", "web", "js", "main.min.js"),
                  encoding="utf-8", errors="replace").read()

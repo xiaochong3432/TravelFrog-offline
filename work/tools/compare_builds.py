@@ -6,11 +6,15 @@ Checks:
   * whether our patch anchors still exist in v1021
   * whether offline-critical symbols are present
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import re, json, os
 
-V1001 = r"H:\AI\frog\work\run\web\js\main.min.js"
-V1001_CLEAN = r"H:\AI\frog\work\run\web\js\main.min.js.clean"
-V1021 = r"H:\AI\frog\work\cdn\v1021\js\main.min.js"
+V1001 = str(PROJECT_ROOT) + "/work/run/web/js/main.min.js"
+V1001_CLEAN = str(PROJECT_ROOT) + "/work/run/web/js/main.min.js.clean"
+V1021 = str(PROJECT_ROOT) + "/work/cdn/v1021/js/main.min.js"
 
 ENTRY = re.compile(r'([A-Za-z_][A-Za-z0-9_]{2,40})\s*:\s*\[\[([^\]]*)\]\s*,\s*!(0|1)\s*\]')
 

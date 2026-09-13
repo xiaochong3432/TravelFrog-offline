@@ -2,11 +2,15 @@
 # -*- coding: utf-8 -*-
 """What exactly does the engine put into acquireProvinces, and what does the client
 expect there? Dumps the visitors.provinceList keys/rows and the client's city parsing."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 import json
 import re
 
-ROOT = r"H:\AI\frog"
+ROOT = str(PROJECT_ROOT)
 GD = json.load(open(ROOT + r"\work\run\engine\data\gamedata.json", encoding="utf-8"))
 PL = GD["tables"]["visitors"]["provinceList"]
 

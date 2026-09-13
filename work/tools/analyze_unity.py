@@ -3,9 +3,13 @@
 
 Uses dnfile for .NET metadata when available; falls back to raw string census.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import re, sys, os, collections
 
-P = r"H:\AI\frog\work\frog\assets\bin\Data\Managed\Assembly-CSharp.dll"
+P = str(PROJECT_ROOT) + "/work/frog/assets/bin/Data/Managed/Assembly-CSharp.dll"
 
 def raw_census():
     d = open(P, "rb").read()

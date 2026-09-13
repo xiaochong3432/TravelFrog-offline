@@ -11,6 +11,10 @@ build at v1.0.20, so:
 Grouping the mismatches by band turns "what are we missing?" from an opinion into a
 measurement, and tells us which update bands our snapshot predates.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import collections
 import hashlib
 import io
@@ -19,7 +23,7 @@ import os
 import sys
 import zipfile
 
-ROOT = r"H:\AI\frog"
+ROOT = str(PROJECT_ROOT)
 CDN = os.path.join(ROOT, "work", "cdn")
 WEB = os.path.join(ROOT, "work", "run", "web")
 APK = os.path.join(ROOT, "base.apk")

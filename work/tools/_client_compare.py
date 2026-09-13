@@ -1,10 +1,14 @@
-﻿import hashlib, os
+﻿from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
+import hashlib, os
 paths = {
- "work/base (dump_handlers target)": r"H:\AI\frog\work\base\assets\game\js\main.min.js",
- "shipped pristine (.clean)":        r"H:\AI\frog\work\run\web\js\main.min.js.clean",
- "shipped patched":                  r"H:\AI\frog\work\run\web\js\main.min.js",
+ "work/base (dump_handlers target)": str(PROJECT_ROOT) + "/work/base/assets/game/js/main.min.js",
+ "shipped pristine (.clean)":        str(PROJECT_ROOT) + "/work/run/web/js/main.min.js.clean",
+ "shipped patched":                  str(PROJECT_ROOT) + "/work/run/web/js/main.min.js",
 }
-out = open(r"H:\AI\frog\work\build\client_compare.txt","w",encoding="utf-8")
+out = open(str(PROJECT_ROOT) + "/work/build/client_compare.txt","w",encoding="utf-8")
 for label, p in paths.items():
     if not os.path.exists(p):
         out.write(f"{label}: MISSING ({p})\n"); continue

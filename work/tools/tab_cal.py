@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 """Tabulate a calendar sweep log written by cdp_drive (the JSON block after the
 'in:' marker)."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 import json
 import sys
 
-path = sys.argv[1] if len(sys.argv) > 1 else r"H:\AI\frog\work\logs\sw2.log"
+path = sys.argv[1] if len(sys.argv) > 1 else str(PROJECT_ROOT) + "/work/logs/sw2.log"
 t = io.open(path, encoding="utf-8", errors="replace").read()
 
 start = t.find("=== in:")

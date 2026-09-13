@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 """Debug: inspect the entries that fail to read back after repacking."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import zipfile, struct, zlib, io, sys
-sys.path.insert(0, r"H:\AI\frog\work\tools")
+sys.path.insert(0, str(PROJECT_ROOT) + "/work/tools")
 import build_apk as B
 
-APK = r"H:\AI\frog\base.apk"
+APK = str(PROJECT_ROOT) + "/base.apk"
 TARGETS = ["META-INF/kotlin-stdlib.kotlin_module", "lib/arm64-v8a/libdc.so",
            "assets/game/index.html", "AndroidManifest.xml"]
 
@@ -36,8 +40,8 @@ z.close()
 print("\n--- minimal repack test ---")
 e = B.read_entries(APK)
 pick = [x for x in e if x.name in TARGETS]
-data, cd_off, cd_size, eocd = B.write_zip(pick, r"H:\AI\frog\work\_mini.zip")
-zz = zipfile.ZipFile(r"H:\AI\frog\work\_mini.zip")
+data, cd_off, cd_size, eocd = B.write_zip(pick, str(PROJECT_ROOT) + "/work/_mini.zip")
+zz = zipfile.ZipFile(str(PROJECT_ROOT) + "/work/_mini.zip")
 for i in zz.infolist():
     try:
         got = zz.read(i.filename)

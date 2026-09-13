@@ -9,11 +9,15 @@ The live service also handed out random 免单 promotions, which cannot be
 recovered; this script tells us whether anything free is written in the data
 before we consider inventing a rule.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import json
 import os
 import sys
 
-DATA = r"H:\AI\frog\work\run\engine\data\gamedata.json"
+DATA = str(PROJECT_ROOT) + "/work/run/engine/data/gamedata.json"
 
 with open(DATA, encoding="utf-8") as fh:
     d = json.load(fh)

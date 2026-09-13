@@ -8,9 +8,13 @@ server holds them open silently loses the output.
   python work/tools/run_test.py [--url U] [--shot P] [--wait MS] [--port N]
                                 [--grep PATTERN ...]
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import argparse, os, re, subprocess, sys, time
 
-ROOT = r"H:\AI\frog"
+ROOT = str(PROJECT_ROOT)
 RUN = os.path.join(ROOT, "work", "run")
 LOGS = os.path.join(RUN, "logs")
 SHOT_TOOL = os.path.join(ROOT, "work", "tools", "cdp_shot.js")
@@ -21,8 +25,13 @@ def sh(cmd, **kw):
 
 
 def kill_all():
-    sh('taskkill /F /IM node.exe /T')
-    sh('taskkill /F /IM msedge.exe /T')
+    """Kill stray node/browser processes. Windows 用 taskkill，其它系统用 pkill。"""
+    if os.name == "nt":
+        sh('taskkill /F /IM node.exe /T')
+        sh('taskkill /F /IM msedge.exe /T')
+    else:
+        sh('pkill -f "msedge|microsoft-edge|chrome|chromium" || true')
+        sh('pkill -f "http.server" || true')
     time.sleep(2)
 
 

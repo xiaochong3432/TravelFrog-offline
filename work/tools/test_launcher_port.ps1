@@ -1,3 +1,6 @@
+﻿# 仓库根：按脚本自身位置推导，不写死绝对路径
+$ProjectRoot = Split-Path -Parent (Split-Path -Parent ($PSScriptRoot))
+
 ﻿# 启动器端口策略测试（PC 端"存档偶尔被重置"的根因就在这条策略上）
 #
 # 背景：玩家报"PC 进去后偶尔重置存档重新开始"。根因不是存档文件坏了，而是旧启动器在
@@ -13,8 +16,8 @@
 # 注意：会占用 8080/8088 一小段时间，结束后自动清理。
 
 $ErrorActionPreference = 'Continue'
-$DIST = 'H:\AI\frog\dist'
-$BOX = 'H:\AI\frog\work\build\launcher-test'
+$DIST = (Join-Path $ProjectRoot 'dist')
+$BOX = (Join-Path $ProjectRoot 'work/build/launcher-test')
 $PY = 'python'
 $fail = @()
 $pass = 0

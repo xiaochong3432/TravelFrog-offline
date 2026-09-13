@@ -5,9 +5,13 @@ The engine now waits at home while the bag is empty (players reported the frog l
 nothing prepared), so `nextDepartAt = 1; tick()` no longer departs. Pack a lunch box -- the
 same thing the unit tests do -- and assert BOTH halves of the new rule while we are here.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 
-P = r"H:\AI\frog\work\probe\acceptance.js"
+P = str(PROJECT_ROOT) + "/work/probe/acceptance.js"
 src = io.open(P, encoding="utf-8").read()
 old = """  ok('travel_round_trip', function () {
     eng.state.travel.nextDepartAt = 1;

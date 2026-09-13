@@ -11,11 +11,15 @@ Usage:
     python tools/skinmap.py share_btn3_png
     python tools/skinmap.py --list Ads
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import argparse
 import os
 import re
 
-DEFAULT = r"H:\AI\frog\work\run\web\js\default.thm.js"
+DEFAULT = str(PROJECT_ROOT) + "/work/run/web/js/default.thm.js"
 
 
 def main():

@@ -12,12 +12,16 @@ up as a blank page rather than an error.
 Usage: python tools/reply_key_audit.py
        (run tools/dump_reply_keys.js first)
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 import json
 import os
 import re
 
-ROOT = r"H:\AI\frog\work"
+ROOT = str(PROJECT_ROOT) + "/work"
 CLIENT = os.path.join(ROOT, "run", "web", "js", "main.min.js")
 KEYS = os.path.join(ROOT, "logs", "reply_keys.json")
 OUT = os.path.join(ROOT, "logs", "reply_key_audit.txt")

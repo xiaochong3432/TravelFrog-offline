@@ -15,11 +15,15 @@ construction copy of the same source produced before the corruption.
 
 Usage: python repair_engine_js.py <broken.js> <reference> [out.js]
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import sys
 import os
 
-BROKEN = sys.argv[1] if len(sys.argv) > 1 else r'H:\AI\frog\work\run\engine\index.js'
-REF = sys.argv[2] if len(sys.argv) > 2 else r'H:\AI\frog\work\run\web\__offline-engine.js'
+BROKEN = sys.argv[1] if len(sys.argv) > 1 else str(PROJECT_ROOT) + "/work/run/engine/index.js"
+REF = sys.argv[2] if len(sys.argv) > 2 else str(PROJECT_ROOT) + "/work/run/web/__offline-engine.js"
 OUT = sys.argv[3] if len(sys.argv) > 3 else BROKEN + '.repaired'
 
 raw = open(BROKEN, 'rb').read()

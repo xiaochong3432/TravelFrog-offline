@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 """Check what signature schemes the repacked APK actually offers, and whether
 its core files are byte-identical to the original."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import zipfile, hashlib, struct
 
-A = r"H:\AI\frog\base.apk"
-B = r"H:\AI\frog\dist\TravelFrog-offline.apk"
+A = str(PROJECT_ROOT) + "/base.apk"
+B = str(PROJECT_ROOT) + "/dist/TravelFrog-offline.apk"
 
 a = zipfile.ZipFile(A)
 b = zipfile.ZipFile(B)

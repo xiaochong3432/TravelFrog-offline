@@ -42,11 +42,26 @@
 *.pk8     binary
 
 # ------------------------------------------------------------------ 语言统计
+# 只有「我们自己写的代码」才应该出现在 GitHub 的语言栏里。
+# 所以三类都不计入：纯文档、机器生成/从客户端解出的数据、别人写的（客户端与第三方库）。
+# 想复核效果：python work/tools/lang_stats.py .
+
+# 纯文档：规格、笔记、说明
 docs/**                          linguist-documentation
 work/spec/**                     linguist-documentation
 work/notes/**                    linguist-documentation
-work/spec/_dumps/**              linguist-generated
-work/spec/data/**                linguist-generated
-work/run/engine/data/tables/**   linguist-generated
+
+# 机器生成 / 解包出来的数据（不算手写代码）
+work/spec/_dumps/**              linguist-generated -linguist-documentation
+work/spec/data/**                linguist-generated -linguist-documentation
+work/run/engine/data/**          linguist-generated
 work/run/web/__offline-engine.js linguist-generated
-work/run/web/js/main.min.js      linguist-vendored
+work/run/web/version.json        linguist-generated
+work/*.json                      linguist-generated
+work/probe/*.json                linguist-generated
+
+# 别人写的：客户端本体 JS、其第三方库、原版代码副本
+work/run/web/js/**               linguist-vendored
+work/run/web/resource/**         linguist-vendored
+work/pristine/**                 linguist-vendored
+

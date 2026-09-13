@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 """Show the client's callbacks for the 8 getErrorInfo commands, so we know a
 nonzero-but-known code really produces a visible message."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 import os
 import re
 import sys
 
-ROOT = r"H:\AI\frog\work"
+ROOT = str(PROJECT_ROOT) + "/work"
 CLIENT = io.open(os.path.join(ROOT, "run", "web", "js", "main.min.js"),
                  encoding="utf-8", errors="replace").read()
 NAMES = ["album_delete", "album_recover", "album_save_new", "item_use_gift_code",

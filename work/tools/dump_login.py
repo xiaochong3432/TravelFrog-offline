@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """Dump the login-phase response handlers (client_hello / hall_gen_token / hall_login)."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import re
 
-JS = r"H:\AI\frog\work\base\assets\game\js\main.min.js"
+JS = str(PROJECT_ROOT) + "/work/base/assets/game/js/main.min.js"
 d = open(JS, "rb").read().decode("utf8", "replace")
 
 out = []
@@ -16,5 +20,5 @@ out.append("\n\n===== client_load_role (model side) =====")
 out.append(re.sub(r'([;{}])', r'\1\n', d[j:j + 3200]))
 
 txt = "\n".join(out)
-open(r"H:\AI\frog\work\login_flow.txt", "w", encoding="utf8").write(txt)
+open(str(PROJECT_ROOT) + "/work/login_flow.txt", "w", encoding="utf8").write(txt)
 print(f"wrote work/login_flow.txt ({len(txt)} chars)")

@@ -67,6 +67,20 @@ python work/tools/bundle_engine.py    # 重建内联引擎
 `python work/tools/stage_repo.py --with-assets` 重新生成入库目录。
 详见 `docs/数据与逆向说明.md`。
 
+## 可移植性
+
+所有脚本都**按自身位置推导仓库根**，不写死任何绝对路径，因此仓库放在哪里、
+在 Windows / Linux / macOS 上都能直接运行。需要外部工具链时（只有重新打包 APK、
+编译 PC 启动器、跑无头浏览器验收才需要）用环境变量指过去即可：
+
+```bash
+export JAVA_HOME=/path/to/jdk17            # 或 FROG_JAVA_HOME
+export ANDROID_HOME=/path/to/android-sdk   # build-tools 与 platforms 都从它下面找
+export FROG_BROWSER=/path/to/chrome        # 无头浏览器（默认自动查找 Edge/Chrome）
+```
+
+缺什么时脚本会打印对应的变量名。详见 `docs/构建与打包.md` 的「可移植性」一节。
+
 ## 文档索引
 
 | 文档 | 内容 |

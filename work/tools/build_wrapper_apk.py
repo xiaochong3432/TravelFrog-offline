@@ -22,13 +22,17 @@ app by OEM security scanning (vivo: "非官方应用", repeated verification pro
 forced into 保险箱). We cannot fix that by signing -- we do not have Lingxi's
 private key -- so we stop claiming to be them. See AndroidManifest.xml.
 
-Toolchain (all downloaded into work/, see README):
-    aapt2, d8      <- Android build-tools r34   (work/bt/android-14)
-    javac          <- OpenJDK 17                (work/jdk)
-    android.jar    <- Android platform 30       (work/plat/android-11)
+Toolchain (auto-detected, see work/tools/_toolchain.py):
+    aapt2, d8      <- Android build-tools      ($ANDROID_HOME/build-tools/<ver>, 或 <repo>/work/bt/android-14)
+    javac          <- OpenJDK 17               ($JAVA_HOME, 或 <repo>/work/jdk)
+    android.jar    <- Android platform         ($ANDROID_HOME/platforms/<ver>/android.jar, 或 <repo>/work/plat/android-11)
 
 Usage: python build_wrapper_apk.py
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import os
 import shutil
 import subprocess
@@ -38,18 +42,19 @@ import zipfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from build_apk import Entry, write_zip, log  # noqa: E402
+import _toolchain  # noqa: E402
 
-ROOT = r"H:\AI\frog"
+ROOT = str(PROJECT_ROOT)
 APP = os.path.join(ROOT, "work", "app")
 BUILD = os.path.join(ROOT, "work", "build", "wrapper")
 WEB = os.path.join(ROOT, "work", "run", "web")
 BASE_APK = os.path.join(ROOT, "base.apk")
 
-AAPT2 = os.path.join(ROOT, r"work\bt\android-14\aapt2.exe")
-D8 = os.path.join(ROOT, r"work\bt\android-14\d8.bat")
-JAVAC = os.path.join(ROOT, r"work\jdk\jdk-17.0.2\bin\javac.exe")
-JAVA_HOME = os.path.join(ROOT, r"work\jdk\jdk-17.0.2")
-ANDROID_JAR = os.path.join(ROOT, r"work\plat\android-11\android.jar")
+AAPT2 = _toolchain.build_tool("aapt2")
+D8 = _toolchain.build_tool("d8")
+JAVAC = _toolchain.javac()
+JAVA_HOME = _toolchain.java_home()
+ANDROID_JAR = _toolchain.android_jar()
 
 MIN_SDK = "21"
 TARGET_SDK = "30"
@@ -124,10 +129,21 @@ def collect_web():
 
 
 def main():
-    for tool in (AAPT2, D8, JAVAC, ANDROID_JAR):
-        if not os.path.exists(tool):
-            log(f"ERROR: missing {tool}")
-            return 1
+    missing = [(name, path) for name, path in
+               (("aapt2", AAPT2), ("d8", D8), ("javac", JAVAC), ("android.jar", ANDROID_JAR))
+               if not path or not os.path.exists(path)]
+    if missing:
+        log("ERROR: Android 工具链不完整，缺少：")
+        for name, path in missing:
+            log("   %-12s %s" % (name, path or "(未找到)"))
+        log("")
+        log("用一个现成的 SDK/JDK 指给它即可（任选其一）：")
+        log("   set ANDROID_HOME=<你的 Android SDK 根>        # build-tools 与 platforms/android.jar 都从它找")
+        log("   set JAVA_HOME=<你的 JDK 17>")
+        log("   set FROG_ANDROID_BUILD_TOOLS=<含 aapt2/d8 的目录>")
+        log("   set FROG_ANDROID_JAR=<android.jar 的完整路径>")
+        log("也可以按仓库默认布局放在 <仓库根>/work/{bt,jdk,plat}/ 下（该目录不入库）。")
+        return 1
 
     os.makedirs(BUILD, exist_ok=True)
     for sub in ("classes", "dex"):

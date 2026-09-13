@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """Find a UTF-8 string anywhere under the web tree, including inside .eab bundles."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import os, sys, json, struct
 
-WEB = r"H:\AI\frog\work\run\web"
+WEB = str(PROJECT_ROOT) + "/work/run/web"
 needle = sys.argv[1].encode("utf8") if len(sys.argv) > 1 else "这里有只青蛙".encode("utf8")
 
 

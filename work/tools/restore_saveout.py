@@ -6,9 +6,13 @@ ball replaced that function wholesale, the helper went with it -- so the button 
 undefined name, the exception reached the client's global handler, and the player got
 「呱呱吃坏肚子了」. This puts a self-contained implementation back in the panel.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 
-P = r"H:\AI\frog\work\run\web\__probe.js"
+P = str(PROJECT_ROOT) + "/work/run/web/__probe.js"
 src = io.open(P, encoding="utf-8").read()
 
 anchor = """        function usingLocalEngine() {

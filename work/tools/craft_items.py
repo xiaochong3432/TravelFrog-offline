@@ -5,13 +5,17 @@
 holds items of ItemDB.sub_type 1, 2 and 3, and the reply is read as `item_list`.
 This dumps the COMPOSE-type items and their sub_types, plus item 5502 itself.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 import json
 import os
 import re
 import sys
 
-ROOT = r"H:\AI\frog\work"
+ROOT = str(PROJECT_ROOT) + "/work"
 GD = json.load(open(os.path.join(ROOT, "run", "engine", "data", "gamedata.json"),
                     encoding="utf-8"))
 items = GD.get("items", [])

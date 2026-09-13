@@ -27,12 +27,16 @@ standard delta 0x9E3779B9 and stores the plaintext length in the final long.
 
 Usage: python eab_decrypt.py [--probe]
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import json
 import os
 import struct
 import sys
 
-ROOT = r"H:\AI\frog"
+ROOT = str(PROJECT_ROOT)
 BUNDLE = os.path.join(ROOT, r"work\run\web\resource\China\eab\config.eab")
 OUTDIR = os.path.join(ROOT, "work", "run", "engine", "data", "tables")
 COMBINED = os.path.join(ROOT, "work", "run", "engine", "data", "gamedata.json")

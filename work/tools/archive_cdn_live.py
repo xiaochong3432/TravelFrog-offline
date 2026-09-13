@@ -15,6 +15,10 @@ URL shape, verified by hand on one file before writing this:
 Usage:
     python tools/archive_cdn_live.py [--limit N] [--only-band 1020_1021] [--jobs 4]
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import argparse
 import concurrent.futures
 import hashlib
@@ -25,7 +29,7 @@ import sys
 import urllib.error
 import urllib.request
 
-ROOT = r"H:\AI\frog"
+ROOT = str(PROJECT_ROOT)
 CDN = os.path.join(ROOT, "work", "cdn")
 LIVE = os.path.join(CDN, "live")
 BASE = "https://ali-lxqw-hotfix.ejoy.com/c1_client/release/lingxi/android"

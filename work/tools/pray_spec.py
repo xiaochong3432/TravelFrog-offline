@@ -4,13 +4,17 @@
 Usage: python tools/pray_spec.py
 Writes logs/pray_spec.txt
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 import json
 import os
 import re
 import sys
 
-ROOT = r"H:\AI\frog\work"
+ROOT = str(PROJECT_ROOT) + "/work"
 GD = json.load(open(os.path.join(ROOT, "run", "engine", "data", "gamedata.json"),
                     encoding="utf-8"))
 CLIENT = io.open(os.path.join(ROOT, "run", "web", "js", "main.min.js"),

@@ -9,6 +9,10 @@ point is to separate three very different situations:
   * the content is in the package but the event window is closed -> present, unreachable
   * the content is not in this client snapshot at all            -> genuinely absent
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 import json
 import os
@@ -21,7 +25,7 @@ OUT = io.StringIO()
 def say(s=""):
     OUT.write(s + "\n")
 
-ROOT = r"H:\AI\frog"
+ROOT = str(PROJECT_ROOT)
 WEB = os.path.join(ROOT, "work", "run", "web")
 GD = json.load(open(os.path.join(ROOT, "work", "run", "engine", "data", "gamedata.json"),
                     encoding="utf-8"))

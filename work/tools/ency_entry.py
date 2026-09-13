@@ -5,10 +5,14 @@
 / `on_calendarBtn_tap`, so the host view is a menu with those five entries. The player
 reports the 百科 entry has gone missing -- this finds the host, its skin, and its opener.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 import re
 
-C = io.open(r"H:\AI\frog\work\run\web\js\main.min.js", encoding="utf-8", errors="replace").read()
+C = io.open(str(PROJECT_ROOT) + "/work/run/web/js/main.min.js", encoding="utf-8", errors="replace").read()
 out = io.StringIO()
 
 i = C.find("on_encyBtn_tap=function")
@@ -35,5 +39,5 @@ for h in ["on_museumBtn_tap", "on_furnitureBtn_tap", "on_drawBtn_tap", "on_encyB
     hits = [m.start() for m in re.finditer(re.escape(h) + "=function", C)]
     out.write("%-22s %s\n" % (h, hits))
 
-io.open(r"H:\AI\frog\work\logs\ency_entry.txt", "w", encoding="utf-8").write(out.getvalue())
+io.open(str(PROJECT_ROOT) + "/work/logs/ency_entry.txt", "w", encoding="utf-8").write(out.getvalue())
 print("wrote logs/ency_entry.txt")

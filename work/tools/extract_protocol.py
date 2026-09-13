@@ -3,9 +3,13 @@
 
 Entries look like:  cmd_name:[["param1","param2"],!0]   where !0 = required-ish
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import re, json, sys, os, collections
 
-path = sys.argv[1] if len(sys.argv) > 1 else r"H:\AI\frog\work\base\assets\game\js\main.min.js"
+path = sys.argv[1] if len(sys.argv) > 1 else str(PROJECT_ROOT) + "/work/base/assets/game/js/main.min.js"
 data = open(path, "rb").read().decode("utf8", "replace")
 
 ENTRY = re.compile(r'([A-Za-z_][A-Za-z0-9_]{2,40})\s*:\s*\[\[([^\]]*)\]\s*,\s*!(0|1)\s*\]')
@@ -33,7 +37,7 @@ if len(cur) > len(best):
 print(f"largest contiguous cluster: {len(best)} entries  "
       f"(offset {best[0][3]}..{best[-1][3]})")
 
-with open(r"H:\AI\frog\work\protocol_table.txt", "w", encoding="utf8") as f:
+with open(str(PROJECT_ROOT) + "/work/protocol_table.txt", "w", encoding="utf8") as f:
     for name, ps, req, off in best:
         f.write(f"{name}\t{','.join(ps)}\t{'REQ' if req else 'opt'}\t{off}\n")
     f.write("\n--- all parsed entries ---\n")
@@ -49,5 +53,5 @@ for name, ps, req, off in best[:25]:
 print("  ...")
 # raw text around table
 s = max(0, best[0][3] - 300); e = min(len(data), best[-1][3] + 200)
-open(r"H:\AI\frog\work\protocol_table_raw.txt", "w", encoding="utf8").write(data[s:e])
+open(str(PROJECT_ROOT) + "/work/protocol_table_raw.txt", "w", encoding="utf8").write(data[s:e])
 print("\nwrote work/protocol_table.txt and protocol_table_raw.txt")

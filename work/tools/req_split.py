@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """Split the 243 protocol commands by 'response required' and feature group."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import re, collections
 
-JS = r"H:\AI\frog\work\base\assets\game\js\main.min.js"
+JS = str(PROJECT_ROOT) + "/work/base/assets/game/js/main.min.js"
 data = open(JS, "rb").read().decode("utf8", "replace")
 ENTRY = re.compile(r'([A-Za-z_][A-Za-z0-9_]{2,40})\s*:\s*\[\[([^\]]*)\]\s*,\s*!(0|1)\s*\]')
 

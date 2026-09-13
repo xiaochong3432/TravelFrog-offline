@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """Analyze the Egret game bundle: version.json structure + network token census."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import json, re, sys, collections, os
 
-BASE = r"H:\AI\frog\work\base\assets\game"
+BASE = str(PROJECT_ROOT) + "/work/base/assets/game"
 
 def version_json():
     p = os.path.join(BASE, "version.json")

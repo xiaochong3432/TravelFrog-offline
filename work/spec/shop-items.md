@@ -1,9 +1,9 @@
 # 道具 / 商店购买 / 抽奖 / 兑换 —— 字段级实现规格
 
-> 适用对象：`H:\AI\frog\work\run\engine\index.js`
-> 唯一判定准绳：`H:\AI\frog\work\base\assets\game\js\main.min.js`（下称 **client**，所有偏移均为
+> 适用对象：`work/run/engine/index.js`
+> 唯一判定准绳：`work/base/assets/game/js/main.min.js`（下称 **client**，所有偏移均为
 > **字符偏移**，与 `work/tools/occur.py`、`where_literal.py` 一致；用 `work/tools/dump_chars.py` 复核）
-> 数据表来源：`H:\AI\frog\work\run\web\resource\China\eab\config.eab`（经客户端自己的 XXTEA 解码器解出）
+> 数据表来源：`work/run/web/resource/China/eab/config.eab`（经客户端自己的 XXTEA 解码器解出）
 >
 > 本文档**只做规格**，不含引擎改动。每条结论后括注依据（客户端函数名 / 偏移）。
 

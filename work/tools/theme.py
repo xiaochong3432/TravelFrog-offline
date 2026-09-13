@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """Inspect the Egret theme file: what skins exist and how they are stored."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import json, sys
 
-P = r"H:\AI\frog\work\run\web\resource\China\default.thm.json"
+P = str(PROJECT_ROOT) + "/work/run/web/resource/China/default.thm.json"
 
 raw = open(P, encoding="utf8", errors="replace").read()
 print("length:", len(raw))

@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """Dump the client's DataManager table registry and locate matching resources."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import re, json, os
 
-JS = r"H:\AI\frog\work\base\assets\game\js\main.min.js"
+JS = str(PROJECT_ROOT) + "/work/base/assets/game/js/main.min.js"
 data = open(JS, "rb").read().decode("utf8", "replace")
 
 i = 451542
@@ -19,7 +23,7 @@ for m in sorted(set(re.findall(r'\bi\("([A-Za-z0-9_]+)"\)', seg))):
     print("   ", m)
 
 print("\n===== version.json entries matching table names =====")
-vj = json.load(open(r"H:\AI\frog\work\base\assets\game\version.json", encoding="utf8"))
+vj = json.load(open(str(PROJECT_ROOT) + "/work/base/assets/game/version.json", encoding="utf8"))
 want = ["resources", "gameplay", "visitors", "step", "decoration", "Picture", "PictureTag",
         "Note", "Word", "TravelFriends", "pray", "recharge"]
 for k in vj:

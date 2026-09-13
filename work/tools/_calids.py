@@ -1,8 +1,12 @@
-﻿import json, os
-D = r"H:\AI\frog\work\run\engine\data\tables"
+﻿from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
+import json, os
+D = str(PROJECT_ROOT) + "/work/run/engine/data/tables"
 items = {i["id"]: i for i in json.load(open(os.path.join(D,"Item.json"), encoding="utf-8"))}
 cd = json.load(open(os.path.join(D,"calendarData.json"), encoding="utf-8"))
-out = open(r"H:\AI\frog\work\build\cal_ids.txt","w",encoding="utf-8")
+out = open(str(PROJECT_ROOT) + "/work/build/cal_ids.txt","w",encoding="utf-8")
 bad = []
 for k in sorted(cd["beginner"], key=lambda x:int(x)):
     e = cd["beginner"][k]

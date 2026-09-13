@@ -5,13 +5,17 @@ The client's versionName is 1.0.20 (2023-12), but resources were updated
 server-side afterwards -- and the manifest does list pic_2024/pic_2025. So the
 watermark has to be read from the DATA, not from the version number.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 import json
 import os
 import re
 import sys
 
-ROOT = r"H:\AI\frog"
+ROOT = str(PROJECT_ROOT)
 WEB = os.path.join(ROOT, "work", "run", "web")
 GD = json.load(open(os.path.join(ROOT, "work", "run", "engine", "data", "gamedata.json"),
                     encoding="utf-8"))

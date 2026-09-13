@@ -3,9 +3,13 @@
 
 This is the authoritative list of protocol messages the client listens for.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import re, json
 
-JS = r"H:\AI\frog\work\base\assets\game\js\main.min.js"
+JS = str(PROJECT_ROOT) + "/work/base/assets/game/js/main.min.js"
 d = open(JS, "rb").read().decode("utf8", "replace")
 
 # find class boundaries:  var XxxModel=function(e){ ... }(core.Model);
@@ -39,6 +43,6 @@ for cls, args in sorted(groups.items(), key=lambda kv: -len(kv[1])):
     print("   " + ", ".join(uniq))
 
 json.dump({k: sorted(set(v)) for k, v in groups.items()},
-          open(r"H:\AI\frog\work\listened_protocols.json", "w", encoding="utf8"),
+          open(str(PROJECT_ROOT) + "/work/listened_protocols.json", "w", encoding="utf8"),
           ensure_ascii=False, indent=1)
 print("\nwrote work/listened_protocols.json")

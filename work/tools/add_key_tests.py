@@ -4,9 +4,13 @@
   item_load_select_gift  (we sent `items`, the client builds its queue from `list`)
   calendar_task_update   (the client reads `e.task`; we answered undefined)
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 
-T = r"H:\AI\frog\work\tools\engine_test.js"
+T = str(PROJECT_ROOT) + "/work/tools/engine_test.js"
 text = io.open(T, encoding='utf-8').read()
 
 anchor = "test('album: load_by_id_list takes a plain NUMBER array (unlike album_load_all)'"

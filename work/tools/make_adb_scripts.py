@@ -19,10 +19,14 @@ Same two hard-won rules as 开始游戏.cmd:
   * ASCII only (a UTF-8 file in a GBK console turns into mojibake)
 Chinese explanations therefore live in the .txt files, not here.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import os
 import shutil
 
-ROOT = r"H:\AI\frog"
+ROOT = str(PROJECT_ROOT)
 DIST = os.path.join(ROOT, "dist")
 ADB_SRC = os.path.join(ROOT, r"work\adb\platform-tools")
 

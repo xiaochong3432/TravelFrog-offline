@@ -1,6 +1,10 @@
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import json
 
-t = open(r'H:\AI\frog\work\run\engine\protocol.js', encoding='utf8').read()
+t = open(str(PROJECT_ROOT) + "/work/run/engine/protocol.js", encoding='utf8').read()
 i = t.index('{')
 d = json.loads(t[i:t.rindex('}') + 1])
 
@@ -22,5 +26,5 @@ for n in names:
         lines.append('%-28s MISSING' % n)
     else:
         lines.append('%-28s needResponse=%s params=%s' % (n, v['needResponse'], v['params']))
-open(r'H:\AI\frog\work\spec\out_proto.txt', 'w', encoding='utf8').write('\n'.join(lines))
+open(str(PROJECT_ROOT) + "/work/spec/out_proto.txt", 'w', encoding='utf8').write('\n'.join(lines))
 print('\n'.join(lines))

@@ -1,7 +1,7 @@
 # 手工品（HandCraftView）两条玩家反馈取证
 
 - 日期：2026-09-12
-- 工作目录：`H:\AI\frog`
+- 工作目录：`<仓库根>`
 - 客户端（发行物，只读）：`work/run/web/js/main.min.js.clean`（`main.min.js` 的还原文本；单行压缩，
   行号无意义，本文一律给出 `@byte` 偏移，可用 `work/probe/x_ctx.js` / `x_slice.js` 复核）
   - 布局/皮肤：`work/run/web/js/default.thm.js`（有行号）

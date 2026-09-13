@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 """Classify the 101 differing patch entries: JS vs resource manifest vs data vs art."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import json, os, hashlib, collections
 
-d = json.load(open(r"H:\AI\frog\work\cdn\patch.json", encoding="utf8"))
+d = json.load(open(str(PROJECT_ROOT) + "/work/cdn/patch.json", encoding="utf8"))
 files = {k: v for k, v in d.items() if not k.startswith("__")}
-WEB = r"H:\AI\frog\work\run\web"
+WEB = str(PROJECT_ROOT) + "/work/run/web"
 
 diff, missing = [], []
 for p, m in files.items():

@@ -43,6 +43,10 @@ the key changes).
 Usage:
   python build_apk.py --out out.apk [--web <dir>] [--key <pem>] [--apk base.apk]
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import argparse, base64, datetime, hashlib, io, os, struct, sys, time, zlib, zipfile
 
 try:
@@ -381,10 +385,10 @@ def collect_web(webroot):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--apk", default=r"H:\AI\frog\base.apk")
-    ap.add_argument("--web", default=r"H:\AI\frog\work\run\web")
-    ap.add_argument("--out", default=r"H:\AI\frog\dist\TravelFrog-offline.apk")
-    ap.add_argument("--key", default=r"H:\AI\frog\dist\offline-signing-key.pem")
+    ap.add_argument("--apk", default=str(PROJECT_ROOT) + "/base.apk")
+    ap.add_argument("--web", default=str(PROJECT_ROOT) + "/work/run/web")
+    ap.add_argument("--out", default=str(PROJECT_ROOT) + "/dist/TravelFrog-offline.apk")
+    ap.add_argument("--key", default=str(PROJECT_ROOT) + "/dist/offline-signing-key.pem")
     ap.add_argument("--sign-legacy-builtin", action="store_true",
                     help="DANGER: use the old hand-rolled signer. It produces APKs "
                          "that Android REJECTS. Only for studying the bug. "

@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
 """What exactly did the earlier session archive from the live hotfix CDN, and does
 it contain the content our APK lacks (notably the 2025-11 探秘东山岛 event)?"""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 import json
 import os
 import re
 import sys
 
-ROOT = r"H:\AI\frog"
+ROOT = str(PROJECT_ROOT)
 CDN = os.path.join(ROOT, "work", "cdn")
 out = io.StringIO()
 

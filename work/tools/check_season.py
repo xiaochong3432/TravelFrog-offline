@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 """Check the season group contents and whether the files exist in the web tree."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import json, os
 
-RES = r"H:\AI\frog\work\run\web\resource\China\default.res.json"
-WEB = r"H:\AI\frog\work\run\web"
+RES = str(PROJECT_ROOT) + "/work/run/web/resource/China/default.res.json"
+WEB = str(PROJECT_ROOT) + "/work/run/web"
 d = json.load(open(RES, encoding="utf8"))
 
 groups = {g["name"]: g.get("keys", "").split(",") for g in d.get("groups", [])}

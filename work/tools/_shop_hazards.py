@@ -1,9 +1,13 @@
-﻿import json, collections
-D = r"H:\AI\frog\work\run\engine\data\tables"
+﻿from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
+import json, collections
+D = str(PROJECT_ROOT) + "/work/run/engine/data/tables"
 shop = json.load(open(D+r"\shopData.json", encoding="utf-8"))
 items = {i["id"]: i for i in json.load(open(D+r"\Item.json", encoding="utf-8"))}
 prize = json.load(open(D+r"\Prize.json", encoding="utf-8"))
-out = open(r"H:\AI\frog\work\build\shop_hazards.txt","w",encoding="utf-8")
+out = open(str(PROJECT_ROOT) + "/work/build/shop_hazards.txt","w",encoding="utf-8")
 
 kinds = collections.Counter()
 for s in shop:

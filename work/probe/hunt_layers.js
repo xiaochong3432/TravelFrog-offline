@@ -1,3 +1,6 @@
+
+// 仓库根：按本文件自身位置推导，不写死绝对路径
+const PROJECT_ROOT = require('path').resolve(__dirname, '..', '..');
 // hunt_layers.js -- read-only scan: find any file in the repo that contains a
 // REAL (server-shaped) picture layer array, i.e. `layers` next to `pic_id`.
 // Usage: node work/probe/hunt_layers.js [rootDir]
@@ -5,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 
 const roots = process.argv.slice(2);
-const ROOT = roots.length ? roots : ['H:/AI/frog'];
+const ROOT = roots.length ? roots : [PROJECT_ROOT];
 const SKIP = /(^|[\\/])(\.git|node_modules|dist|__pycache__|shots)([\\/]|$)/i;
 const NEST = /(^|[\\/])(\.git|node_modules|dist|__pycache__|shots|base|full|extracted|work_extract|pristine|compare-eab|compare-res|from-their-apk|jp_apk)([\\/]|$)/i;
 const TEXT = /\.(json|txt|log|js|mjs|md|html|out|lua|xml|py|clean|orig)$/i;

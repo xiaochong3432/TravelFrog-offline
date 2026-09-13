@@ -4,10 +4,14 @@
 `python tools/jsfind.py 与你同行` is mangled by PowerShell's code page (the pattern
 arrives as GBK). Reading the patterns from this file avoids the shell entirely.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import os
 import re
 
-JS = r"H:\AI\frog\work\run\web\js\main.min.js"
+JS = str(PROJECT_ROOT) + "/work/run/web/js/main.min.js"
 PATTERNS = [
     "与你同行",
     "旅行日记",

@@ -18,6 +18,10 @@ cannot work. The launchers serve the folder read-only on 127.0.0.1.
 
 Art (png/mp3/mp4/eab) is already compressed, so it is STORED; text is deflated.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 import os
 import shutil
@@ -25,7 +29,7 @@ import sys
 import time
 import zipfile
 
-ROOT = r"H:\AI\frog"
+ROOT = str(PROJECT_ROOT)
 DIST = os.path.join(ROOT, "dist")
 WEB = os.path.join(ROOT, "work", "run", "web")
 STAGE = os.path.join(ROOT, "work", "build", "pc", "TravelFrog-PC")

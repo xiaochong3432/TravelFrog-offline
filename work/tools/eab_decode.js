@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+
+// 仓库根：按本文件自身位置推导，不写死绝对路径
+const PROJECT_ROOT = require('path').resolve(__dirname, '..', '..');
 /* Decode an encrypted Egret .eab bundle by re-using the CLIENT'S OWN decoder.
  *
  * main.min.js ships two modules we need, verbatim:
@@ -15,7 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const JS = 'H:\\AI\\frog\\work\\base\\assets\\game\\js\\main.min.js';
+const JS = PROJECT_ROOT + '/work/base/assets/game/js/main.min.js';
 const src = fs.readFileSync(JS, 'utf8');
 
 function slice(fromNeedle, toNeedle) {
@@ -66,6 +69,6 @@ for (const e of manifest) {
 }
 if (!found) { console.error('no such entry: ' + entry); process.exit(1); }
 const blob = raw.slice(found.off, found.off + found.e.s);
-const out = process.argv[4] || path.join('H:\\AI\\frog\\work\\spec', 'eab_' + entry);
+const out = process.argv[4] || path.join(PROJECT_ROOT + '/work/spec', 'eab_' + entry);
 fs.writeFileSync(out, Buffer.from(blob));
 console.log(`wrote ${out} (${blob.length} bytes)`);

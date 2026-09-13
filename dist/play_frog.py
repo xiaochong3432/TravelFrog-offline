@@ -23,12 +23,15 @@ def out(s=""):
         enc = (sys.stdout.encoding or "ascii")
         print(s.encode(enc, "replace").decode(enc, "replace"), flush=True)
 
-# Where the game files might live, in order of preference.
+# Where the game files might live, in order of preference. 全部相对本脚本自身，
+# 所以整个包（或整个仓库）搬到哪里都能跑；也可以用 FROG_WEB 显式指定。
 CANDIDATES = [
+    os.environ.get("FROG_WEB", ""),
     os.path.join(HERE, "web"),                                  # shipped next to this script
     os.path.join(HERE, "..", "work", "run", "web"),             # repo layout
-    r"H:\AI\frog\work\run\web",
+    os.path.join(HERE, "work", "run", "web"),                   # repo root
 ]
+CANDIDATES = [c for c in CANDIDATES if c]
 
 MIME = {
     ".js": "application/javascript",

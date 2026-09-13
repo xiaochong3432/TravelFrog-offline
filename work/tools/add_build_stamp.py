@@ -8,11 +8,15 @@ launcher started before the change, or a copied game folder). Rather than guess,
 now prints a build stamp in the ball's panel, so "am I running the new build?" is answerable
 at a glance -- and the stamp is the newest mtime among the files that make up the shell.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 import os
 import time
 
-WEB = r"H:\AI\frog\work\run\web"
+WEB = str(PROJECT_ROOT) + "/work/run/web"
 P = os.path.join(WEB, "__probe.js")
 
 # The stamp: newest mtime of the files that decide what the player sees.

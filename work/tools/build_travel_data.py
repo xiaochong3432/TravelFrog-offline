@@ -33,14 +33,18 @@ Area -> place (地区名 for Collection/Specialty lookups) is DERIVED from the d
 every goal node's own specialties carry `place`, so the region name is counted
 rather than invented.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 import json
 import os
 import collections
 
-CFG = r'H:\AI\frog\work\cdn\live\1020_1021\resource\China\config'
-OUT = r'H:\AI\frog\work\run\engine\data\travel.json'
-GD = r'H:\AI\frog\work\run\engine\data\gamedata.json'
+CFG = str(PROJECT_ROOT) + "/work/cdn/live/1020_1021/resource/China/config"
+OUT = str(PROJECT_ROOT) + "/work/run/engine/data/travel.json"
+GD = str(PROJECT_ROOT) + "/work/run/engine/data/gamedata.json"
 
 
 def load(path):

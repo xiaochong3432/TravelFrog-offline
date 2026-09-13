@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 """Check sizes of the base picture images + look up a few item ids."""
+from pathlib import Path as _PortablePath
+# 仓库根：按本文件自身位置推导（深度 3），不写死任何绝对路径 ——
+# 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[3]
 import json, os, struct, io, collections
 
-ROOT = r"H:\AI\frog\work\run\web\resource\China\images"
-B = r"H:\AI\frog\work\spec\_dumps\tables\%s.json"
-out = io.open(r"H:\AI\frog\work\spec\_dumps\imgsize.txt", "w", encoding="utf8")
+ROOT = str(PROJECT_ROOT) + "/work/run/web/resource/China/images"
+B = str(PROJECT_ROOT) + "/work/spec/_dumps/tables/%s.json"
+out = io.open(str(PROJECT_ROOT) + "/work/spec/_dumps/imgsize.txt", "w", encoding="utf8")
 
 
 def png_size(p):

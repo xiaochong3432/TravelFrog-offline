@@ -1,6 +1,9 @@
+# 仓库根：按脚本自身位置推导，不写死绝对路径
+$ProjectRoot = Split-Path -Parent (Split-Path -Parent ($PSScriptRoot))
+
 param(
   [Parameter(Mandatory=$true)][string[]]$Urls,
-  [string]$OutDir = "H:\AI\frog\raw",
+  [string]$OutDir = (Join-Path $ProjectRoot 'raw'),
   [int]$TimeoutSec = 25
 )
 $ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0 Safari/537.36"

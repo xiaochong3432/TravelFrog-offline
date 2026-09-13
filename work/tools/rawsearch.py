@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 """Raw byte search for a UTF-8 string across web resources (incl. odd-format bundles)."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import os, sys
 
-WEB = r"H:\AI\frog\work\run\web"
-OUT = r"H:\AI\frog\work\rawsearch.txt"
+WEB = str(PROJECT_ROOT) + "/work/run/web"
+OUT = str(PROJECT_ROOT) + "/work/rawsearch.txt"
 needles = sys.argv[1:] or ["开始", "这里有只青蛙", "呱呱"]
 lines = []
 

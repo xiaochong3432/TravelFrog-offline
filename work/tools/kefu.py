@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 """Which skin owns a given literal string, and what the customer-service button
 does under the Test channel?"""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import os
 import re
 
-THEME = r"H:\AI\frog\work\run\web\js\default.thm.js"
-JS = r"H:\AI\frog\work\run\web\js\main.min.js"
+THEME = str(PROJECT_ROOT) + "/work/run/web/js/default.thm.js"
+JS = str(PROJECT_ROOT) + "/work/run/web/js/main.min.js"
 
 with open(THEME, encoding="utf-8", errors="replace") as fh:
     th = fh.read()

@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """Fix the quoting slip in install_ball.py, then run it."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 
-P = r"H:\AI\frog\work\tools\install_ball.py"
+P = str(PROJECT_ROOT) + "/work/tools/install_ball.py"
 src = io.open(P, encoding="utf-8").read()
 start = src.index('new_c = (')
 end = src.index('assert cfg.count(old_c) == 1')

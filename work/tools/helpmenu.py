@@ -4,11 +4,15 @@
 Searches main.min.js (and the theme) for the labels and handlers behind 协议 /
 联系客服 / 礼包码兑换, without passing CJK through the shell.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import os
 import re
 
-JS = r"H:\AI\frog\work\run\web\js\main.min.js"
-THEME = r"H:\AI\frog\work\run\web\js\default.thm.js"
+JS = str(PROJECT_ROOT) + "/work/run/web/js/main.min.js"
+THEME = str(PROJECT_ROOT) + "/work/run/web/js/default.thm.js"
 
 with open(JS, encoding="utf-8", errors="replace") as fh:
     s = fh.read()

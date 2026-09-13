@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 """Two museum provinces whose names do not contain the province (facts, not data):
 南越王博物院 is in 广州 (广东), 吴文化博物馆 is in 苏州 (江苏)."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 
-P = r"H:\AI\frog\work\tools\build_map_data.py"
+P = str(PROJECT_ROOT) + "/work/tools/build_map_data.py"
 src = io.open(P, encoding="utf-8").read()
 old = """out = {
     "source": "visitors.provinceList / museumData (游戏自带表)","""

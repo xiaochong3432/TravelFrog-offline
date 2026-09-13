@@ -1,5 +1,9 @@
-﻿import json, os
-D = r"H:\AI\frog\work\run\engine\data\tables"
+﻿from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
+import json, os
+D = str(PROJECT_ROOT) + "/work/run/engine/data/tables"
 en = json.load(open(os.path.join(D,"encyclopedia.json"), encoding="utf-8"))
 fp = json.load(open(os.path.join(D,"flowerpotData.json"), encoding="utf-8"))
 lists = list(en["list"].values())
@@ -7,7 +11,7 @@ lists = list(en["list"].values())
 bykey = {}
 for e in lists:
     bykey[(e["name"], e["sub_name"])] = e
-out = open(r"H:\AI\frog\work\build\plantmap2.txt","w",encoding="utf-8")
+out = open(str(PROJECT_ROOT) + "/work/build/plantmap2.txt","w",encoding="utf-8")
 ok = miss = 0
 misses = []
 for pid, p in sorted((int(k), v) for k, v in fp["plant"].items()):

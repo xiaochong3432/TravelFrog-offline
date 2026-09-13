@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 """Show the engine's item_load_items / album_load_all / album_load / unlock_pictures."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 import re
 
-P = r"H:\AI\frog\work\run\engine\index.js"
+P = str(PROJECT_ROOT) + "/work/run/engine/index.js"
 t = io.open(P, encoding="utf-8").read()
 out = io.StringIO()
 
@@ -21,5 +25,5 @@ for case in ["unlock_pictures", "add_specialty"]:
     out.write("=== case %s  L%d\n" % (case, t.count("\n", 0, i) + 1))
     out.write(t[i:i + 700] + "\n\n")
 
-io.open(r"H:\AI\frog\work\logs\album_items.txt", "w", encoding="utf-8").write(out.getvalue())
+io.open(str(PROJECT_ROOT) + "/work/logs/album_items.txt", "w", encoding="utf-8").write(out.getvalue())
 print("wrote logs/album_items.txt")

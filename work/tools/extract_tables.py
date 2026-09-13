@@ -4,10 +4,14 @@
 Reads the tokenised stream produced by walk.py and re-segments it into the
 named *DataBase tables.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import json, sys, re
 
-TOK = r'H:\AI\frog\work\jp_apk\tokens.json'
-OUT = r'H:\AI\frog\work\jp_apk\tables.json'
+TOK = str(PROJECT_ROOT) + "/work/jp_apk/tokens.json"
+OUT = str(PROJECT_ROOT) + "/work/jp_apk/tables.json"
 T = json.load(open(TOK, encoding='utf-8'))
 
 starts = [i for i, (k, p, v) in enumerate(T)

@@ -14,11 +14,15 @@ idiom into plain "X: v" lines.
 
 Usage: python extract_define.py
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import re
 import sys
 
-JS = r"H:\AI\frog\work\base\assets\game\js\main.min.js"
-OUT = r"H:\AI\frog\work\build\define_block.txt"
+JS = str(PROJECT_ROOT) + "/work/base/assets/game/js/main.min.js"
+OUT = str(PROJECT_ROOT) + "/work/build/define_block.txt"
 
 raw = open(JS, "rb").read().decode("utf-8", "replace")
 

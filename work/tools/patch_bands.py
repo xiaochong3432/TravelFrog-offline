@@ -7,6 +7,10 @@ where [0] is the patch band the file changed in. The newest band is newer than o
 APK (1.0.20), so its file list is exactly what a 1.0.21 update would add -- and that
 is where any content our snapshot lacks would come from.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import collections
 import io
 import json
@@ -14,7 +18,7 @@ import os
 import re
 import sys
 
-ROOT = r"H:\AI\frog"
+ROOT = str(PROJECT_ROOT)
 CDN = os.path.join(ROOT, "work", "cdn")
 j = json.load(open(os.path.join(CDN, "patch.json"), encoding="utf-8"))
 files = {k: v for k, v in j.items() if not k.startswith("__")}

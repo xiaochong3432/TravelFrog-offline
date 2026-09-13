@@ -11,7 +11,7 @@
 
 | 代号 | 含义 |
 |---|---|
-| 客户端 | `H:\AI\frog\work\base\assets\game\js\main.min.js`（v1001，1,315,423 B） |
+| 客户端 | `work/base/assets/game/js/main.min.js`（v1001，1,315,423 B） |
 | `@偏移` | 该标识符在**解码后的 UTF-8 字符串**中的字符下标（`dump_class.py` / `occur.py` 同坐标系；注意 `dump_range.py` 用的是**原始字节**偏移，两者不等价，本次新增了 `work/spec/_dumps/dr.py` 用解码偏移导出） |
 | 数据表 | `work/spec/_dumps/tables/*.json` —— 本次**新解出**的客户端数据表，直接来自 `resource/China/eab/config.eab`（60 张表，含 `Note/Picture/PictureTag/Collection/Specialty/Item/resources/Word/GoalNumber/zh-CN`）。提取方法与密钥见 **§11** |
 | dump 目录 | `work/spec/_dumps/`（本次导出的所有代码片段都在这里，可直接引用来复核） |

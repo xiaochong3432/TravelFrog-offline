@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """Emit the embedded ProtocolList as a JS module for the offline engine."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import re, json, os
 
-JS = r"H:\AI\frog\work\base\assets\game\js\main.min.js"
+JS = str(PROJECT_ROOT) + "/work/base/assets/game/js/main.min.js"
 d = open(JS, "rb").read().decode("utf8", "replace")
 
 i = d.find("e.protocolList={")
@@ -28,7 +32,7 @@ for m in ENTRY.finditer(raw):
     table[m.group(1)] = {"params": params, "needResponse": m.group(3) == "0"}
 print(f"parsed {len(table)} commands")
 
-out = r"H:\AI\frog\work\run\engine\protocol.js"
+out = str(PROJECT_ROOT) + "/work/run/engine/protocol.js"
 os.makedirs(os.path.dirname(out), exist_ok=True)
 with open(out, "w", encoding="utf8") as f:
     f.write("// Auto-generated from assets/game/js/main.min.js ProtocolList\n")

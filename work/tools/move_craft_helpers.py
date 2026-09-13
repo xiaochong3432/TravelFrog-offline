@@ -6,11 +6,15 @@ They read `state`, which is a PER-ENGINE variable declared inside createEngine()
 threw "state is not defined" and every handler that called them returned {} --
 i.e. the museum list and the whole 手工 payload silently became empty objects.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 import re
 import sys
 
-ROOT = r"H:\AI\frog\work"
+ROOT = str(PROJECT_ROOT) + "/work"
 P = ROOT + r"\run\engine\index.js"
 src = io.open(P, encoding="utf-8").read()
 

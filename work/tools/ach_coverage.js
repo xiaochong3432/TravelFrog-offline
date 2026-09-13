@@ -1,5 +1,8 @@
+﻿
+// 仓库根：按本文件自身位置推导，不写死绝对路径
+const PROJECT_ROOT = require('path').resolve(__dirname, '..', '..');
 ﻿const path = require('path');
-const ROOT = 'H:/AI/frog';
+const ROOT = PROJECT_ROOT;
 const GD = require(path.join(ROOT, 'work/run/engine/data/gamedata.json'));
 const ACH = GD.tables.Achieve;
 const names = GD.items.map(i => i.name);

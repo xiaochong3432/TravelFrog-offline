@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """Dump core.Socket + SocketState (the transport seam for Route B)."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import re
 
-JS = r"H:\AI\frog\work\base\assets\game\js\main.min.js"
+JS = str(PROJECT_ROOT) + "/work/base/assets/game/js/main.min.js"
 d = open(JS, "rb").read().decode("utf8", "replace")
 
 marker = '__reflect(i.prototype,"core.Socket")'
@@ -10,7 +14,7 @@ i = d.find(marker)
 print("marker at", i)
 j = d.rfind("var core;", 0, i)
 seg = d[j:i + 80]
-open(r"H:\AI\frog\work\socketclass.txt", "w", encoding="utf8").write(re.sub(r"([;{}])", r"\1\n", seg))
+open(str(PROJECT_ROOT) + "/work/socketclass.txt", "w", encoding="utf8").write(re.sub(r"([;{}])", r"\1\n", seg))
 print("socket class chars:", len(seg))
 
 print("\n=== SocketState enum ===")

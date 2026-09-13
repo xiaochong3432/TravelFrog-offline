@@ -4,10 +4,14 @@
 Also reports whether an animation/review asset declares a hardcoded year, so the
 "2022" the player sees can be traced to art or to data.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import os
 import re
 
-JS = r"H:\AI\frog\work\run\web\js\main.min.js"
+JS = str(PROJECT_ROOT) + "/work/run/web/js/main.min.js"
 
 with open(JS, encoding="utf-8", errors="replace") as fh:
     s = fh.read()
@@ -38,7 +42,7 @@ years = re.findall(r"(?<![0-9])(19|20)\d{2}(?![0-9])", region)
 print("\n4-digit years found in the region: %s" % (years or "NONE"))
 
 # and in the theme file?
-THEME = r"H:\AI\frog\work\run\web\js\default.thm.js"
+THEME = str(PROJECT_ROOT) + "/work/run/web/js/default.thm.js"
 with open(THEME, encoding="utf-8", errors="replace") as fh:
     th = fh.read()
 i = th.find("AnnualReviewStartPageSkin.exml")

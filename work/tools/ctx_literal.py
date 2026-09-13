@@ -8,10 +8,14 @@ the send site instead.
 
 Usage: ctx_literal.py <literal> [window] [max_hits]
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import re
 import sys
 
-JS = r"H:\AI\frog\work\base\assets\game\js\main.min.js"
+JS = str(PROJECT_ROOT) + "/work/base/assets/game/js/main.min.js"
 
 lit = sys.argv[1]
 win = int(sys.argv[2]) if len(sys.argv) > 2 else 320

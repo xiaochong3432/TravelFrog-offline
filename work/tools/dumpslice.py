@@ -4,10 +4,14 @@
 
 Usage: python tools/dumpslice.py "var EncyView=" 9000 logs/ency_view.txt
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 import sys
 
-SRC = r"H:\AI\frog\work\run\web\js\main.min.js"
+SRC = str(PROJECT_ROOT) + "/work/run/web/js/main.min.js"
 pat = sys.argv[1]
 n = int(sys.argv[2])
 dest = sys.argv[3]

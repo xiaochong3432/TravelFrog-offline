@@ -32,22 +32,29 @@ Usage:
     python sign_apk.py --in <unsigned.apk> --out <signed.apk>
     python sign_apk.py --verify-only <apk>
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import argparse
 import datetime
 import os
 import subprocess
 import sys
 
-ROOT = r"H:\AI\frog"
-JAVA = os.path.join(ROOT, r"work\jre\jdk-17.0.20.1+1-jre\bin\java.exe")
-ZIPALIGN = os.path.join(ROOT, r"work\bt\android-14\zipalign.exe")
-APKSIGNER_JAR = os.path.join(ROOT, r"work\bt\android-14\lib\apksigner.jar")
-KEY_PEM = os.path.join(ROOT, r"dist\offline-signing-key.pem")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import _toolchain  # noqa: E402
+
+ROOT = str(PROJECT_ROOT)
+JAVA = _toolchain.java()
+ZIPALIGN = _toolchain.build_tool("zipalign")
+APKSIGNER_JAR = _toolchain.apksigner_jar()
+KEY_PEM = os.path.join(ROOT, "dist", "offline-signing-key.pem")
 # apksigner (build-tools 34) wants the PKCS#8 private key as DER, not PEM:
 # given the PEM it reports "Failed to load PKCS #8 encoded private key ...
 # Not an RSA, EC, or DSA private key".
-KEY_DER = os.path.join(ROOT, r"dist\offline-signing-key.pk8")
-CERT_PEM = os.path.join(ROOT, r"dist\offline-signing-cert.pem")
+KEY_DER = os.path.join(ROOT, "dist", "offline-signing-key.pk8")
+CERT_PEM = os.path.join(ROOT, "dist", "offline-signing-cert.pem")
 
 
 def log(*a):
@@ -129,15 +136,24 @@ def verify(apk, extra=()):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--in", dest="src", default=os.path.join(ROOT, r"dist\TravelFrog-offline-unsigned.apk"))
-    ap.add_argument("--out", dest="dst", default=os.path.join(ROOT, r"dist\TravelFrog-offline.apk"))
+    ap.add_argument("--in", dest="src", default=os.path.join(ROOT, "dist", "TravelFrog-offline-unsigned.apk"))
+    ap.add_argument("--out", dest="dst", default=os.path.join(ROOT, "dist", "TravelFrog-offline.apk"))
     ap.add_argument("--verify-only", default=None)
     args = ap.parse_args()
 
-    for tool in (JAVA, ZIPALIGN, APKSIGNER_JAR):
-        if not os.path.exists(tool):
-            log(f"ERROR: missing {tool}")
-            return 1
+    missing = [(name, path) for name, path in
+               (("java", JAVA), ("zipalign", ZIPALIGN), ("apksigner.jar", APKSIGNER_JAR))
+               if not path or not os.path.exists(path)]
+    if missing:
+        log("ERROR: 签名工具链不完整，缺少：")
+        for name, path in missing:
+            log("   %-14s %s" % (name, path or "(未找到)"))
+        log("")
+        log("指向一个现成的 Android build-tools 与 JDK 即可（任选其一）：")
+        log("   set ANDROID_HOME=<你的 Android SDK 根>   # zipalign 与 apksigner.jar 都从它找")
+        log("   set JAVA_HOME=<你的 JDK 17>")
+        log("   set FROG_ANDROID_BUILD_TOOLS=<含 zipalign 的目录>")
+        return 1
 
     if args.verify_only:
         return 0 if verify(args.verify_only) else 1

@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """Fix the encyclopedia test: pick the decoration by the SAME rule the engine uses."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 
-T = r"H:\AI\frog\work\tools\engine_test.js"
+T = str(PROJECT_ROOT) + "/work/tools/engine_test.js"
 src = io.open(T, encoding="utf-8").read()
 old = """  const decos = Object.keys(GDATA.tables.decoration || {});
   const withIcon = decos.filter((k) => {

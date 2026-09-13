@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 """Summarise Item / Picture / Note tables for the travel spec."""
+from pathlib import Path as _PortablePath
+# 仓库根：按本文件自身位置推导（深度 3），不写死任何绝对路径 ——
+# 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[3]
 import json, io, sys, collections
 
-out = io.open(r"H:\AI\frog\work\spec\_dumps\tables_summary.txt", "w", encoding="utf8")
-B = r"H:\AI\frog\work\spec\_dumps\tables\%s.json"
+out = io.open(str(PROJECT_ROOT) + "/work/spec/_dumps/tables_summary.txt", "w", encoding="utf8")
+B = str(PROJECT_ROOT) + "/work/spec/_dumps/tables/%s.json"
 
 
 def load(n):

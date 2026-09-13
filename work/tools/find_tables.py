@@ -7,11 +7,15 @@ on leftovers.
 
 Usage: find_tables.py [marker]
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import os
 import struct
 import sys
 
-WEB = r"H:\AI\frog\work\run\web"
+WEB = str(PROJECT_ROOT) + "/work/run/web"
 marker = (sys.argv[1] if len(sys.argv) > 1 else "shopData").encode("utf-8")
 
 EAB_MAGIC = b"\x89EAB"

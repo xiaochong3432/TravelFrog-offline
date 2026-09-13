@@ -2,13 +2,17 @@
 # -*- coding: utf-8 -*-
 """Payload check for the 足迹地图 work: the shipped APK must carry the offline page,
 its data file, and the shell hook that reveals the album's 地图 button."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 import json
 import sys
 import zipfile
 
-APK = r"H:\AI\frog\dist\TravelFrog-offline.apk"
-OUT = r"H:\AI\frog\work\logs\check_map_payload.txt"
+APK = str(PROJECT_ROOT) + "/dist/TravelFrog-offline.apk"
+OUT = str(PROJECT_ROOT) + "/work/logs/check_map_payload.txt"
 
 NEED = {
     "assets/game/map.html": ["蛙蛙的旅行地图", "不使用任何行政区划界线"],

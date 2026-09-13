@@ -1,6 +1,6 @@
 # 《旅かえる》(Tabikaeru) 玩法数值与规则参考
 
-> 目的：为 `H:\AI\frog` 的离线规则引擎提供**贴近原版的参数依据**。
+> 目的：为 `<仓库根>` 的离线规则引擎提供**贴近原版的参数依据**。
 > 本文只讲**数值与规则**，不讲实现。
 >
 > **可信度标记（全文统一）**
@@ -49,7 +49,7 @@
 
 | 项 | 值 | 来源 |
 |---|---|---|
-| 参考包 | `H:\AI\frog\jp.co.hit_point.tabikaeru.apk` | 工作区 glob |
+| 参考包 | `jp.co.hit_point.tabikaeru.apk` | 工作区 glob |
 | 大小 / SHA 前 8 字节 | 93,064,672 bytes；zip 内 408 条目 | 🟢 apk |
 | 引擎 | Unity **5.6.1f1**，Mono（非 IL2CPP），SerializedFile **format 17**，platform 13=Android | 🟢 `assets/bin/Data/globalgamemanagers` 头部 |
 | 代码程序集 | `assets/bin/Data/Managed/Assembly-CSharp.dll`（376,320 B） | 🟢 apk |

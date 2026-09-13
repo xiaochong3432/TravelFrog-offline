@@ -1,6 +1,6 @@
 # 相册明信片图层摆位核查（"小青蛙有时飞在天上"）
 
-核查时间：2026-09-12　工作目录 `H:\AI\frog`
+核查时间：2026-09-12　工作目录 `<仓库根>`
 **未修改任何发行物**：`dist/**`、`work/run/engine/index.js`、`work/tools/build_picture_layers.py`、
 `work/run/engine/data/picture-layers.json`、`work/run/web/js/main.min.js.clean` 全部原样。
 新增物只在 `work/probe/`、`work/shots/`、`work/notes/`。

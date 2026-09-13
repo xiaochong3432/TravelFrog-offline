@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Inspect the encyclopedia table the client indexes, and what our engine sends."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 import json
 import re
 
-ROOT = r"H:\AI\frog"
+ROOT = str(PROJECT_ROOT)
 GD = json.load(open(ROOT + r"\work\run\engine\data\gamedata.json", encoding="utf-8"))
 T = GD["tables"]
 

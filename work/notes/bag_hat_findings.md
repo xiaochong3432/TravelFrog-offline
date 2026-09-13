@@ -6,7 +6,7 @@
 > ⚠️ 过程中的重要发现：`work/run/engine/index.js` 在我调查期间被**另一个进程改动过**
 > （22:15:16 343270 B → 22:19:36 347568 B；read 工具报的总行数 7516 → 7627 → 7714）。
 > 本笔记引用的行号是 22:2x 时点的值，且每处都附了**代码原文**，以原文为准。
-> 会话中还有别的 msedge（`--user-data-dir=H:\AI\frog\work\shots\p-annual`）在跑，不是我的，我没有碰。
+> 会话中还有别的 msedge（`--user-data-dir=work/shots/p-annual`）在跑，不是我的，我没有碰。
 
 ---
 

@@ -38,11 +38,15 @@ underneath, nothing to reload.
 
 Both edits are applied to work/run/web/__probe.js. Idempotent.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 import os
 import sys
 
-SHELL = r"H:\AI\frog\work\run\web\__probe.js"
+SHELL = str(PROJECT_ROOT) + "/work/run/web/__probe.js"
 
 ANNOUNCE = """
         /* The album's 地图 toolbar button is revealed from a server-driven activity:
@@ -215,7 +219,7 @@ def main():
 
     if text != orig:
         io.open(SHELL, 'w', encoding='utf-8', newline='').write(text)
-    out = io.open(r"H:\AI\frog\work\logs\fix_map_button.txt", 'w', encoding='utf-8')
+    out = io.open(str(PROJECT_ROOT) + "/work/logs/fix_map_button.txt", 'w', encoding='utf-8')
     out.write('shell bytes: %d -> %d\n' % (len(orig.encode('utf-8')), len(text.encode('utf-8'))))
     for line in report:
         out.write('  * %s\n' % line)

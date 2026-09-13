@@ -10,11 +10,15 @@ change more than necessary.
 This tool (1) proves our serializer reproduces the ORIGINAL bytes exactly, then
 (2) rewrites the merged manifest the same way.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import json
 import os
 import sys
 
-ROOT = r"H:\AI\frog"
+ROOT = str(PROJECT_ROOT)
 BACKUP = os.path.join(ROOT, "work", "merge-backup", "20260912-202751",
                       "resource", "China", "default.res.json")
 MERGED = os.path.join(ROOT, "work", "run", "web", "resource", "China", "default.res.json")

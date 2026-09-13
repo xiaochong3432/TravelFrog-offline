@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 """List the scripts launcher.js loads, from the little manifest it fetches."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import json
 import os
 import re
 
-WEB = r"H:\AI\frog\work\run\web"
+WEB = str(PROJECT_ROOT) + "/work/run/web"
 
 with open(os.path.join(WEB, "launcher.js"), encoding="utf-8", errors="replace") as fh:
     t = fh.read()

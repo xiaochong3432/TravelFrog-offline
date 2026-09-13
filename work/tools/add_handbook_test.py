@@ -13,9 +13,13 @@ unprepared bag always took the 放浪 path, which returns early -- so after a we
 the 图鉴 could still be entirely "?". That is the reported symptom, and it is fixed by the
 departure rule; this test makes sure a normal trip keeps feeding both lists.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 
-T = r"H:\AI\frog\work\tools\engine_test.js"
+T = str(PROJECT_ROOT) + "/work/tools/engine_test.js"
 src = io.open(T, encoding="utf-8").read()
 anchor = "/* ------------------------------------------------------------------ done */"
 test = """test('handbook: a real trip feeds the two lists the 图鉴 renders from', ({ engine }) => {

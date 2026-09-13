@@ -8,9 +8,13 @@ Usage:
 Prints, for each hit, the owning class body from `var X=function` up to
 `__reflect(X.prototype` (or the next class if that is missing).
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import re, sys
 
-JS = r"H:\AI\frog\work\base\assets\game\js\main.min.js"
+JS = str(PROJECT_ROOT) + "/work/base/assets/game/js/main.min.js"
 d = open(JS, "rb").read().decode("utf8", "replace")
 
 args = [a for a in sys.argv[2:] if not a.startswith("--")]

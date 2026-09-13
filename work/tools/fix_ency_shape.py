@@ -17,9 +17,13 @@ encyclopedia.list is keyed by long_id, and each row carries id (species), sub_id
 sub_id == key, so sending the variety number (as we did) made every tab lookup
 undefined -> the species grid was 12 blank slots -> "百科解锁后里面还是空白的".
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 
-ENG = r"H:\AI\frog\work\run\engine\index.js"
+ENG = str(PROJECT_ROOT) + "/work/run/engine/index.js"
 
 NEW = '''  /* ---------------------------------------------------------- 百科 (encyclopedia)
      The three payload fields are NOT what their names suggest. Read off the client's

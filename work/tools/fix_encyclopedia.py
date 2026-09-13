@@ -7,9 +7,13 @@ The decoration table's rows carry `desc_handbook` ("堇菜科/堇菜属 粉白�
 icon). Only the flowerpot's `grown` list fed encyclopediaPayload before, so a player who
 merely travelled and collected flowers saw the whole 百科 as 未收集.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 
-P = r"H:\AI\frog\work\run\engine\index.js"
+P = str(PROJECT_ROOT) + "/work/run/engine/index.js"
 src = io.open(P, encoding="utf-8").read()
 edits = []
 

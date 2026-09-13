@@ -1,8 +1,12 @@
-﻿import json, os
-D = r"H:\AI\frog\work\run\engine\data\tables"
+﻿from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
+import json, os
+D = str(PROJECT_ROOT) + "/work/run/engine/data/tables"
 res = json.load(open(os.path.join(D,"resources.json"), encoding="utf-8"))
 pic = json.load(open(os.path.join(D,"Picture.json"), encoding="utf-8"))
-out = open(r"H:\AI\frog\work\build\layers2.txt","w",encoding="utf-8")
+out = open(str(PROJECT_ROOT) + "/work/build/layers2.txt","w",encoding="utf-8")
 out.write(f"resources: dict of {len(res)} entries\n")
 ks = list(res)[:3]
 for k in ks: out.write(f"  key={k!r} -> {res[k]!r}\n")

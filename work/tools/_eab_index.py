@@ -1,6 +1,10 @@
-﻿import json, os, struct
-WEB = r"H:\AI\frog\work\run\web"
-out = open(r"H:\AI\frog\work\build\eab_index.txt", "w", encoding="utf-8")
+﻿from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
+import json, os, struct
+WEB = str(PROJECT_ROOT) + "/work/run/web"
+out = open(str(PROJECT_ROOT) + "/work/build/eab_index.txt", "w", encoding="utf-8")
 EAB = b"\x89EAB"
 for dp, _dn, fns in os.walk(WEB):
     for fn in fns:

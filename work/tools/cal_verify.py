@@ -8,11 +8,15 @@ that ink is actually there.
 
 Usage: python tools/cal_verify.py shots/cal13.png
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import sys
 
 from PIL import Image
 
-path = sys.argv[1] if len(sys.argv) > 1 else r"H:\AI\frog\work\shots\cal13.png"
+path = sys.argv[1] if len(sys.argv) > 1 else str(PROJECT_ROOT) + "/work/shots/cal13.png"
 im = Image.open(path).convert("RGB")
 W, H = im.size
 px = im.load()

@@ -6,11 +6,15 @@ Download URL          :  <__url__><dist_dir>/<path>
 The listed md5 matches the *decompressed* content, so gzip bodies are inflated
 before verification.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import json, os, sys, gzip, hashlib, urllib.request, urllib.error, time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-ROOT = r"H:\AI\frog\work\cdn\v1021"
-PATCH = r"H:\AI\frog\work\cdn\patch.json"
+ROOT = str(PROJECT_ROOT) + "/work/cdn/v1021"
+PATCH = str(PROJECT_ROOT) + "/work/cdn/patch.json"
 UA = "Mozilla/5.0 (Linux; Android 11) AppleWebKit/537.36 Chrome/120 Mobile Safari/537.36"
 
 d = json.load(open(PATCH, encoding="utf8"))

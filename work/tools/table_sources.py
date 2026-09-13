@@ -6,10 +6,14 @@ Specialty, Collection, Prize, Character, Shop, GiftData, lotteryData) are listed
 there with a url. This prints where each one actually lives so the extraction can
 be reproduced instead of relying on leftovers.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import json
 import os
 
-WEB = r"H:\AI\frog\work\run\web"
+WEB = str(PROJECT_ROOT) + "/work/run/web"
 MANIFEST = os.path.join(WEB, r"resource\China\default.res.json")
 WANT = ["shopData", "Item", "Specialty", "Collection", "Prize", "Character",
         "Shop", "GiftData", "lotteryData", "GamePlayData"]
@@ -18,7 +22,7 @@ man = json.load(open(MANIFEST, encoding="utf-8"))
 resources = man.get("resources", man if isinstance(man, list) else [])
 print(f"manifest resources: {len(resources)}")
 
-out = open(r"H:\AI\frog\work\build\table_sources.txt", "w", encoding="utf-8")
+out = open(str(PROJECT_ROOT) + "/work/build/table_sources.txt", "w", encoding="utf-8")
 by_name = {}
 for r in resources:
     if not isinstance(r, dict):

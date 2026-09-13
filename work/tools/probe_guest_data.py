@@ -1,15 +1,19 @@
 #!/usr/bin/env python3
 """Verify the data the visitor (guest) system needs, before implementing."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import json
 import os
 
-D = r"H:\AI\frog\work\run\engine\data\tables"
-OUT = r"H:\AI\frog\work\build\guest_data.txt"
+D = str(PROJECT_ROOT) + "/work/run/engine/data/tables"
+OUT = str(PROJECT_ROOT) + "/work/build/guest_data.txt"
 
 char = json.load(open(os.path.join(D, "Character.json"), encoding="utf-8"))
 vis = json.load(open(os.path.join(D, "visitors.json"), encoding="utf-8"))
 gameplay = json.load(open(os.path.join(D, "gameplay.json"), encoding="utf-8"))
-define = json.load(open(r"H:\AI\frog\work\run\engine\data\define.json", encoding="utf-8"))
+define = json.load(open(str(PROJECT_ROOT) + "/work/run/engine/data/define.json", encoding="utf-8"))
 
 with open(OUT, "w", encoding="utf-8") as out:
     row = char.get("rowItemId") or []

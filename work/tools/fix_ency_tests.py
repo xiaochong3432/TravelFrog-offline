@@ -2,9 +2,13 @@
 # -*- coding: utf-8 -*-
 """Rewrite the encyclopedia tests for the corrected payload shape, and add a test that
 replays EncyView's own table lookups (so a shape mistake fails here, not in the game)."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 
-T = r"H:\AI\frog\work\tools\engine_test.js"
+T = str(PROJECT_ROOT) + "/work/tools/engine_test.js"
 text = io.open(T, encoding='utf-8').read()
 edits = []
 

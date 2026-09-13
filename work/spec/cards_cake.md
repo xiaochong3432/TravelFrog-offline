@@ -20,7 +20,7 @@ All `@N` offsets below are **character indices into the UTF-8-decoded
 Reproduce any quote with:
 
 ```bash
-python -c "import io;C=io.open(r'H:\AI\frog\work\run\web\js\main.min.js',encoding='utf-8',errors='replace').read();print(C[START:END])"
+python -c "import io;C=io.open(r'work/run/web/js/main.min.js',encoding='utf-8',errors='replace').read();print(C[START:END])"
 ```
 
 Evidence sources used (all read-only):

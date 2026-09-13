@@ -16,13 +16,17 @@ captured and not, say, truncated.
 
 Usage: python build_define_json.py
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import json
 import os
 import re
 import sys
 
-BLOCK = r"H:\AI\frog\work\build\define_block.txt"
-OUT = r"H:\AI\frog\work\run\engine\data\define.json"
+BLOCK = str(PROJECT_ROOT) + "/work/build/define_block.txt"
+OUT = str(PROJECT_ROOT) + "/work/run/engine/data/define.json"
 
 
 def parse_scalar(tok):

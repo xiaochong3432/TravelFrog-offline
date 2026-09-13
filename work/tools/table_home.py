@@ -9,12 +9,16 @@ to know where the client actually reads them from:
   * a loose JSON file -> trivial
 Also reports which of the 1.0.21 files are art (easily merged) vs tables.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 import json
 import os
 import sys
 
-ROOT = r"H:\AI\frog\work"
+ROOT = str(PROJECT_ROOT) + "/work"
 EAB = os.path.join(ROOT, "run", "web", "resource", "China", "eab")
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 

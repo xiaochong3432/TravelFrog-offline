@@ -8,13 +8,17 @@ Questions:
   3. Do nodeType 2 nodes really have 4 neighbours (junctions)?
   4. Which wayType numbers are reachable and do their edge rows carry the tools tag?
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 import json
 import os
 import collections
 
-BASE = r'H:\AI\frog\work\cdn\live\1020_1021\resource\China\config\TravelData'
-GD = r'H:\AI\frog\work\run\engine\data\gamedata.json'
+BASE = str(PROJECT_ROOT) + "/work/cdn/live/1020_1021/resource/China/config/TravelData"
+GD = str(PROJECT_ROOT) + "/work/run/engine/data/gamedata.json"
 
 
 def load(name, table=None):

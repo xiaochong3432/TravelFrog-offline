@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 """Preview the key extracted tables so the data model is visible at a glance."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import json
 import os
 
-D = r"H:\AI\frog\work\run\engine\data\tables"
-OUT = r"H:\AI\frog\work\build\tables_preview.txt"
+D = str(PROJECT_ROOT) + "/work/run/engine/data/tables"
+OUT = str(PROJECT_ROOT) + "/work/build/tables_preview.txt"
 
 SHOW = [
     ("gameplay", 4), ("origin", 4), ("Note", 3), ("Picture", 3), ("PictureTag", 3),

@@ -35,7 +35,7 @@ The definitive JP wiki — **旅かえる 攻略Wiki (ヘイグ), `h1g.jp/tabika
 
 ### 0.3 The only decompiled code available is the **Chinese** build
 
-`H:\AI\frog\work\run\engine\data\define.json` holds a `Tabikaeru.Define` tuning table extracted from the CN build's `assets/game/js/main.min.js`. Its own header records:
+`work/run/engine/data/define.json` holds a `Tabikaeru.Define` tuning table extracted from the CN build's `assets/game/js/main.min.js`. Its own header records:
 
 > `"_source": "Tabikaeru.Define in assets/game/js/main.min.js (offsets 418503..423223) - the original server's tuning table"`
 > `"VERSION": 1.07`
@@ -429,7 +429,7 @@ Two **incompatible** numeric sets exist. Both are reported; neither is chosen.
 | Gold | 黄玉 | **1** | 1000 |
 | `RankMax` | | **100** | |
 
-**[CODE]** — `H:\AI\frog\work\run\engine\data\define.json` (source: `assets/game/js/main.min.js` offsets 418503..423223).
+**[CODE]** — `work/run/engine/data/define.json` (source: `assets/game/js/main.min.js` offsets 418503..423223).
 
 **Why Set B cannot be presented as the JP values:**
 1. It has **6** tiers (adds **紫玉**); the JP DLL's string heap contains only **白玉/青玉/緑玉/赤玉/黄玉** — **no 紫玉, no 金玉**.
@@ -697,8 +697,8 @@ Everything below is `not found`. **Do not fill these with guesses.**
 ## 9. HIGHEST-VALUE NEXT STEPS
 
 1. **Reach h1g.jp/tabikaeru** from a network where it is not blocked. It is the authoritative JP wiki and holds `ふくびき`, `いっぴん`, `めいぶつ`, `称号`, `用語集` pages that would close gaps 11–14 and 18 directly.
-2. **Decompile the JP `Assembly-CSharp.dll`** (`H:\AI\frog\work\jp_apk\assets\bin\Data\Managed\Assembly-CSharp.dll`). A `dotnet` SDK **is** present at `C:\Program Files\dotnet\dotnet.exe` and JDK 17 is available at `work\jdk\jdk-17.0.2` — `ilspycmd` (or a JDK-based decompiler on the DEX) would read every `Define` constant directly from the JP binary and settle **the majority of the `[CODE]`-uncertain items in one pass**, including: `CloverDestroyTime`, `BAGITEMS`/`DESKITEMS`, `TRAVEL_TIMEMIN/MAX`, `RAFFEL_NEEDTICKETS`, `PrizeBalls` weights, `FRIEND_VISIT_COOL`, `FRIEND_GIFTBOUNUS_*`, `SHOP_TICKET_PER`, the four-leaf `spend` flag (§1.7), and the colour↔tier mapping.
-3. **Verify the APK build version.** `H:\AI\frog\jp.co.hit_point.tabikaeru.apk` is a third-party (3DM) repack; confirm its internal version string against the current 1.8.6 before treating any extracted count (e.g. `CollectionDataBase` = 10 いっぴん) as current.
+2. **Decompile the JP `Assembly-CSharp.dll`** (`work/jp_apk/assets/bin/Data/Managed/Assembly-CSharp.dll`). A `dotnet` SDK **is** present at `C:\Program Files\dotnet\dotnet.exe` and JDK 17 is available at `work\jdk\jdk-17.0.2` — `ilspycmd` (or a JDK-based decompiler on the DEX) would read every `Define` constant directly from the JP binary and settle **the majority of the `[CODE]`-uncertain items in one pass**, including: `CloverDestroyTime`, `BAGITEMS`/`DESKITEMS`, `TRAVEL_TIMEMIN/MAX`, `RAFFEL_NEEDTICKETS`, `PrizeBalls` weights, `FRIEND_VISIT_COOL`, `FRIEND_GIFTBOUNUS_*`, `SHOP_TICKET_PER`, the four-leaf `spend` flag (§1.7), and the colour↔tier mapping.
+3. **Verify the APK build version.** `jp.co.hit_point.tabikaeru.apk` is a third-party (3DM) repack; confirm its internal version string against the current 1.8.6 before treating any extracted count (e.g. `CollectionDataBase` = 10 いっぴん) as current.
 
 ---
 

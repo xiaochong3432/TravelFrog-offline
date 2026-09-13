@@ -8,9 +8,13 @@ needed. This emits work/run/web/__offline-engine.js defining window.FrogEngine.
 The engine is CommonJS, so we emit a tiny module registry plus browser stubs for
 `fs` (localStorage-backed) and `path`.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import json, os, re, sys
 
-RUN = r"H:\AI\frog\work\run"
+RUN = str(PROJECT_ROOT) + "/work/run"
 ENGINE = os.path.join(RUN, "engine")
 OUT = os.path.join(RUN, "web", "__offline-engine.js")
 

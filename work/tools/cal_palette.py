@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
 """Sample the dominant colours of a baked calendar page so a replacement drawn
 at runtime can match the game's palette instead of inventing one."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import collections
 import sys
 
 from PIL import Image
 
 path = sys.argv[1] if len(sys.argv) > 1 else \
-    r"H:\AI\frog\work\run\web\resource\China\images\Scene\Calendar\calendar_9.png"
+    str(PROJECT_ROOT) + "/work/run/web/resource/China/images/Scene/Calendar/calendar_9.png"
 im = Image.open(path).convert("RGB")
 w, h = im.size
 px = im.load()

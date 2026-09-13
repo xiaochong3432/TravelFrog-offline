@@ -2,13 +2,17 @@
 """Identify each protocol family our engine does NOT implement, from the game's own
 data tables -- so the gap list can be named in the game's own words rather than by
 command prefix."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 import json
 import os
 import re
 import sys
 
-ROOT = r"H:\AI\frog"
+ROOT = str(PROJECT_ROOT)
 GD = json.load(open(os.path.join(ROOT, "work", "run", "engine", "data", "gamedata.json"),
                     encoding="utf-8"))
 ENGINE = open(os.path.join(ROOT, "work", "run", "engine", "index.js"), encoding="utf-8").read()

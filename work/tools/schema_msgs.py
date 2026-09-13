@@ -4,9 +4,13 @@
 Messages like: "服务端的协议 client_load_role 中的 frog 属性不存在，检查协议配置是否被修改"
 literally document the required response fields per protocol command.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import re
 
-JS = r"H:\AI\frog\work\base\assets\game\js\main.min.js"
+JS = str(PROJECT_ROOT) + "/work/base/assets/game/js/main.min.js"
 raw = open(JS, "rb").read()
 out = []
 
@@ -24,7 +28,7 @@ for m in re.finditer(rb'"([^"\\\n]{2,300})"', raw):
         seen.add(s)
         out.append((m.start(), s))
 
-with open(r"H:\AI\frog\work\chinese_strings.txt", "w", encoding="utf8") as f:
+with open(str(PROJECT_ROOT) + "/work/chinese_strings.txt", "w", encoding="utf8") as f:
     f.write(f"# {len(out)} unique Chinese string literals from main.min.js\n\n")
     for off, s in sorted(out):
         f.write(f"[{off}] {s}\n")

@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """Report the current offline-build state."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import os, json
 
-WEB = r"H:\AI\frog\work\run\web"
+WEB = str(PROJECT_ROOT) + "/work/run/web"
 MAIN = os.path.join(WEB, "js", "main.min.js")
 d = open(MAIN, encoding="utf8").read()
 
@@ -27,7 +31,7 @@ cfg = json.load(open(os.path.join(WEB, "resource", "China", "config", "gameConfi
 print(f"  channelType = {cfg['channelType']}  useNode = {cfg['useNode']}  "
       f"gameServer = {cfg['serverList'][cfg['useNode']]['gameServer']}")
 
-save = r"H:\AI\frog\work\run\save\save.json"
+save = str(PROJECT_ROOT) + "/work/run/save/save.json"
 if os.path.exists(save):
     s = json.load(open(save, encoding="utf8"))
     print(f"  save: clover={s['clover']} ticket={s['ticket']} uid={s['uid']} clovers={len(s['clovers'])} slots")

@@ -6,11 +6,15 @@ The annual-review skins ask for `year_summary_png` / `year_summary_review_png` /
 file is missing from the tree, the view renders partially blank -- worth knowing
 before deciding whether the feature is salvageable.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import json
 import os
 import sys
 
-WEB = r"H:\AI\frog\work\run\web"
+WEB = str(PROJECT_ROOT) + "/work/run/web"
 needles = sys.argv[1:] or ["year_summary", "summary_page", "theme_paper"]
 
 res = os.path.join(WEB, "resource", "China", "default.res.json")

@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """Markers for the final two steps: season .then body and enterGame body."""
-MAIN = r"H:\AI\frog\work\run\web\js\main.min.js"
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
+MAIN = str(PROJECT_ROOT) + "/work/run/web/js/main.min.js"
 d = open(MAIN, encoding="utf8").read()
 
 EDITS = [

@@ -1,6 +1,10 @@
-﻿import zipfile, re, hashlib, os
-apk = zipfile.ZipFile(r"H:\AI\frog\dist\TravelFrog-offline.apk")
-web = r"H:\AI\frog\work\run\web"
+﻿from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
+import zipfile, re, hashlib, os
+apk = zipfile.ZipFile(str(PROJECT_ROOT) + "/dist/TravelFrog-offline.apk")
+web = str(PROJECT_ROOT) + "/work/run/web"
 names = set(apk.namelist())
 
 # 1) every source file under work\run\web must be in the APK as assets/game/**

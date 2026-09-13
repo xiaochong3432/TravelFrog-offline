@@ -8,12 +8,16 @@ bounding boxes needed to re-draw the card with a different year.
 
     python tools/card_lines.py <png>
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import sys
 
 from PIL import Image
 
 path = sys.argv[1] if len(sys.argv) > 1 else \
-    r"H:\AI\frog\work\run\web\resource\China\images\Scene\YearSummary\Bg_ui\summary_page1_1.png"
+    str(PROJECT_ROOT) + "/work/run/web/resource/China/images/Scene/YearSummary/Bg_ui/summary_page1_1.png"
 im = Image.open(path).convert("RGB")
 W, H = im.size
 px = im.load()

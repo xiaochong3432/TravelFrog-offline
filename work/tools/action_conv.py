@@ -7,12 +7,16 @@ Function.prototype.apply with a non-array-like object supplies ZERO arguments,
 leaving `this` = r.data (the reply). Verify the class names, arities and a few
 real call sites before drawing any conclusion about error codes.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 import os
 import re
 import sys
 
-ROOT = r"H:\AI\frog\work"
+ROOT = str(PROJECT_ROOT) + "/work"
 C = io.open(os.path.join(ROOT, "run", "web", "js", "main.min.js"),
             encoding="utf-8", errors="replace").read()
 out = io.StringIO()

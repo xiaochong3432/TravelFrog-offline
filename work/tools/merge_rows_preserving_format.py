@@ -15,6 +15,10 @@ This tool starts from the RETAIL bundle and performs TEXT surgery:
 Usage:
     python tools/merge_rows_preserving_format.py --apply
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import argparse
 import json
 import os
@@ -27,7 +31,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import eab_decrypt as E      # noqa: E402
 import eab_encode as ENC     # noqa: E402
 
-ROOT = r"H:\AI\frog"
+ROOT = str(PROJECT_ROOT)
 WEB = os.path.join(ROOT, "work", "run", "web")
 OUR_EAB = os.path.join(WEB, "resource", "China", "eab", "config.eab")
 BACKUP_ROOT = os.path.join(ROOT, "work", "merge-backup")

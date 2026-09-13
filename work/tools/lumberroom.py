@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 """Is the Lumberroom's 百科 button gated on something? (the player says it vanished)"""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 import re
 
-C = io.open(r"H:\AI\frog\work\run\web\js\main.min.js", encoding="utf-8", errors="replace").read()
+C = io.open(str(PROJECT_ROOT) + "/work/run/web/js/main.min.js", encoding="utf-8", errors="replace").read()
 out = io.StringIO()
 
 i = C.find("var Lumberroom=function")
@@ -23,5 +27,5 @@ for m in re.finditer(r"addViewControl\(Lumberroom[A-Za-z]*", C):
     out.write("  @%d ...%s...\n" % (m.start(),
               C[max(0, m.start() - 420):m.start() + 140].replace("\n", " ")))
 
-io.open(r"H:\AI\frog\work\logs\lumberroom.txt", "w", encoding="utf-8").write(out.getvalue())
+io.open(str(PROJECT_ROOT) + "/work/logs/lumberroom.txt", "w", encoding="utf-8").write(out.getvalue())
 print("wrote logs/lumberroom.txt")

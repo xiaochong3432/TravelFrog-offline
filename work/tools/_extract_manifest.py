@@ -1,4 +1,8 @@
-﻿import zipfile
-z = zipfile.ZipFile(r"H:\AI\frog\base.apk")
-open(r"H:\AI\frog\work\build\AndroidManifest.xml","wb").write(z.read("AndroidManifest.xml"))
+﻿from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
+import zipfile
+z = zipfile.ZipFile(str(PROJECT_ROOT) + "/base.apk")
+open(str(PROJECT_ROOT) + "/work/build/AndroidManifest.xml","wb").write(z.read("AndroidManifest.xml"))
 print("extracted", z.getinfo("AndroidManifest.xml").file_size, "bytes")

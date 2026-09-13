@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """Dump a BYTE range of main.min.js to a UTF-8 file (offsets match jsctx.py)."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import sys, re
 
-JS = r"H:\AI\frog\work\base\assets\game\js\main.min.js"
+JS = str(PROJECT_ROOT) + "/work/base/assets/game/js/main.min.js"
 raw = open(JS, "rb").read()
 
 start = int(sys.argv[1]); end = int(sys.argv[2])

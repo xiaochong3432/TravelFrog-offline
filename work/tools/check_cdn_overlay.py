@@ -3,11 +3,15 @@
 
 Compares each patch.json entry against work/run/web by md5.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import json, hashlib, os, collections
 
-PATCH = r"H:\AI\frog\work\cdn\patch.json"
-CDN = r"H:\AI\frog\work\cdn\v1021"
-WEB = r"H:\AI\frog\work\run\web"
+PATCH = str(PROJECT_ROOT) + "/work/cdn/patch.json"
+CDN = str(PROJECT_ROOT) + "/work/cdn/v1021"
+WEB = str(PROJECT_ROOT) + "/work/run/web"
 
 d = json.load(open(PATCH, encoding="utf8"))
 files = {k: v for k, v in d.items() if not k.startswith("__")}

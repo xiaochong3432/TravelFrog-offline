@@ -7,6 +7,10 @@ Layout (observed):
   12..    JSON index: [{"n":resourceName,"f":originalPath,"s":size,"t":type}, ...]
   then    entry payloads, concatenated in manifest order
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import json, struct, sys, os
 
 def load(path):
@@ -39,7 +43,7 @@ def main():
     o, s, e = entries[name]
     blob = d[o:o + s]
     out = sys.argv[3] if len(sys.argv) > 3 else os.path.join(
-        r"H:\AI\frog\work", "eab_" + name.replace("/", "_"))
+        str(PROJECT_ROOT) + "/work", "eab_" + name.replace("/", "_"))
     mode = "wb"
     with open(out, mode) as f:
         f.write(blob)

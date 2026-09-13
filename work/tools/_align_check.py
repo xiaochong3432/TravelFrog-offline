@@ -3,6 +3,10 @@
 The central directory's `extra` length need not equal the local header's, so a
 CD-based calculation lies about alignment.  This walks local headers directly.
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import struct
 
 ZIP64_EXTRA = 0x0001
@@ -49,7 +53,7 @@ def extra_ids(extra):
     return ids
 
 
-for path in [r"H:\AI\frog\base.apk", r"H:\AI\frog\dist\TravelFrog-offline.apk"]:
+for path in [str(PROJECT_ROOT) + "/base.apk", str(PROJECT_ROOT) + "/dist/TravelFrog-offline.apk"]:
     d, res = walk_local(path)
     print("==", path)
     print("   local entries walked:", len(res))

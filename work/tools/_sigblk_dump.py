@@ -1,4 +1,8 @@
-﻿import struct
+﻿from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
+import struct
 def dump(path, label):
     d = open(path, "rb").read()
     eocd = d.rfind(b"PK\x05\x06")
@@ -19,5 +23,5 @@ def dump(path, label):
         lead = struct.unpack_from("<Q", d, spec_start)[0]
         print("   leading size at blk_start =", lead, "match:", lead == spec_size)
         print("   bytes at blk_start:", d[spec_start:spec_start+8])
-dump(r"H:\AI\frog\base.apk", "ORIGINAL base.apk")
-dump(r"H:\AI\frog\dist\TravelFrog-offline.apk", "OUR BUILD")
+dump(str(PROJECT_ROOT) + "/base.apk", "ORIGINAL base.apk")
+dump(str(PROJECT_ROOT) + "/dist/TravelFrog-offline.apk", "OUR BUILD")

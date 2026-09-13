@@ -1,4 +1,8 @@
-﻿import zipfile, sys
+﻿from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
+import zipfile, sys
 def info(p):
     z = zipfile.ZipFile(p)
     so = []
@@ -6,7 +10,7 @@ def info(p):
         if i.filename.startswith("lib/") and i.filename.endswith(".so"):
             so.append((i.filename, i.compress_type, i.header_offset, i.file_size))
     return z, so
-for p in [r"H:\AI\frog\base.apk", r"H:\AI\frog\dist\TravelFrog-offline.apk"]:
+for p in [str(PROJECT_ROOT) + "/base.apk", str(PROJECT_ROOT) + "/dist/TravelFrog-offline.apk"]:
     z, so = info(p)
     inf = z.infolist()
     print("==", p)

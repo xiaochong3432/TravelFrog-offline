@@ -7,13 +7,17 @@ is absent makes the caller skip its success branch entirely -- a dead button eve
 though the server answered. This script answers: is errcode.json in our tree, in
 the engine's extracted tables, and in default.res.json?
 """
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import io
 import json
 import os
 import re
 import sys
 
-ROOT = r"H:\AI\frog\work"
+ROOT = str(PROJECT_ROOT) + "/work"
 out = io.StringIO()
 
 

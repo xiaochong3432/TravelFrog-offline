@@ -8,11 +8,11 @@
 > model payload, so the same reply must also carry **all 16 model keys**, or the client throws
 > (`path.length` of undefined) and hits its global `window.onerror` → "呱呱吃坏肚子了" → page reload loop.
 
-> 目标读者：要在 `H:\AI\frog\work\run\engine\index.js` 里实现 `museumday_*` 的实现者。
+> 目标读者：要在 `work/run/engine/index.js` 里实现 `museumday_*` 的实现者。
 > 本文只写规格，不改引擎代码，也不改任何素材。
 >
-> **唯一判定准绳**：`H:\AI\frog\work\run\web\js\main.min.js`（下称 **client**）。
-> 皮肤/EXML 编译产物：`H:\AI\frog\work\run\web\js\default.thm.js`（下称 **thm**）。
+> **唯一判定准绳**：`work/run/web/js/main.min.js`（下称 **client**）。
+> 皮肤/EXML 编译产物：`work/run/web/js/default.thm.js`（下称 **thm**）。
 > 数据表：`work\run\engine\data\tables\*`、`work\run\engine\data\define.json`、`work\run\engine\data\gamedata.json`。
 >
 > **偏移约定（两套都给）**：本文所有 `@N` 均为 **字符偏移**（Python `open(...,encoding='utf-8').read()` 的下标），
@@ -42,13 +42,13 @@
 
 ```powershell
 # 回调源码
-python H:\AI\frog\work\tools\cb_show.py museumday_load museumday_refresh museumday_random_compass `
+python work/tools/cb_show.py museumday_load museumday_refresh museumday_random_compass `
        museumday_dir_compass museumday_get_items museumday_arrive museumday_start_advance `
        museumday_load_path museumday_info museumday_inspire     # → work\logs\cb_show.txt
 # 任意符号的上下文（字符偏移）
-python H:\AI\frog\work\tools\jsfind.py --win 900 "MuseumDayCommonData.get"
+python work/tools/jsfind.py --win 900 "MuseumDayCommonData.get"
 # 素材清单
-Get-ChildItem H:\AI\frog\work\run\web\resource\China\images\Scene\MuseumDay -Recurse -File   # 63
+Get-ChildItem work/run/web/resource/China/images/Scene/MuseumDay -Recurse -File   # 63
 ```
 
 ### 0.2 偏移表（字符 / 字节）
@@ -834,7 +834,7 @@ if (reply === undefined && def && def.needResponse) reply = {};      // ← 没�
 ## 6. 素材（**63 个文件**，全部在 `run\web\resource\China\images\Scene\MuseumDay\`）
 
 ```powershell
-Get-ChildItem H:\AI\frog\work\run\web\resource\China\images\Scene\MuseumDay -Recurse -File
+Get-ChildItem work/run/web/resource/China/images/Scene/MuseumDay -Recurse -File
 # → 63
 ```
 三组（括号内为数量）：

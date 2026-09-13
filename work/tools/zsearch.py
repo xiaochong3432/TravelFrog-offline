@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """Search zip entries for byte patterns, without extracting whole archive."""
+from pathlib import Path as _PortablePath
+# 仓库根：本文件位于 <仓库根>/work/tools/ 下，因此向上两级。
+# 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
+PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import zipfile, re, sys
 
-Z = r"H:\AI\frog\base.apk"
+Z = str(PROJECT_ROOT) + "/base.apk"
 
 def search(patterns, name_filter=None, ctx=120, limit=6):
     z = zipfile.ZipFile(Z)
