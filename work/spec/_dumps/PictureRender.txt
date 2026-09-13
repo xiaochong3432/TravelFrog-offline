@@ -1,0 +1,29 @@
+var PictureRender=function(e){
+  function t(){
+    var t=e.call(this)||this;
+    return t._data=null,t.loadToken=0,t
+  }return __extends(t,e),t.prototype.childrenCreated=function(){
+    e.prototype.childrenCreated.call(this),this.addEventListener(egret.Event.REMOVED_FROM_STAGE,this.onImageRemoved,this),this.addEventListener(egret.Event.ADDED_TO_STAGE,this.onImageAdded,this)
+  },t.prototype.setData=function(e){
+    this._data=e,this.pictureTexture&&this.onImageRemoved(),this.stage&&this.onImageAdded()
+  },Object.defineProperty(t.prototype,"data",{
+    get:function(){
+      return this._data
+    },set:function(e){
+      this.setData(e)
+    },enumerable:!0,configurable:!0
+  }),t.prototype.render=function(e,t){
+    var i=this;
+    if(this._data=e,e){
+      var n=(++this.loadToken,this.pictureTexture=Tabikaeru.getPictureTexture(e));
+      n?(this.texture=this.pictureTexture=n,t&&t()):Tabikaeru.loadPicture(e).then(function(){
+        i.stage&&(i.texture=i.pictureTexture=Tabikaeru.getPictureTexture(e),t&&t())
+      })
+    }else t&&t()
+  },t.prototype.onImageRemoved=function(){
+    this.pictureTexture&&(Tabikaeru.releasePictureTexture(this.pictureTexture),this.pictureTexture=null,this.texture=null)
+  },t.prototype.onImageAdded=function(){
+    this.render(this.data)
+  },t
+}(eui.Image);
+__reflect(PictureRender.prototype

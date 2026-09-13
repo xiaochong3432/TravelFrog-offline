@@ -1,0 +1,12 @@
+rray(e.pictures)?e.pictures:[],this.dispatchEvent(new core.Event(TravelEventType.updateRecover))}
+,t.prototype.saveNewPictureNow=function(e){
+var t=function(){
+var i=e.shift();
+if(i){
+var n=new Result.ReceivePostcard(i);
+n.addEventListener(egret.Event.REMOVED_FROM_STAGE,t,null),core.DisplayManage.getInstance().popupLayer.addChild(n)}
+}
+;
+t()}
+,t.prototype.notify_new_event=function(e){
+e.event?(this.travelEventList.push(e.event),this.filtrateEvent(),this.dispatchEvent(new core.Event(TravelEventType.updateEv

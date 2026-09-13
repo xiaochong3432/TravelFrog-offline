@@ -1,0 +1,34 @@
+var TravelNoteItem=function(e){
+  function t(){
+    return e.call(this,core.PathManage.getInstance().getSkinsPath("TravelNote/TravelNoteItemSkin.exml"))||this
+  }return __extends(t,e),t.prototype.childrenCreated=function(){
+    e.prototype.childrenCreated.call(this),this.touchEnabled=!1
+  },Object.defineProperty(t.prototype,"data",{
+    get:function(){
+      return this._data
+    },set:function(e){
+      this._data=e,this.stage&&this.update()
+    },enumerable:!0,configurable:!0
+  }),t.prototype.onComplete=function(){
+    this.data&&this.update()
+  },t.prototype.update=function(){
+    if(this.data){
+      this.lastData=this.data,this.data.onShow&&this.data.onShow(this.data.data);
+      var e=this.data.data;
+      this.i_redot.visible=!e.read,this.t_date.text=core.DateFormat.format(1e3*e.timestamp,core.DateFormater["YYYY.MM.DD"]);
+      var t=e.config;
+      if(t){
+        this.c_bg.currentState=1==t.quality?"quality1":"quality2",this.i_photo.source=Tabikaeru.path.formatPathImage(t.img);
+        var i=this.getModel(TravelNoteModel).getAttachNote(t.id);
+        i?(this.data.onShow&&this.data.onShow(i),0==i.read&&(this.i_redot.visible=!0),this.updateAttach(i)):this.updateAttach(),this.c_text.setSourceFlow(TravelNoteUtils.convertContent2Sources(t.info))
+      }
+    }else this.i_photo.source=""
+  },t.prototype.updateAttach=function(e){
+    if(e){
+      this.i_attachIcon.source=Tabikaeru.path.formatPathImage(e.config.img);
+      var t=TravelNoteUtils.convertContent2Sources(e.config.info);
+      this.c_attachText.setSourceFlow(t),this.currentState="hasAttach"
+    }else this.currentState="default"
+  },t
+}(core.UIView);
+__reflect(TravelNoteItem.prototype

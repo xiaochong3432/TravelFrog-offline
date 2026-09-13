@@ -1,0 +1,38 @@
+chars 403900..404720
+
+ll=function(){
+var e=this,t=Object.keys(this.src);
+return t.map(function(t){
+return e.get(t)}
+)}
+,Object.defineProperty(e.prototype,"length",{
+get:function(){
+return Object.keys(this.src).length}
+,enumerable:!0,configurable:!0}
+),e}
+();
+__reflect(o.prototype,"KeyGetter");
+var a=function(){
+function e(e,t,i){
+if(void 0===i&&(i="id"),this.name=e,this.src=t,!t)throw e;
+var n={
+}
+;
+for(var r in t)n[t[r][i]]=t[r];
+this.dictSrc=n}
+return e.prototype.get=function(e){
+return this.dictSrc[e]}
+,e.prototype.count=function(){
+return void 0==this.src.length?Object.keys(this.src).length:this.src.length}
+,e.prototype.index=function(e){
+return this.src[e]}
+,e.prototype.list=function(){
+var e=this;
+return Array.isArray(this.src)?this.src:Object.keys(this.src).map(function(t){
+return e.src[t]}
+)}
+,e}
+();
+__reflect(a.prototype,"IdGetter");
+var s=function(e){
+fun

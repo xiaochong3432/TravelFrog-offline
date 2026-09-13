@@ -1,0 +1,34 @@
+gth;
+t++){
+var n=i[t];
+if(n.item_id==e)return n.num}
+return 0}
+,t.prototype.getTagsNum=function(){
+for(var e=0,t=0,i=this.data.card_info.tags;
+t<i.length;
+t++){
+var n=i[t];
+n>0&&e++}
+for(var r=0,o=this.data.items;
+r<o.length;
+r++){
+var n=o[r];
+n.item_id>100&&(e+=n.num)}
+return e}
+,t.prototype.canSendCardid=function(){
+if(this.data.card_info.bg<=0)return!1;
+for(var e=0,t=this.data.card_info.tags;
+e<t.length;
+e++){
+var i=t[e];
+if(0>=i)return!1}
+return!0}
+,t.prototype.closeActivity=function(){
+var e=!1;
+core.PageManage.getInstance().getControl(SpringCardViewControl,core.ViewLayerType.WindowLayer)&&(core.PageManage.getInstance().removeControl(SpringCardViewControl,core.ViewLayerType.WindowLayer),core.DisplayManage.getInstance().getPopupLayer().removeChildren(),e=!0),core.PageManage.getInstance().getControl(SpringCardRewardViewControl,core.ViewLayerType.WindowLayer)&&(core.PageManage.getInstance().removeControl(SpringCardRewardViewControl,core.ViewLayerType.WindowLayer),e=!0),core.PageManage.getInstance().getControl(SpringCardShopViewControl,core.ViewLayerType.WindowLayer)&&(core.PageManage.getInstance().removeControl(SpringCardShopViewControl,core.ViewLayerType.WindowLayer),e=!0),e&&GuideHelpView.getInstance().show(_("春节贺卡活动已结束")),this.req_load()}
+,t}
+(core.Model);
+__reflect(SpringCardModel.prototype,"SpringCardModel");
+var StoryData=function(){
+function e(){
+this.id=0,this.partner=0,this.name=""

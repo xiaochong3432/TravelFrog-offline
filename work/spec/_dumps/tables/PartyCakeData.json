@@ -1,0 +1,222 @@
+{
+            "cake": {
+                        "1": {
+                                 "layers": {
+                                               "1": {
+                                                           "cream": 8,
+                                                         "item_id": 204001,
+                                                        "item_num": 1,
+                                                          "l_name": "蛋糕胚1层",
+                                                           "layer": 1,
+                                                        "make_pic": "cake_make_1_1_on",
+                                                         "pre_pic": "cake_make_1_1_off",
+                                                           "sugar": 1
+                                                    },
+                                               "2": {
+                                                           "cream": 8,
+                                                         "item_id": 204001,
+                                                        "item_num": 1,
+                                                          "l_name": "蛋糕胚2层",
+                                                           "layer": 2,
+                                                        "make_pic": "cake_make_1_2_on",
+                                                         "pre_pic": "cake_make_1_2_off",
+                                                           "sugar": 1
+                                                    }
+                                           },
+                                   "name": "蛋糕胚",
+                                   "part": 1,
+                                   "time": 1
+                             },
+                        "2": {
+                                 "layers": {
+                                               "1": {
+                                                           "cream": 6,
+                                                         "item_id": 204001,
+                                                        "item_num": 1,
+                                                          "l_name": "装饰2层",
+                                                           "layer": 1,
+                                                        "make_pic": "cake_make_2_1_on",
+                                                         "pre_pic": "cake_make_2_1_off",
+                                                           "sugar": 4
+                                                    },
+                                               "2": {
+                                                           "cream": 6,
+                                                         "item_id": 204001,
+                                                        "item_num": 1,
+                                                          "l_name": "装饰1层",
+                                                           "layer": 2,
+                                                        "make_pic": "cake_make_2_2_on",
+                                                         "pre_pic": "cake_make_2_2_off",
+                                                           "sugar": 4
+                                                    }
+                                           },
+                                   "name": "装饰",
+                                   "part": 2,
+                                   "time": 1671379200
+                             },
+                        "3": {
+                                 "layers": {
+                                               "1": {
+                                                           "cream": 5,
+                                                         "item_id": 204001,
+                                                        "item_num": 1,
+                                                          "l_name": "小房子",
+                                                           "layer": 1,
+                                                        "make_pic": "cake_make_3_1_on",
+                                                         "pre_pic": "cake_make_3_1_off",
+                                                           "sugar": 5
+                                                    }
+                                           },
+                                   "name": "小房子",
+                                   "part": 3,
+                                   "time": 1671379200
+                             },
+                        "4": {
+                                 "layers": {
+                                               "1": {
+                                                           "cream": 4,
+                                                         "item_id": 204001,
+                                                        "item_num": 1,
+                                                          "l_name": "翻糖·青蛙",
+                                                           "layer": 1,
+                                                        "make_pic": "cake_make_4_1_on",
+                                                         "pre_pic": "cake_make_4_1_off",
+                                                           "sugar": 3
+                                                    },
+                                               "2": {
+                                                           "cream": 4,
+                                                         "item_id": 204001,
+                                                        "item_num": 1,
+                                                          "l_name": "翻糖·萤火虫",
+                                                           "layer": 2,
+                                                        "make_pic": "cake_make_4_2_on",
+                                                         "pre_pic": "cake_make_4_2_off",
+                                                           "sugar": 3
+                                                    },
+                                               "3": {
+                                                           "cream": 4,
+                                                         "item_id": 204001,
+                                                        "item_num": 1,
+                                                          "l_name": "翻糖·乌龟",
+                                                           "layer": 3,
+                                                        "make_pic": "cake_make_4_3_on",
+                                                         "pre_pic": "cake_make_4_3_off",
+                                                           "sugar": 3
+                                                    },
+                                               "4": {
+                                                           "cream": 4,
+                                                         "item_id": 204001,
+                                                        "item_num": 1,
+                                                          "l_name": "翻糖·刺猬",
+                                                           "layer": 4,
+                                                        "make_pic": "cake_make_4_4_on",
+                                                         "pre_pic": "cake_make_4_4_off",
+                                                           "sugar": 3
+                                                    },
+                                               "5": {
+                                                           "cream": 4,
+                                                         "item_id": 204001,
+                                                        "item_num": 1,
+                                                          "l_name": "翻糖·松鼠",
+                                                           "layer": 5,
+                                                        "make_pic": "cake_make_4_5_on",
+                                                         "pre_pic": "cake_make_4_5_off",
+                                                           "sugar": 3
+                                                    },
+                                               "6": {
+                                                           "cream": 4,
+                                                         "item_id": 204001,
+                                                        "item_num": 1,
+                                                          "l_name": "翻糖·猫头鹰",
+                                                           "layer": 6,
+                                                        "make_pic": "cake_make_4_6_on",
+                                                         "pre_pic": "cake_make_4_6_off",
+                                                           "sugar": 3
+                                                    },
+                                               "7": {
+                                                           "cream": 4,
+                                                         "item_id": 204001,
+                                                        "item_num": 1,
+                                                          "l_name": "翻糖·壁虎",
+                                                           "layer": 7,
+                                                        "make_pic": "cake_make_4_7_on",
+                                                         "pre_pic": "cake_make_4_7_off",
+                                                           "sugar": 3
+                                                    },
+                                               "8": {
+                                                           "cream": 4,
+                                                         "item_id": 204001,
+                                                        "item_num": 1,
+                                                          "l_name": "翻糖·嘟嘟",
+                                                           "layer": 8,
+                                                        "make_pic": "cake_make_4_8_on",
+                                                         "pre_pic": "cake_make_4_8_off",
+                                                           "sugar": 3
+                                                    }
+                                           },
+                                   "name": "翻糖",
+                                   "part": 4,
+                                   "time": 1671984000
+                             },
+                        "5": {
+                                 "layers": {
+                                               "1": {
+                                                           "cream": 3,
+                                                         "item_id": 204001,
+                                                        "item_num": 1,
+                                                          "l_name": "蜡烛",
+                                                           "layer": 1,
+                                                        "make_pic": "cake_make_5_1_on",
+                                                         "pre_pic": "cake_make_5_1_off",
+                                                           "sugar": 2
+                                                    }
+                                           },
+                                   "name": "蜡烛",
+                                   "part": 5,
+                                   "time": 1672588800
+                             }
+                    },
+    "light_reward": {
+                         "item_id": 204001,
+                        "item_num": 2
+                    },
+    "share_reward": [ 14, 204001 ],
+       "task_list": {
+                        "1": {
+                                 "cream": 1,
+                                  "name": "登录游戏",
+                                 "sugar": 0,
+                                 "total": 3
+                             },
+                        "2": {
+                                 "cream": 2,
+                                  "name": "商店买买买",
+                                 "sugar": 0,
+                                 "total": 2
+                             },
+                        "3": {
+                                 "cream": 2,
+                                  "name": "商店抽奖一次",
+                                 "sugar": 2,
+                                 "total": 3
+                             },
+                        "4": {
+                                 "cream": 2,
+                                  "name": "看一次广告",
+                                 "sugar": 2,
+                                 "total": 3
+                             },
+                        "5": {
+                                 "cream": 2,
+                                  "name": "完成一次分享",
+                                 "sugar": 2,
+                                 "total": 3
+                             },
+                        "6": {
+                                 "cream": 2,
+                                  "name": "聚会或是旅行",
+                                 "sugar": 1,
+                                 "total": 2
+                             }
+                    }
+}

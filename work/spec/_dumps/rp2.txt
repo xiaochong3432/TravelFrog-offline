@@ -1,0 +1,116 @@
+.play("SE_Popup"),e.btn_share.visible&&e.shareClover&&!e.isTipShare)return void e.onTipsShare();
+Utils.disableButtonOneTime(e.saveBtn);
+var i=function(n){
+t.saveNewPictureInfo(e.pic.id,function(t){
+if(t)if(0==t.code)GuideHelpView.getInstance().show(_("保存成功。"),function(){
+Music.play("SE_Enter"),e.parent&&e.parent.removeChild(e)}
+,n?core.DisplayManage.getInstance().getNoticeLayer():null);
+else if(73==t.code){
+var r=new ModalConfirm(_("相册满了\n要删除一张照片继续保存吗？"),function(){
+var t=i;
+core.PageManage.getInstance().addViewControl(AlbumController,core.ViewLayerType.NoticeLayer,core.RemoveViewType.Retain,{
+onDelete:function(){
+egret.callLater(function(){
+t&&(t(!0),t=void 0)}
+,e)}
+,disableGiftBox:!0}
+)}
+);
+e.addChild(r)}
+else 75==t.code?e.parent&&(Music.play("SE_Enter"),e.parent.removeChild(e)):GuideHelpView.getInstance().show(t.desc,null,core.DisplayManage.getInstance().getNoticeLayer());
+else GuideHelpView.getInstance().show(_("保存明信片失败！"),null,core.DisplayManage.getInstance().getNoticeLayer())}
+)}
+;
+i(!0)}
+,this),this.close.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onCloseTap,this),this.closeShare.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onCloseTap,this),this.cover.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onCloseTap,this),this.btn_share.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+e.shareSelector||(e.shareSelector=new ShareView(function(){
+e.shareClover&&(e.groupShare.visible=!0)}
+)),e.shareSelector.show(350,ShareAnim.TopDown),e.shareSelector.open_pic(e.pic,!0),e.addChild(e.shareSelector),e.groupShare.visible=!1}
+,this),this.btnShare.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+e.shareSelector||(e.shareSelector=new ShareView(function(){
+e.shareClover&&(e.groupShare.visible=!0)}
+)),e.shareSelector.show(260,ShareAnim.TopDown),e.shareSelector.open_pic(e.pic,!0),e.addChild(e.shareSelector)}
+,this),this.updateShare()}
+,t.prototype.updateShare=function(){
+this.shareClover=this.getModel(ShareModel).GetShareReward(this.pic.id),this.groupShare.visible=this.btn_share.visible&&null!=this.shareClover,this.shareClover&&(this.lbShare.text=this.shareClover.toString(),this.lbShare1.text=this.shareClover.toString()),this.panelShare.visible&&!this.shareClover&&(this.panelShare.visible=!1,this.panelMain.visible=!0)}
+,t.prototype.onTipsShare=function(){
+var e=this;
+this.isTipShare=!0,this.panelShare.visible=!0,this.panelMain.visible=!1,this.pictureShare.source="picture_loader_png",Utils.FpsManager.instance().boost(),Tabikaeru.loadPicture(this.pic).then(function(){
+e.pictureShare.source=null,e.pictureShare.texture=Tabikaeru.getPictureTexture(e.pic),Utils.FpsManager.instance().resume()}
+)}
+,t.prototype.onCloseTap=function(){
+var e=this;
+if(this.btn_share.visible&&this.shareClover&&!this.isTipShare)return void this.onTipsShare();
+if(1==this.panelShare.visible)return this.panelShare.visible=!1,void(this.panelMain.visible=!0);
+var t=core.ModelManage.getInstance().getModel(TravelModel);
+Utils.disableButtonOneTime(this.close,500),Music.play("SE_Popup");
+var i=new ModalConfirm(_("确认放弃保存图片吗?"),function(){
+Music.play("SE_Enter"),t.deleteNewPictureInfo(e.pic.id,function(t){
+e.parent&&e.parent.removeChild(e)}
+)}
+);
+this.addChild(i)}
+,t}
+(core.UIView);
+e.ReceivePostcard=i,__reflect(i.prototype,"Result.ReceivePostcard");
+var n;
+!function(e){
+e[e.Red_Travel=1]="Red_Travel",e[e.Yellow_Friend=2]="Yellow_Friend",e[e.Blue_Result=3]="Blue_Result",e[e.Green_Picture=4]="Green_Picture"}
+(n=e.NotificationType||(e.NotificationType={
+}
+));
+var r=function(e){
+function t(){
+return e.call(this,core.PathManage.getInstance().getSkinsPath("MainOut/Notification.exml"))||this}
+return __extends(t,e),t.prototype.onComplete=function(){
+var e=this;
+this.panel.source="label_0"+this.type+"_png",this.label.text=this.labelText,this.cover.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+e.onClose&&e.onClose(),e.parent.removeChild(e)}
+,this)}
+,t.prototype.notify=function(e,t,i,n){
+this.type=t,this.labelText=i,this.onClose=n,e.addChild(this)}
+,t}
+(core.UIView);
+e.MainOutNotification=r,__reflect(r.prototype,"Result.MainOutNotification");
+var o=function(e){
+function t(t,i,n){
+var r=e.call(this)||this;
+return r.onClose=n,r.percentHeight=100,r.percentWidth=100,Utils.euiComplete(r,function(){
+r.clover.text=t.toString(),r.ticket.text=i.toString(),r.cover.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+r.onClose&&r.onClose(),r.parent.removeChild(r)}
+,r)}
+),r.skinName=core.PathManage.getInstance().getSkinsPath("MainOut/Reward.exml"),r}
+return __extends(t,e),t}
+(eui.Component);
+__reflect(o.prototype,"ModalReward");
+var a=function(e){
+function t(t,i,n){
+var r=e.call(this)||this;
+return r.onClose=n,r.percentHeight=100,r.percentWidth=100,Utils.euiComplete(r,function(){
+r.cover.addEventListener(egret.TouchEvent.TOUCH_TAP,r.close,r),r.saveBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,r.close,r);
+var e=Tabikaeru.DataManager.instance();
+if(-1!==t){
+var n=e.CollectDB.get(t);
+n&&(r.ippin.source=Tabikaeru.path.formatPathImage(n.img),3==n.type?r.currentState="museum":r.currentState="normal")}
+for(var o=0;
+o<i.length;
+o++){
+var a=i[o],n=(i[o+1],e.ItemDB.get(a));
+n&&(r["meibutu"+(o+1)].source=Tabikaeru.path.formatPathImage(n.img))}
+}
+),r.skinName=core.PathManage.getInstance().getSkinsPath("MainOut/Speciality.exml"),r}
+return __extends(t,e),t.prototype.close=function(){
+Music.play("SE_Enter"),this.onClose&&this.onClose(),this.parent.removeChild(this)}
+,t}
+(eui.Component);
+__reflect(a.prototype,"ModalSpeciality");
+var s=!1;
+e.eventSystem=t}
+(Result||(Result={
+}
+));
+var TumblerCreator=function(e){
+function t(){
+var t=e.call(this)||this;
+return t.cache=new egret.DisplayObjectContainer,t.bg=new egret.Bitmap,t.pathmask=new egret.Bitmap,t.paths=new egret.DisplayObjectContainer,t.adorn=new egret.DisplayObjectContainer,t.adornBack=new egret.DisplayObjectContainer,t.addChild(t.adornBack),t.addChild(t.bg),t.addChild(t.paths),t.addChild(t.adorn),t}
+ret

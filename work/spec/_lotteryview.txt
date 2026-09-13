@@ -1,0 +1,156 @@
+ddEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this);
+var i=this.getModel(LotteryModel).data,n=Tabikaeru.DataManager.instance().ItemDB.get(i.extra_item.item_id);
+this.imageItem.source=Tabikaeru.path.formatPathImage(n.img);
+var r=!1,o=core.ModelManage.getInstance().getModel(AdsModel),a=o.getAdsPlace("weekend_gift");
+a&&(a=o.getAdsPlace(a.id),a&&o.isValidAds(a)&&(r=!0)),this.lbTips.text=r?"有个珍贵的小礼物，藏在了广告后面":"有个珍贵的小礼物，藏在了分享后面",this.btnWatch.visible=r,this.btnShare.visible=!this.btnWatch.visible,this.btnWatch.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+t.close(),core.ModelManage.getInstance().getModel(AdsModel).playAds(a,function(e){
+e&&t.getModel(LotteryModel).onGetExtraItem()}
+)}
+,this),this.btnShare.addEventListener(egret.TouchEvent.TOUCH_TAP,this.showShare,this)}
+,t.prototype.showShare=function(){
+var e=this;
+return GameConfig.channel==ChannelType.Test?(this.close(),void this.getModel(AdsModel).req_share(3)):((null==this.shareSelector||null==this.shareSelector.parent)&&(this.shareSelector=new ShareView,this.shareSelector.visible=!1,this.shareSelector.show(300,ShareAnim.TopDown,ShareScene.scene),this.shareSelector.open_callback(function(){
+return __awaiter(e,void 0,void 0,function(){
+return __generator(this,function(e){
+return[2,"data"]}
+)}
+)}
+,function(t){
+core.ModelManage.getInstance().getModel(ShareModel).reportBlog("share.weekend_gift"),e.getModel(AdsModel).req_share(3)}
+,null,"wechat_share"),GameConfig.quickShare||this.shareSelector.share(SharePlatformType.wechatMessenger),core.DisplayManage.getInstance().noticeLayer.addChild(this.shareSelector)),void this.close())}
+,t}
+(core.UIView);
+__reflect(LotteryExtraView.prototype,"LotteryExtraView");
+var LotterySettleViewControl=function(e){
+function t(){
+return e.call(this,LotterySettleView)||this}
+return __extends(t,e),t.prototype.open=function(){
+e.prototype.open.call(this)}
+,t.prototype.close=function(){
+e.prototype.close.call(this),this.view=null}
+,t}
+(WindowController);
+__reflect(LotterySettleViewControl.prototype,"LotterySettleViewControl");
+var LotterySettleView=function(e){
+function t(){
+return e.call(this,core.PathManage.getInstance().getSkinsPath("Lottery/LotterySettleSkin.exml"),LotterySettleViewControl,core.ViewLayerType.WindowLayer)||this}
+return __extends(t,e),t.prototype.childrenCreated=function(){
+var t=this;
+e.prototype.childrenCreated.call(this),this.btnOk.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+t.close(),t.getModel(LotteryModel).req_confirm_reward(new core.Action(function(){
+core.PageManage.getInstance().addViewControl(LotteryViewControl,core.ViewLayerType.WindowLayer)}
+))}
+,this);
+var i=this.getModel(LotteryModel).data,n=(i.last_phase-1)%4+1;
+this.imageBg.source="anm_weekend_"+n+"_png",this.imageBg.mask=this.imageMask,core.TweenExtend.playLoop(this.bgAnm,!0);
+for(var r=Tabikaeru.DataManager.instance().lotteryData,o=0,a=0;
+a<i.right_flag.length;
+a++)1==i.right_flag[a]&&o++;
+var s=r.get("select_list")[n];
+this.imageGuest.source=s.pic+"_png";
+var c=core.String.format(r.get("settle_desc")[o],s.name);
+5==i.egg_num&&(c+=r.get("extra_desc")[n][o]),this.lbAsk.text=c;
+for(var a=0;
+a<i.answer.length;
+a++){
+var l=new eui.Group,h=new eui.Image;
+h.source="item_size_80x80_png",h.horizontalCenter=h.verticalCenter=0;
+var u=new eui.Image,p=Tabikaeru.DataManager.instance().ItemDB.get(i.answer[a]);
+u.width=u.height=70,u.source=Tabikaeru.path.formatPathImage(p.img),u.horizontalCenter=u.verticalCenter=0,l.addChild(h),l.addChild(u),0==i.right_flag[a]&&(l.filters=Utils.getBlackFilter()),this.groupItem.addChild(l)}
+for(var a=0;
+a<i.reward.length;
+a++){
+var d=i.reward[a],l=new eui.Group,h=new eui.Image;
+h.source="item_size_80x80_png",h.horizontalCenter=h.verticalCenter=0;
+var u=new eui.Image,p=Tabikaeru.DataManager.instance().ItemDB.get(d.id);
+u.width=u.height=70,u.horizontalCenter=u.verticalCenter=0,u.source=Tabikaeru.path.formatPathImage(p.img);
+var g=new eui.Label;
+if(g.text=String(d.num),g.right=g.bottom=2,g.textColor=5528908,l.addChild(h),l.addChild(u),l.addChild(g),1==d.is_egg){
+var f=new eui.Image;
+f.source="tips_egg_gift_png",f.right=f.top=-10,l.addChild(f)}
+this.groupReward.addChild(l)}
+}
+,t}
+(WindowView);
+__reflect(LotterySettleView.prototype,"LotterySettleView");
+var LotteryViewControl=function(e){
+function t(){
+return e.call(this,LotteryView)||this}
+return __extends(t,e),t.prototype.open=function(){
+e.prototype.open.call(this),this.addEventListeners(this.onEvent,this,LotteryEventType.EXTRA_GET)}
+,t.prototype.close=function(){
+e.prototype.close.call(this),this.view=null,this.removeEventListeners(this.onEvent,this,!1,LotteryEventType.EXTRA_GET)}
+,t.prototype.onEvent=function(e){
+switch(e.getEventType()){
+case LotteryEventType.EXTRA_GET:this.view.updateState()}
+}
+,t}
+(WindowController);
+__reflect(LotteryViewControl.prototype,"LotteryViewControl");
+var LotteryView=function(e){
+function t(){
+return e.call(this,core.PathManage.getInstance().getSkinsPath("Lottery/LotterySkin.exml"),LotteryViewControl,core.ViewLayerType.WindowLayer)||this}
+return __extends(t,e),t.prototype.childrenCreated=function(){
+var t=this;
+e.prototype.childrenCreated.call(this),this.data=this.getModel(LotteryModel).data;
+var i=(this.data.phase-1)%4+1;
+this.imageBg.source="anm_weekend_"+i+"_png",this.imageBg.mask=this.imageMask,core.TweenExtend.playLoop(this.bgAnm,!0),core.TweenExtend.playLoop(this.extraAnm,!0),this.cover.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this),this.btnClose.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this),this.imageOpen.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+t.getModel(LotteryModel).req_open(new core.Action(function(){
+t.updateState()}
+))}
+,this),this.groupExtra.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+core.DisplayManage.getInstance().popup(new LotteryExtraView)}
+,this),this.btnComplete.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+if(t.data.state==Tabikaeru.LotteryState.Select&&!(t.selectList.length<5)){
+var e=new ModalConfirm(_("已经帮小伙伴做好决定了吗？"),function(){
+t.getModel(LotteryModel).req_select(t.selectList,new core.Action(function(){
+t.updateState()}
+))}
+);
+core.DisplayManage.getInstance().getPopupLayer().addChild(e)}
+}
+,this);
+for(var n={
+}
+,r=0;
+r<this.data.answer.length;
+r++)n[this.data.answer[r]]=!0;
+this.selectList=[],this.groupList=[];
+for(var o=function(e){
+var i=a.data.select_list[e],r=new eui.Group,o=new eui.Image;
+o.source="item_size_80x80_png",o.horizontalCenter=o.verticalCenter=0;
+var s=new eui.Image,c=Tabikaeru.DataManager.instance().ItemDB.get(i);
+s.width=s.height=70,s.source=Tabikaeru.path.formatPathImage(c.img),s.horizontalCenter=s.verticalCenter=0;
+var l=new eui.Image;
+l.width=l.height=85,l.source="frame_placed_user_png",l.visible=!1,l.horizontalCenter=l.verticalCenter=0,r.addChild(o),r.addChild(s),r.addChild(l),n[i]&&(l.visible=!0,a.selectList.push(i)),a.groupItem.addChild(r),a.groupList[e]=r,r.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+if(t.data.state==Tabikaeru.LotteryState.Select){
+var e=t.getSelectIndex(i);
+e>=0?(t.selectList.splice(e,1),l.visible=!1,4==t.selectList.length&&t.updateItems()):t.selectList.length<5&&(t.selectList.push(i),l.visible=!0,5==t.selectList.length&&t.updateItems())}
+}
+,a)}
+,a=this,r=0;
+r<this.data.select_list.length;
+r++)o(r);
+this.updateState(),this.updateItems()}
+,t.prototype.getSelectIndex=function(e){
+for(var t=0;
+t<this.selectList.length;
+t++)if(e==this.selectList[t])return t;
+return-1}
+,t.prototype.updateState=function(){
+if(this.groupExtra.visible=this.data.extra_item.item_id>0&&this.data.extra_item.count>0,this.data.extra_item.item_id>0&&this.data.extra_item.count>0){
+var e=Tabikaeru.DataManager.instance().ItemDB.get(this.data.extra_item.item_id);
+this.imageExtra.source=Tabikaeru.path.formatPathImage(e.img)}
+this.imageOpen.visible=this.data.state==Tabikaeru.LotteryState.Open,this.groupBottom.visible=this.data.state!=Tabikaeru.LotteryState.Open,this.imageComplete.visible=this.data.state==Tabikaeru.LotteryState.Complete,this.btnComplete.visible=this.data.state==Tabikaeru.LotteryState.Select;
+var t=Tabikaeru.DataManager.instance().lotteryData,i=(this.data.phase-1)%4+1,n=t.get("select_list")[i];
+this.imageGuest.source=n.pic+"_png",this.lbAsk.text=this.data.state==Tabikaeru.LotteryState.Select?n.desc:n.desc2,this.lbTips.text=this.data.state==Tabikaeru.LotteryState.Select?core.String.format("选出5款物品，帮{
+0}
+解决这个困扰",n.name):"感谢你提供的帮助",this.lbTips2.text=this.data.state==Tabikaeru.LotteryState.Select?"再次点击取消选中":""}
+,t.prototype.updateItems=function(){
+for(var e=0;
+e<this.groupList.length;
+e++){
+var t=this.groupList[e];
+if(this.selectList.length<5)t.filters=void 0;
+else{
+var i=this.getSelectIndex

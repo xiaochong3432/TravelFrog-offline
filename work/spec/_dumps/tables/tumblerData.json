@@ -1,0 +1,217 @@
+[ {
+      "bg": "bdw_1_base",
+      "id": 20011,
+    "info": "推不倒的小胡桃",
+    "mask": "bdw_1_mask",
+    "name": "胡桃不倒"
+}, {
+      "bg": "bdw_1_base",
+      "id": 20012,
+    "info": "推不倒的小胡桃",
+    "mask": "bdw_1_mask",
+    "name": "胡桃不倒"
+}, {
+      "bg": "bdw_1_base",
+      "id": 20013,
+    "info": "推不倒的小胡桃",
+    "mask": "bdw_1_mask",
+    "name": "胡桃不倒"
+}, {
+      "bg": "bdw_2_base",
+      "id": 20021,
+    "info": "推不倒的小尖栗",
+    "mask": "bdw_2_mask",
+    "name": "尖栗不倒"
+}, {
+      "bg": "bdw_2_base",
+      "id": 20022,
+    "info": "推不倒的小尖栗",
+    "mask": "bdw_2_mask",
+    "name": "尖栗不倒"
+}, {
+      "bg": "bdw_2_base",
+      "id": 20023,
+    "info": "推不倒的小尖栗",
+    "mask": "bdw_2_mask",
+    "name": "尖栗不倒"
+}, {
+      "bg": "bdw_3_base",
+      "id": 20031,
+    "info": "推不倒的小兰栗",
+    "mask": "bdw_3_mask",
+    "name": "兰栗不倒"
+}, {
+      "bg": "bdw_3_base",
+      "id": 20032,
+    "info": "推不倒的小兰栗",
+    "mask": "bdw_3_mask",
+    "name": "兰栗不倒"
+}, {
+      "bg": "bdw_3_base",
+      "id": 20033,
+    "info": "推不倒的小兰栗",
+    "mask": "bdw_3_mask",
+    "name": "兰栗不倒"
+}, {
+      "bg": "bdw_4_base",
+      "id": 20041,
+    "info": "推不倒的小橡子",
+    "mask": "bdw_4_mask",
+    "name": "橡子不倒"
+}, {
+      "bg": "bdw_4_base",
+      "id": 20042,
+    "info": "推不倒的小橡子",
+    "mask": "bdw_4_mask",
+    "name": "橡子不倒"
+}, {
+      "bg": "bdw_4_base",
+      "id": 20043,
+    "info": "推不倒的小橡子",
+    "mask": "bdw_4_mask",
+    "name": "橡子不倒"
+}, {
+      "bg": "bdw_11_base",
+      "id": 20111,
+    "info": "推不倒的小石头",
+    "mask": "bdw_11_mask",
+    "name": "石头不倒"
+}, {
+      "bg": "bdw_11_base",
+      "id": 20112,
+    "info": "推不倒的小石头",
+    "mask": "bdw_11_mask",
+    "name": "石头不倒"
+}, {
+      "bg": "bdw_11_base",
+      "id": 20113,
+    "info": "推不倒的小石头",
+    "mask": "bdw_11_mask",
+    "name": "石头不倒"
+}, {
+      "bg": "bdw_12_base",
+      "id": 20121,
+    "info": "推不倒的小蹴鞠",
+    "mask": "bdw_12_mask",
+    "name": "蹴鞠不倒"
+}, {
+      "bg": "bdw_12_base",
+      "id": 20122,
+    "info": "推不倒的小蹴鞠",
+    "mask": "bdw_12_mask",
+    "name": "蹴鞠不倒"
+}, {
+      "bg": "bdw_12_base",
+      "id": 20123,
+    "info": "推不倒的小蹴鞠",
+    "mask": "bdw_12_mask",
+    "name": "蹴鞠不倒"
+}, {
+      "bg": "bdw_13_base",
+      "id": 20131,
+    "info": "推不倒的小南瓜",
+    "mask": "bdw_13_mask",
+    "name": "南瓜不倒"
+}, {
+      "bg": "bdw_13_base",
+      "id": 20132,
+    "info": "推不倒的小南瓜",
+    "mask": "bdw_13_mask",
+    "name": "南瓜不倒"
+}, {
+      "bg": "bdw_13_base",
+      "id": 20133,
+    "info": "推不倒的小南瓜",
+    "mask": "bdw_13_mask",
+    "name": "南瓜不倒"
+}, {
+      "bg": "bdw_14_base",
+      "id": 20141,
+    "info": "推不倒的小丑橘",
+    "mask": "bdw_14_mask",
+    "name": "丑橘不倒"
+}, {
+      "bg": "bdw_14_base",
+      "id": 20142,
+    "info": "推不倒的小丑橘",
+    "mask": "bdw_14_mask",
+    "name": "丑橘不倒"
+}, {
+      "bg": "bdw_14_base",
+      "id": 20143,
+    "info": "推不倒的小丑橘",
+    "mask": "bdw_14_mask",
+    "name": "丑橘不倒"
+}, {
+      "bg": "bdw_15_base",
+      "id": 20151,
+    "info": "推不倒的小海螺",
+    "mask": "bdw_15_mask",
+    "name": "海螺不倒"
+}, {
+      "bg": "bdw_15_base",
+      "id": 20152,
+    "info": "推不倒的小海螺",
+    "mask": "bdw_15_mask",
+    "name": "海螺不倒"
+}, {
+      "bg": "bdw_15_base",
+      "id": 20153,
+    "info": "推不倒的小海螺",
+    "mask": "bdw_15_mask",
+    "name": "海螺不倒"
+}, {
+      "bg": "bdw_16_base",
+      "id": 20161,
+    "info": "推不倒的小海螺",
+    "mask": "bdw_16_mask",
+    "name": "海螺不倒"
+}, {
+      "bg": "bdw_16_base",
+      "id": 20162,
+    "info": "推不倒的小海螺",
+    "mask": "bdw_16_mask",
+    "name": "海螺不倒"
+}, {
+      "bg": "bdw_16_base",
+      "id": 20163,
+    "info": "推不倒的小海螺",
+    "mask": "bdw_16_mask",
+    "name": "海螺不倒"
+}, {
+      "bg": "bdw_17_base",
+      "id": 20171,
+    "info": "推不倒的小萝卜",
+    "mask": "bdw_17_mask",
+    "name": "萝卜不倒"
+}, {
+      "bg": "bdw_17_base",
+      "id": 20172,
+    "info": "推不倒的小萝卜",
+    "mask": "bdw_17_mask",
+    "name": "萝卜不倒"
+}, {
+      "bg": "bdw_17_base",
+      "id": 20173,
+    "info": "推不倒的小萝卜",
+    "mask": "bdw_17_mask",
+    "name": "萝卜不倒"
+}, {
+      "bg": "bdw_18_base",
+      "id": 20181,
+    "info": "推不倒的小萝卜",
+    "mask": "bdw_18_mask",
+    "name": "萝卜不倒"
+}, {
+      "bg": "bdw_18_base",
+      "id": 20182,
+    "info": "推不倒的小萝卜",
+    "mask": "bdw_18_mask",
+    "name": "萝卜不倒"
+}, {
+      "bg": "bdw_18_base",
+      "id": 20183,
+    "info": "推不倒的小萝卜",
+    "mask": "bdw_18_mask",
+    "name": "萝卜不倒"
+} ]

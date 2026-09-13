@@ -1,0 +1,38 @@
+erBag_ParentType||(PlayerBag_ParentType={
+}
+));
+var PlayerBag=function(e){
+function t(t,i,n,r,o){
+void 0===t&&(t=!1),void 0===i&&(i=!0),void 0===n&&(n=Tabikaeru.DataType.ItemType.LunchBox),void 0===r&&(r=PlayerBag_ParentType.Empty),void 0===o&&(o=!1);
+var a=e.call(this,core.PathManage.getInstance().getSkinsPath("Menu/PlayerBag.exml"))||this;
+return a.parentType=r,a.useMin=o,a.showZero=!1,a.selectLabel=n,a.canCangeType=i,t&&(a.selectorMode=t,a.onSelect=new Utils.Trigger),a}
+return __extends(t,e),t.prototype.onComplete=function(){
+var e=this;
+this.checkHelp(!1),this.btn_shop.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+Music.play("SE_Cursor"),e.close(),core.PageManage.getInstance().addViewControl(ShopController,core.ViewLayerType.WindowLayer,core.RemoveViewType.Retain)}
+,this),this.cover.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this),this.closeBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this),this.type1.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+Music.play("SE_Cursor"),e.switchTab(Tabikaeru.DataType.ItemType.LunchBox),e.checkLockHelp(Tabikaeru.DataType.ItemType.LunchBox)}
+,this),this.type2.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+Music.play("SE_Cursor"),e.switchTab(Tabikaeru.DataType.ItemType.Tools),e.checkLockHelp(Tabikaeru.DataType.ItemType.Tools)}
+,this),this.type3.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+Music.play("SE_Cursor"),e.switchTab(Tabikaeru.DataType.ItemType.Amulet),e.checkLockHelp(Tabikaeru.DataType.ItemType.Amulet)}
+,this),this.type4.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+Music.play("SE_Cursor"),e.switchTab(Tabikaeru.DataType.ItemType.Specialty),e.checkLockHelp(Tabikaeru.DataType.ItemType.Specialty)}
+,this),this.switchTab(this.selectLabel)}
+,t.prototype.switchTab=function(e){
+void 0===e&&(e=Tabikaeru.DataType.ItemType.LunchBox);
+var t,i=Tabikaeru.DataType.ItemType;
+switch(e){
+case i.LunchBox:t=this.type1;
+break;
+case i.Tools:t=this.type2;
+break;
+case i.Amulet:t=this.type3;
+break;
+case i.Specialty:t=this.type4}
+if(!this.canCangeType&&this.selectLabel!=e)return void(t.selected=!1);
+this.selectLabel!=e&&(this.scroller.viewport.scrollV=0),this.selectLabel=e;
+var n=this.selectorMode;
+n?[this.type1,this.type2,this.type3,this.type4].forEach(function(e){
+e.selected=!1,e===t?e.filters=void 0:e.filters=Utils.getDisableFilter()}
+):[this.type1,this.type2,this.type3,this.type4].forEach(function(e

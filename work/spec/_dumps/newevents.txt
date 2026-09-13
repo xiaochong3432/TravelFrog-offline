@@ -1,0 +1,29 @@
+s,t,UserEventType.syncComplete,ItemEventType.updateHouseInfo,UserEventType.updateCloverTween,UserEventType.updateClover,TravelEventType.updateMial,TravelEventType.updateEvents,TravelEventType.updateRedpoint,RoleEventType.loadRole,TravelEventType.eventsDisposeComplete,TravelEventType.eventsDisposeComplete2,VisitorEventType.updateVisitor,MessageEventType.reward,TravelEventType.receiveNewMail,TravelEventType.updateNewAlbum,FurnitureEventType.UPDATE,UserEventType.updateAds,MuseumDayEventType.LOAD,GreetCardEventType.LOAD,SpringCardEventType.LOAD,CapsuleEventType.LOAD,PartyCakeEventType.LOAD,DrawingEventType.UPDATE,FurnitureEventType.UPDATE_TUMBER,FurnitureEventType.UPDATE_COMPOST,FurnitureEventType.UPDATE_POCKET),t}
+return __extends(t,e),t.prototype.destroy=function(){
+this.removeEventListeners(this.totalCustomEvents,this,!1,UserEventType.syncComplete,ItemEventType.updateHouseInfo,UserEventType.updateCloverTween,UserEventType.updateClover,TravelEventType.updateMial,TravelEventType.updateEvents,TravelEventType.updateRedpoint,RoleEventType.loadRole,TravelEventType.eventsDisposeComplete,TravelEventType.eventsDisposeComplete2,VisitorEventType.updateVisitor,MessageEventType.reward,TravelEventType.receiveNewMail,TravelEventType.updateNewAlbum,FurnitureEventType.UPDATE,UserEventType.updateAds,MuseumDayEventType.LOAD,GreetCardEventType.LOAD,SpringCardEventType.LOAD,CapsuleEventType.LOAD,PartyCakeEventType.LOAD,DrawingEventType.UPDATE,FurnitureEventType.UPDATE_TUMBER,FurnitureEventType.UPDATE_COMPOST,FurnitureEventType.UPDATE_POCKET),this.close(),this.view=null,e.prototype.destroy.call(this)}
+,t.prototype.open=function(){
+var e=!1;
+null==this.view&&(this.view=new MainOutView,e=!0),this.getParent().addChild(this.view),e||this.view.reset()}
+,t.prototype.close=function(){
+null!=this.view&&this.view.parent&&this.view.parent.removeChild(this.view)}
+,t.prototype.getView=function(){
+return this.view}
+,t.prototype.totalCustomEvents=function(e){
+switch(e.getEventType()){
+case RoleEventType.loadRole:this.view&&this.view.reset();
+break;
+case UserEventType.updateClover:this.view&&this.view.updateCloverPanel();
+break;
+case UserEventType.updateCloverTween:this.view&&this.view.updateCloverTween();
+break;
+case TravelEventType.updateMial:this.view&&this.view.updateMail();
+break;
+case TravelEventType.updateEvents:Result.eventSystem(core.DisplayManage.getInstance().getPopupLayer(),!1,!1,e.getParam(0));
+break;
+case TravelEventType.eventsDisposeComplete:case TravelEventType.eventsDisposeComplete2:this.view.onSyncComplete();
+break;
+case UserEventType.updateAds:this.view.update_ads();
+break;
+case TravelEventType.updateRedpoint:this.view&&this.view.updateRedpoint();
+break;
+case VisitorEventType.updateVisitor:this.vie

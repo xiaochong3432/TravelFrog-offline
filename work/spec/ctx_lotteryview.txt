@@ -1,0 +1,93 @@
+chars 773420..779500
+
+iewControl");
+var LotteryView=function(e){
+function t(){
+return e.call(this,core.PathManage.getInstance().getSkinsPath("Lottery/LotterySkin.exml"),LotteryViewControl,core.ViewLayerType.WindowLayer)||this}
+return __extends(t,e),t.prototype.childrenCreated=function(){
+var t=this;
+e.prototype.childrenCreated.call(this),this.data=this.getModel(LotteryModel).data;
+var i=(this.data.phase-1)%4+1;
+this.imageBg.source="anm_weekend_"+i+"_png",this.imageBg.mask=this.imageMask,core.TweenExtend.playLoop(this.bgAnm,!0),core.TweenExtend.playLoop(this.extraAnm,!0),this.cover.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this),this.btnClose.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this),this.imageOpen.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+t.getModel(LotteryModel).req_open(new core.Action(function(){
+t.updateState()}
+))}
+,this),this.groupExtra.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+core.DisplayManage.getInstance().popup(new LotteryExtraView)}
+,this),this.btnComplete.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+if(t.data.state==Tabikaeru.LotteryState.Select&&!(t.selectList.length<5)){
+var e=new ModalConfirm(_("已经帮小伙伴做好决定了吗？"),function(){
+t.getModel(LotteryModel).req_select(t.selectList,new core.Action(function(){
+t.updateState()}
+))}
+);
+core.DisplayManage.getInstance().getPopupLayer().addChild(e)}
+}
+,this);
+for(var n={
+}
+,r=0;
+r<this.data.answer.length;
+r++)n[this.data.answer[r]]=!0;
+this.selectList=[],this.groupList=[];
+for(var o=function(e){
+var i=a.data.select_list[e],r=new eui.Group,o=new eui.Image;
+o.source="item_size_80x80_png",o.horizontalCenter=o.verticalCenter=0;
+var s=new eui.Image,c=Tabikaeru.DataManager.instance().ItemDB.get(i);
+s.width=s.height=70,s.source=Tabikaeru.path.formatPathImage(c.img),s.horizontalCenter=s.verticalCenter=0;
+var l=new eui.Image;
+l.width=l.height=85,l.source="frame_placed_user_png",l.visible=!1,l.horizontalCenter=l.verticalCenter=0,r.addChild(o),r.addChild(s),r.addChild(l),n[i]&&(l.visible=!0,a.selectList.push(i)),a.groupItem.addChild(r),a.groupList[e]=r,r.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+if(t.data.state==Tabikaeru.LotteryState.Select){
+var e=t.getSelectIndex(i);
+e>=0?(t.selectList.splice(e,1),l.visible=!1,4==t.selectList.length&&t.updateItems()):t.selectList.length<5&&(t.selectList.push(i),l.visible=!0,5==t.selectList.length&&t.updateItems())}
+}
+,a)}
+,a=this,r=0;
+r<this.data.select_list.length;
+r++)o(r);
+this.updateState(),this.updateItems()}
+,t.prototype.getSelectIndex=function(e){
+for(var t=0;
+t<this.selectList.length;
+t++)if(e==this.selectList[t])return t;
+return-1}
+,t.prototype.updateState=function(){
+if(this.groupExtra.visible=this.data.extra_item.item_id>0&&this.data.extra_item.count>0,this.data.extra_item.item_id>0&&this.data.extra_item.count>0){
+var e=Tabikaeru.DataManager.instance().ItemDB.get(this.data.extra_item.item_id);
+this.imageExtra.source=Tabikaeru.path.formatPathImage(e.img)}
+this.imageOpen.visible=this.data.state==Tabikaeru.LotteryState.Open,this.groupBottom.visible=this.data.state!=Tabikaeru.LotteryState.Open,this.imageComplete.visible=this.data.state==Tabikaeru.LotteryState.Complete,this.btnComplete.visible=this.data.state==Tabikaeru.LotteryState.Select;
+var t=Tabikaeru.DataManager.instance().lotteryData,i=(this.data.phase-1)%4+1,n=t.get("select_list")[i];
+this.imageGuest.source=n.pic+"_png",this.lbAsk.text=this.data.state==Tabikaeru.LotteryState.Select?n.desc:n.desc2,this.lbTips.text=this.data.state==Tabikaeru.LotteryState.Select?core.String.format("选出5款物品，帮{
+0}
+解决这个困扰",n.name):"感谢你提供的帮助",this.lbTips2.text=this.data.state==Tabikaeru.LotteryState.Select?"再次点击取消选中":""}
+,t.prototype.updateItems=function(){
+for(var e=0;
+e<this.groupList.length;
+e++){
+var t=this.groupList[e];
+if(this.selectList.length<5)t.filters=void 0;
+else{
+var i=this.getSelectIndex(this.data.select_list[e]);
+0>i&&(t.filters=Utils.getBlackFilter())}
+}
+this.btnComplete.filters=this.selectList.length<5?Utils.getBlackFilter():void 0}
+,t}
+(WindowView);
+__reflect(LotteryView.prototype,"LotteryView");
+var Lumberroom=function(e){
+function t(){
+return e.call(this,core.PathManage.getInstance().getSkinsPath("Menu/Lumberroom.exml"))||this}
+return __extends(t,e),t.getInstance=function(){
+return null==t._instance&&(t._instance=new t),t._instance}
+,t.prototype.createChildren=function(){
+e.prototype.createChildren.call(this),this.update()}
+,t.prototype.onComplete=function(){
+this.cover.addEventListener(egret.TouchEvent.TOUCH_TAP,this.click_close,this),this.closeBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.click_close,this),this.albumBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.openAlbum,this),this.presentBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.openPresent,this),this.storyBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.openStory,this),this.rankingBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.openRanking,this),this.travelNoteBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.openTravelNote,this),this.giftBoxBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.openGiftBox,this),this.handCraftBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.openHandCraft,this),this.museumBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_museumBtn_tap,this),this.furnitureBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_furnitureBtn_tap,this),this.drawBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_drawBtn_tap,this),this.encyBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_encyBtn_tap,this),this.calendarBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_calendarBtn_tap,this),this.animPicBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_animPicBtn_tap,this)
+}
+,t.prototype.update=function(){
+var e=this;
+this.handCraftBtn.visible=this.handCraftBtn.includeInLayout=this.getModel(ItemModel).getHaveItem(EnumItemID.HAND_CRAFT_TOOL)>0,this.rankingBtn.visible=this.rankingBtn.includeInLayout=!1;
+var t=this.getModel(TravelNoteModel).isOpen();
+this.travelNoteBtn.visible=this.travelNoteBtn.includeInLayout=t;
+var i=this.getModel(GiftBoxModel).isOpen();
+this.giftBoxBtn.visible=this.giftBoxBtn.includeInLayout=i,this.furnitureBtn

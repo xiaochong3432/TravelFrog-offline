@@ -1,0 +1,18 @@
+var GiftBoxView=function(e){
+  function t(t){
+    var i=e.call(this,core.PathManage.getInstance().getSkinsPath("GiftBox/GiftBox.exml"),GiftBoxController,core.ViewLayerType.WindowLayer)||this;
+    return i.option=t,i
+  }return __extends(t,e),t.prototype.onComplete=function(){
+    this.backBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this),this.c_typeGroup.addEventListener(egret.Event.CHANGE,this.onTypeChange,this),this.pageContainer.setPages([{
+      render:GiftBoxAlbumView,data:this.option
+    },{
+      render:GiftBoxSpecialtyView,data:this.option
+    }]),-1==this.c_typeGroup.selectedIndex&&this.c_typeGroup.setSelected(0)
+  },t.prototype.update=function(){
+    var e=this.pageContainer.getCurPage();
+    e.update()
+  },t.prototype.onTypeChange=function(){
+    this.pageContainer.selectPage(this.c_typeGroup.selectedIndex)
+  },t
+}(WindowView);
+__reflect(GiftBoxView.prototype

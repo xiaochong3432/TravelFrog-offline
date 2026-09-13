@@ -1,0 +1,85 @@
+===== '\\w+\\|\\|\\(e\\.EvtId=\\{\\}\\)'  hits=1 =====
+
+--- [413267] ---
+EvtId||(e.EvtId={
+}
+))}
+(Mail||(Mail={
+}
+));
+var Prize;
+!function(e){
+var t;
+!function(e){
+e[e.NONE=-1]="NONE",e[e.White=0]="White",e[e.Blue=1]="Blue",e[e.Purple=2]="Purple",e[e.Green=3]="Green",e[e.Red=4]="Red",e[e.Gold=5]="Gold",e[e.FURNITURE=6]="FURNITURE",e[e.RankMax=7]="RankMax"}
+(t=e.Rank||(e.Rank={
+}
+))}
+(Prize||(Prize={
+}
+));
+var Flag;
+!function(e){
+var t;
+!function(e){
+e[e.DEFAULT=-1]="DEFAULT",e[e.GOTRAVEL=0]="GOTRAVEL",e[e.TRAVEL_TIMEMIN=1]="TRAVEL_TIMEMIN",e[e.TRAVEL_TIMEMAX=2]="TRAVEL_TIMEMAX",e[e.COLLECT_NUM=3]="COLLECT_NUM",e[e.CLOVER_NUM=4]="CLOVER_NUM",e[e.ROLL_NUM=5]="ROLL_NUM",e[e.VEGETABLE_NUM=6]="VEGETABLE_NUM",e[e.FRUITS_NUM=7]="FRUITS_NUM",e[e.MANJU_NUM=8]="MANJU_NUM",e[e.CONPEITO_COMBO=9]="CONPEITO_COMBO",e[e.CONPEITO_COMBOMAX=10]="CONPEITO_COMBOMAX",e[e.NORMALFOODS_NUM=11]="NORMALFOODS_NUM",e[e.SPECIALTY_NUM=12]="SPECIALTY_NUM",e[e._TypeMax=13]="_TypeMax"}
+(t=e.Type||(e.Type={
+}
+));
+var i;
+!function(e){
+e[e.LESS=-1]="LESS",e[e.EQUAL=0]="EQUAL",e[e.MORE=1]="MORE"}
+(i=e.Sign||(e.Sign={
+}
+))}
+(Flag||(Flag={
+}
+));
+var Picture;
+!function(e){
+var t;
+!function(e){
+e[e.NONE=-1]="NONE",e[e.Normal=0]="Normal",e[e.Tools=1]="Tools",e[e.Goal=2]="Goal",e[e.Unique=3]="Unique",e[e._TypeMax=4]="_TypeMax"}
+(t=e.Type||(e.Type={
+}
+));
+var i;
+!function(e){
+e[e.NONE=-1]="NONE",e[e.Normal=0]="Normal",e[e.Tools=1]="Tools",e[e.Goal=2]="Goal",e[e.Unique=3]="Unique",e[e._TagTypeMax=4]="_TagTypeMax"}
+(i=e.TagType||(e.TagType={
+}
+));
+var n;
+!function(e){
+e[e.NONE=-1]="NONE",e[e.Back=0]="Back",e[e.Chara=1]="Chara",e[e._RndTypeMax=2]="_RndTypeMax"}
+(n=e.RndType||(e.RndType={
+}
+));
+var r;
+!function(e){
+e[e.INDEX=-1]="INDEX",e[e.Album=0]="Album",e[e.Temp=9]="Temp"}
+(r=e.SaveType||(e.SaveType={
+}
+))}
+(Picture||(Picture={
+}
+));
+var Tutorial;
+!function(e){
+var t;
+!function(e){
+e[e.NONE=-1]="NONE",e[e.a0_MO_FrogTap=0]="a0_MO_FrogTap",e[e.a1_MO_FrogName=1]="a1_MO_FrogName",e[e.a2_MO_GoHome=2]="a2_MO_GoHome",e[e.b0_MI_GoOut=3]="b0_MI_GoOut",e[e.c0_MO_GetStandby=4]="c0_MO_GetStandby",e[e.c1_MO_GetClover=5]="c1_MO_GetClover",e[e.c2_MO_GoShop=6]="c
+
+##########################################################################################
+### literal "DrawingState||"  hits=0
+##########################################################################################
+
+
+##########################################################################################
+### literal "LotteryState||"  hits=0
+##########################################################################################
+
+
+##########################################################################################
+### literal "Type\|\|\(e\.Type"  hits=0
+##########################################################################################

@@ -1,0 +1,144 @@
+--- Prize rows with item info ---
+0 rank 0 itemId -1 stock 1 | None type None sub None price None spend None own_num None
+1 rank 1 itemId 1002 stock 1 | 绿色铃铛 type 1 sub  price 0 spend 1 own_num 
+2 rank 1 itemId 1003 stock 1 | 白色铃铛 type 1 sub  price 0 spend 1 own_num 
+3 rank 1 itemId 1004 stock 1 | 红色铃铛 type 1 sub  price 0 spend 1 own_num 
+4 rank 1 itemId 1005 stock 1 | 蓝色铃铛 type 1 sub  price 0 spend 1 own_num 
+5 rank 1 itemId 1006 stock 1 | 桃色铃铛 type 1 sub  price 0 spend 1 own_num 
+6 rank 2 itemId 1013 stock 1 | 绿色帆船 type 1 sub  price 0 spend 1 own_num 
+7 rank 2 itemId 1014 stock 1 | 黄色帆船 type 1 sub  price 0 spend 1 own_num 
+8 rank 2 itemId 1015 stock 1 | 红色帆船 type 1 sub  price 0 spend 1 own_num 
+9 rank 2 itemId 1016 stock 1 | 蓝色帆船 type 1 sub  price 0 spend 1 own_num 
+10 rank 3 itemId 6 stock 1 | 椒盐花生 type 0 sub  price 100 spend 1 own_num 
+11 rank 3 itemId 7 stock 1 | 芥末花生 type 0 sub  price 100 spend 1 own_num 
+12 rank 3 itemId 8 stock 1 | 蜂蜜花生 type 0 sub  price 100 spend 1 own_num 
+13 rank 3 itemId 10 stock 1 | 五香花生 type 0 sub  price 100 spend 1 own_num 
+14 rank 3 itemId 9 stock 1 | 原味花生 type 0 sub  price 100 spend 1 own_num 
+15 rank 4 itemId 11 stock 1 | 菠萝汁 type 0 sub  price 100 spend 1 own_num 
+16 rank 4 itemId 12 stock 1 | 草莓汁 type 0 sub  price 100 spend 1 own_num 
+17 rank 4 itemId 13 stock 1 | 甜椒汁 type 0 sub  price 100 spend 1 own_num 
+18 rank 4 itemId 14 stock 1 | 苹果汁 type 0 sub  price 100 spend 1 own_num 
+19 rank 5 itemId 1007 stock 1 | 绿色千纸鹤 type 1 sub  price 0 spend 1 own_num 
+20 rank 5 itemId 1008 stock 1 | 白色千纸鹤 type 1 sub  price 0 spend 1 own_num 
+21 rank 5 itemId 1009 stock 1 | 红色千纸鹤 type 1 sub  price 0 spend 1 own_num 
+22 rank 5 itemId 1010 stock 1 | 蓝色千纸鹤 type 1 sub  price 0 spend 1 own_num 
+
+--- Item ids 0..30 ---
+0 0  '奶油华夫饼' price 10 spend 1 own_num ''
+1 0  '草莓可丽饼' price 30 spend 1 own_num ''
+2 0  '沙拉皮塔饼' price 50 spend 1 own_num ''
+3 0  '茄汁蛋包饭' price 80 spend 1 own_num ''
+4 0  '香葱烤包子' price 100 spend 1 own_num ''
+5 0  '海苔煎豆腐' price 100 spend 1 own_num ''
+6 0  '椒盐花生' price 100 spend 1 own_num ''
+7 0  '芥末花生' price 100 spend 1 own_num ''
+8 0  '蜂蜜花生' price 100 spend 1 own_num ''
+9 0  '原味花生' price 100 spend 1 own_num ''
+10 0  '五香花生' price 100 spend 1 own_num ''
+11 0  '菠萝汁' price 100 spend 1 own_num ''
+12 0  '草莓汁' price 100 spend 1 own_num ''
+13 0  '甜椒汁' price 100 spend 1 own_num ''
+14 0  '苹果汁' price 100 spend 1 own_num ''
+15 0  '桂花蒸米糕' price 100 spend 1 own_num ''
+16 0  '彩椒烙蛋饼' price 100 spend 1 own_num ''
+17 0  '棒棒糖' price 100 spend 1 own_num ''
+18 0  '伴柠伴桔' price 100 spend 1 own_num ''
+19 0  '饺子' price 90 spend 1 own_num ''
+20 0  '腊八粥' price 100 spend 1 own_num ''
+21 0  '三鲜素春卷' price 100 spend 1 own_num ''
+22 0  '银耳炖雪梨' price 100 spend 1 own_num ''
+23 0  '香椿拌豆腐' price 100 spend 1 own_num ''
+24 0  '蜜渍枇杷' price 100 spend 1 own_num ''
+25 0  '蒜蓉蒸丝瓜' price 100 spend 1 own_num ''
+26 0  '西瓜冰沙' price 100 spend 1 own_num ''
+27 0  '地三鲜' price 100 spend 1 own_num ''
+28 0  '野苋菜汤' price 100 spend 1 own_num ''
+29 0  '蓝莓山药泥' price 100 spend 1 own_num ''
+30 0  '甘蔗马蹄水' price 100 spend 1 own_num ''
+
+--- range (1000, 1020)
+  1000 1  '四叶草' price 0 spend 1
+  1001 1  '玉佩' price 3000 spend 0
+  1002 1  '绿色铃铛' price 0 spend 1
+  1003 1  '白色铃铛' price 0 spend 1
+  1004 1  '红色铃铛' price 0 spend 1
+  1005 1  '蓝色铃铛' price 0 spend 1
+  1006 1  '桃色铃铛' price 0 spend 1
+  1007 1  '绿色千纸鹤' price 0 spend 1
+  1008 1  '白色千纸鹤' price 0 spend 1
+  1009 1  '红色千纸鹤' price 0 spend 1
+  1010 1  '蓝色千纸鹤' price 0 spend 1
+  1011 1  '康乃馨' price 0 spend 1
+  1012 1  '小纸船' price 100 spend 1
+  1013 1  '绿色帆船' price 0 spend 1
+  1014 1  '黄色帆船' price 0 spend 1
+  1015 1  '红色帆船' price 0 spend 1
+  1016 1  '蓝色帆船' price 0 spend 1
+  1017 1  '江西省博物馆门票' price 0 spend 1
+  1018 1  '山东博物馆门票' price 0 spend 1
+  1019 1  '南越王博物院门票' price 0 spend 1
+--- range (2000, 2012)
+  2000 2  '竹筒' price 300 spend 0
+  2001 2  '葫芦' price 450 spend 0
+  2002 2  '水壶' price 750 spend 0
+  2003 2  '朴素纸伞' price 450 spend 0
+  2004 2  '自然纸伞' price 700 spend 0
+  2005 2  '水墨纸伞' price 1200 spend 0
+  2006 2  '简易睡垫' price 600 spend 0
+  2007 2  '时尚睡垫' price 900 spend 0
+  2008 2  '高级睡垫' price 1500 spend 0
+  2009 2  '围巾~纯色~' price 150 spend 0
+  2010 2  '围巾~雪花~' price 250 spend 0
+  2011 2  '围巾~云纹~' price 400 spend 0
+--- range (3000, 3010)
+  3000 3  '双皮奶' price 0 spend 1
+  3001 3  '豆腐乳' price 0 spend 1
+  3002 3  '西湖龙井' price 0 spend 1
+  3003 3  '西瓜子' price 0 spend 1
+  3004 3  '京味点心' price 0 spend 1
+  3005 3  '麻花' price 0 spend 1
+  3006 3  '咂酒' price 0 spend 1
+  3007 3  '米花糖' price 0 spend 1
+  3008 3  '牛轧糖' price 0 spend 1
+  3009 3  '麻糬' price 0 spend 1
+--- range (5000, 5010)
+  5001 5 1 '工具套装' price  spend 1
+  5002 5 1 '材料套装' price  spend 1
+  5003 5 1 '大袋种子' price  spend 1
+--- range (5500, 5510)
+  5501 5 2 '朽木加工' price  spend 1
+  5502 5 2 '木制护符的三拼技巧' price  spend 1
+--- range (7000, 7010)
+  7000 7  '手工品制作工具' price 0 spend 0
+  7001 7  '友情绘本' price 0 spend 0
+--- range (8000, 8010)
+  8000 8 1 '手工品材料' price 0 spend 1
+  8001 8 2 '朽木' price 0 spend 1
+  8002 8 3 '单色显影液' price 0 spend 1
+  8003 8 3 '双色显影液' price 0 spend 1
+  8004 8 3 '多色显影液' price 0 spend 1
+--- range (9000, 9005)
+  9000 9  '相册扩容' price 0 spend 0
+  9001 9  '动态相框' price 0 spend 0
+  9002 9  '照片存储开启物' price 0 spend 1
+--- range (10000, 10210)
+  10001 10  '松木' price  spend 1
+  10002 10  '楠竹' price  spend 1
+  10003 10  '砂石' price  spend 1
+  10004 10  '灯芯草' price  spend 1
+  10005 10  '粗布' price  spend 1
+  10006 10  '毛边纸' price  spend 1
+  10007 10  '铜块' price  spend 1
+  10101 11  '岩纹石' price  spend 1
+  10102 11  '正丹纸' price  spend 1
+  10103 11  '棕榈叶' price  spend 1
+  10104 11  '海螺贝' price  spend 1
+  10105 11  '紫檀木' price  spend 1
+  10106 11  '细篷布' price  spend 1
+  10107 11  '秋芦荻' price  spend 1
+  10108 11  '织彩带' price  spend 1
+  10201 12  '简易锯子' price  spend 0
+  10202 12  '简易毛刷' price  spend 0
+  10203 12  '简易锤子' price  spend 0
+  10204 12  '简易棒针' price  spend 0
+  10205 12  '简易小刀' price  spend 0

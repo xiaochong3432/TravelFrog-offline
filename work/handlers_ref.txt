@@ -1,0 +1,576 @@
+
+
+====================================================================================================
+### client_hello   (len=135)
+====================================================================================================
+prototype.client_hello=function(e,t){
+  core.Time.setServerTime(e.timestamp),this.dispatchEvent(new core.Event(UserEventType.pingServer))
+}
+
+====================================================================================================
+### hall_gen_token   (len=124)
+====================================================================================================
+prototype.hall_gen_token=function(e,t){
+  e.code;
+  this.token=e.token,this.dispatchEvent(new core.Event(UserEventType.getToken))
+}
+
+====================================================================================================
+### hall_login   (len=286)
+====================================================================================================
+prototype.hall_login=function(e,t){
+  var i=e.code;
+  this.account=e.account,0==i?(core.String.setCookiePrefix(this.account),this.dispatchEvent(new core.Event(UserEventType.loginComplete))):(core.Log.warning("登陆账号失败 code:"+i),this.dispatchEvent(new core.Event(UserEventType.loginFailure,i)))
+}
+
+====================================================================================================
+### hall_enter_game   (len=153)
+====================================================================================================
+prototype.hall_enter_game=function(e,t){
+  var i=e.code;
+  0==i?this.dispatchEvent(new core.Event(UserEventType.enterGame)):core.Log.warning("进入游戏失败 code:"+i)
+}
+
+====================================================================================================
+### client_load_role   (len=636)
+====================================================================================================
+prototype.client_load_role=function(e,t){
+  var i=e.frog;
+  if(null!=i){
+    this.name=i.name,this.useAchieveID=i.cur_achieve,this.achieveList=Array.isArray(i.achieves)?i.achieves:[];
+    for(var n=Utils.convertArray(i.achieves_time),r=0,o=n;
+    r<o.length;
+    r++){
+      var a=o[r];
+      this.achieveTime[a.id]=a.time
+    }this.frogStatus=i.status,this.frogMotion=i.motion,this.iconID=i.icon,this.pictureInfo=i.pic_show,this.todayStep=i.today_step,this.decorationList=Array.isArray(i.decoration)?i.decoration:[],this.taobaoData=i.taobao_data,this.dispatchEvent(new core.Event(RoleEventType.loadRole))
+  }else core.Log.warning("返回的协议 client_load_role 中的 frog 属性不存在，请检查协议参数是否已修改")
+}
+
+====================================================================================================
+### notify_reload   (len=99)
+====================================================================================================
+prototype.notify_reload=function(e){
+  this.dispatchEvent(new core.Event(UserEventType.notifyReload))
+}
+
+====================================================================================================
+### client_load_decorate   (len=230)
+====================================================================================================
+prototype.client_load_decorate=function(e){
+  var t=Utils.convertArray(e.has_list);
+  this.decorationList=t,this.decorationPutID=e.put_id,this.decorationStatus=e.status,this.dispatchEvent(new core.Event(RoleEventType.updateDecoration))
+}
+
+====================================================================================================
+### clover_load_clovers   (len=212)
+====================================================================================================
+prototype.clover_load_clovers=function(e,t){
+  null!=e?(this.cloverGrowList=e,this.dispatchEvent(new core.Event(RoleEventType.updateCloverGrow))):core.Log.warning("返回的协议 clover_load_clovers 没有获取到有效数据，请检查协议参数是否已修改")
+}
+
+====================================================================================================
+### clover_update   (len=81)
+====================================================================================================
+prototype.clover_update=function(e){
+  this.getModel(UserModel).setClover(e.clover)
+}
+
+====================================================================================================
+### item_load_items   (len=634)
+====================================================================================================
+prototype.item_load_items=function(e,t){
+  this.itemDataAll.Clear(),this.itemDataList.Clear();
+  for(var i,n=e.house,r=0,o=n.length;
+  o>r;
+  r++)i=n[r],i&&this.doAddHouseItem(i.item_id,i.count,!1);
+  this.bagDataList=e.bag,this.deskDataList=e.desk,this.bagLock=e.bag_completed||!1,this.bagConflict=e.bag_conflict||!1,this.deskConflict=e.desk_conflict||!1;
+  var a=e.gacha;
+  null!=a?null!=a.color_ball&&(this.gachaColorBall=a.color_ball):core.Log.warning("返回的协议 client_load_role 中的 gacha 属性不存在，请检查协议参数是否已修改"),core.ModelManage.getInstance().getModel(HandCraftModel).updateComposeRedot(),this.dispatchEvent(new core.Event(ItemEventType.updateAllItemInfo))
+}
+
+====================================================================================================
+### item_load_shop_info   (len=302)
+====================================================================================================
+prototype.item_load_shop_info=function(e,t){
+  if(e&&e.purchased){
+    this.purchasedMap={
+      
+    };
+    for(var i=(Tabikaeru.DataManager.instance().ShopDataDB,Array.isArray(e.purchased)?e.purchased:[]),n=0,r=i;
+    n<r.length;
+    n++){
+      var o=r[n];
+      this.purchasedMap[o.item_id]=o.count
+    }console.log(JSON.stringify(this.purchasedMap))
+  }
+}
+
+====================================================================================================
+### item_load_handbook   (len=243)
+====================================================================================================
+prototype.item_load_handbook=function(e,t){
+  this.collectionsList=Array.isArray(e.collections)?e.collections:[],this.specialtysList=Array.isArray(e.specialtys)?e.specialtys:[],this.dispatchEvent(new core.Event(ItemEventType.updateHandbookList))
+}
+
+====================================================================================================
+### item_update   (len=511)
+====================================================================================================
+prototype.item_update=function(e){
+  if(e){
+    var t=this.getHouseItemCount(e.item.item_id);
+    0==e.item.count?this.doConsumeHouseItem(e.item.item_id,t):this.doAddHouseItem(e.item.item_id,e.item.count-t);
+    var i=Tabikaeru.DataManager.instance().ItemDB.get(e.item.item_id);
+    if(i.type==Tabikaeru.DataType.ItemType.COMPOSE){
+      core.ModelManage.getInstance().getModel(HandCraftModel).updateComposeRedot();
+      var n=core.PageManage.getInstance().getControl(ToolBagViewController,core.ViewLayerType.NoticeLayer);
+      n&&n.view.updatePage()
+    }
+  }
+}
+
+====================================================================================================
+### item_update_ticket   (len=86)
+====================================================================================================
+prototype.item_update_ticket=function(e){
+  this.getModel(UserModel).setTicket(e.ticket)
+}
+
+====================================================================================================
+### travel_load_note   (len=347)
+====================================================================================================
+prototype.travel_load_note=function(e,t){
+  var i=[];
+  if(Array.isArray(e.note_list))for(var n=Tabikaeru.DataManager.instance().TravelNoteDB,r=0,o=e.note_list;
+  r<o.length;
+  r++){
+    var a=o[r],s=n.get(a.id);
+    if(s){
+      var c=new TravelNoteData;
+      c.id=a.id,c.read=a.read,c.timestamp=a.timestamp,c.config=n.get(a.id),i.push(c)
+    }
+  }this.travelNodeList=i,this.updateRedot()
+}
+
+====================================================================================================
+### travel_load_gift   (len=444)
+====================================================================================================
+prototype.travel_load_gift=function(e,t){
+  this.pictureList.source=Array.isArray(e.pictures)?e.pictures:[];
+  for(var i=Array.isArray(e.specialtys)?e.specialtys:[],n=i.length-1;
+  n>=0;
+  n--){
+    var r=i[n].item_id,o=i[n].count;
+    if(o>1){
+      i.splice(n,1);
+      for(var a=0;
+      o>a;
+      a++)i.splice(n,0,{
+        item_id:r,count:1
+      })
+    }
+  }this.specialityList.source=i,this.specialityList.refresh(),this.pictureList.refresh(),this.dispatchEvent(new core.Event(GiftBoxEventType.updateGiftBox))
+}
+
+====================================================================================================
+### album_load   (len=241)
+====================================================================================================
+prototype.album_load=function(e,t){
+  for(var i=Array.isArray(e.pictures)?e.pictures:[],n=0;
+  n<i.length;
+  n++)i[n]&&(this.pictureInfoList[e.start+n-1]=i[n]);
+  this.pictureCount=e.total,this.dispatchEvent(new core.Event(TravelEventType.updateAlbum))
+}
+
+====================================================================================================
+### guest_load   (len=67)
+====================================================================================================
+prototype.guest_load=function(e,t){
+  this.guestData=new GuestData(e)
+}
+
+====================================================================================================
+### guest_load_drawing   (len=246)
+====================================================================================================
+prototype.guest_load_drawing=function(e){
+  this.data=e,this.data.pages=Utils.convertArray(e.pages),this.data.colls=Utils.convertArray(e.colls);
+  this.getModel(UserModel).getClientSettings();
+  this.dispatchEvent(new core.Event(DrawingEventType.UPDATE))
+}
+
+====================================================================================================
+### mail_load   (len=75)
+====================================================================================================
+prototype.mail_load=function(e,t){
+  this.revice_mails(Utils.convertArray(e))
+}
+
+====================================================================================================
+### mail_load_mails   (len=389)
+====================================================================================================
+prototype.mail_load_mails=function(e,t){
+  for(var i=Array.isArray(e.mails)?e.mails:[],n=0;
+  n<i.length;
+  n++)this.mailInfoList[n+e.start-1]=i[n];
+  var r=BaseChannel.getInstance().isClearAds();
+  t.start+t.count<=e.total?core.SocketManage.getInstance().send("mail_load_mails",null,t.start+t.count,5,r):(this.mailInfoList.length=e.mails.length,this.revice_mails(Utils.convertArray(this.mailInfoList)))
+}
+
+====================================================================================================
+### task_load   (len=249)
+====================================================================================================
+prototype.task_load=function(e){
+  this.data=Utils.convertArray(e.tasks);
+  for(var t=Utils.convertArray(e.list),i=0,n=t;
+  i<n.length;
+  i++){
+    var r=n[i];
+    this.dataList[r.id]=r.pro
+  }this.updateRedot(),this.dispatchEvent(new core.Event(GuideTaskEventType.UPDATE))
+}
+
+====================================================================================================
+### task_load_list   (len=158)
+====================================================================================================
+prototype.task_load_list=function(e){
+  for(var t=Utils.convertArray(e.reward),i=0,n=t;
+  i<n.length;
+  i++){
+    var r=n[i];
+    this.dataReward[r.id]=r.pro
+  }this.updateRedot()
+}
+
+====================================================================================================
+### furniture_load_furniture   (len=893)
+====================================================================================================
+prototype.furniture_load_furniture=function(e,t){
+  var i=this;
+  if(e){
+    this.serverData=e,this.serverData.shop.shop_list=Utils.convertArray(e.shop.shop_list),this.serverData.replace_fur=Utils.convertArray(e.replace_fur);
+    var n=core.Time.getServerTime();
+    this.serverData.shop.start_time<n&&this.serverData.shop.leave_time>n&&(egret.clearTimeout(this.timerShopClose),this.timerShopClose=egret.setTimeout(function(){
+      core.PageManage.getInstance().getControl(FurnitureShopController,core.ViewLayerType.WindowLayer)&&(core.PageManage.getInstance().removeControl(FurnitureShopController,core.ViewLayerType.WindowLayer),core.DisplayManage.getInstance().popup(new ModalAlert(_("嘟嘟已经收拾回家了")))),i.dispatchEvent(new core.Event(FurnitureEventType.UPDATE))
+    },this,1e3*(this.serverData.shop.leave_time-n)+1e3)),this.dispatchEvent(new core.Event(FurnitureEventType.UPDATE)),this.updateRedot(),this.loadFurnitureRes()
+  }
+}
+
+====================================================================================================
+### furniture_load_flowerpot   (len=96)
+====================================================================================================
+prototype.furniture_load_flowerpot=function(e){
+  e&&(this.flowerpotData=Utils.convertArrayAll(e))
+}
+
+====================================================================================================
+### furniture_load_compost   (len=260)
+====================================================================================================
+prototype.furniture_load_compost=function(e){
+  e&&(this.compostData=e,this.compostData.box_list=Utils.convertArray(e.box_list),this.compostData.compost_list=Utils.convertArray(e.compost_list),this.dispatchEvent(new core.Event(FurnitureEventType.UPDATE_TUMBER)))
+}
+
+====================================================================================================
+### furniture_load_pocket   (len=209)
+====================================================================================================
+prototype.furniture_load_pocket=function(e){
+  e&&(this.pocketData=e,this.pocketData.list=Utils.convertArray(e.list),this.updatePocketRedot(),this.dispatchEvent(new core.Event(FurnitureEventType.UPDATE_POCKET)))
+}
+
+====================================================================================================
+### furniture_load_tumbler   (len=203)
+====================================================================================================
+prototype.furniture_load_tumbler=function(e){
+  e&&(this.tumblerData=e,this.tumblerData.tumbler_list=Utils.convertArray(e.tumbler_list),this.dispatchEvent(new core.Event(FurnitureEventType.UPDATE_TUMBER)))
+}
+
+====================================================================================================
+### weather_load   (len=47)
+====================================================================================================
+prototype.weather_load=function(e){
+  this.data=e
+}
+
+====================================================================================================
+### visit_load   (len=465)
+====================================================================================================
+prototype.visit_load=function(e,t){
+  e.visitor&&(this.visitorData=new VisitorData(e.visitor),this.visitorData.carpet<=0&&(this.visitorData.carpet=core.MathExtend.Range(1,8),core.SocketManage.getInstance().send("visit_set_carpet",null,this.visitorData.carpet)),this.dispatchEvent(new core.Event(VisitorEventType.updateVisitor))),e.acquire&&(this.acquireList=Array.isArray(e.acquire)?e.acquire:[],this.dispatchEvent(new core.Event(VisitorEventType.updateAcquireList)))
+}
+
+====================================================================================================
+### clover_notice_get   (len=374)
+====================================================================================================
+prototype.clover_notice_get=function(e){
+  var t;
+  "FurnitureBox"==e.reason&&(t="家具都领完了，还请收下这点赠礼");
+  var i=[{
+    item_id:2e5,count:e.clover
+  }];
+  core.PageManage.getInstance().addViewControl(ItemRewardViewControl,core.ViewLayerType.WindowLayer,null,i,function(){
+    var e=core.PageManage.getInstance().getControl(PartyCakeViewControl,core.ViewLayerType.WindowLayer);
+    e&&e.view.updateView()
+  },t)
+}
+
+====================================================================================================
+### client_load_events   (len=567)
+====================================================================================================
+prototype.client_load_events=function(e,t){
+  this.travelEventList=Array.isArray(e)?e:[],this.travelEventList.sort(function(e,t){
+    var i=e.evt_type==TimerEvent.Type.Picture,n=t.evt_type==TimerEvent.Type.Picture;
+    return i==n?0:i?1:-1
+  });
+  for(var i=0,n=0;
+  n<this.travelEventList.length;
+  n++){
+    var r=this.travelEventList[n];
+    switch(r.evt_type){
+      case TimerEvent.Type.BackHome:i+=r.evt_value[2];
+      break;
+      case TimerEvent.Type.PartyResult:i+=r.evt_value[2]
+    }
+  }i>0&&this.getModel(UserModel).subClover(i),this.filtrateEvent(),this.dispatchEvent(new core.Event(TravelEventType.updateEvents,!1))
+}
+
+====================================================================================================
+### client_notice   (len=125)
+====================================================================================================
+prototype.client_notice=function(e){
+  e&&e.msg&&core.DisplayManage.getInstance().popupLayer.addChild(new ModalAlert(_(e.msg)))
+}
+
+====================================================================================================
+### story_load   (len=122)
+====================================================================================================
+prototype.story_load=function(e,t){
+  this.storyList=Array.isArray(e.stories)?e.stories:[],this.newStoryID=e.new_story_id||0
+}
+
+====================================================================================================
+### encyclopedia_load   (len=353)
+====================================================================================================
+prototype.encyclopedia_load=function(e){
+  e=Utils.convertArrayAll(e),this.data.unlock_list=e.unlock_list;
+  for(var t=0,i=e.unlock_desc;
+  t<i.length;
+  t++){
+    var n=i[t];
+    this.data.unlock_desc[n.id]=Utils.convertArray(n.list)
+  }for(var r=0,o=e.show_sub;
+  r<o.length;
+  r++){
+    var n=o[r];
+    this.data.show_sub[n.id]=n.sub_id
+  }this.data.unlock_list.sort(function(e,t){
+    return e-t
+  })
+}
+
+====================================================================================================
+### lottery_load   (len=292)
+====================================================================================================
+prototype.lottery_load=function(e){
+  e.phase&&(this.data=e,this.data.select_list=Utils.convertArray(this.data.select_list),this.data.answer=Utils.convertArray(this.data.answer),this.data.right_flag=Utils.convertArray(this.data.right_flag),this.data.reward=Utils.convertArray(this.data.reward))
+}
+
+====================================================================================================
+### rank_load   (len=852)
+====================================================================================================
+prototype.rank_load=function(e,t){
+  if(this.loadingRankDataCount--,null!=e){
+    var i=t.duration+t.type,n=this.rankInfoList[i];
+    if(n||(n={
+      info:[],firstInfo:null,selfInfo:null,getDataComplete:!1
+    },this.rankInfoList[i]=n),e.me&&(n.selfInfo=e.me),e.info&&Array.isArray(e.info)){
+      if(e.info.length<t.count&&(n.getDataComplete=!0),e.info.length>0){
+        for(var r=0;
+        r<e.info.length;
+        r++)n.info[t.start-1+r]=e.info[r];
+        this.dispatchEvent(new core.Event(RankingEventType.updateRankList,t.duration,t.type,t.start-1,e.info.length))
+      }
+    }else n.getDataComplete=!0;
+    e.first_intro&&(n.firstInfo=e.first_intro,this.playerOtherInfoList.Add(i+n.firstInfo.uid.toString(),n.firstInfo),this.dispatchEvent(new core.Event(RankingEventType.updateFirstIntro,t.duration,t.type,this.getPlayerInfo(t.duration,t.type,n.firstInfo.uid))))
+  }else core.Log.warning("返回的协议 rank_load 没有获取到有效数据，请检查协议参数是否已修改")
+}
+
+====================================================================================================
+### wishingpool_load   (len=237)
+====================================================================================================
+prototype.wishingpool_load=function(e){
+  if(this.data=Utils.convertArrayAll(e),this.data.end_time>0){
+    var t=core.PageManage.getInstance().getControl(MainOutController,core.ViewLayerType.SceneLayer),i=t&&t.getView();
+    i&&i.checkWishingPool()
+  }
+}
+
+====================================================================================================
+### calendar_load   (len=362)
+====================================================================================================
+prototype.calendar_load=function(e){
+  this.data.new_flag=Utils.convertArray(e.new_flag),this.data.task_list=Utils.convertArray(e.task_list);
+  for(var t=Utils.convertArray(e.lucky_days),i=0;
+  i<t.length;
+  i++)this.data.lucky_days[t[i].day]=t[i].item_id;
+  t=Utils.convertArray(e.st_days);
+  for(var i=0;
+  i<t.length;
+  i++)this.data.st_days[t[i].day]=t[i].item_id;
+  this.checkRedot()
+}
+
+====================================================================================================
+### misc_moment_load   (len=122)
+====================================================================================================
+prototype.misc_moment_load=function(e){
+  for(var t=Utils.convertArray(e.list),i=0;
+  i<t.length;
+  i++)this.data.has_map[t[i]]=!0
+}
+
+====================================================================================================
+### other_load_touch   (len=113)
+====================================================================================================
+prototype.other_load_touch=function(e){
+  this.data.cur_touch=e.cur,this.data.touch_list=Utils.convertArray(e.list)
+}
+
+====================================================================================================
+### share_load   (len=141)
+====================================================================================================
+prototype.share_load=function(e){
+  for(var t=Utils.convertArray(e.pic_list),i=0,n=t;
+  i<n.length;
+  i++){
+    var r=n[i];
+    this.rewardData[r.id]=r.clover
+  }
+}
+
+====================================================================================================
+### museum_load   (len=133)
+====================================================================================================
+prototype.museum_load=function(e){
+  e&&(this.museum_list=e.museum_list||[],this.dispatchEvent(new core.Event(MuseumEventType.UPDATE)))
+}
+
+====================================================================================================
+### easteregg_load   (len=107)
+====================================================================================================
+prototype.easteregg_load=function(e){
+  this.data=e,this.data.egg_list=Utils.convertArray(this.data.egg_list)
+}
+
+====================================================================================================
+### animpicture_load   (len=180)
+====================================================================================================
+prototype.animpicture_load=function(e){
+  e=Utils.convertArrayAll(e);
+  for(var t=0;
+  t<e.pic_list.length;
+  t++)e.pic_list[t].pictures=Utils.convertArray(e.pic_list[t].pictures);
+  this.data=e
+}
+
+====================================================================================================
+### pray_load_grays   (len=272)
+====================================================================================================
+prototype.pray_load_grays=function(e,t){
+  e&&(this.prayCraftList=Utils.convertArray(e.wishs),this.stampCraftList=Utils.convertArray(e.stamps),this.boxCraftList=Utils.convertArray(e.boxes),this.makingPraycraft=e.wish_new,this.makingStampcraft=e.stamp_new,this.updateRedot())
+}
+
+====================================================================================================
+### capsule_load   (len=416)
+====================================================================================================
+prototype.capsule_load=function(e){
+  var t=this;
+  this.data=Utils.convertArrayAll(e),this.isOpen()&&(0==this.data.task_list.length&&this.data.patch_num>0&&this.req_patch(),this.checkRedot(),egret.clearTimeout(this.timerActivity),this.timerActivity=egret.setTimeout(function(){
+    t.closeActivity()
+  },this,1e3*(this.getActivityTime()[1]-core.Time.getServerTime()+1))),this.dispatchEvent(new core.Event(CapsuleEventType.LOAD))
+}
+
+====================================================================================================
+### recharge_load   (len=200)
+====================================================================================================
+prototype.recharge_load=function(e){
+  e&&(this.data=e,this.data.sack=Utils.convertArray(e.sack),this.data.field=Utils.convertArray(e.field),this.dispatchEvent(new core.Event(RechargeEventType.UPDATE)))
+}
+
+====================================================================================================
+### greetcard_load   (len=496)
+====================================================================================================
+prototype.greetcard_load=function(e){
+  var t=this,i=this.data.task_item||[];
+  this.data=Utils.convertArrayAll(e),this.data.card_info=e.card_info,this.data.task_item=i,this.isOpen()&&(this.checkRedot(),egret.clearTimeout(this.timerActivity),this.timerActivity=egret.setTimeout(function(){
+    t.closeActivity()
+  },this,1e3*(this.getActivityTime()[1]-core.Time.getServerTime()+1)),this.dispatchEvent(new core.Event(GreetCardEventType.CARD_CHANGE))),this.dispatchEvent(new core.Event(GreetCardEventType.LOAD))
+}
+
+====================================================================================================
+### springcard_load   (len=824)
+====================================================================================================
+prototype.springcard_load=function(e){
+  var t=this;
+  this.data.end_time=e.end_time,this.data.card_info=e.card_info,this.data.task_harvest=e.task_harvest,this.data.buy_num=e.buy_num,this.data.can_buy_num=e.can_buy_num,this.data.share_num=e.share_num,this.data.share_get=e.share_get,this.data.box_id=e.box_id,this.data.share_code=e.share_code,this.data.items=Utils.convertArray(e.items),this.data.task_item=Utils.convertArray(e.task_item),this.data.reward_list=Utils.convertArray(e.reward_list),this.isOpen()&&(this.checkRedot(),egret.clearTimeout(this.timerActivity),this.timerActivity=egret.setTimeout(function(){
+    t.closeActivity()
+  },this,1e3*(this.getActivityTime()[1]-core.Time.getServerTime()+1)),this.dispatchEvent(new core.Event(SpringCardEventType.CARD_CHANGE))),this.dispatchEvent(new core.Event(SpringCardEventType.LOAD))
+}
+
+====================================================================================================
+### partycake_load   (len=838)
+====================================================================================================
+prototype.partycake_load=function(e){
+  var t=this;
+  this.data=Utils.convertArrayAll(e),this.data.end_time=e.end_time,this.data.cream=e.cream,this.data.sugar=e.sugar,this.data.pre_cream=e.pre_cream,this.data.pre_sugar=e.pre_sugar,this.data.cur_state=e.cur_state,this.data.part=e.part,this.data.layers=Utils.convertArray(e.layers),this.data.task_list=Utils.convertArray(e.task_list),this.data.share_get=Utils.convertArray(e.share_get),(this.data.cur_state==Tabikaeru.Define.PartyCakeState.qa||this.data.cur_state==Tabikaeru.Define.PartyCakeState.qa_reward)&&this.req_load_qa(),this.isOpen()&&(this.checkRedot(),egret.clearTimeout(this.timerActivity),this.timerActivity=egret.setTimeout(function(){
+    t.closeActivity()
+
+  },this,1e3*(this.getActivityTime()[1]-core.Time.getServerTime()+1))),this.dispatchEvent(new core.Event(PartyCakeEventType.LOAD))
+}
+
+====================================================================================================
+### cooking_load_cooking   (len=238)
+====================================================================================================
+prototype.cooking_load_cooking=function(e){
+  this.serverData=e||this.serverData,this.serverData.task_list=Utils.convertArray(this.serverData.task_list),this.invalidateRedot(),this.dispatchEvent(new core.Event(CookingEventType.UPDATE_LIST))
+}
+
+====================================================================================================
+### adsmgr_load   (len=106)
+====================================================================================================
+prototype.adsmgr_load=function(e){
+  this.data=e,this.data.item_list=Utils.convertArray(this.data.item_list)
+}
+
+====================================================================================================
+### item_gift_open   (len=397)
+====================================================================================================
+prototype.item_gift_open=function(e){
+  if(e&&e.items){
+    for(var t=[],i=0,n=e.items;
+    i<n.length;
+    i++){
+      var r=n[i];
+      t.push({
+        item_id:r.item_id,count:r.count
+      })
+    }var o=core.PageManage.getInstance().getControl(CapsuleViewControl,core.ViewLayerType.WindowLayer);
+    if(o)return void o.view.setGiftItems(t);
+    core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.ViewLayerType.NoticeLayer,null,t)
+  }
+}
+
+====================================================================================================
+### museumday_load   (len=349)
+====================================================================================================
+prototype.museumday_load=function(e){
+  var t=this;
+  this.data=Utils.convertArrayAll(e),this.dispatchEvent(new core.Event(MuseumDayEventType.LOAD)),this.isOpen()&&(egret.clearTimeout(this.timerActivity),this.timerActivity=egret.setTimeout(function(){
+    t.closeActivity()
+  },this,1e3*(this.getActivityTime()[1]-core.Time.getServerTime()+1))),this.checkRedot()
+}
+
+====================================================================================================
+### museumday_info   (len=181)
+====================================================================================================
+prototype.museumday_info=function(e){
+  e&&(this.data.compass=e.compass,this.data.task_num=e.task_num,this.dispatchEvent(new core.Event(MuseumDayEventType.COMPASS)),this.checkRedot())
+}

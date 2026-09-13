@@ -1,0 +1,28 @@
+var AlbumController=function(e){
+  function t(){
+    var t=e.call(this)||this;
+    return t.addEventListeners(t.totalCustomEvents,t,TravelEventType.updateAlbum,TravelEventType.updateRecover,TravelEventType.deletePicture,TravelEventType.addPicture,TravelEventType.movePicture,TravelEventType.updateAlbumContent),t
+  }return __extends(t,e),t.prototype.destroy=function(){
+    this.removeEventListeners(this.totalCustomEvents,this,!1,TravelEventType.updateAlbum,TravelEventType.updateRecover,TravelEventType.deletePicture,TravelEventType.addPicture,TravelEventType.movePicture,TravelEventType.updateAlbumContent),this.close(),this.view=null,e.prototype.destroy.call(this)
+  },t.prototype.open=function(){
+    null==this.view&&(this.view=new AlbumView(this,this.getViewLayerType())),this.view.option=this.getParam(0),this.getParent().addChild(this.view),this.view.reset(!0,this.getParam(1)),this.view.updateExtend(),this.view.updateAnimPic()
+  },t.prototype.close=function(){
+    null!=this.view&&this.view.parent&&(this.view.parent.removeChild(this.view),this.view=null)
+  },t.prototype.totalCustomEvents=function(e){
+    if(this.view&&this.view.stage)switch(e.getEventType()){
+      case TravelEventType.addPicture:this.getModel(TravelModel).requestAlbum();
+      break;
+      case TravelEventType.updateAlbum:this.view.updateView();
+      break;
+      case TravelEventType.updateAlbumContent:this.view.onPicturesUpdate();
+      break;
+      case TravelEventType.updateRecover:this.view.onRecoverUpdate();
+      break;
+      case TravelEventType.movePicture:case TravelEventType.deletePicture:if(this.getParam(0)){
+        var t=this.getParam(0).onDelete;
+        t&&t()
+      }
+    }
+  },t
+}(core.ViewController);
+__reflect(AlbumController.prototype

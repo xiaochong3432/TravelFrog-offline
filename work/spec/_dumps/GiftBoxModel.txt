@@ -1,0 +1,117 @@
+var GiftBoxModel=function(e){
+  function t(){
+    var t=null!==e&&e.apply(this,arguments)||this;
+    return t.specialityList=new ModelDataProvider,t.pictureList=new ModelDataProvider,t.isOpenCache=!1,t
+  }return __extends(t,e),t.prototype.destroy=function(){
+    e.prototype.destroy.call(this)
+  },t.prototype.initModel=function(){
+    this.addProtocolCallback("travel_load_gift","")
+  },t.prototype.requestData=function(){
+    core.SocketManage.getInstance().send("travel_load_gift")
+  },t.prototype.delete_album=function(e,t){
+    var i=this;
+    core.SocketManage.getInstance().send("travel_gift_delete_album",new core.Action2(function(){
+      for(var n=0,r=i.pictureList.length;
+      r>n;
+      n++)if(i.pictureList.getItemAt(n).id==e){
+        i.pictureList.removeItemAt(n);
+        break
+      }t()
+    }),e)
+  },t.prototype.onMovePicture=function(e){
+    this.pictureList.addItem(e),this.dispatchEvent(new core.Event(GiftBoxEventType.updateGiftBox))
+  },t.prototype.onMoveItem=function(e){
+    this.specialityList.addItem(e),this.dispatchEvent(new core.Event(GiftBoxEventType.updateGiftBox))
+  },t.prototype.gift_to_bag=function(e){
+    var t=this,i=function(){
+      for(var i=function(e){
+        core.SocketManage.getInstance().send("travel_gift_to_bag",new core.Action2(function(i,n){
+          var r=t.getModel(MessageModel).getErrorInfo(i.code);
+          if(!r||0==r.code)for(var o=t.specialityList.length-1;
+          o>=0;
+          o--)if(t.specialityList.getItemAt(o).item_id==e){
+            t.specialityList.removeItemAt(o),t.getModel(ItemModel).addHouseItem(e,1,!0);
+            break
+          }t.dispatchEvent(new core.Event(GiftBoxEventType.updateGiftBox))
+        }),e)
+      },n=0,r=e;
+      n<r.length;
+      n++){
+        var o=r[n];
+        i(o)
+      }
+    };
+    core.Time.dayCheck("gift_to_bag")?core.DisplayManage.getInstance().getNoticeLayer().addChild(new ModalConfirm("确认放入背包?",function(){
+      i()
+    },function(){
+      
+    },!1,"gift_to_bag")):i()
+  },t.prototype.gift_to_album=function(e,t,i){
+    var n=this,r=function(){
+      var r=function(){
+        var o=e.pop();
+        return null==o?void(i&&i()):void core.SocketManage.getInstance().send("travel_gift_to_album",new core.Action2(function(e,i){
+          var a=n.getModel(MessageModel).getErrorInfo(e.code);
+          if(a&&0!=a.code){
+            if(a&&101==a.code)if(t)GuideHelpView.getInstance().show(_("相册满了"),function(){
+              Music.play("SE_Enter")
+            },core.DisplayManage.getInstance().getNoticeLayer());
+            else if(null==core.DisplayManage.getInstance().getChildByName("ModalConfirm")){
+              Music.play("SE_Popup");
+              var s=new ModalConfirm(_("相册满了，要删除一张照片继续保存吗?"),function(){
+                Music.play("SE_PageNext"),core.PageManage.getInstance().addViewControl(AlbumController,core.ViewLayerType.WindowLayer,core.RemoveViewType.Retain,{
+                  disableGiftBox:!0
+                })
+              });
+              s.name="ModalConfirm",core.DisplayManage.getInstance().popup(s)
+            }
+          }else{
+            for(var c=n.pictureList.length-1;
+            c>=0;
+            c--)if(n.pictureList.getItemAt(c).id==o){
+              n.pictureList.removeItemAt(c),n.dispatchEvent(new core.Event(GiftBoxEventType.updateGiftBox)),n.dispatchEvent(new core.Event(TravelEventType.addPicture));
+              break
+            }r()
+          }
+        }),o)
+      };
+      r()
+    };
+    core.Time.dayCheck("gift_to_album")?core.DisplayManage.getInstance().getNoticeLayer().addChild(new ModalConfirm("确认放入相册?",function(){
+      r()
+    },function(){
+      i&&i()
+    },!1,"gift_to_album")):r()
+  },t.prototype.getSpecialtyList=function(){
+    return this.specialityList
+  },t.prototype.getPictureList=function(){
+    return this.pictureList
+  },t.prototype.isOpen=function(){
+    if(!this.isOpenCache){
+      var e=Tabikaeru.DataManager.instance().TravelFriendsDB.list(),t=[];
+      for(var i in e)t.push(e[i].visitOpen);
+      for(var n=this.getModel(TravelNoteModel).getNoteList(),r=0,o=n;
+      r<o.length;
+      r++){
+        var i=o[r];
+        t.indexOf(i.id)>=0&&(this.isOpenCache=!0)
+      }
+    }return this.isOpenCache
+  },t.prototype.travel_load_gift=function(e,t){
+    this.pictureList.source=Array.isArray(e.pictures)?e.pictures:[];
+    for(var i=Array.isArray(e.specialtys)?e.specialtys:[],n=i.length-1;
+    n>=0;
+    n--){
+      var r=i[n].item_id,o=i[n].count;
+      if(o>1){
+        i.splice(n,1);
+        for(var a=0;
+        o>a;
+        a++)i.splice(n,0,{
+          item_id:r,count:1
+        })
+      }
+    }this.specialityList.source=i,this.specialityList.refresh(),this.pictureList.refresh(),this.dispatchEvent(new core.Event(GiftBoxEventType.updateGiftBox))
+  },t
+}(core.Model);
+__reflect(GiftBoxModel.prototype

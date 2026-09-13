@@ -1,0 +1,24 @@
+[
+ {
+  "CloverPoint": 500,
+  "id": 0,
+  "itemId": -1,
+  "itemStock": 0,
+  "mailEvt": 3,
+  "message": "",
+  "senderCharaId": -1,
+  "ticket": 0,
+  "title": "恭喜您完成教程！"
+ },
+ {
+  "CloverPoint": 0,
+  "id": 1,
+  "itemId": 1000,
+  "itemStock": 1,
+  "mailEvt": 3,
+  "message": "",
+  "senderCharaId": -1,
+  "ticket": 0,
+  "title": "请愉快继续游戏！"
+ }
+]

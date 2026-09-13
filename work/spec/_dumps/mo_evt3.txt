@@ -1,0 +1,23 @@
+ S=T.getGuestData();
+if(S&&S.id>=0&&!S.confirmed&&M&&"邻居"==M.Gameplay){
+Music.play("SE_Popup");
+var k=_("朋友来访"),P=new r;
+return void P.notify(c,n.Yellow_Friend,k,function(){
+T.sendGuestConfirmed();
+var e=core.ModelManage.getInstance().getModel(UserModel),t=core.ModelManage.getInstance().getModel(RoleModel);
+e.getClientSettings().hasFriendVisit?p():GuideHelpView.getInstance().show(_("{
+0}
+首次朋友来访",t.getNameEncode()),function(){
+e.setClientSettings("hasFriendVisit",!0),p()}
+,core.DisplayManage.getInstance().getNoticeLayer())}
+)}
+g=T.getFirstTravelEvent();
+var L=core.ModelManage.getInstance().getModel(TravelModel).getFirstVisitPictureInfo();
+if(L){
+Music.play("SE_Popup");
+var x=new i(L);
+return x.addEventListener(egret.Event.REMOVED_FROM_STAGE,function(){
+t(c,l,!0,u)}
+,null),void c.addChild(x)}
+var D=function(t){
+v

@@ -1,0 +1,13 @@
+var TravelNoteController=function(e){
+  function t(){
+    return e.call(this)||this
+  }return __extends(t,e),t.prototype.destroy=function(){
+    this.close(),this.view=null,e.prototype.destroy.call(this)
+  },t.prototype.open=function(){
+    var e=!1;
+    this.getModel(TravelNoteModel).loadNote(),null==this.view&&(e=!0,this.view=new TravelNoteView),this.getParent().addChild(this.view)
+  },t.prototype.close=function(){
+    null!=this.view&&this.view.parent&&(this.view.parent.removeChild(this.view),this.view=null),this.getModel(UserModel).getClientSettings().guideNote||this.dispatchEvent(new core.Event(TravelNoteEventType.checkNoteGuide))
+  },t
+}(core.ViewController);
+__reflect(TravelNoteController.prototype

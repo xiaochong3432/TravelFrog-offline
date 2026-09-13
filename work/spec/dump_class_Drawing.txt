@@ -1,0 +1,6 @@
+var DrawingEventType=function(){
+  function e(){
+    
+  }return e.UPDATE="DrawingEventType.UPDATE",e.ITEM_CHANGE="DrawingEventType.ITEM_CHANGE",e
+}();
+__reflect(DrawingEventType.prototype

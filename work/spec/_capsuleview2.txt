@@ -1,0 +1,15 @@
+e){
+core.DisplayManage.getInstance().popup(new CapsuleTaskView(e))}
+,t.prototype.setGiftItems=function(e){
+this.giftItems=e}
+,t.prototype.onReward=function(e){
+var t=this,i=Tabikaeru.DataManager.instance().capsuleData.get("reward")[e.toString()];
+egret.Tween.get(this.btnTwist).to({
+rotation:90}
+,400).call(function(){
+t.imageDrop.source="capsule_type_"+i.type+"_png",t.imageDrop.verticalCenter=20,egret.Tween.get(t.imageDrop).to({
+verticalCenter:105}
+,500,egret.Ease.bounceOut).to({
+rotation:-15}
+,100).to({
+rotat

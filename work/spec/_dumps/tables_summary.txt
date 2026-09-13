@@ -1,0 +1,60 @@
+### Item: 410 entries
+keys: {'info': 410, 'sub_type': 410, 'name': 410, 'img': 410, 'price': 410, 'own_num': 410, 'spend': 410, 'type': 410, 'id': 410}
+type histogram: {0: 91, 1: 55, 2: 12, 3: 64, 5: 12, 7: 2, 8: 5, 9: 3, 10: 7, 11: 11, 12: 15, 13: 30, 14: 83, 15: 17, 16: 3}
+-- type 0: 91 entries, ids [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+     {"info": "只能拿来垫垫肚子的点心 闲逛时候的随身零食", "sub_type": "", "name": "奶油华夫饼", "img": {"index": "goods_4", "src": "Icon/goods"}, "price": 10, "own_num": "", "spend": 1, "type": 0, "id": 0}
+     {"info": "刚好可以吃饱的卷饼小吃 短途观光的美味餐点", "sub_type": "", "name": "草莓可丽饼", "img": {"index": "goods_2", "src": "Icon/goods"}, "price": 30, "own_num": "", "spend": 1, "type": 0, "id": 1}
+     {"info": "分量相当充足的夹心面包 出门远行的最佳选择", "sub_type": "", "name": "沙拉皮塔饼", "img": {"index": "goods_3", "src": "Icon/goods"}, "price": 50, "own_num": "", "spend": 1, "type": 0, "id": 2}
+-- type 1: 55 entries, ids [1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012, 1013, 1014, 1015, 1016, 1017, 1018, 1019]
+     {"info": "稀有的四叶草 据说会带来好运哦", "sub_type": "", "name": "四叶草", "img": {"index": "goods_8", "src": "Icon/goods"}, "price": 0, "own_num": "", "spend": 1, "type": 1, "id": 1000}
+     {"info": "看上去很像锦鲤的玉佩 听说可以带来好运", "sub_type": "", "name": "玉佩", "img": {"index": "goods_7", "src": "Icon/goods"}, "price": 3000, "own_num": 1, "spend": 0, "type": 1, "id": 1001}
+     {"info": "摇起来清脆作响的铃铛 往东走或许有好事发生", "sub_type": "", "name": "绿色铃铛", "img": {"index": "goods_22", "src": "Icon/goods"}, "price": 0, "own_num": "", "spend": 1, "type": 1, "id": 1002}
+-- type 2: 12 entries, ids [2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011]
+     {"info": "野外用来接水的简易竹筒 大热天也不怕中暑了", "sub_type": "", "name": "竹筒", "img": {"index": "item_4", "src": "Icon/item"}, "price": 300, "own_num": 1, "spend": 0, "type": 2, "id": 2000}
+     {"info": "农家小院里种植的天然葫芦 大热天也不怕中暑了", "sub_type": "", "name": "葫芦", "img": {"index": "item_5", "src": "Icon/item"}, "price": 450, "own_num": 1, "spend": 0, "type": 2, "id": 2001}
+     {"info": "户外用品店常见的迷彩水壶 大热天也不怕中暑了", "sub_type": "", "name": "水壶", "img": {"index": "item_6", "src": "Icon/item"}, "price": 750, "own_num": 1, "spend": 0, "type": 2, "id": 2002}
+-- type 3: 64 entries, ids [3000, 3001, 3002, 3003, 3004, 3005, 3006, 3007, 3008, 3009, 3010, 3011, 3012, 3013, 3014, 3015, 3016, 3017, 3018, 3019]
+     {"info": "奶香浓郁的甜品 薄薄的奶皮吹弹可破", "sub_type": "", "name": "双皮奶", "img": {"index": "collection_1", "src": "Icon/collection"}, "price": 0, "own_num": "", "spend": 1, "type": 3, "id": 3000}
+     {"info": "入口即化的豆腐乳 听说以前的皇帝都喜欢吃", "sub_type": "", "name": "豆腐乳", "img": {"index": "collection_2", "src": "Icon/collection"}, "price": 0, "own_num": "", "spend": 1, "type": 3, "id": 3001}
+     {"info": "产自西湖的传统名茶 散发着春日的清香", "sub_type": "", "name": "西湖龙井", "img": {"index": "collection_3", "src": "Icon/collection"}, "price": 0, "own_num": "", "spend": 1, "type": 3, "id": 3002}
+-- type 5: 12 entries, ids [5001, 5002, 5003, 5101, 5102, 5103, 5104, 5105, 5501, 5502, 5601, 5602]
+     {"info": "超值工具大礼包 内有多种工具", "sub_type": 1, "name": "工具套装", "img": {"index": "icon_gift_1", "src": "Icon/furniture"}, "price": "", "own_num": 1, "spend": 1, "type": 5, "id": 5001}
+     {"info": "超值材料大礼包 内有多种材料", "sub_type": 1, "name": "材料套装", "img": {"index": "icon_gift_2", "src": "Icon/furniture"}, "price": "", "own_num": 1, "spend": 1, "type": 5, "id": 5002}
+     {"info": "数量不少品种未知 看起来不止一种植物种子", "sub_type": 1, "name": "大袋种子", "img": {"index": "seed_random", "src": "icon/courtyard"}, "price": "", "own_num": "", "spend": 1, "type": 5, "id": 5003}
+-- type 14: 83 entries, ids [200000, 200001, 200002, 200003, 200004, 200005, 200006, 200007, 200008, 200009, 200010, 200011, 200012, 200013, 200014, 200015, 200016, 201001, 201002, 201003]
+     {"info": "必不可少 买这买那都要它", "sub_type": 1, "name": "三叶草", "img": {"index": "goods_40", "src": "Icon/goods"}, "price": "", "own_num": "", "spend": "", "type": 14, "id": 200000}
+     {"info": "积攒五张 就能去商店的转盘潇洒一回", "sub_type": 2, "name": "兑奖券", "img": {"index": "goods_41", "src": "Icon/goods"}, "price": "", "own_num": "", "spend": "", "type": 14, "id": 200001}
+     {"info": "跟随罗盘的指引 一起去冒险", "sub_type": 3, "name": "罗盘", "img": {"index": "goods_58", "src": "Icon/goods"}, "price": "", "own_num": "", "spend": "", "type": 14, "id": 200002}
+
+### Picture: 349
+type histogram: {'Normal': 39, 'Tools': 28, 'Goal': 151, 'Unique': 131}
+place histogram (top): [(None, 217), (4, 9), (29, 6), (1, 5), (2, 5), (7, 4), (14, 4), (19, 4), (24, 4), (30, 4), (31, 4), (32, 4)]
+view histogram: ['["{\\"x\\": 0, \\"y\\": 0}", 349]']  share: Counter({1: 151, 2: 75, None: 67, 3: 56})  effect non-empty: 24
+view example: {"x": 0, "y": 0}
+{"backImage": ["sky05", "cloud01", "bird", "mou_back03", "tree02", "tree01", "roof01"], "effect": "", "frogPos": {"x": 99, "y": -80}, "frogPos_s": {"x": 99, "y": -80}, "frogPose": "rnd_pose_roof1", "frogPose_s": "rnd_pose_roof1", "frontImage": [], "id": 100, "name": "back_n_roof1", "priority": true, "randomSet": true, "travelerPos": [{"x": 145, "y": -76}, {"x": 46, "y": -80}, {"x": 42, "y": -65}], "travelerPose": ["pose_roof1", "pose_roof1", "pose_roof1"], "type": "Normal", "view": {"x": 0, "y": 0}}
+{"backImage": ["sky05", "cloud01", "mou_back03", "roof01"], "effect": "", "frogPos": {"x": -27, "y": -88}, "frogPos_s": {"x": -138, "y": -89}, "frogPose": "rnd_pose_roof2", "frogPose_s": "rnd_pose_roof2", "frontImage": ["tree04", "tree03", "flower03"], "id": 101, "name": "back_n_roof2", "priority": false, "randomSet": true, "travelerPos": [{"x": -95, "y": -83}, {"x": -103, "y": -81}, {"x": -83, "y": -57}], "travelerPose": ["pose_roof2", "pose_roof2", "pose_roof2"], "type": "Normal", "view": {"x": 0, "y": 0}}
+first with place: {"backImage": ["back_g_beijing1"], "effect": "", "frogPos": {"x": -86, "y": -75}, "frogPos_s": {"x": -86, "y": -75}, "frogPose": "pose_beijing1", "frogPose_s": "pose_beijing1", "frontImage": [], "id": 2000, "name": "beijing1", "place": 1, "priority": false, "randomSet": false, "share": 1, "travelerPos": [{"x": 131, "y": -118}, {"x": 140, "y": -112}, {"x": 36, "y": -18}], "travelerPose": ["pose_beijing1", "pose_beijing1", "pose_beijing1"], "type": "Goal", "view": {"x": 0, "y": 0}}
+
+### Note: 191
+type 1: 137 ids, range 1000..1136
+type 2: 27 ids, range 2000..2026
+type None: 27 ids, range 20000..20260
+Own_Note: 27, ids 20000..20260
+
+### Word: 197, types Counter({1: 188, 2: 9})
+  0 {"id": 0, "img": {"index": "word_0", "src": "Scene/Note/Words"}, "type": 1}
+  1 {"id": 1, "img": {"index": "word_1", "src": "Scene/Note/Words"}, "type": 1}
+  2 {"id": 2, "img": {"index": "word_2", "src": "Scene/Note/Words"}, "type": 1}
+
+### Collection: 62, types Counter({1: 35, 3: 20, 2: 7})
+  {"id": 0, "img": {"index": "collection_11", "src": "Icon/collection"}, "info": "色彩浓郁的绣花摆台 鲜红的荔枝很有南国气息", "info2": "", "name": "绣花摆台", "place": "华南地区", "type": 1}
+  {"id": 1, "img": {"index": "collection_12", "src": "Icon/collection"}, "info": "小巧玲珑的手工绣球 带在身上说不定会招来桃花哦", "info2": "", "name": "绣球", "place": "华南地区", "type": 1}
+### resources: 1268 entries (resId -> path)
+  0 -> Picture/photo_frame
+  1 -> Picture/Normal/sky05
+  2 -> Picture/Normal/cloud01
+  3 -> Picture/Normal/sky05
+  4 -> Picture/Normal/cloud01
+  5 -> Picture/Normal/bird
+  100 -> Picture/Unique/u_alipay
+  200 -> Picture/Normal/field1_qw

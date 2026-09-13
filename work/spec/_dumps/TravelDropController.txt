@@ -1,0 +1,8 @@
+var TravelDropController=function(e){
+  function t(){
+    return e.call(this,TravelDropView)||this
+  }return __extends(t,e),t.prototype.open=function(){
+    e.prototype.open.call(this),this.view&&this.view.setData(this.getParam(0))
+  },t
+}(WindowController);
+__reflect(TravelDropController.prototype

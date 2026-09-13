@@ -1,0 +1,516 @@
+===== 'task_list'  hits=52 =====
+
+--- [84215] ---
+tManager.instance().setRedotValue(Tabikaeru.RedotType.ANNUAL_REVIEW,e)}
+,t}
+(core.Model);
+__reflect(AnnualReviewModel.prototype,"AnnualReviewModel");
+var CalendarModel=function(e){
+function t(){
+var t=null!==e&&e.apply(this,arguments)||this;
+return t.data={
+new_flag:[],note_list:[],lucky_days:{
+}
+,st_days:{
+}
+,task_list:[]}
+,t}
+return __extends(t,e),t.prototype.initModel=function(){
+this.addProtocolCallback("calendar_load","calendar_load_note","calendar_task_update")}
+,t.prototype.calendar_load=function(e){
+this.data.new_flag=Utils.convertArray(e.new_flag),this.data.task_list=Utils.convertArray(e.task_list);
+for(var t=Utils.convertArray(e.lucky_days),i=0;
+i<t.length;
+i++)this.data.lucky_days[t[i].day]=t[i].item_id;
+t=Utils.convertArray(e.st_days);
+for(var i=0;
+i<t.length;
+i++)this.data.st_days[t[i].day]=t[i].item_id;
+this.checkRedot()}
+,t.prototype.calendar_load_note=function(e){
+this.data.note_list=Utils.convertArray(e.list)}
+,t.prototype.calendar_task_update=function(e){
+e&&e.task&&(this.data.task_list[e.task.id-1]=e.task,this.checkRedot())}
+,t.prototype.req_beginer_reward=function(e){
+var t=this;
+core.SocketManage.getInstance().send("calendar_get_beginer_reward",new core.Action2(function(i){
+if(i.day>0){
+t.data.
+
+--- [84471] ---
+ag:[],note_list:[],lucky_days:{
+}
+,st_days:{
+}
+,task_list:[]}
+,t}
+return __extends(t,e),t.prototype.initModel=function(){
+this.addProtocolCallback("calendar_load","calendar_load_note","calendar_task_update")}
+,t.prototype.calendar_load=function(e){
+this.data.new_flag=Utils.convertArray(e.new_flag),this.data.task_list=Utils.convertArray(e.task_list);
+for(var t=Utils.convertArray(e.lucky_days),i=0;
+i<t.length;
+i++)this.data.lucky_days[t[i].day]=t[i].item_id;
+t=Utils.convertArray(e.st_days);
+for(var i=0;
+i<t.length;
+i++)this.data.st_days[t[i].day]=t[i].item_id;
+this.checkRedot()}
+,t.prototype.calendar_load_note=function(e){
+this.data.note_list=Utils.convertArray(e.list)}
+,t.prototype.calendar_task_update=function(e){
+e&&e.task&&(this.data.task_list[e.task.id-1]=e.task,this.checkRedot())}
+,t.prototype.req_beginer_reward=function(e){
+var t=this;
+core.SocketManage.getInstance().send("calendar_get_beginer_reward",new core.Action2(function(i){
+if(i.day>0){
+t.data.new_flag[i.day-1]=1;
+var n=Tabikaeru.DataManager.instance().calendarData.get("beginner"),r=[];
+r.push({
+item_id:n[i.day].item_id,count:n[i.day].num}
+),core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.ViewLayerType.NoticeLayer,null,r)
+
+--- [84502] ---
+}
+,st_days:{
+}
+,task_list:[]}
+,t}
+return __extends(t,e),t.prototype.initModel=function(){
+this.addProtocolCallback("calendar_load","calendar_load_note","calendar_task_update")}
+,t.prototype.calendar_load=function(e){
+this.data.new_flag=Utils.convertArray(e.new_flag),this.data.task_list=Utils.convertArray(e.task_list);
+for(var t=Utils.convertArray(e.lucky_days),i=0;
+i<t.length;
+i++)this.data.lucky_days[t[i].day]=t[i].item_id;
+t=Utils.convertArray(e.st_days);
+for(var i=0;
+i<t.length;
+i++)this.data.st_days[t[i].day]=t[i].item_id;
+this.checkRedot()}
+,t.prototype.calendar_load_note=function(e){
+this.data.note_list=Utils.convertArray(e.list)}
+,t.prototype.calendar_task_update=function(e){
+e&&e.task&&(this.data.task_list[e.task.id-1]=e.task,this.checkRedot())}
+,t.prototype.req_beginer_reward=function(e){
+var t=this;
+core.SocketManage.getInstance().send("calendar_get_beginer_reward",new core.Action2(function(i){
+if(i.day>0){
+t.data.new_flag[i.day-1]=1;
+var n=Tabikaeru.DataManager.instance().calendarData.get("beginner"),r=[];
+r.push({
+item_id:n[i.day].item_id,count:n[i.day].num}
+),core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.ViewLayerType.NoticeLayer,null,r),t.checkRedot(),e&&e.apply()}
+}
+)
+
+--- [84896] ---
+t[i].day]=t[i].item_id;
+t=Utils.convertArray(e.st_days);
+for(var i=0;
+i<t.length;
+i++)this.data.st_days[t[i].day]=t[i].item_id;
+this.checkRedot()}
+,t.prototype.calendar_load_note=function(e){
+this.data.note_list=Utils.convertArray(e.list)}
+,t.prototype.calendar_task_update=function(e){
+e&&e.task&&(this.data.task_list[e.task.id-1]=e.task,this.checkRedot())}
+,t.prototype.req_beginer_reward=function(e){
+var t=this;
+core.SocketManage.getInstance().send("calendar_get_beginer_reward",new core.Action2(function(i){
+if(i.day>0){
+t.data.new_flag[i.day-1]=1;
+var n=Tabikaeru.DataManager.instance().calendarData.get("beginner"),r=[];
+r.push({
+item_id:n[i.day].item_id,count:n[i.day].num}
+),core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.ViewLayerType.NoticeLayer,null,r),t.checkRedot(),e&&e.apply()}
+}
+))}
+,t.prototype.req_code_reward=function(e,t){
+var i=this;
+core.SocketManage.getInstance().send("calendar_get_code_reward",new core.Action2(function(e){
+if(e.day>0){
+i.data.new_flag[e.day-1]=1;
+var n=Tabikaeru.DataManager.instance().calendarData.get("beginner"),r=[];
+r.push({
+item_id:n[e.day].item_id,count:n[e.day].num}
+),core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.Vie
+
+--- [86218] ---
+&&core.SocketManage.getInstance().send("calendar_get_st_reward",new core.Action2(function(n){
+if(0==n.code){
+var r=[];
+r.push({
+item_id:i.data.st_days[e],count:1}
+),core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.ViewLayerType.NoticeLayer,null,r),i.data.st_days[e]=null,i.data.task_list[0].complete=!1,i.checkRedot(),t&&t.apply()}
+}
+))}
+,t.prototype.req_luck_reward=function(e,t){
+var i=this;
+this.data.lucky_days[e]&&core.SocketManage.getInstance().send("calendar_get_luck_reward",new core.Action2(function(n){
+if(0==n.code){
+var r=[];
+r.push({
+item_id:i.data.lucky_days[e],count:1}
+),core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.ViewLayerType.NoticeLayer,null,r),i.data.lucky_days[e]=null,i.checkRedot(),t&&t.apply()}
+}
+))}
+,t.prototype.checkRedot=function(){
+var e=0;
+this.canGetBeginnerReward()&&(e=1),this.canGetStReward()&&(e=1),this.canGetLuckyReward()&&(e=1),Tabikaeru.RedotManager.instance().setRedotValue(Tabikaeru.RedotType.REDOT_CALENDAR,e)}
+,t.prototype.canShowMainOutBtn=function(){
+if(this.getModel(RoleModel).getCreateDay()<=7)return!0;
+var e=new Date(1e3*core.Time.getServerTime()),t=e.getDate();
+if(this.data.lucky_days[t])return!0;
+for(var i in th
+
+--- [87392] ---
+])return!0;
+for(var i in this.data.st_days)if(t>=parseInt(i))return!0;
+return!1}
+,t.prototype.canGetBeginnerReward=function(){
+var e=this.getModel(RoleModel).getCreateDay();
+return e>this.data.new_flag.length||this.data.new_flag[e-1]>0?!1:!0}
+,t.prototype.canGetStReward=function(){
+for(var e=0;
+e<this.data.task_list.length;
+e++)if(!this.data.task_list[e].complete)return!1;
+return!0}
+,t.prototype.canGetLuckyReward=function(){
+var e=new Date(1e3*core.Time.getServerTime());
+return null!=this.data.lucky_days[e.getDate()]}
+,t.prototype.getMonthFirstWeek=function(){
+var e=new Date(1e3*core.Time.getServerTime());
+e.setDate(1);
+var t=e.getDay();
+return 0==t&&(t=7),t}
+,t.prototype.getMonthMaxDay=function(){
+var e=new Date(1e3*core.Time.getServerTime()),t=e.getFullYear(),i=e.getMonth()+1;
+12==i&&(t++,i=0),e.setFullYear(t),e.setMonth(i,1);
+var n=e.getTime()-864e5;
+return e.setTime(n),e.getDate()}
+,t.prototype.checkBeginnerCode=function(e){
+var t=Tabikaeru.DataManager.instance().calendarData.get("beginner");
+for(var i in t)if(t[i].code==e)return this.data.new_flag[t[i].id-1]>0?(GuideHelpView.getInstance().show("该礼包已经领取过了",null,core.DisplayManage.getInstance().getPopupLayer()),!0):this.getModel(RoleModel).getCreateDay()
+
+##########################################################################################
+### literal "list_type"  hits=5
+##########################################################################################
+
+--- [129239] ---
+edot("GUIDE_TASK_LIST",a),Tabikaeru.RedotManager.instance().addRedot("GUIDE_TASK",new ValueBroadCastNodeContainer(i))}
+for(var s=0,c=this.data;
+s<c.length;
+s++){
+var r=c[s],l=e[r.id];
+l&&0==r.is_reward&&r.pro>=l.count&&(t[l.type]=t[l.type]?t[l.type]+1:1)}
+var h=Tabikaeru.DataManager.instance().TaskDB.get("list_type");
+for(var r in h){
+for(var u=this.getCompleteListNum(Number(r)),p=0,d=0,g=h[r].target;
+d<g.length;
+d++){
+var f=g[d];
+u>=f&&p++}
+if(p>(this.dataReward[r]||0)){
+t[100]=1;
+break}
+}
+for(var r in this.redotMap)Tabikaeru.RedotManager.instance().setRedotValue(this.redotMap[r],t[r]||0)}
+,t}
+(core.Model);
+__reflect(GuideTaskModel.prototype,"GuideTaskModel");
+var HandCraftModel=function(e){
+function t(){
+var t=e.call(this)||this;
+return t.prayCraftList=[],t.stampCraftList=[],t.boxCraftList=[],t.makingPrayCraftConfirmed=!1,t.makingStampCraftConfirmed=!1,t}
+return __extends(t,e),t.prototype.initModel=function(){
+this.addProtocolCallback("pray_load_grays")}
+,t.prototype.loadPrayCraftList=function(){
+}
+,t.prototype.loadStampCraftList=function(){
+}
+,t.prototype.onNewStampCraft=function(){
+this.updateRedot()}
+,t.prototype.comfrimNewStampCraft=function(){
+this.makingStampCraftConfirmed=!0;
+var e=this.getMakingStampCraft(
+
+--- [725356] ---
+prototype.childrenCreated=function(){
+e.prototype.childrenCreated.call(this),this.curIndex--,this.cover.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this),this.list.itemRenderer=GuideTaskListPageItem;
+var t=this.getModel(GuideTaskModel).dataList,i=Tabikaeru.DataManager.instance().TaskDB.get("list_type"),n=[];
+for(var r in i){
+var o=100*Number(r)+1;
+null!=t[o]&&n.push(Number(r))}
+Utils.setArrayCollection(this.list,n),this.scroller.scrollTo(this.curIndex)}
+,t.prototype.close=function(){
+Music.play("SE_Cancel"),this.parent.removeChild(this)}
+,t}
+(core.UIView);
+__reflect(GuideTaskListView.prototype,"GuideTaskListView");
+var GuideTaskListPageItem=function(e){
+function t(){
+var t=null!==e&&e.apply(this,arguments)||this;
+return t.imagePoint=[],t.lbPoint=[],t.getItemId=0,t}
+return __extends(t,e),t.prototype.childrenCreated=function(){
+var e=egret.Tween.get(this.groupReward,{
+loop:!0}
+);
+e.to({
+scaleX:1.1,scaleY:1.1}
+,1500),e.to({
+scaleX:1,scaleY:1}
+,1500)}
+,t.prototype.dataChanged=function(){
+var t=this;
+e.prototype.dataChanged.call(this);
+var i=Tabikaeru.DataManager.instance().TaskDB.get("list_type"),n=core.ModelManage.getInstance().getModel(GuideTaskModel).dataList,r=i[this.data];
+this.lbTitle.text=r.name,
+
+--- [726136] ---
+extends(t,e),t.prototype.childrenCreated=function(){
+var e=egret.Tween.get(this.groupReward,{
+loop:!0}
+);
+e.to({
+scaleX:1.1,scaleY:1.1}
+,1500),e.to({
+scaleX:1,scaleY:1}
+,1500)}
+,t.prototype.dataChanged=function(){
+var t=this;
+e.prototype.dataChanged.call(this);
+var i=Tabikaeru.DataManager.instance().TaskDB.get("list_type"),n=core.ModelManage.getInstance().getModel(GuideTaskModel).dataList,r=i[this.data];
+this.lbTitle.text=r.name,this.btnReward.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+var e=core.ModelManage.getInstance().getModel(GuideTaskModel).getNextListReward(t.data);
+core.ModelManage.getInstance().getModel(GuideTaskModel).req_list_reward(t.data,e,new core.Action(function(){
+core.PageManage.getInstance().addViewControl(ItemRewardViewControl,core.ViewLayerType.WindowLayer,null,[{
+item_id:t.getItemId,count:1}
+]),t.updateReward()}
+))}
+,this),this.listTask.itemRenderer=GuideTaskListItem;
+var o=Tabikaeru.DataManager.instance().TaskDB.get("list_map"),a=[],s=0;
+for(var c in o){
+var l=o[c];
+l.type==this.data&&(l.pro=n[l.id],a.push(l),l.pro>=l.count&&s++)}
+Utils.setArrayCollection(this.listTask,a),this.imagePoint=[];
+for(var h=r.target.length>3?53:80,c=0;
+6>c;
+c++){
+var u=this.groupPoint.getChildAt(c)
+
+--- [727526] ---
+=this.groupPoint.getChildAt(c),d=c-6;
+p.text=d<r.target.length?r.target[d].toString():"",p.visible&&(p.horizontalCenter=-180+h*d,this.lbPoint.push(p))}
+this.imageLine.width=h*(r.target.length-1),this.updateReward()}
+,t.prototype.updateReward=function(){
+var e=Tabikaeru.DataManager.instance().TaskDB.get("list_type")[this.data],t=core.ModelManage.getInstance().getModel(GuideTaskModel).getNextListReward(this.data);
+if(this.imagePoint[t]&&"goal_on_png"==this.imagePoint[t].source){
+this.groupReward.visible=!0,this.groupReward.x=this.imagePoint[t].horizontalCenter+207,this.getItemId=e.reward[t];
+var i=Tabikaeru.DataManager.instance().ItemDB.get(this.getItemId);
+this.imageReward.source=Tabikaeru.path.formatPathImage(i.img)}
+else this.groupReward.visible=!1;
+if(t>=e.target.length)this.imageShow.source="pic_alldone_png",this.imageShow.width=68,this.imageShow.height=51,this.imageTips.source="text_alldone_png";
+else{
+var n=this.groupReward.visible?t+1:t;
+if(this.imageTips.source=e.reward[n]?"text_next_reward_png":"",this.imageShow.source="",e.reward[n]){
+var i=Tabikaeru.DataManager.instance().ItemDB.get(e.reward[n]);
+this.imageShow.source=Tabikaeru.path.formatPathImage(i.img),this.imageShow.width=this.image
+
+--- [733566] ---
+300,egret.Ease.sineIn).call(function(){
+e.lbList.text=t.title,egret.Tween.get(e.lbList).to({
+alpha:1}
+,300,egret.Ease.sineOut)}
+)}
+,t.prototype.onListTap=function(){
+var e=1,t=(core.ModelManage.getInstance().getModel(GuideTaskModel).getNextListReward(this.data),Tabikaeru.DataManager.instance().TaskDB.get("list_type"));
+for(var i in t){
+var n=core.ModelManage.getInstance().getModel(GuideTaskModel).getNextListReward(Number(i));
+if(n>=t[i].target.length){
+e=Number(i);
+break}
+}
+core.DisplayManage.getInstance().windowLayer.addChild(new GuideTaskListView(e))}
+,t.prototype.onTaskTap=function(e,t){
+var i=Tabikaeru.DataManager.instance().TaskDB.get("task_type")[e];
+i.lockList=this.lockMap[e];
+var n=this.typeMap[e];
+n&&this.lockMap[e][t]?core.PageManage.getInstance().addViewControl(GuideTaskDetailViewControl,core.ViewLayerType.WindowLayer,null,n,i):core.DisplayManage.getInstance().windowLayer.addChild(new GuideTaskLockView(i)),this.updateLock()}
+,t.prototype.update=function(){
+var e=this.getModel(GuideTaskModel).dataList,t=Tabikaeru.DataManager.instance().TaskDB.get("list_map");
+for(var i in e){
+var n=t[i];
+e[i]<n.count&&this.listToDo.push(Number(i))}
+var r=this.getModel(GuideTaskModel).data;
+this.typeMap={
+}
+;
+for(var
+
+
+##########################################################################################
+### literal "drawingPageData"  hits=1
+##########################################################################################
+
+--- [406917] ---
+"cookingData","month"),this.CookingTaskDB=i("cookingTaskData"),this.ShopDataDB=i("shopData"),this.GoalNumberDB=i("GoalNumber"),this.MuseumDB=i("museumData"),this.FurnitureDB=i("furnitureData"),this.FurnitureShopDB=i("furnitureShopData"),this.FurnitureCommonDB=i("furnitureCommon"),this.DrawingPage=i("drawingPageData"),this.DrawingCollect=i("drawingCollectData"),this.DrawingCommon=i("drawingCommonData"),this.MuseumDayDescData=t("museumDayDesc"),this.MuseumDayCommonData=t("museumDayCommon"),this.MuseumDayData=t("museumDayData"),this.TumblerData=i("tumblerData"),this.TumblerPathData=i("tumblerPathData"),this.BenchData=i("benchData"),this.GuideTaskData=i("benchData"),this.FlowerData=t("flowerData"),this.CompostData=t("compostData"),this.TaskDB=t("taskData"),this.pocketData=t("pocketData"),this.pocketCommonData=t("pocketCommonData"),this.greetCardData=t("greetCard"),this.capsuleData=t("capsuleData"),this.partycakeData=t("PartyCakeData"),this.springCardData=t("springCard"),this.flowerpotData=t("flowerpotData"),this.encyData=t("encyclopedia"),this.lotteryData=t("lotteryData"),this.momentData=t("momentData"),this.calendarData=t("calendarData"),this.animPictureData=t("animpictureData")}
+retur
+
+
+##########################################################################################
+### literal "beginner"  hits=5
+##########################################################################################
+
+--- [85191] ---
+data.task_list[e.task.id-1]=e.task,this.checkRedot())}
+,t.prototype.req_beginer_reward=function(e){
+var t=this;
+core.SocketManage.getInstance().send("calendar_get_beginer_reward",new core.Action2(function(i){
+if(i.day>0){
+t.data.new_flag[i.day-1]=1;
+var n=Tabikaeru.DataManager.instance().calendarData.get("beginner"),r=[];
+r.push({
+item_id:n[i.day].item_id,count:n[i.day].num}
+),core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.ViewLayerType.NoticeLayer,null,r),t.checkRedot(),e&&e.apply()}
+}
+))}
+,t.prototype.req_code_reward=function(e,t){
+var i=this;
+core.SocketManage.getInstance().send("calendar_get_code_reward",new core.Action2(function(e){
+if(e.day>0){
+i.data.new_flag[e.day-1]=1;
+var n=Tabikaeru.DataManager.instance().calendarData.get("beginner"),r=[];
+r.push({
+item_id:n[e.day].item_id,count:n[e.day].num}
+),core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.ViewLayerType.NoticeLayer,null,r),t&&t.apply()}
+}
+),e)}
+,t.prototype.req_st_reward=function(e,t){
+var i=this;
+this.data.st_days[e]&&core.SocketManage.getInstance().send("calendar_get_st_reward",new core.Action2(function(n){
+if(0==n.code){
+var r=[];
+r.push({
+item_id:i.data.st_days[e],count:1}
+),core.PageMana
+
+--- [85646] ---
+rType.NoticeLayer,null,r),t.checkRedot(),e&&e.apply()}
+}
+))}
+,t.prototype.req_code_reward=function(e,t){
+var i=this;
+core.SocketManage.getInstance().send("calendar_get_code_reward",new core.Action2(function(e){
+if(e.day>0){
+i.data.new_flag[e.day-1]=1;
+var n=Tabikaeru.DataManager.instance().calendarData.get("beginner"),r=[];
+r.push({
+item_id:n[e.day].item_id,count:n[e.day].num}
+),core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.ViewLayerType.NoticeLayer,null,r),t&&t.apply()}
+}
+),e)}
+,t.prototype.req_st_reward=function(e,t){
+var i=this;
+this.data.st_days[e]&&core.SocketManage.getInstance().send("calendar_get_st_reward",new core.Action2(function(n){
+if(0==n.code){
+var r=[];
+r.push({
+item_id:i.data.st_days[e],count:1}
+),core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.ViewLayerType.NoticeLayer,null,r),i.data.st_days[e]=null,i.data.task_list[0].complete=!1,i.checkRedot(),t&&t.apply()}
+}
+))}
+,t.prototype.req_luck_reward=function(e,t){
+var i=this;
+this.data.lucky_days[e]&&core.SocketManage.getInstance().send("calendar_get_luck_reward",new core.Action2(function(n){
+if(0==n.code){
+var r=[];
+r.push({
+item_id:i.data.lucky_days[e],count:1}
+),core.PageManage.getInstance()
+
+--- [88066] ---
+ay=function(){
+var e=new Date(1e3*core.Time.getServerTime()),t=e.getFullYear(),i=e.getMonth()+1;
+12==i&&(t++,i=0),e.setFullYear(t),e.setMonth(i,1);
+var n=e.getTime()-864e5;
+return e.setTime(n),e.getDate()}
+,t.prototype.checkBeginnerCode=function(e){
+var t=Tabikaeru.DataManager.instance().calendarData.get("beginner");
+for(var i in t)if(t[i].code==e)return this.data.new_flag[t[i].id-1]>0?(GuideHelpView.getInstance().show("该礼包已经领取过了",null,core.DisplayManage.getInstance().getPopupLayer()),!0):this.getModel(RoleModel).getCreateDay()<=7?(GuideHelpView.getInstance().show("新呱同乐礼还在准备中，暂时不可领取",null,core.DisplayManage.getInstance().getPopupLayer()),!0):(this.req_code_reward(t[i].id),!0);
+return!1}
+,t}
+(core.Model);
+__reflect(CalendarModel.prototype,"CalendarModel");
+var CapsuleEventType=function(){
+function e(){
+}
+return e.LOAD="CapsuleEventType_load",e.DATA_CHANGE="CapsuleEventType_data_change",e}
+();
+__reflect(CapsuleEventType.prototype,"CapsuleEventType");
+var CapsuleModel=function(e){
+function t(){
+var t=null!==e&&e.apply(this,arguments)||this;
+return t.data={
+end_time:0,coin:0,pre_coin:0,reward_list:[],task_list:[],patch_num:0}
+,t}
+return __extends(t,e),t.prototype.initModel=function(){
+this.addProtocolCallback(
+
+--- [526960] ---
+(i.getMonth()+1<10?"0":"")+(i.getMonth()+1)+"月"+((i.getDate()<10?"0":"")+i.getDate())+"日";
+this.lbTime.text=r,this.lbYear.text=i.getFullYear()+"年",this.data=this.getModel(CalendarModel).data;
+var o=this.data.note_list[this.day-1];
+if(n==this.day){
+var a=Tabikaeru.DataManager.instance().calendarData.get("beginner"),s=this.getModel(RoleModel).getCreateDay();
+a[s]&&(o=a[s].note_id,this.codeText=a[s].code,this.imageTips.visible=!0)}
+for(var c=Tabikaeru.DataManager.instance().calendarData.get("note")[o],l=c.pic+"_png",h={
+left:egret.HorizontalAlign.LEFT,right:egret.HorizontalAlign.RIGHT,middle:egret.HorizontalAlign.CENTER}
+,u=0;
+u<c.desc_list.length;
+u++){
+var p=c.desc_list[u],d=this.groupText.getChildAt(u);
+d.text=p.desc,d.textAlign=h[p.align]}
+this.lbAuthor.text=c.author;
+var g=this.data.st_days[this.day];
+if(!this.imageTips.visible&&g){
+this.groupText.visible=!1,this.groupTask.visible=!0;
+for(var f=["观看广告或完成分享（{
+0}
+/1）","累计获得三叶草（{
+0}
+/30）","商店抽奖兑换奖品（{
+0}
+/1）"],u=0;
+3>u;
+u++){
+var v=this.data.task_list[u],d=this.groupTask.getChildAt(u);
+d.text=_(f[u],v.pro),d.textColor=v.complete?12046423:5528908;
+var y=this.groupTask.getChildAt(u+3);
+y.source=v.complete?"calendar_task_done_png":"calendar_task_list_png"}
+var m=Tab
+
+--- [530417] ---
+Layer)||this}
+return __extends(t,e),t.prototype.childrenCreated=function(){
+var t=this;
+e.prototype.childrenCreated.call(this),this.cover.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this),this.data=this.getModel(CalendarModel).data;
+var i=Tabikaeru.DataManager.instance().calendarData,n=i.get("beginner"),r=this.getModel(RoleModel).getCreateDay(),o=new Date(1e3*core.Time.getServerTime()),a=i.get("month")[o.getMonth()+1];
+this.imagePic.source=a.pic+"_png";
+var s=o.getDate(),c=this.getModel(CalendarModel).getMonthFirstWeek()-1,l=this.getModel(CalendarModel).getMonthMaxDay();
+this.imageList=[];
+for(var h=function(e){
+var i=u.groupDay.getChildAt(e);
+if(e>=c&&c+l>e){
+u.imageList.push(i);
+var o=u.imageList.length;
+o>s&&r++;
+var a=void 0,h=void 0;
+o>=s&&n[r]?(a=n[r].item_id,s==o&&u.getModel(CalendarModel).canGetBeginnerReward()&&(h=!0)):u.data.st_days[o]?(a=u.data.st_days[o],a&&u.getModel(CalendarModel).canGetStReward()&&(h=!0)):u.data.lucky_days[o]&&(a=u.data.lucky_days[o],s==o&&u.getModel(CalendarModel).canGetLuckyReward()&&(h=!0),o>s&&(a=-1));
+var p;
+if(a){
+var d=new eui.Image;
+if(-1==a)d.source="calendar_icon_lucky_png";
+else{
+var g=Tabikaeru.DataManager.instance().ItemDB.get(a);
+d.source=Tabikaer

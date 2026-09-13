@@ -1,0 +1,34 @@
+iew.update_invite();
+break;
+case FurnitureEventType.UPDATE_TUMBER:this.view.update_tumber();
+break;
+case FurnitureEventType.UPDATE_COMPOST:this.view.update_compost();
+break;
+case FurnitureEventType.UPDATE_POCKET:this.view.update_pocket()}
+}
+,t.prototype.onReward=function(e){
+switch(e.type){
+case 1:core.PageManage.getInstance().addViewControl(RewardViewController,core.ViewLayerType.LoaderLayer,core.RemoveViewType.Retain,e);
+break;
+case 2:var t=e.resource;
+t.ads_id&&core.ModelManage.getInstance().getModel(AdsModel).promptNewAds(t.ads_id);
+break;
+default:core.Log.warning("奖励notify没有获取到有效类型 当前类型 type:"+e.type)}
+}
+,t.prototype.adsRewardNotify=function(e){
+e&&e.title&&e.title.length>this.rewardTitle.length&&e.title.substring(0,this.rewardTitle.length)==this.rewardTitle&&GuideHelpView.getInstance().show(_("感谢观看，请前往邮箱领取奖励！"),function(){
+Music.play("SE_Enter")}
+,core.DisplayManage.getInstance().getNoticeLayer())}
+,t}
+(core.ViewController);
+__reflect(MainOutController.prototype,"MainOutController");
+var MainOutView=function(e){
+function t(){
+var t=e.call(this,core.PathManage.getInstance().getSkinsPath("MainOut/MainOut.exml"))||this;
+t.hasFurnitureShop=!1,t.adsTimer=0,t.lotteryTimer=0,t.wishTimer=0,t.flowerpotList={
+}
+,t.plantList={
+}
+,t.guideTimeout=0,t.delayEventSystem=!1,t.eventSystemInit=!1,t.cameraVisibleRecord=[],t.flowerpotList[1]=t.flowerpot1,t.plantList[11]=new CloverView,t.plantList[12]=new CloverView;
+var i=new CloverInfo;
+return i.element=4,t.plantList[11].setInfo(i),t.plantList[12].setInfo(i),t.groupPot1.addChild(t.plantList[11]),t.groupPot1.addChild(t.plantList[12]),t.groupPot1.addEventListener(egret.TouchEvent.TOUCH_BEGIN,t.flowerpotTouchEvents,t),t.groupPot1.addEventListener(egret.TouchEvent.TOUCH_MOVE,t.flowerpotTouchEvents,t),t.travelModel=t.getModel(TravelModel),t.userModel=t.getModel(UserModel),t.roleModel=t.getModel(RoleModel),t.visitorModel=t.getModel(VisitorModel),t.hoursType=t.getModel(WeatherModel).data.hours_type,t.seasonKey

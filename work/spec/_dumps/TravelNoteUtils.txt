@@ -1,0 +1,37 @@
+var TravelNoteUtils=function(){
+  function e(){
+    
+  }return e.convertContent2Textures=function(e){
+    for(var t=e.split(/[(\n\r)\n\r]/g).map(function(e){
+      return e.split(",")
+    }),i=Tabikaeru.DataManager.instance().TravelNoteWordDB,n=[],r=0,o=t;
+    r<o.length;
+    r++){
+      for(var a=o[r],s=[],c=0,l=a;
+      c<l.length;
+      c++){
+        var h=l[c],u=i.get(parseInt(h));
+        if(u){
+          var p=RES.getRes(Tabikaeru.path.formatPathImage(u.img));
+          p&&s.push(p)
+        }
+      }n.push(s)
+    }return n
+  },e.convertContent2Sources=function(e){
+    for(var t=e.split(/[(\n\r)\n\r]/g).map(function(e){
+      return e.split(",")
+    }),i=Tabikaeru.DataManager.instance().TravelNoteWordDB,n=[],r=0,o=t;
+    r<o.length;
+    r++){
+      for(var a=o[r],s=[],c=0,l=a;
+      c<l.length;
+      c++){
+        var h=l[c],u=i.get(parseInt(h));
+        u&&s.push({
+          source:Tabikaeru.path.formatPathImage(u.img),width:1==u.type?40:20
+        })
+      }n.push(s)
+    }return n
+  },e
+}();
+__reflect(TravelNoteUtils.prototype

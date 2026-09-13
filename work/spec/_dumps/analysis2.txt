@@ -1,0 +1,14 @@
+r=JSON.parse(n);
+if(e.String.isNullOrEmpty(r.cmd))if(null!=r.session){
+var o=this.activateProtocol[r.session];
+if(o){
+delete this.activateProtocol[r.session];
+var a=o.cmd.replace(".","_"),s=o.callbackFun;
+this.HasEventListener(a)||null!=s?(e.Log.print("处理协议："+a),this.HasEventListener(a)&&this.DispatchEvent(new e.Event(a,r.data,o.data)),s&&s.apply(r.data,o.data)):e.Log.warning("协议："+a+" 未定义回调函数，请确认该协议是否有效")}
+else e.Log.warning("协议编号："+r.session+" 不存在")}
+else e.Log.warning("返回协议失败，协议名未定义");
+else{
+var a=r.cmd.replace(".","_");
+this.HasEventListener(a)?this.DispatchEvent(new e.Event(a,r.data)):e.Log.warning("协议："+a+" 未定义回调函数，请确认该协议是否有效")}
+}
+else e.Log.error("返回协议解析数据未定

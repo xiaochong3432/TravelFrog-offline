@@ -1,0 +1,23 @@
+var GiftBoxController=function(e){
+  function t(){
+    return e.call(this)||this
+  }return __extends(t,e),t.prototype.destroy=function(){
+    this.close(),this.view=null,e.prototype.destroy.call(this)
+  },t.prototype.open=function(){
+    this.addEventListeners(this.totalCustomEvents,this,GiftBoxEventType.updateGiftBox);
+    var e=!1;
+    null==this.view&&(e=!0,this.view=new GiftBoxView(this.getParam(0)),this.view.layer=this.getViewLayerType()),this.getParent().addChild(this.view),this.getModel(GiftBoxModel).requestData();
+    var t=this.getParam(0);
+    t&&t.pageIndex&&(this.view.c_typeGroup.selectedIndex=t.pageIndex)
+  },t.prototype.close=function(){
+    this.removeEventListeners(this.totalCustomEvents),null!=this.view&&this.view.parent&&(this.view.parent.removeChild(this.view),this.view=null)
+  },t.prototype.totalCustomEvents=function(e){
+    if(this.view){
+      var t=e.getEventType();
+      switch(t){
+        case GiftBoxEventType.updateGiftBox:this.view.update()
+      }
+    }
+  },t
+}(core.ViewController);
+__reflect(GiftBoxController.prototype

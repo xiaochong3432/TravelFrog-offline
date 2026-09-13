@@ -1,0 +1,56 @@
+chars 404700..405760
+
+ar s=function(e){
+function t(){
+return null!==e&&e.apply(this,arguments)||this}
+return __extends(t,e),t.prototype.getItem=function(e){
+for(var t=0,i=this.src;
+t<i.length;
+t++){
+var n=i[t];
+if(n.itemId===e)return n}
+}
+,t}
+(a);
+__reflect(s.prototype,"ItemGetter");
+var c=function(e){
+function t(){
+return null!==e&&e.apply(this,arguments)||this}
+return __extends(t,e),t.prototype.getName=function(e){
+for(var t=0,i=this.src;
+t<i.length;
+t++){
+var n=i[t];
+if(n.name===e)return n}
+}
+,t}
+(a);
+__reflect(c.prototype,"NameGetter");
+var l=function(e){
+function t(t,i,n){
+var r=e.call(this,t,i)||this;
+return r.key=n,r}
+return __extends(t,e),t.prototype.getName=function(e){
+for(var t=0,i=this.src;
+t<i.length;
+t++){
+var n=i[t];
+if(n[this.key]===e)return n}
+}
+,t}
+(a);
+__reflect(l.prototype,"KeyNameGetter");
+var h=function(){
+function e(e){
+this["const"]=e["const"],this.story=e.story}
+return e.prototype.getStory=function(e){
+for(var t=0;
+t<this.story.length;
+t++)if(this.story[t].storyid==e)return this.story[t];
+return null}
+,e}
+();
+__reflect(h.prototype,"StoryInfo");
+var u=function(){
+function e(){
+var e=RES.getRes(

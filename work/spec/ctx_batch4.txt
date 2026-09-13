@@ -1,0 +1,107 @@
+===== 'GoalNumber'  hits=6 =====
+
+--- [406715] ---
+icture"),this.PictureTagDB=i("PictureTag"),this.TravelNoteDB=i("Note"),this.TravelNoteWordDB=i("Word"),this.TravelFriendsDB=i("TravelFriends"),this.PrayCraftDB=i("prayData"),this.PrayCraftBodyDB=i("prayBodyData"),this.PrayCraftNoteDB=i("prayNoteData"),this.StampCraftDB=i("stampData"),this.CookingDB=i("cookingData","month"),this.CookingTaskDB=i("cookingTaskData"),this.ShopDataDB=i("shopData"),this.GoalNumberDB=i("GoalNumber"),this.MuseumDB=i("museumData"),this.FurnitureDB=i("furnitureData"),this.FurnitureShopDB=i("furnitureShopData"),this.FurnitureCommonDB=i("furnitureCommon"),this.DrawingPage=i("drawingPageData"),this.DrawingCollect=i("drawingCollectData"),this.DrawingCommon=i("drawingCommonData"),this.MuseumDayDescData=t("museumDayDesc"),this.MuseumDayCommonData=t("museumDayCommon"),this.
+
+--- [406731] ---
+ctureTagDB=i("PictureTag"),this.TravelNoteDB=i("Note"),this.TravelNoteWordDB=i("Word"),this.TravelFriendsDB=i("TravelFriends"),this.PrayCraftDB=i("prayData"),this.PrayCraftBodyDB=i("prayBodyData"),this.PrayCraftNoteDB=i("prayNoteData"),this.StampCraftDB=i("stampData"),this.CookingDB=i("cookingData","month"),this.CookingTaskDB=i("cookingTaskData"),this.ShopDataDB=i("shopData"),this.GoalNumberDB=i("GoalNumber"),this.MuseumDB=i("museumData"),this.FurnitureDB=i("furnitureData"),this.FurnitureShopDB=i("furnitureShopData"),this.FurnitureCommonDB=i("furnitureCommon"),this.DrawingPage=i("drawingPageData"),this.DrawingCollect=i("drawingCollectData"),this.DrawingCommon=i("drawingCommonData"),this.MuseumDayDescData=t("museumDayDesc"),this.MuseumDayCommonData=t("museumDayCommon"),this.MuseumDayData=t(
+
+--- [1125802] ---
+=!0||1===s||s.has_installed&&s.has_share_infos)&&a.push(SharePlatformType.sinaWeibo),f.label=4;
+case 4:return c=this.getModel(UserModel).getMomentToken(),i[n]={
+startupData:{
+moment_token:c,support_platforms:a}
+}
+,l=BaseChannel.getInstance().openWebView(),this.viewView=l,l&&e&&(h=e+(-1==e.indexOf("?")?"?":"&")+"mToken="+c,t&&"bbsDetail"==t.action&&(u="",p="",t.city&&(d=Tabikaeru.DataManager.instance().GoalNumberDB.get(t.city),d&&(u=d.tag,p=d.name)),h+="&action=bbsDetail&city="+u+"&city_name="+encodeURI(p)),this.viewView.open(h,i,{
+hide_close_btn:!1,compactMode:!0,use_fragment:!0}
+),this.viewView.onEvent.add(this.onWebViewEvent,this),this.viewView.onClose.add(function(){
+core.PageManage.getInstance().removeControl(TravelMapController,core.ViewLayerType.WindowLayer),g.viewView=null}
+,this)),[2]}
+}
+)}
+)}
+
+
+--- [1126768] ---
+.close()}
+,t.prototype.onWebViewEvent=function(e){
+var t=this,i=e instanceof Array?e[0]:e;
+if(i&&i.args)switch(i.args.action){
+case"reload":NetworkControl.getInstance().webReload();
+break;
+case"exit":BaseChannel.getInstance().end({
+}
+);
+break;
+case"getPictureList":core.Log.print("!!收到webview消息:getPictureList");
+for(var n=this.getModel(TravelModel).getPictureInfoList(),r=[],o=Tabikaeru.DataManager.instance().GoalNumberDB,a=Tabikaeru.DataManager.instance().PictureDB,s=Tabikaeru.DataManager.instance().PictureTagDB.list(),c={
+}
+,l=0,h=s;
+l<h.length;
+l++)for(var u=h[l],p=0,d=u.picNames;
+p<d.length;
+p++){
+var g=d[p];
+c[g]=u}
+for(var f=0,v=n;
+f<v.length;
+f++){
+var u=v[f],_={
+id:u.id,city:"",city_name:""}
+,y=a.get(u.pic_id);
+if(y){
+var m=(y.name,(Number(y.place)||0)>>0),w=o.get(m);
+w&&(_.city=w.tag,_.city_name=w.name)}
+r.push
+
+--- [1134670] ---
+==!0||1===c||c.has_installed&&c.has_share_infos)&&s.push(SharePlatformType.sinaWeibo),v.label=4;
+case 4:return l=this.getModel(UserModel).getMomentToken(),n[r]={
+startupData:{
+moment_token:l,support_platforms:s}
+}
+,h=BaseChannel.getInstance().openWebView(),this.viewView=h,h&&e&&(u=e+(-1==e.indexOf("?")?"?":"&")+"state="+l,i&&"bbsDetail"==i.action&&(p="",d="",i.city&&(g=Tabikaeru.DataManager.instance().GoalNumberDB.get(i.city),g&&(p=g.tag,d=g.name)),u+="&action=bbsDetail&city="+p+"&city_name="+encodeURI(d)),console.log("!!!!"+u),this.viewView.open(u,n,{
+hide_close_btn:!0,compactMode:!0,use_fragment:!0}
+),this.viewView.onEvent.add(this.onWebViewEvent,this),this.viewView.onClose.add(function(){
+core.PageManage.getInstance().removeControl(t,core.ViewLayerType.WindowLayer),f.viewView=null}
+,this)),[2]}
+}
+
+
+--- [1135640] ---
+.close()}
+,t.prototype.onWebViewEvent=function(e){
+var t=this,i=e instanceof Array?e[0]:e;
+if(i&&i.args)switch(i.args.action){
+case"reload":NetworkControl.getInstance().webReload();
+break;
+case"exit":BaseChannel.getInstance().end({
+}
+);
+break;
+case"getPictureList":core.Log.print("!!收到webview消息:getPictureList");
+for(var n=this.getModel(TravelModel).getPictureInfoList(),r=[],o=Tabikaeru.DataManager.instance().GoalNumberDB,a=Tabikaeru.DataManager.instance().PictureDB,s=Tabikaeru.DataManager.instance().PictureTagDB.list(),c={
+}
+,l=0,h=s;
+l<h.length;
+l++)for(var u=h[l],p=0,d=u.picNames;
+p<d.length;
+p++){
+var g=d[p];
+c[g]=u}
+for(var f=0,v=n;
+f<v.length;
+f++){
+var u=v[f],_={
+id:u.id,city:"",city_name:""}
+,y=a.get(u.pic_id);
+if(y){
+var m=(y.name,(Number(y.place)||0)>>0),w=o.get(m);
+if(w&&(_.city=w.tag,_.city_name=w.name,w.ta
+
+##########################################################################################
+### literal "ticket"  hits=1
+##########################################################################################
+
+--- [377587] ---
+sh:[[],!1],album_load:[["start","count"],!0],album_load_all:[[],!0],album_load_by_id_list:[["id_list"],!0],album_load_new:[[],!0],album_load_recover:[[],!0],album_save_new:[["id"],!0],album_delete_new:[["id"],!0],album_delete:[["id"],!0],album_recover:[["id"],!0],mail_load_mails:[["start","count","is_clear"],!0],mail_load:[[],!0],mail_open:[["id"],!1],mail_read:[["id"],!1],mail_ejoy_active_code:[["ticket"],!0],story_load:[[],!0],story_send_gift:[["id","gift"],!1],story_feedback_gift:[["id"],!1],story_read_new_story:[[],!1],tutorial_step_open_door:[[],!1],tutorial_step_open_door_q:[[],!0],tutorial_step_ask_award:[[],!1],tutorial_step_ask_award_q:[[],!0],visit_load:[[],!0],visit_open:[[],!1],visit_set_expire_time:[["time"],!1],visit_set_carpet:[["id"],!1],rank_load:[["type","duration","start

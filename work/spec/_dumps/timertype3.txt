@@ -1,0 +1,12 @@
+IAL_FOURLEAF",e[e.FIRST_SHOW_DESK=2]="FIRST_SHOW_DESK",e[e.FIRST_BUY_TOOL=3]="FIRST_BUY_TOOL",e[e.FIRST_COME_FRIEND=4]="FIRST_COME_FRIEND",e[e.FIRST_RAFFLE_ROLL=5]="FIRST_RAFFLE_ROLL",e[e.FIRST_OPTION_DOZE=6]="FIRST_OPTION_DOZE",e[e._FlagMax=7]="_FlagMax"}
+(i=e.Flag||(e.Flag={
+}
+))}
+(Tutorial||(Tutorial={
+}
+));
+var TimerEvent;
+!function(e){
+var t;
+!function(e){
+e[e.NONE=0]="NONE",e[e.GoTravel=1]="GoTravel",e[e.BackHome=2]="BackHome",e[e.Picture=3]="Picture",e[e.Drift=4]="Drift",e[e.Return=5]="Return",e[e.Guest=6]="Guest",e[e.Gift=7]="Gift",e[e.Story=8]="Story",e[e.StoryGift=9]="StoryGift",e[e.StoryFeedback=10]="StoryFeedback",e[e.Visitor=11]="Visitor",e[e.Recharge=12]="Recharge",e[e.Decoration=13]="Decoration",e[e.AntiAddition=14]="AntiAddition",e[e.NewNote=15]="NewNote",e[e.VisitFriend=16]="VisitFriend",e[e.DropReward=17]="DropReward",e[e.Consume=18]="Consume",e[e.DriftBottle=19]="DriftBottle",e[e.MuseumMiss=20]="MuseumMiss",e[e.FurnitureFinish=2

@@ -1,0 +1,588 @@
+
+##########################################################################################
+### StoryData  raw-hits=7
+##########################################################################################
+
+===== [130976] owner HandCraftModel (start 129588, len 3298) =====
+var HandCraftModel=function(e){
+function t(){
+var t=e.call(this)||this;
+return t.prayCraftList=[],t.stampCraftList=[],t.boxCraftList=[],t.makingPrayCraftConfirmed=!1,t.makingStampCraftConfirmed=!1,t}
+return __extends(t,e),t.prototype.initModel=function(){
+this.addProtocolCallback("pray_load_grays")}
+,t.prototype.loadPrayCraftList=function(){
+}
+,t.prototype.loadStampCraftList=function(){
+}
+,t.prototype.onNewStampCraft=function(){
+this.updateRedot()}
+,t.prototype.comfrimNewStampCraft=function(){
+this.makingStampCraftConfirmed=!0;
+var e=this.getMakingStampCraft();
+e&&core.String.setCookie("redot_handcraft_stamp_new",String(e.time),9999),this.updateRedot()}
+,t.prototype.getMakingPrayCraft=function(){
+return this.makingPraycraft}
+,t.prototype.getMakingStampCraft=function(){
+return this.makingStampcraft}
+,t.prototype.getBoxCraft=function(){
+for(var e=[],t=0,i=this.boxCraftList;
+t<i.length;
+t++){
+var n=i[t];
+e.push(n)}
+return e}
+,t.prototype.onNewPrayCraft=function(){
+this.updateRedot()}
+,t.prototype.comfrimNewPrayCraft=function(){
+this.makingPrayCraftConfirmed=!0;
+var e=this.getMakingPrayCraft();
+e&&core.String.setCookie("redot_handcraft_pray_new",String(e.make_time),9999),this.updateRedot()}
+,t.prototype.getPrayCraftList=function(){
+return this.prayCraftList}
+,t.prototype.getStampCraftList=function(){
+return this.stampCraftList}
+,t.prototype.updateRedot=function(){
+var e=0,t=0,i=this.getModel(StoryModel).getStoryData(this.getModel(StoryModel).getNewStoryID());
+if(null==i){
+var n=this.getMakingStampCraft(),r=this.getMakingPrayCraft();
+n&&0==this.makingStampCraftConfirmed&&core.Time.getServerTime()>n.time?core.String.getCookie("redot_handcraft_stamp_new")!=String(n.time)&&(e=1):1==this.getModel(RoleModel).getFrogStatus()&&r&&0==this.makingPrayCraftConfirmed&&core.Time.getServerTime()>r.make_time&&core.String.getCookie("redot_handcraft_pray_new")!=String(r.make_time)&&(t=1)}
+Tabikaeru.RedotManager.instance().setRedotValue(Tabikaeru.RedotType.STAMP_CRAFT,e),Tabikaeru.RedotManager.instance().setRedotValue(Tabikaeru.RedotType.PRAY_CRAFT,t)}
+,t.prototype.updateComposeRedot=function(){
+var e=0,t=this.getModel(ItemModel).getHouseItemsByType(Tabikaeru.DataType.ItemType.COMPOSE);
+t.length>=3&&(e=1),Tabikaeru.RedotManager.instance().setRedotValue(Tabikaeru.RedotType.REDOT_COMPOSE,e)}
+,t.prototype.pray_load_grays=function(e,t){
+e&&(this.prayCraftList=Utils.convertArray(e.wishs),this.stampCraftList=Utils.convertArray(e.stamps),this.boxCraftList=Utils.convertArray(e.boxes),this.makingPraycraft=e.wish_new,this.makingStampcraft=e.stamp_new,this.updateRedot())}
+,t.prototype.confirm_make_box=function(){
+this.boxCraftList.length>0&&(this.boxCraftList=[],core.SocketManage.getInstance().send("pray_confirm_make_box"))}
+,t.prototype.req_compose=function(e,t){
+core.SocketManage.getInstance().send("pray_compose",new core.Action2(function(e){
+var i=Utils.convertArray(e.item_list);
+if(i.length>0){
+var n=function(){
+if(!(i.length<=0)){
+var e=i.shift(),t="获得物品，由勤劳蛙蛙手工拼成";
+core.PageManage.getInstance().addViewControl(ItemRewardViewControl,core.ViewLayerType.NoticeLayer,null,[{
+item_id:e,count:1}
+],n,t)}
+}
+;
+n()}
+t&&t.apply()}
+),e)}
+,t}
+(core.Model);
+__reflect(HandCraftModel.prototype,"HandCraftModel");
+var PrayCraftData=function(){
+function e(){
+}
+return e}
+();
+__reflect(Pr
+
+===== [188509] owner StoryData (start 188505, len 247) =====
+var StoryData=function(){
+function e(){
+this.id=0,this.partner=0,this.name="",this.gift=-1,this.feedback=-1}
+return e}
+();
+__reflect(StoryData.prototype,"StoryData");
+var StoryModel=function(e){
+function t(){
+var t=e.call(this)||this;
+return t.new
+[188633] (class StoryData already dumped)
+[188654] (class StoryData already dumped)
+
+===== [189177] owner StoryModel (start 188666, len 1355) =====
+var StoryModel=function(e){
+function t(){
+var t=e.call(this)||this;
+return t.newStoryID=0,t.storyList=[],t}
+return __extends(t,e),t.prototype.destroy=function(){
+e.prototype.destroy.call(this)}
+,t.prototype.initModel=function(){
+this.addProtocolCallback("story_load")}
+,t.prototype.clearData=function(){
+}
+,t.prototype.readNewStory=function(){
+0!=this.newStoryID&&(this.newStoryID=0,core.SocketManage.getInstance().send("story_read_new_story"))}
+,t.prototype.getNewStoryID=function(){
+return this.newStoryID}
+,t.prototype.getStoryData=function(e){
+for(var t=0;
+t<this.storyList.length;
+t++)if(this.storyList[t].id==e)return this.storyList[t];
+return null}
+,t.prototype.getStoryList=function(){
+return this.storyList}
+,t.prototype.getStoryInfo=function(e){
+return Tabikaeru.DataManager.instance().StoryDB.getStory(e)}
+,t.prototype.sendGift=function(e,t){
+for(var i,n=0;
+n<this.storyList.length;
+n++)if(i=this.storyList[n],i.id==e)return-1==i.gift&&this.getModel(ItemModel).consumeHouseItem(t,1)?(i.gift=t,core.SocketManage.getInstance().send("story_send_gift",null,e,t),!0):!1;
+return!1}
+,t.prototype.story_load=function(e,t){
+this.storyList=Array.isArray(e.stories)?e.stories:[],this.newStoryID=e.new_story_id||0}
+,t}
+(core.Model);
+__reflect(StoryModel.prototype,"StoryModel");
+var GuestData=function(){
+function e(e){
+if(this.id=-1,this.confirmed=!1,this
+
+===== [805314] owner MainInView (start 801635, len 28954) =====
+var MainInView=function(e){
+function t(){
+var t=e.call(this,core.PathManage.getInstance().getSkinsPath("MainIn/MainIn.exml"))||this;
+return t.curAnimName="",t.guideTimeout=0,t.cameraVisibleRecord=[],t.roleModel=t.getModel(RoleModel),t.userModel=t.getModel(UserModel),t.travelModel=t.getModel(TravelModel),t.storyModel=t.getModel(StoryModel),t.hoursType=t.getModel(WeatherModel).data.hours_type,t.addEventListener(egret.Event.RESIZE,t.on_resize,t),t}
+return __extends(t,e),t.prototype.childrenCreated=function(){
+e.prototype.childrenCreated.call(this),this.updateFurniture(),this.fs_25_3.addEventListener(egret.TouchEvent.TOUCH_BEGIN,this.onWindmillTouch,this)}
+,t.prototype.$onRemoveFromStage=function(){
+e.prototype.$onRemoveFromStage.call(this),this.stage.removeEventListener(egret.TouchEvent.TOUCH_END,this.onWindmillTouchEnd,this)}
+,t.prototype.center_scroller=function(){
+this.scroller.viewport.scrollH=.5*(854-this.width),this.guideGroup.scrollH=.5*(854-this.width)}
+,t.prototype.on_resize=function(){
+this.center_scroller()}
+,t.prototype.updateSafeTop=function(){
+e.prototype.updateSafeTop.call(this),this.menu&&(this.menu.top=this.safe_top)}
+,t.prototype.onComplete=function(){
+var e=this;
+this.payBtn.visible=this.getModel(UserModel).getShowPay(),this.center_scroller(),this.c_player_desk_mc.visible=!1,this.updateClover(),this.outBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+Music.play("SE_Move"),core.PageManage.getInstance().addViewControl(MainOutController,core.ViewLayerType.SceneLayer,core.RemoveViewType.HideBefore)}
+,this),this.shopBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+Music.play("SE_Move"),e.guideRoomIntroduceView&&e.guideRoomIntroduceView.parent&&(e.guideRoomIntroduceView.parent.removeChild(e.guideRoomIntroduceView),e.guideRoomIntroduceView=null),core.PageManage.getInstance().addViewControl(ShopController,core.ViewLayerType.WindowLayer,core.RemoveViewType.Retain)}
+,this),this.bagBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onTapBag,this),this.payBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+core.PageManage.getInstance().addViewControl(RechargeViewController,core.ViewLayerType.WindowLayer,core.RemoveViewType.HideBefore)}
+,this),this.lumberroom.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onTapLumberroom,this),this.btnCooking.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_cooking_tap,this),this.enterNoteBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onEnterNoteBtn,this),this.enterGiftBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onEnterGiftBtn,this),this.i_stampcraf.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_i_stampcraf_tap,this),this.i_stampcraft_redot.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_i_stampcraf_tap,this),this.i_praycraft.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_i_praycraft_tap,this),this.i_praying.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_i_praycraft_tap,this),this.i_praycraft_redot.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_i_praycraft_tap,this),this.enterTravelMap.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_enterTravelMap_tap,this),this.enterFlower.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_enterFlowerMap_tap,this),this.enterCalendarBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+core.PageManage.getInstance().addViewControl(CalendarViewControl,core.ViewLayerType.WindowLayer)}
+,this),this.updateRedpoint(),this.c_newStory.touchEnabled=!0,this.c_newStory.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+e.guideStoryView&&(e.guideStoryView.parent&&e.guideStoryView.parent.removeChild(e.guideStoryView),e.guideStoryView=null);
+var t=new StoryAlertView;
+t.setInfo(e.storyModel.getStoryData(e.storyModel.getNewStoryID()),e.getModel(GreetCardModel).getNewCard(),function(e){
+e.parent.removeChild(e)}
+),core.DisplayManage.getInstance().getPopupLayer().addChild(t),e.storyModel.readNewStory(),e.getModel(GreetCardModel).req_read_new(),e.getModel(HandCraftModel).updateRedot(),e.checkStory()}
+,this),this.updateFlogStatus(),this.updateBagState(),this.updatePrayState(),this.checkNewAchieve(),this.checkStory(),this.checkCookingPopup(),this.updateDecoration(),this.updateCollects(),this.updateNoteRedot(),this.updateDrawingCollect(),this.updateParty(),this.updateSeason(),this.menu=new Menu,this.menu.top=this.safe_top,this.addChild(this.menu),this.once(egret.Event.ENTER_FRAME,function(){
+e.checkGuide(),e.checkBoxCraft()}
+,this)}
+,t.prototype.updateSeason=function(){
+if(1==this.hoursType||2==this.hoursType)this.fs_5_1_bg.source="mainin_ch_bt1_png",this.fs_5_2_bg.source="mainin_ch_bt2_png";
+else{
+this.fs_5_1_bg.source="mainin_ch_hy1_png",this.fs_5_2_bg.source="mainin_ch_hy2_png";
+var e=new SpineView;
+this.group_5_1.addChild(e),e.touchEnabled=e.touchChildren=!1,e.verticalCenter=e.horizontalCenter=0,e.load("lizi","lizi","lizi"),e.play("1");
+for(var t=["25_1","25_2"],i=0,n=t;
+i<n.length;
+i++){
+var r=n[i],o=this.getFurnitureSlot("ani_"+r);
+o.$children.length>0&&(this["cover_"+r].visible=!0,this.cover_light.visible=!0)}
+var a=this.cover_light.visible?"light":"default",s=[this.bgGroup,this.c_player_bed,this.c_player_out,this.frogCap],c=Tabikaeru.DefineExtra.SeasonInColorMatrix[a];
+if(c)for(var l=new egret.ColorMatrixFilter(c),h=0,u=s;
+h<u.length;
+h++){
+var r=u[h];
+r&&(r.filters=[l])}
+}
+}
+,t.prototype.updateCollects=function(){
+var e=this.getModel(DrawingModel).data.show_coll,t=this.getModel(UserModel).getClientSettings();
+if(0==this.getModel(DrawingModel).data.show_coll?this.getModel(UserModel).setClientSettings("noticeDrawing",-1):0!=t.noticeDrawing&&t.noticeDrawing!=this.getModel(DrawingModel).data.show_coll&&this.getModel(UserModel).setClientSettings("noticeDrawing",0),0==t.noticeDrawing){
+this.getModel(UserModel).setClientSettings("noticeDrawing",e),Music.play("SE_Popup");
+var i=_("屋内似乎多了些东西"),n=new Result.MainOutNotification;
+n.notify(core.DisplayManage.getInstance().popupLayer,Result.NotificationType.Green_Picture,i)}
+}
+,t.prototype.onWindmillTouch=function(){
+""!=this.fs_25_3.source&&(egret.Tween.removeTweens(this.fs_25_3),this.fs_25_3.rotation=Math.floor(this.fs_25_3.rotation%360),this.windTouchTime=egret.getTimer(),this.stage&&this.stage.once(egret.TouchEvent.TOUCH_END,this.onWindmillTouchEnd,this))}
+,t.prototype.onWindmillTouchEnd=function(){
+var e=(egret.getTimer()-this.windTouchTime)/1e3;
+e=Math.min(e,5);
+var t=Math.pow(e+.5,2)/3.1,i=Math.floor(360*t+this.fs_25_3.rotation),n=Math.floor(1e3*Math.sqrt(t*e))+500;
+egret.Tween.get(this.fs_25_3).to({
+rotation:i}
+,n,egret.Ease.sineOut)}
+,t.prototype.updateFurniture=function(){
+for(var e=this.getModel(FurnitureModel).getHomeFurnitures(),t=0,i=e;
+t<i.length;
+t++){
+var n=i[t],r=Tabikaeru.DataManager.instance().FurnitureDB.get(n.id);
+if(r)for(var o=Furniture.getFurnitureSlot(r.type),a=0;
+a<o.length;
+a++){
+var s=this.getFurnitureSlot(o[a]);
+s&&(r.res[a]?s.source=r.res[a]+"_png":s.source="")}
+}
+this.updateGroupSceneZIndex(),this.updateFurnitureAni()}
+,t.prototype.updateFurnitureAni=function(){
+for(var e=this.getModel(FurnitureModel).getHomeFurnitures(),t=Tabikaeru.Game.instance().isHome,i=this.curAnimName.indexOf("sleep")>=0,n=0,r=e;
+n<r.length;
+n++){
+var o=r[n],a=Tabikaeru.DataManager.instance().FurnitureDB.get(o.id);
+if(a){
+var s=Furniture.getFurnitureAniSlot(a.type);
+if(s)for(var c=0;
+c<s.names.length;
+c++){
+var l=this.getFurnitureSlot(s.names[c]);
+if(l&&l instanceof eui.Group)if(0==s.isHome||s.isHome&&t&&s.isSleep==i){
+l.removeChildren();
+var h=a.animation?a.animation[c]:"";
+if(h)if(RES.hasRes(h+"_tex_json")){
+var u=new core.DragonbonesView(h);
+u.play(""),l.addChild(u)}
+else if(RES.hasRes(h+".anm_bytes")){
+var u=new AnmAnimation;
+u.loadAnm(h),u.setPlay(!0),l.addChild(u)}
+}
+else l.removeChildren()}
+}
+}
+}
+,t.prototype.getFurnitureSlot=function(e){
+var t=this.groupScene.getChildByName(e)||this[e];
+return t?t:null}
+,t.prototype.updateRedpoint=function(){
+var e=this.getModel(CookingModel).getCookingActivity();
+if(this.i_activityRedDot){
+var t=this.userModel.getClientSettings().guideStep;
+t==GuideStep.Complete?(this.i_activityRedDot.visible=this.travelModel.getRedpointState(),this.i_praycraft_redot.enabled=!0,this.i_stampcraft_redot.enabled=!0,this.i_cooking_redot.enabled=null==e||e.params&&1==e.params.isOpen):(this.i_activityRedDot.visible=!1,this.i_praycraft_redot.enabled=!1,this.i_stampcraft_redot.enabled=!1,this.i_cooking_redot.enabled=!1)}
+}
+,t.prototype.checkGuide=function(){
+var e=this;
+GuideExitViewControl.changeShop(!1);
+var t=this.userModel.getClientSettings(),i=t.guideStep;
+switch(i){
+case GuideStep.EnterRoom:case GuideStep.EnterRoom2:this.disabledOrEnableUI(!1),this.userModel.setClientSettings("guideStep",this.userModel.getNextGuideStep(i)),this.checkGuide();
+break;
+case GuideStep.Introduce:this.disabledOrEnableUI(!1),0!=this.guideTimeout&&clearTimeout(this.guideTimeout),this.guideTimeout=setTimeout(function(){
+e.guideTimeout=0,e.guideRoomIntroduceView=new GuideRoomIntroduceView(function(){
+e.userModel.setClientSettings("guideStep",e.userModel.getNextGuideStep(i)),e.checkGuide()}
+),e.addChild(e.guideRoomIntroduceView),e.guideRoomIntroduceView.gotoStep(1)}
+,1e3);
+break;
+case GuideStep.OpenShop:this.userModel.setClientSettings("guideStep",this.userModel.getNextGuideStep(i)),this.checkGuide();
+break;
+case GuideStep.BuyGoods:this.disabledOrEnableUI(!1,!1,this.shopBtn);
+this.guideRoomIntroduceView||(this.guideRoomIntroduceView=new GuideRoomIntroduceView),this.guideRoomIntroduceView.parent&&this.guideRoomIntroduceView.parent.removeChild(this.guideRoomIntroduceView),this.shopBtn.parent.addChildAt(this.guideRoomIntroduceView,this.shopBtn.parent.getChildIndex(this.shopBtn)),this.guideRoomIntroduceView.gotoStep(2);
+
+break;
+case GuideStep.OpenBag:this.disabledOrEnableUI(!1,!1),this.i_guideFood.visible=!0;
+var n=new GuidePacksackView(function(){
+n.parent.removeChild(n),n=null,e.disabledOrEnableUI(!1,!1,e.bagBtn),GuideFingerView.getInstance().show(e.bagBtn,FingerOrientation.Down,!0)}
+);
+this.addChild(n);
+break;
+case GuideStep.CloseBag:this.player&&(this.player.removeEventListener(egret.TouchEvent.TOUCH_TAP,this.playerTouchEvents,this),this.player.visible=!1,this.player.destroy(),this.player.parent&&this.player.parent.removeChild(this.player),this.player=null),this.frogCap.visible=!1,this.i_guideFood.visible=!1,this.candle_1&&(this.candle_1.setPlay(!1),this.candle_1.visible=!1),this.candle_2&&(this.candle_2.setPlay(!1),this.candle_2.visible=!1);
+var r=new GuideTravelView(function(){
+e.disabledOrEnableUI(!0),e.userModel.setClientSettings("guideStep",e.userModel.getNextGuideStep(i)),core.PageManage.getInstance().addViewControl(MainOutController,core.ViewLayerType.SceneLayer,core.RemoveViewType.HideBefore)}
+);
+this.addChild(r)}
+if(!this.getModel(UserModel).getClientSettings().guideHandCraft&&this.getModel(ItemModel).getHaveItem(EnumItemID.HAND_CRAFT_TOOL)){
+this.getModel(UserModel).setClientSettings("guideHandCraft",!0);
+var o=new GuidePrayView(function(){
+o.parent&&o.parent.removeChild(o),o=null,e.guidePrayView=null}
+);
+this.guidePrayView=o,core.DisplayManage.getInstance().getPopupLayer().addChild(o)}
+i==GuideStep.Complete&&(3==t.guideDrawing?(this.disabledOrEnableUI(!1,!1,this.bagBtn),GuideFingerView.getInstance().show(this.bagBtn,FingerOrientation.Down,!0)):1==this.getModel(AnimPictureModel).data.guide&&core.DisplayManage.getInstance().popup(new AnimPictureGuideView)),this.checkNoteGuide()}
+,t.prototype.checkNoteGuide=function(){
+var e=this;
+if(!this.getModel(UserModel).getClientSettings().guideNote&&this.getModel(GiftBoxModel).isOpen()){
+this.getModel(UserModel).setClientSettings("guideNote",!0),this.center_scroller(),this.disabledOrEnableUI(!1);
+var t=new GuideNoteView(function(){
+e.disabledOrEnableUI(!0),t.parent&&t.parent.removeChild(t),t=null}
+);
+this.guideGroup.addChild(t)}
+}
+,t.prototype.checkBoxCraft=function(){
+var e=[],t=this.getModel(HandCraftModel).getMakingStampCraft();
+t&&core.Time.getServerTime()>=t.time&&core.String.getCookie("show_stamp_new")!=String(t.u_id)&&(e.push(8e3),core.String.setCookie("show_stamp_new",String(t.u_id)));
+var i=this.getModel(HandCraftModel).getMakingPrayCraft();
+1==this.getModel(RoleModel).getFrogStatus()&&i&&core.Time.getServerTime()>=i.make_time&&core.String.getCookie("show_pray_new")!=String(i.u_id)&&(e.push(8e3),core.String.setCookie("show_pray_new",String(i.u_id)));
+for(var n=this.getModel(HandCraftModel).getBoxCraft(),r=0;
+r<n.length;
+r++)e.push(8001);
+e.length>0&&core.DisplayManage.getInstance().popup(new BoxCraftShowView(e))}
+,t.prototype.disabledOrEnableUI=function(e,t){
+void 0===e&&(e=!0),void 0===t&&(t=!1);
+for(var i=[],n=2;
+n<arguments.length;
+n++)i[n-2]=arguments[n];
+for(var r,o=[this.outBtn,this.shopBtn,this.bagBtn,this.payBtn,this.lumberroom,this.player,this.menu,this.menu.menuBtn,this.menu.taskBtn,this.menu.compBtn],a=0;
+a<o.length;
+a++)r=o[a],r&&(-1==i.indexOf(r)?t?r.visible=e:(r.touchEnabled=e,null!=r.touchChildren&&(r.touchChildren=e),e?r.enable&&r.enable():r.disable&&r.disable()):(r.visible=!0,r.touchEnabled=!0,null!=r.touchChildren&&(r.touchChildren=!0),r.enable&&r.enable()));
+this.center_scroller(),this.updateRedpoint()}
+,t.prototype.updatePrayState=function(){
+}
+,t.prototype.updateBagState=function(){
+var e=this.userModel.getClientSettings().guideStep,t=!1;
+if(e==GuideStep.Complete){
+var i=this.roleModel.getFrogStatus();
+if(0==i||2==i){
+var n=this.getModel(ItemModel);
+-1==n.getDeskDataList()[Tabikaeru.DeskItem.LunchBox_1]&&-1==n.getDeskDataList()[Tabikaeru.DeskItem.LunchBox_2]&&(t=!0),t&&-1!=n.getBagDataList()[Tabikaeru.BagItem.LunchBox]&&(t=!1)}
+var r=this.getModel(DrawingModel);
+r.isOpen()&&r.data.state==DrawingState.accept&&r.data.bag[0]>0==0&&(t=!0)}
+t?(this.i_bag.visible=!0,core.TweenExtend.playLoop(this.bagHelp_Tween,!0)):(this.i_bag.visible=!1,this.bagHelp_Tween.stop())}
+,t.prototype.isAnmAnimation=function(e){
+return!!e.setPlay}
+,t.prototype.updateFlogStatus=function(){
+var e=Tabikaeru.Game.instance().isHome;
+if(this.player&&(this.player.removeEventListener(egret.TouchEvent.TOUCH_TAP,this.playerTouchEvents,this),this.player.visible=!1,this.player.destroy(),this.player.parent&&this.player.parent.removeChild(this.player),this.player=null),this.c_player_desk_mc.visible&&(this.playerDeskMC_Tween.stop(),this.c_player_desk_mc.removeEventListener(egret.TouchEvent.TOUCH_TAP,this.playerTouchEvents,this),this.c_player_desk_mc.visible=!1),this.i_guideFood.visible=!1,e){
+this.frogCap.visible=!0;
+var t=this.roleModel.getFrogMotion(),i=Tabikaeru.Define.FrogMotionName[t],n=this.userModel.getClientSettings().guideStep;
+n!=GuideStep.Complete&&(i="sitaku_ie");
+var r=this.c_player_bed,o=null,a=null,s=null,c=null,l=null,h=[0,0];
+switch(i){
+case"dokusyo_ie":case"inemuri_ie":r=this.c_player_bed;
+break;
+case"hikki_ie":r=this.c_player_desk,o="LW_writing",s=this.getModel(DrawingModel).data.pen_motion||"write",a=s,this.updateNoteRedot();
+break;
+case"sagyou_ie":case"syokuzi_ie":r=this.c_player_chair;
+break;
+case"sitaku_ie":r=this.c_player_out;
+break;
+case"sleep_1":case"sleep_2":case"sleep_3":case"sleep_4":if(r=this.c_player_bed,c=i,l="default","sleep_1"!=c){
+r=this.c_player_sleep;
+var u=this.getModel(FurnitureModel).getHomeFurniture(Furniture.FurnitureType.ID_9);
+l=String(u)}
+break;
+default:return}
+var p=Tabikaeru.Define.FrogMotionPos[t]||[0,0];
+this.curAnimName=i;
+for(var d=this.getModel(EasterEggModel).data.egg_list,g=0,f=d;
+g<f.length;
+g++){
+var u=f[g];
+switch(u){
+case Tabikaeru.EasterEgg.Grooming:r=this.c_player_egg,c="egg_1_dress",this.frogCap.visible=!1;
+break;
+case Tabikaeru.EasterEgg.Drowsy:r=this.c_player_chair,c="egg_2_eat";
+break;
+case Tabikaeru.EasterEgg.Cook:r=this.c_player_egg,c="egg_3_cook";
+break;
+case Tabikaeru.EasterEgg.Zongzi:r=this.c_player_chair,o="zongzi",a="Sprite",s="newAnimation",c=null;
+break;
+case Tabikaeru.EasterEgg.Watermelon:r=this.c_player_chair,o="egg_5_chixigua",a="Sprite",s="Sprite",c=null}
+l="default",p=Tabikaeru.EasterEggPos[u]||[0,0]}
+if(o||c)if(c){
+this.player||(this.player=new SpineView);
+var v=new SpineView;
+v.load(c,c,c,l),this.player=v,this.player.x=h[0],this.player.y=h[1],r.addChild(this.player),this.player.addEventListener(egret.TouchEvent.TOUCH_TAP,this.playerTouchEvents,this),this.curAnimName=c}
+else"webgl"==egret.Capabilities.renderMode?(this.player||(this.player=new core.DragonbonesView(o,a)),this.isAnmAnimation(this.player)||this.player.play(s),this.player.addEventListener(egret.TouchEvent.TOUCH_TAP,this.playerTouchEvents,this),this.player.touchEnabled=!0,this.player.visible=!0,r.addChild(this.player)):(this.c_player_desk_mc.visible=!0,core.TweenExtend.playLoop(this.playerDeskMC_Tween,!0),this.c_player_desk_mc.touchEnabled=!0,this.c_player_desk_mc.addEventListener(egret.TouchEvent.TOUCH_TAP,this.playerTouchEvents,this)),this.curAnimName=o;
+else this.player||(this.player=new AnmAnimation),this.isAnmAnimation(this.player)&&(this.player.loadAnm(i),this.player.setPlay(!0)),this.player.addEventListener(egret.TouchEvent.TOUCH_TAP,this.playerTouchEvents,this),this.player.touchEnabled=!0,this.player.visible=!0,r.addChild(this.player),this.curAnimName=i;
+this.player.x=p[0],this.player.y=p[1],this.fs_9_1.visible=!0,("sleep_2"==this.curAnimName||"sleep_3"==this.curAnimName||"sleep_4"==this.curAnimName)&&(this.fs_9_1.visible=!1)}
+}
+,t.prototype.playerTouchEvents=function(e){
+Music.play("SE_Popup");
+var t=this.roleModel.getFrogMotion();
+Tabikaeru.Define.FrogMotionName[t];
+return"LW_writing"==this.curAnimName&&this.getModel(TravelNoteModel).hasUnreadNote()?(Music.play("SE_PageNext"),void core.PageManage.getInstance().addViewControl(TravelNoteController,core.ViewLayerType.WindowLayer,core.RemoveViewType.HideBeforeAll)):void this.openRoleAttr()}
+,t.prototype.openRoleAttr=function(){
+if(Tabikaeru.Game.instance().isHome){
+null==this.attributeView&&(this.attributeView=new AttributeView),this.attributeView.open(),this.addChild(this.attributeView);
+var e=core.ModelManage.getInstance().getModel(UserModel);
+if(!e.getClientSettings().hasOpenAttributeView){
+e.setClientSettings("hasOpenAttributeView",!0);
+var t=new GuideChangeName;
+this.addChild(t)}
+}
+}
+,t.prototype.updateClover=function(){
+this.cloverPoint.text=this.getModel(UserModel).getClover().toString()}
+,t.prototype.onTapBag=function(){
+var e=this;
+this.bag||(3==this.getModel(UserModel).getClientSettings().guideDrawing&&(this.disabledOrEnableUI(!0),GuideFingerView.getInstance().hide(),this.getModel(UserModel).setClientSettings("guideDrawing",4)),Music.play("SE_Popup"),this.bag=new BagTable(function(){
+e.checkGuide()}
+),this.addChild(this.bag),this.bag.addEventListener(egret.Event.REMOVED_FROM_STAGE,function(){
+e.bag=null}
+,this))}
+,t.prototype.onTapLumberroom=function(e){
+this.menu.onTapLumberroom(e)}
+,t.prototype.on_cooking_tap=function(){
+var e=this.checkCookingPopup();
+if(1!=e){
+var t=this.getModel(CookingModel).getCookingActivity();
+(null==t||t.params&&1==t.params.isOpen)&&core.PageManage.getInstance().addViewControl(CookingViewController,core.ViewLayerType.WindowLayer)}
+}
+,t.prototype.onEnterNoteBtn=function(){
+core.ModelManage.getInstance().getModel(TravelNoteModel).isOpen()?"LW_writing"==this.curAnimName?this.getModel(TravelNoteModel).hasUnreadNote()?(Music.play("SE_PageNext"),core.PageManage.getInstance().addViewControl(TravelNoteController,core.ViewLayerType.WindowLayer,core.RemoveViewType.HideBeforeAll)):this.openRoleAttr():core.PageManage.getInstance().addViewControl(TravelNoteController,core.ViewLayerType.WindowLayer,core.RemoveViewType.HideBeforeAll):this.openRoleAttr()}
+,t.prototype.onEnterGiftBtn=function(){
+core.ModelManage.getInstance().getModel(GiftBoxModel).isOpen()&&(Music.play("SE_PageNext"),core.PageManage.getInstance().addViewControl(GiftBoxController,core.ViewLayerType.WindowLayer,core.RemoveViewType.HideBeforeAll))}
+,t.prototype.checkStory=function(){
+var e=this.storyModel.getStoryData(this.storyModel.getNewStoryID()),t=this.getModel(GreetCardModel).getNewCard();
+this.c_newStory.visible=null!=e||null!=t,this.c_newStory.visible?(core.TweenExtend.playLoop(this.newStory_Tween,!0,0),this.getModel(UserModel).getClientSettings().guideStory?this.c_newStory.parent!=this.itemGroup&&this.itemGroup.addChild(this.c_newStory):(this.getModel(UserModel).setClientSettings("guideStory",!0),this.guideStoryView=new GuideStoryView,this.guideGroup.addChildAt(this.guideStoryView,0),this.guideShadow.addChild(this.c_newStory))):this.newStory_Tween.stop(),this.checkHandCraft()}
+,t.prototype.checkHandCraft=function(){
+var e=this.getModel(HandCraftModel).getMakingStampCraft();
+if(e&&core.Time.getServerTime()>e.time){
+var t=Tabikaeru.DataManager.instance().StampCraftDB.get(e.id);
+t&&(this.i_stampcraf.icon=Tabikaeru.path.formatPathImage(t.desk_pic)),this.i_stampcraf.visible=!0}
+else this.i_stampcraf.visible=!1;
+var i=this.getModel(HandCraftModel).getMakingPrayCraft();
+if(1==this.getModel(RoleModel).getFrogStatus()&&i&&core.Time.getServerTime()>i.make_time){
+var n=Tabikaeru.DataManager.instance().PrayCraftDB.get(i.id);
+n&&(this.i_praycraft.icon=Tabikaeru.path.formatPathImage(n.desk_pic),this.i_praying.icon=Tabikaeru.path.formatPathImage(n.desk_pic)),this.i_praycraft.visible=!0,this.i_praying.visible=this.i_praying.includeInLayout=!0}
+else this.i_praying.visible=this.i_praying.includeInLayout=!1,this.i_praycraft.visible=!1}
+,t.prototype.updateParty=function(){
+3==this.getModel(RoleModel).getFrogStatus()?(this.i_party.visible=this.i_party.includeInLayout=!0,this.i_party.icon=["party_wugui_png","party_maotouying_png","party_songshu_png"][this.getModel(DrawingModel).data.guest]):this.i_party.visible=this.i_party.includeInLayout=!1}
+,t.prototype.reset=function(){
+this.updateRedpoint(),this.updateClover(),this.updateFlogStatus(),this.updateFurnitureAni(),this.updateBagState(),this.checkNewAchieve(),this.checkGuide(),this.checkStory(),this.updateDecoration(),this.updateNoteRedot(),this.checkCookingPopup(),this.updateCollects(),this.updateDrawingCollect(),this.updateParty()}
+,t.prototype.checkCookingPopup=function(){
+var e=this,t=this.getModel(CookingModel).getCookingActivity();
+if(null==t||t.params&&1==t.params.isOpen){
+var i=this.userModel.getClientSettings().guideStep;
+if(i==GuideStep.Complete){
+var n=this.getModel(CookingModel);
+if(n.getMonthTheme()<=0)return core.PageManage.getInstance().addViewControl(CookingThemeViewControler,core.ViewLayerType.WindowLayer,null,{
+onClose:function(){
+egret.callLater(function(){
+return e.checkCookingPopup()}
+,e)}
+}
+),!0;
+if(null==this.guidePrayView){
+var r=Number(core.String.getCookie("last_cooking_time"));
+if(!r)return core.String.setCookie("last_cooking_time",n.getSelectMonth(),99999),core.PageManage.getInstance().addViewControl(CookingPopupViewController,core.ViewLayerType.WindowLayer),!0;
+var o=r,a=n.getSelectMonth();
+if(a!=o)return core.String.setCookie("last_cooking_time",n.getSelectMonth(),99999),core.PageManage.getInstance().addViewControl(CookingPopupViewController,core.ViewLayerType.WindowLayer),!0}
+}
+}
+}
+,t.prototype.checkIsFristTimeGetAchieve=function(e){
+var t=core.ModelManage.getInstance().getModel(UserModel);
+if(t.getClientSettings().hasAchieve)e();
+else{
+var i=core.ModelManage.getInstance().getModel(RoleModel);
+GuideHelpView.getInstance().show(_("{
+0}
+首次获得称号",i.getNameEncode()),function(){
+t.setClientSettings("hasAchieve",!0),e()}
+)}
+}
+,t.prototype.checkNewAchieve=function(){
+var e=Tabikaeru.Game.instance().isHome,t=this.userModel.getClientSettings().guideStep;
+if(e&&t==GuideStep.Complete){
+var i=core.ModelManage.getInstance().getModel(RoleModel).getAchieveList();
+if(i.length>0){
+var n=core.ModelManage.getInstance().getModel(UserModel),r=n.getClientSettings().achieveList.concat();
+if(i.length>r.length)for(var o=void 0,a=0,s=i.length;
+s>a;
+a++)if(o=i[a],-1==r.indexOf(o)){
+r.push(o),n.setClientSettings("achieveList",r,!1),this.tipsNewAchieve(o,a>=s-1);
+break}
+}
+}
+}
+,t.prototype.tipsNewAchieve=function(e,t){
+var i=this,n=core.ModelManage.getInstance().getModel(RoleModel),r=n.getAchieveInfo(e);
+if(r){
+var o=new ModalAlert(_("恭喜获得称号：{
+0}
+\n{
+1}
+",r.name,r.description),function(){
+Music.play("SE_Enter"),t?i.checkIsFristTimeGetAchieve(function(){
+i.checkNewAchieve()}
+):i.checkNewAchieve()}
+);
+core.DisplayManage.getInstance().getPopupLayer().addChild(o)}
+else this.checkNewAchieve()}
+,t.prototype.updateDecoration=function(){
+var e=this.getModel(RoleModel),t=e.decorationList;
+if(t.length)for(var i=e.decorationPutID,n=0,r=e.decorationList;
+n<r.length;
+n++){
+var o=r[n];
+if(o.id==i){
+var a=Tabikaeru.DataManager.instance().decorationDB[o.id];
+a&&(this.flower.source=Tabikaeru.path.formatPathImage(a.pic[Math.max(e.decorationStatus-1,0)]));
+break}
+}
+}
+,t.prototype.updateNoteRedot=function(){
+var e=this.getModel(TravelNoteModel).hasUnreadNote();
+this.i_noteRedot.visible=e,e?core.TweenExtend.playLoop(this.noteRedot_Tween,!0):this.noteRedot_Tween.stop()}
+,t.prototype.updateDrawingCollect=function(){
+var e=this.getModel(DrawingModel).data.show_coll,t="DrawingCollect",i=this.groupScene.getChildByName(t);
+if(i&&i.parent.removeChild(i),e>=0){
+var n=Tabikaeru.DataManager.instance().DrawingCollect.get(e);
+if(n){
+var r=new eui.Image;
+r.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onDrawingCollectTap,this),r.name=t,r.source=Tabikaeru.path.formatPathImage(n.scene);
+var o=n.position.split(",").map(function(e){
+return Number(e)}
+);
+r.data=e,r.horizontalCenter=o[0],r.verticalCenter=o[1],r.zIndex=o[2],this.groupScene.addChild(r),this.updateGroupSceneZIndex()}
+}
+}
+,t.prototype.updateGroupSceneZIndex=function(){
+var e=this.groupScene.$children,t=e.concat();
+t.sort(function(e,t){
+return e.zIndex-t.zIndex}
+);
+for(var i=!1,n=0,r=e.length;
+r>n;
+n++)if(e[n]!=t[n]){
+i=!0;
+break}
+if(i)for(var n=0,r=t.length;
+r>n;
+n++)this.groupScene.addChild(t[n])}
+,t.prototype.onDrawingCollectTap=function(e){
+var t=e.target.data;
+t>=0&&core.PageManage.getInstance().addViewControl(DrawCollectTipsViewControl,core.ViewLayerType.WindowLayer,core.RemoveViewType.Retain,t)}
+,t.prototype.on_i_stampcraf_tap=function(){
+var e=this.getModel(HandCraftModel).getMakingStampCraft();
+e&&(this.getModel(HandCraftModel).comfrimNewStampCraft(),core.PageManage.getInstance().addViewControl(StampCraftDetailViewController,core.ViewLayerType.NoticeLayer,core.RemoveViewType.Retain,{
+data:[e],onConfirm:function(){
+}
+}
+))}
+,t.prototype.on_i_praycraft_tap=function(){
+var e=this.getModel(HandCraftModel).getMakingPrayCraft();
+e&&(this.getModel(HandCraftModel).comfrimNewPrayCraft(),core.PageManage.getInstance().addViewControl(PrayCraftDetailViewController,core.ViewLayerType.NoticeLayer,core.RemoveViewType.Retain,{
+data:[e],onConfirm:function(){
+}
+}
+))}
+,t.prototype.on_enterTravelMap_tap=function(){
+var e=this.getModel(ActivityModel).getActivity("travelmap");
+null!=e&&e.params&&e.params.isOpen&&core.PageManage.getInstance().addViewControl(TravelMapController,core.ViewLayerType.WindowLayer,null,e.params.url)}
+,t.prototype.on_enterFlowerMap_tap=function(){
+this.center_scroller(),this.scroller.viewport.validateNow();
+var e=Utils.Capture.instance().captureTexture(this.flowerPot);
+core.PageManage.getInstance().addViewControl(FlowerPotViewControl,core.ViewLayerType.WindowLayer,core.RemoveViewType.Retain,{
+texture:e,bottom:new egret.Point(this.flower.horizontalCenter,this.flower.verticalCenter),position:this.flowerPot.localToGlobal(),enable:!Tabikaeru.Game.instance().isHome}
+)}
+,t.prototype.onHandleCamera=function(e){
+for(var t=[this.groupTop,this.i_bag,this.outBtn,this.groupPray,this.bagBtn,this.shopBtn,this.i_activityRedDot,this.i_noteRedot,this.c_newStory,this.i_praycraft_redot,this.i_stampcraft_redot,this.i_cooking_redot,this.menu],i=0;
+i<t.length;
+i++)e?t[i].visible=this.cameraVisibleRecord[i]:(this.cameraVisibleRecord[i]=t[i].visible,t[i].visible=!1);
+this.groupFull.touchChildren=e}
+,t.prototype.getCameraTexture=function(e,t){
+var i;
+if(t)i=t,i.x+=this.scroller.viewport.scrollH,i.y+=(this.groupScene.height-Main.stageHeight)/2,this.checkCameraMoment(i);
+else if(e)i=new egret.Rectangle(0,0,854,1420);
+else{
+var n=(1420-this.height)/2;
+i=new egret.Rectangle(this.scroller.viewport.scrollH,n,this.width,this.height)}
+return Utils.Capture.instance().captureTexture(this.groupFull,i)}
+,t.prototype.checkCameraMoment=function(e){
+if(this.player){
+var t=this.player.parent.localToGlobal(this.player.x,this.player.y),i=this.groupFull.globalToLocal(t.x,t.y),n=new egret.Rectangle(i.x-40,i.y-70,80,80),r=e.intersection(n);
+if(!r.isEmpty()){
+var o=this.getModel(MomentModel).data.has_map,a=Tabikaeru.DataManager.instance().momentData.get("list"),s=function(e){
+var t=a[e];
+return o[t.id]?"continue":t.type!=Tabikaeru.Define.MomentType.frog_motion&&t.type!=Tabikaeru.Define.MomentType.egg_motion?"continue":void(t.param==c.curAnimName&&c.getModel(MomentModel).req_unlock(t.id,new core.Action(function(){
+var e=new MomentPopView;
+e.setData(t.id),core.DisplayManage.getInstance().popup(e)}
+)))}
+,c=this;
+for(var l in a)s(l)}
+}
+}
+,t}
+(core.UIView);
+__reflect(MainInView.prototype,"MainInView");
+var MainOutController=function(e){
+function t(){
+var t=e.call(this)||this;
+ret

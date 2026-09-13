@@ -1,0 +1,112 @@
+atePartyCake();
+break;
+case ItemEventType.updateHouseInfo:e.getParam(1)==Tabikaeru.DataType.ItemType.FURNITURE_ITEM&&this.getModel(FurnitureModel).updateRedot();
+break;
+case DrawingEventType.UPDATE:this.view.update_invite();
+break;
+case FurnitureEventType.UPDATE_TUMBER:this.view.update_tumber();
+break;
+case FurnitureEventType.UPDATE_COMPOST:this.view.update_compost();
+break;
+case FurnitureEventType.UPDATE_POCKET:this.view.update_pocket()}
+}
+,t.prototype.onReward=function(e){
+switch(e.type){
+case 1:core.PageManage.getInstance().addViewControl(RewardViewController,core.ViewLayerType.LoaderLayer,core.RemoveViewType.Retain,e);
+break;
+case 2:var t=e.resource;
+t.ads_id&&core.ModelManage.getInstance().getModel(AdsModel).promptNewAds(t.ads_id);
+break;
+default:core.Log.warning("奖励notify没有获取到有效类型 当前类型 type:"+e.type)}
+}
+,t.prototype.adsRewardNotify=function(e){
+e&&e.title&&e.title.length>this.rewardTitle.length&&e.title.substring(0,this.rewardTitle.length)==this.rewardTitle&&GuideHelpView.getInstance().show(_("感谢观看，请前往邮箱领取奖励！"),function(){
+Music.play("SE_Enter")}
+,core.DisplayManage.getInstance().getNoticeLayer())}
+,t}
+(core.ViewController);
+__reflect(MainOutController.prototype,"MainOutController");
+var MainOutView=function(e){
+function t(){
+var t=e.call(this,core.PathManage.getInstance().getSkinsPath("MainOut/MainOut.exml"))||this;
+t.hasFurnitureShop=!1,t.adsTimer=0,t.lotteryTimer=0,t.wishTimer=0,t.flowerpotList={
+}
+,t.plantList={
+}
+,t.guideTimeout=0,t.delayEventSystem=!1,t.eventSystemInit=!1,t.cameraVisibleRecord=[],t.flowerpotList[1]=t.flowerpot1,t.plantList[11]=new CloverView,t.plantList[12]=new CloverView;
+var i=new CloverInfo;
+return i.element=4,t.plantList[11].setInfo(i),t.plantList[12].setInfo(i),t.groupPot1.addChild(t.plantList[11]),t.groupPot1.addChild(t.plantList[12]),t.groupPot1.addEventListener(egret.TouchEvent.TOUCH_BEGIN,t.flowerpotTouchEvents,t),t.groupPot1.addEventListener(egret.TouchEvent.TOUCH_MOVE,t.flowerpotTouchEvents,t),t.travelModel=t.getModel(TravelModel),t.userModel=t.getModel(UserModel),t.roleModel=t.getModel(RoleModel),t.visitorModel=t.getModel(VisitorModel),t.hoursType=t.getModel(WeatherModel).data.hours_type,t.seasonKey=t.getModel(WeatherModel).getSeasonKey(),t}
+return __extends(t,e),t.prototype.onResize=function(e,t){
+console.log(e),egret.setTimeout(this.scroll,this,100)}
+,t.prototype.$onRemoveFromStage=function(){
+e.prototype.$onRemoveFromStage.call(this),egret.clearTimeout(this.timerUpdateFurniture)}
+,t.prototype.onComplete=function(){
+function e(){
+Music.play("SE_Move"),2==this.getModel(UserModel).getClientSettings().guideDrawing&&(this.disabledOrEnableUI(!0),this.getModel(UserModel).setClientSettings("guideDrawing",3)),core.PageManage.getInstance().addViewControl(MainInController,core.ViewLayerType.SceneLayer,core.RemoveViewType.HideBefore)}
+var t=this;
+this.inviteBtn.visible=!1,this.inviteBtnMask.visible=!1,this.payBtn.visible=this.getModel(UserModel).getShowPay(),this.btn_enterRoom.touchEnabled=!0,this.btn_enterRoom.addEventListener(egret.TouchEvent.TOUCH_TAP,e,this),this.houseBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,e,this),this.ticketDetailBtn.visible=this.ticketDetailBtn.includeInLayout="audit"!=window.appStatus,this.ticketDetailBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+core.PageManage.getInstance().addViewControl(TicketDetailController,core.ViewLayerType.WindowLayer,core.RemoveViewType.Retain)}
+,this),this.shopBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+Music.play("SE_Move"),core.PageManage.getInstance().addViewControl(ShopController,core.ViewLayerType.WindowLayer,core.RemoveViewType.Retain)}
+,this),this.payBtn.touchEnabled=!0,this.payBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+core.PageManage.getInstance().addViewControl(RechargeViewController,core.ViewLayerType.WindowLayer,core.RemoveViewType.HideBefore)}
+,this),this.mailBox.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+Music.play("SE_Popup"),t.openMail()}
+,this),this.mailNotification.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+Music.play("SE_Popup"),t.openMail()}
+,this),this.shop_mc.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+core.PageManage.getInstance().addViewControl(FurnitureShopController,core.ViewLayerType.WindowLayer,core.RemoveViewType.HideBefore)}
+,this),this.btn_enterFurnitureBench.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+core.PageManage.getInstance().addViewControl(FurnitureBenchViewController,core.ViewLayerType.WindowLayer,core.RemoveViewType.HideBefore)}
+,this),this.annualReviewBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+core.PageManage.getInstance().addViewControl(AnnualReviewViewControl,core.ViewLayerType.WindowLayer,core.RemoveViewType.HideBefore)}
+,this),this.adsGroup.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+core.PageManage.getInstance().addViewControl(AdsGiftViewControl,core.ViewLayerType.WindowLayer)}
+,this),this.miniGroup.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+return t.getModel(RoleModel).canShowMini()?void wx.checkIsAddedToMyMiniProgram({
+success:function(e){
+if(e.added)core.SocketManage.getInstance().send("client_get_my_wx_reward",new core.Action2(function(e){
+0==e.code&&(core.ModelManage.getInstance().getModel(RoleModel).wxMyReward=!0,core.DisplayManage.getInstance().popupLayer.addChild(new ModalAlert(_("叮咚~邮箱有动静"))),t.miniGroup.visible=t.miniGroup.includeInLayout=!1)}
+));
+else{
+var i=new GuideMiniView;
+core.DisplayManage.getInstance().getPopupLayer().addChild(i)}
+}
+}
+):(core.DisplayManage.getInstance().popupLayer.addChild(new ModalAlert(_("叮咚~邮箱有动静"))),void(t.miniGroup.visible=t.miniGroup.includeInLayout=!1))}
+,this),this.getModel(RoleModel).canShowMini()&&wx.checkIsAddedToMyMiniProgram({
+success:function(e){
+e.added||(t.miniGroup.visible=t.miniGroup.includeInLayout=!0)}
+}
+),this.lotteryGroup.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+t.getModel(LotteryModel).isRewardState()?core.PageManage.getInstance().addViewControl(LotterySettleViewControl,core.ViewLayerType.WindowLayer):core.PageManage.getInstance().addViewControl(LotteryViewControl,core.ViewLayerType.WindowLayer)}
+,this),this.wishGroup.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+core.PageManage.getInstance().addViewControl(WishingPoolViewControl,core.ViewLayerType.WindowLayer)}
+,this),this.btnPot1.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+for(var e in t.plantList)if(t.plantList[e].info.sprite>0)return void t.addChild(new ModalAlert("呱~再等等"));
+t.addChild(new ModalAlert("呱~空的"))}
+,this),this.btnPublicityMap.visible=this.btnPublicityMap.includeInLayout=this.getModel(NoticeModel).canShowPublicityMap(),this.btnPublicityMap.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+core.PageManage.getInstance().addViewControl(PublicityMapViewControl,core.ViewLayerType.WindowLayer)}
+,this);
+var i=this.getModel(ActivityModel).getActivity("cityroam");
+this.btnCityroam.visible=this.btnCityroam.includeInLayout=i&&i.params.isOpen,this.btnCityroam.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+GameConfig.channel==ChannelType.WXgame?(wx.navigateToMiniProgram({
+appId:i.params.appid,envVersion:"trial"}
+),t.getModel(ShareModel).reportBlog("cityroamMini.click")):(core.PageManage.getInstance().addViewControl(WebViewController,core.ViewLayerType.WindowLayer,null,i.params.url),t.getModel(ShareModel).reportBlog("cityroamApp.click"))}
+,this),this.btnCalendar.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+core.PageManage.getInstance().addViewControl(CalendarViewControl,core.ViewLayerType.WindowLayer)}
+,this),this.btnCalendar.visible=this.btnCalendar.includeInLayout=this.getModel(CalendarModel).canShowMainOutBtn(),this.adsNoticeBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_adsNoticeBtn_tap,this),this.btnMuseumDay.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_btnMuseumDay_tap,this),this.btnGreetCard.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_btnGreetCard_tap,this),this.btnSpringCard.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_btnSpringCard_tap,this),this.btnCapsule.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_btnCapsule_tap,this),this.btnPartyCake.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_btnPartyCake_tap,this),this.player_mc.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_player_mc_tap,this),this.inviteBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_inviteBtn_tap,this),this.inviteBtnMask.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_inviteBtn_tap,this),this.compost.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_compost_tap,this),this.btnPocket.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_pocket_tap,this),this.updateMuseumDay(),this.updateGreetCard(),this.updateSpringCard(),this.updateCapsule(),this.updatePartyCake(),this.updateRedpoint(),this.scroller.throwSpeed=0,this.scroller.bounces=!1,this.scroller.scrollPolicyV=eui.ScrollPolicy.OFF,this.scroller.addEventListener(eui.UIEvent.CHANGE,this.scroll,this),this.scroller.addEventListener(eui.UIEvent.CHANGE_START,function(){
+Utils.FpsManager.instance().boost(),t.scroller.once(eui.UIEvent.CHANGE_END,function(){
+Utils.FpsManager.instance().resume()}
+,t)}
+,this),this.initCloverPoint(),this.update_bg(),this.checkEventSystem(!0),this.reset(!1),this.onSyncComplete();
+var n=this.userModel.getClientSettings().guideStep;
+if(n!=GuideStep.New&&n!=GuideStep.Named){
+BaseChannel.getInstance().log("sdk.role.online");
+var r={
+player_id:String(this.userModel.getUID()),player_name:this.roleModel.getName(),level:0,server_id:GameConfig.serverName}
+;
+BaseChannel.getInstance().setPlayerInfo("enterGame",r)}
+if(GameConfig.showGM){
+var o=new eui.Rect;
+o.name="gm",o.fillColor=1671168

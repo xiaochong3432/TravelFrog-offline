@@ -1,0 +1,8 @@
+
+
+====================================================================================================
+### visit_load   (len=465)
+====================================================================================================
+prototype.visit_load=function(e,t){
+  e.visitor&&(this.visitorData=new VisitorData(e.visitor),this.visitorData.carpet<=0&&(this.visitorData.carpet=core.MathExtend.Range(1,8),core.SocketManage.getInstance().send("visit_set_carpet",null,this.visitorData.carpet)),this.dispatchEvent(new core.Event(VisitorEventType.updateVisitor))),e.acquire&&(this.acquireList=Array.isArray(e.acquire)?e.acquire:[],this.dispatchEvent(new core.Event(VisitorEventType.updateAcquireList)))
+}

@@ -1,0 +1,64 @@
+chars 786113..790500
+
+var MailItemView=function(e){
+function t(){
+var t=e.call(this)||this;
+return t.travelModel=core.ModelManage.getInstance().getModel(TravelModel),t.skinName=core.PathManage.getInstance().getSkinsPath("MainOut/Mail.exml"),t.btn_accept.addEventListener(egret.TouchEvent.TOUCH_TAP,t.acceptTouchEvents,t),t}
+return __extends(t,e),t.prototype.destroy=function(){
+this.clean(),this.btn_accept.removeEventListener(egret.TouchEvent.TOUCH_TAP,this.acceptTouchEvents,this)}
+,t.prototype.clean=function(){
+this.acceptCallback=null}
+,t.prototype.setInfo=function(e,t,i){
+this.mailView=e,this.mailInfo=t,this.acceptCallback=i;
+var n=t.title;
+this.t_title.text=n,this.i_mailSender.visible=!0;
+var r=!0,o=!0;
+switch(this.currentState="type1",t.type){
+case Mail.EvtId.System:this.i_mailSender.source="mail_system_png",r=!1;
+break;
+case Mail.EvtId.Notice:this.i_mailSender.source="mail_system_png",this.currentState="type3";
+break;
+case Mail.EvtId.Gift:switch(t.sender){
+case 0:this.i_mailSender.source="mail_wugui_png";
+break;
+case 1:this.i_mailSender.source="mail_maotouying_png";
+break;
+case 2:this.i_mailSender.source="mail_songshu_png";
+break;
+default:this.i_mailSender.visible=!1}
+break;
+case Mail.EvtId.StoryGift:this.i_mailSender.source="mail_friendGiftIcon_png";
+break;
+case Mail.EvtId.Taobao:this.i_mailSender.source="mail_taobao_png";
+break;
+case Mail.EvtId.Leaflet:break;
+case Mail.EvtId.Drift:this.i_mailSender.source="mail_system_png",this.fillItems(),r=!1,this.currentState="type2";
+break;
+case Mail.EvtId.Captcha:this.i_mailSender.source="mail_system_png",this.fillItems(),r=!1,o=!1;
+break;
+case Mail.EvtId.ShareURL:this.i_mailSender.source="mail_system_png",this.fillItems(),r=!1,o=!1,this.currentState="type2";
+break;
+case Mail.EvtId.NewPicture:case Mail.EvtId.SpecPicture:this.i_mailSender.source="mail_system_png",this.fillItems(),r=!1,o=!1,this.currentState="type1";
+break;
+case Mail.EvtId.Explor:this.i_mailSender.source="mail_explore_png",this.fillItems(),r=!1,o=!1,this.currentState="type2"}
+this.travelModel.checkMailItemType(t)?this.fillItems():o&&(r&&!t.read&&this.travelModel.readMailInfo(t.id),this.fillContext(),(t.type==Mail.EvtId.Gift||t.type==Mail.EvtId.Notice)&&(this.btn_accept.visible=!0))}
+,t.prototype.fillContext=function(){
+this.c_items.visible=!1,this.btn_accept.visible=!0,this.currentState="type4",this.t_context.visible=!0;
+var e=this.mailInfo.message.replace(/<[^<]*>/g,"");
+this.t_context.text=e.slice(0,6)+"..."}
+,t.prototype.hasAds=function(){
+return this.mailInfo&&this.mailInfo.resource&&this.mailInfo.resource.ads_id&&this.mailInfo.resource.ads_id.length>0?!0:!1}
+,t.prototype.getMailID=function(){
+return this.mailInfo.id}
+,t.prototype.fillItems=function(){
+this.c_items.visible=!0,this.btn_accept.visible=!0,this.t_context.visible=!1;
+var e=[];
+if(this.mailInfo.type==Mail.EvtId.Drift&&e.push(["mail_bottle_png","1"]),this.mailInfo.type==Mail.EvtId.Captcha&&e.push(["mail_code_png","1"]),this.mailInfo.type==Mail.EvtId.ShareURL&&e.push(["mail_team_png","1"]),this.mailInfo.resource.clover_point>0&&e.push(["mail_mituba_png",this.mailInfo.resource.clover_point.toString()]),this.mailInfo.resource.ticket>0&&e.push(["mail_hukubiki_png",this.mailInfo.resource.ticket.toString()]),this.mailInfo.resource.reward_gacha>0&&e.push(["mail_lottery_png",this.mailInfo.resource.reward_gacha.toString()]),this.mailInfo.resource.ads_id.length>0&&e.push(["mail_ad_png","1"]),this.mailInfo.resource.share_id.length>0&&e.push(["mail_share_png","1"]),this.mailInfo.pictures.length>0&&e.push(["mail_tirashi_png",this.mailInfo.pictures.length.toString()]),Array.isArray(this.mailInfo.items))for(var t=void 0,i=0;
+i<this.mailInfo.items.length;
+i++)if(t=this.mailInfo.items[i],1e3==t.item_id)e.push(["mail_yotuba_png",t.count.toString()]);
+else{
+var n=core.ModelManage.getInstance().getModel(ItemModel).getItemInfo(t.item_id);
+n&&e.push([Tabikaeru.path.formatPathImage(n.img),t.count.toString()])}
+this.c_item1.verticalCenter=0/0,this.c_item1.horizontalCenter=0/0,this.c_item2.verticalCenter=0/0,this.c_item1.top=this.c_item2.top=0,this.c_item1.right=0;
+var r=e.length;
+1==r?(this.c_item1.top=0/0,this.c_item1.right=0/0,this.c_item1.scaleX=this.c_item1.scaleY=1.3,this.c_item1.verticalCenter=0,this.c_item1.horizontalCenter=0):2==r?(this.c_item1.top=this.c_item2.top=0/0,this.c_item1.scaleX=this.c_item1.scaleY=.8,this.c_item2.scaleX=this.c_item2.scaleY=.8,this.c_item1.verticalCenter=0,this.c_item2.verticalCenter=0):(this.c_item1.top=

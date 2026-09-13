@@ -1,0 +1,192 @@
+[
+ {
+  "id": 1,
+  "name": "北京",
+  "tag": "g_beijing"
+ },
+ {
+  "id": 2,
+  "name": "成都",
+  "tag": "g_chengdu"
+ },
+ {
+  "id": 3,
+  "name": "重庆",
+  "tag": "g_chongqing"
+ },
+ {
+  "id": 4,
+  "name": "广州",
+  "tag": "g_guangzhou"
+ },
+ {
+  "id": 5,
+  "name": "桂林",
+  "tag": "g_guilin"
+ },
+ {
+  "id": 6,
+  "name": "杭州",
+  "tag": "g_hangzhou"
+ },
+ {
+  "id": 7,
+  "name": "苏州",
+  "tag": "g_suzhou"
+ },
+ {
+  "id": 8,
+  "name": "天津",
+  "tag": "g_tianjin"
+ },
+ {
+  "id": 9,
+  "name": "台湾十分",
+  "tag": "g_tw_shifen"
+ },
+ {
+  "id": 10,
+  "name": "台湾垦丁",
+  "tag": "g_tw_kending"
+ },
+ {
+  "id": 11,
+  "name": "香港",
+  "tag": "g_xianggang"
+ },
+ {
+  "id": 12,
+  "name": "哈尔滨",
+  "tag": "g_haerbin"
+ },
+ {
+  "id": 13,
+  "name": "张家界",
+  "tag": "g_zhangjiajie"
+ },
+ {
+  "id": 14,
+  "name": "武汉",
+  "tag": "g_wuhan"
+ },
+ {
+  "id": 15,
+  "name": "洛阳",
+  "tag": "g_luoyang"
+ },
+ {
+  "id": 16,
+  "name": "西安",
+  "tag": "g_xian"
+ },
+ {
+  "id": 17,
+  "name": "酒泉",
+  "tag": "g_jiuquan"
+ },
+ {
+  "id": 18,
+  "name": "云南",
+  "tag": "g_yunnan"
+ },
+ {
+  "id": 19,
+  "name": "拉萨",
+  "tag": "g_lasa"
+ },
+ {
+  "id": 20,
+  "name": "上海",
+  "tag": "g_shanghai"
+ },
+ {
+  "id": 21,
+  "name": "海南",
+  "tag": "g_hainan"
+ },
+ {
+  "id": 22,
+  "name": "贵州",
+  "tag": "g_guizhou"
+ },
+ {
+  "id": 23,
+  "name": "宁夏",
+  "tag": "g_ningxia"
+ },
+ {
+  "id": 24,
+  "name": "福建",
+  "tag": "g_fujian"
+ },
+ {
+  "id": 25,
+  "name": "江西",
+  "tag": "g_jiangxi"
+ },
+ {
+  "id": 26,
+  "name": "安徽",
+  "tag": "g_anhui"
+ },
+ {
+  "id": 27,
+  "name": "辽宁",
+  "tag": "g_liaoning"
+ },
+ {
+  "id": 28,
+  "name": "青岛",
+  "tag": "g_qingdao"
+ },
+ {
+  "id": 29,
+  "name": "山西",
+  "tag": "g_shanxi"
+ },
+ {
+  "id": 30,
+  "name": "吉林",
+  "tag": "g_jilin"
+ },
+ {
+  "id": 31,
+  "name": "澳门",
+  "tag": "g_aomen"
+ },
+ {
+  "id": 32,
+  "name": "青海",
+  "tag": "g_qinghai"
+ },
+ {
+  "id": 33,
+  "name": "河北",
+  "tag": "g_hebei"
+ },
+ {
+  "id": 100,
+  "name": "江西省博物馆",
+  "tag": "g_bwg_jiangxi"
+ },
+ {
+  "id": 101,
+  "name": "山东博物馆",
+  "tag": "g_bwg_shandong"
+ },
+ {
+  "id": 102,
+  "name": "南越王博物院",
+  "tag": "g_bwg_nanyuewang"
+ },
+ {
+  "id": 103,
+  "name": "吴文化博物馆",
+  "tag": "g_bwg_wuwenhua"
+ },
+ {
+  "id": 104,
+  "name": "山西博物院",
+  "tag": "g_bwg_shanxi"
+ }
+]

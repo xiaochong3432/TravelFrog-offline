@@ -1,0 +1,51 @@
+
+
+====================================================================================================
+### mail_load   (len=75)
+====================================================================================================
+prototype.mail_load=function(e,t){
+  this.revice_mails(Utils.convertArray(e))
+}
+
+====================================================================================================
+### mail_load_mails   (len=389)
+====================================================================================================
+prototype.mail_load_mails=function(e,t){
+  for(var i=Array.isArray(e.mails)?e.mails:[],n=0;
+  n<i.length;
+  n++)this.mailInfoList[n+e.start-1]=i[n];
+  var r=BaseChannel.getInstance().isClearAds();
+  t.start+t.count<=e.total?core.SocketManage.getInstance().send("mail_load_mails",null,t.start+t.count,5,r):(this.mailInfoList.length=e.mails.length,this.revice_mails(Utils.convertArray(this.mailInfoList)))
+}
+
+====================================================================================================
+### mail_ejoy_active_code   (len=45)
+====================================================================================================
+prototype.mail_ejoy_active_code=function(e){
+  
+}
+
+====================================================================================================
+### task_load   (len=249)
+====================================================================================================
+prototype.task_load=function(e){
+  this.data=Utils.convertArray(e.tasks);
+  for(var t=Utils.convertArray(e.list),i=0,n=t;
+  i<n.length;
+  i++){
+    var r=n[i];
+    this.dataList[r.id]=r.pro
+  }this.updateRedot(),this.dispatchEvent(new core.Event(GuideTaskEventType.UPDATE))
+}
+
+====================================================================================================
+### task_load_list   (len=158)
+====================================================================================================
+prototype.task_load_list=function(e){
+  for(var t=Utils.convertArray(e.reward),i=0,n=t;
+  i<n.length;
+  i++){
+    var r=n[i];
+    this.dataReward[r.id]=r.pro
+  }this.updateRedot()
+}

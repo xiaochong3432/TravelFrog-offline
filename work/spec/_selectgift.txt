@@ -1,0 +1,30 @@
+.getInstance().popup(new GiftSelectView(e.num,e.items))}
+}
+,t.prototype.req_select_gift=function(e,t){
+var i=this;
+this.selectGiftList.shift(),core.SocketManage.getInstance().send("item_select_gift",new core.Action2(function(e){
+if(e.items&&e.items.length>0){
+for(var n=[],r=0,o=e.items;
+r<o.length;
+r++){
+var a=o[r];
+n.push({
+item_id:a.item_id,count:a.count}
+)}
+core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.ViewLayerType.NoticeLayer,null,{
+items:n,onClose:function(){
+i.check_select_gift()}
+}
+),t&&t.apply()}
+}
+),e)}
+,t.prototype.item_load_items=function(e,t){
+this.itemDataAll.Clear(),this.itemDataList.Clear();
+for(var i,n=e.house,r=0,o=n.length;
+o>r;
+r++)i=n[r],i&&this.doAddHouseItem(i.item_id,i.count,!1);
+this.bagDataList=e.bag,this.deskDataList=e.desk,this.bagLock=e.bag_completed||!1,this.bagConflict=e.bag_conflict||!1,this.deskConflict=e.desk_conflict||!1;
+var a=e.gacha;
+null!=a?null!=a.color_ball&&(this.gachaColorBall=a.color_ball):core.Log.warning("返回的协议 client_load_role 中的 gacha 属性不存在，请检查协议参数是否已修改"),core.ModelManage.getInstance().getModel(HandCraftModel).updateComposeRedot(),this.dispatchEvent(new core.Event(ItemEventType.updateAllItemInfo))}
+,t.prototype.item_load_handbook=function(e,t){
+this.collectionsList=Array.isArray(e.collections)?e.collections:[],this.specialtysList=Array.isArray(e.specialtys)?e.specialtys:[],this.dispatchEvent(new core.Event(ItemEventType.updateHan

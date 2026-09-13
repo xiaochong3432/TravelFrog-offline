@@ -1,0 +1,7 @@
+r]=1,u[i.Ticket]=1,u),FRIEND_GIFTBOUNUS_CLOVER:20,FRIEND_GIFTBOUNUS_TICKET:1,FRIEND_GIFTBOUNUS_TICKET_MAX:3,BAGITEMS:4,DESKITEMS:8,SIZE_X_MIN:160,SIZE_X_MAX:320,PRIZE_WHITE_ID:0,PrizeBalls:(p={
+}
+,p[Prize.Rank.White]=40,p[Prize.Rank.Blue]=25,p[Prize.Rank.Purple]=22,p[Prize.Rank.Green]=9,p[Prize.Rank.Red]=3,p[Prize.Rank.Gold]=1,p[Prize.Rank.RankMax]=100,p),PrizeBallName:(d={
+}
+,d[Prize.Rank.White]="白玉",d[Prize.Rank.Blue]="青玉",d[Prize.Rank.Purple]="紫玉",d[Prize.Rank.Green]="绿玉",d[Prize.Rank.Red]="红玉",d[Prize.Rank.Gold]="黄玉",d),PrizeClover:(g={
+}
+,g[Prize.Rank.White]=10,g[Prize.Rank.Blue]=30,g[Prize.Ran

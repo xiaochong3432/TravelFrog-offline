@@ -1,0 +1,64 @@
+# ============================================================================
+#  仓库只放「代码 + 数据表 + 规格 + 文档」。
+#  客户端原始资源（work/run/web/resource/，约 260 MB）默认不进仓库：
+#  它们属于原权利人，可由 tools/extract_game.py 从自有安装包提取。
+#  需要自带资源的完整副本时，用 tools/stage_repo.py --with-assets 生成。
+#
+#  ⚠️ .gitignore 不支持行尾注释：一行里出现 `#` 之后的内容会被当成模式的一部分，
+#     所以本文件的注释一律单独成行。
+# ============================================================================
+
+# ---------------------------------------------------------------- 发行产物
+*.apk
+*.aab
+dist/*.zip
+dist/last-port.txt
+dist/TravelFrog-PC/
+dist/TravelFrog-PC（解压后按照说明打开即玩）/
+
+# ---------------------------------------------------------------- 原始与参考包
+base.apk
+jp.co.hit_point.tabikaeru.apk
+/their-final.apk
+/work/their-final.apk
+/work/repo.zip
+/Travel-Frog-Offline-Version/
+/work/extracted/
+/work/full/
+/work/base/
+/work/jp_apk/
+
+# ---------------------------------------------------------------- 客户端资源
+# 需要时由 tools/extract_game.py 生成；如要入库请自行删除下面这行
+/work/run/web/resource/
+
+# ---------------------------------------------------------------- 打包与验证产物
+/work/build/
+/work/shots/
+/work/logs/
+/work/merge-backup/
+/work/probe/*.png
+
+# ---------------------------------------------------------------- 工具链
+/work/jdk/
+/work/jre/
+/work/bt/
+/work/plat/
+/work/adb/
+/work/dl/
+/work/__pycache__/
+
+# ---------------------------------------------------------------- 杂项
+__pycache__/
+*.pyc
+*.tmp
+/work/t1.txt
+/work/t2.txt
+/work/t3.txt
+/work/t4.txt
+/work/sweep.json
+/work/tmp-*.json
+.idea/
+.vscode/
+Thumbs.db
+desktop.ini

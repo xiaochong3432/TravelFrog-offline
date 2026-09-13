@@ -1,0 +1,7 @@
+.get(e)}
+,t.prototype.getBagLock=function(){
+return this.bagLock}
+,t.prototype.setBagLock=function(e){
+this.bagLock!=e&&(this.bagLock=e,core.SocketManage.getInstance().send("item_set_bag_completed",null,e))}
+,t.prototype.getInventory=function(e){
+var t=this.itemDataAll,i=Tabikaeru.DataManager.instance().I

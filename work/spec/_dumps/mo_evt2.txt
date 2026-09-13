@@ -1,0 +1,68 @@
+el).getFirstVisitPictureInfo();
+if(L){
+Music.play("SE_Popup");
+var x=new i(L);
+return x.addEventListener(egret.Event.REMOVED_FROM_STAGE,function(){
+t(c,l,!0,u)}
+,null),void c.addChild(x)}
+var D=function(t){
+var i=e.customEvent.shift();
+i?i(D):t?NetworkControl.getInstance().eventsDisposeComplete():NetworkControl.getInstance().eventsDisposeComplete2()}
+;
+if(g)switch(g.evt_type){
+case TimerEvent.Type.Drift:core.Log.print("qw name "+y),Music.play("SE_Popup");
+var A=_("{
+0}
+出门了",y),R=new r;
+R.notify(c,n.Red_Travel,A,p);
+break;
+case TimerEvent.Type.GoTravel:core.Log.print("qw name "+y),Music.play("SE_Popup");
+var V=g.evt_value[1]&&g.evt_value[1]>0?"{
+0}
+精力充沛地出去旅行了":"{
+0}
+出去旅行了",G=_(V,y),U=new r;
+U.notify(c,n.Red_Travel,G,function(){
+p()}
+);
+break;
+case TimerEvent.Type.Return:core.Log.print("qw name "+y),Music.play("SE_Popup");
+var B=_("{
+0}
+回来了。",y),O=new r;
+O.notify(c,n.Blue_Result,B,p);
+break;
+case TimerEvent.Type.BackHome:core.Log.print("qw name "+y),Music.play("SE_Popup");
+var N=_("{
+0}
+回来了。",y),F=function(){
+Music.play("SE_Popup");
+for(var e=g.evt_value[2],t=g.evt_value[3],i=g.evt_value[4],n=g.evt_value.slice(5),r=[],s=[],l=0,h=n;
+l<h.length;
+l++){
+var u=h[l],d=Tabikaeru.DataManager.instance().ItemDB.get(u);
+d&&d.type==Tabikaeru.DataType.ItemType.Specialty?r.push(u):s.push({
+item_id:u,count:-1}
+)}
+var f=new o(e,t,function(){
+v.AddCloverTween(e);
+var t=function(){
+s.length>0?core.PageManage.getInstance().addViewControl(TravelDropController,core.ViewLayerType.NoticeLayer,null,{
+data:s,onClose:function(){
+p()}
+}
+):p()}
+;
+if(-1===i&&0===r.length)t();
+else{
+Music.play("SE_Popup");
+var n=new a(i,r,t);
+c.addChild(n)}
+}
+);
+c.addChild(f)}
+,H=new r;
+H.notify(c,n.Blue_Result,N,F);
+break;
+case TimerEvent.Type.Story:Music.play("SE_Popup");
+var W=_("好像

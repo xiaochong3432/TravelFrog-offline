@@ -1,0 +1,5 @@
+;
+var i;
+!function(e){
+e[e.NONE=-1]="NONE",e[e.LunchBox=0]="LunchBox",e[e.Amulet=1]="Amulet",e[e.Tools=2]="Tools",e[e.Specialty=3]="Specialty",e[e.Gift=5]="Gift",e[e.HandCraftTool=7]="HandCraftTool",e[e.HandCraftStuff=8]="HandCraftStuff",e[e.Other=9]="Other",e[e.FURNITURE_RESOURCE=10]="FURNITURE_RESOURCE",e[e.FURNITURE_ITEM=11]="FURNITURE_ITEM",e[e.FURNITURE_TOOL=12]="FURNITURE_TOOL",e[e.FURNITURE_PAPER=13]="FURNITURE_PAPER",e[e.RESOURCE=14]="RESOURCE",e[e.Courtyard=15]="Courtyard",e[e.COMPOSE=16]="COMPOSE"}
+(i=e.ItemType||(e.It

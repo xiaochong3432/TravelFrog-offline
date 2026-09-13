@@ -1,0 +1,18 @@
+own,!0):-1==this.itemModel.getBagDataList()[1]?GuideFingerView.getInstance().show(this.item1,FingerOrientation.Down,!0):GuideFingerView.getInstance().hide())}
+,t.prototype.renderItem=function(){
+var e=this;
+this.items=[{
+type:Tabikaeru.DataType.ItemType.LunchBox,image:this.item0}
+,{
+type:Tabikaeru.DataType.ItemType.Amulet,image:this.item1}
+,{
+type:Tabikaeru.DataType.ItemType.Tools,image:this.item2}
+,{
+type:Tabikaeru.DataType.ItemType.Tools,image:this.item3}
+];
+var t=this.userModel.getClientSettings().guideStep;
+t==GuideStep.OpenBag&&this.items.splice(2,2),this.items.forEach(function(t,i){
+t.image.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+e.tapItem(t,i)}
+,e)}
+),this.itemModel.getBagDataList().fo

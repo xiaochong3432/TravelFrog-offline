@@ -1,0 +1,44 @@
+var TravelNoteView=function(e){
+  function t(){
+    var t=e.call(this,core.PathManage.getInstance().getSkinsPath("TravelNote/TravelNote.exml"),TravelNoteController,core.ViewLayerType.WindowLayer)||this;
+    return t.currentType=2,t.disabledRedot=[!0,!0],t.noteReadIDs=[],t
+  }return __extends(t,e),t.prototype.onLoad=function(){
+    this.travelNoteModel=this.getModel(TravelNoteModel),this.l_note.itemRenderer=TravelNoteItem,this.selectGroup.addEventListener(egret.Event.CHANGE,this.onSelectGroupChange,this),this.backBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this)
+  },t.prototype.onClose=function(){
+    this.travelNoteModel.sendReadNote(this.noteReadIDs)
+  },t.prototype.onShow=function(){
+    this.getModel(GuideTaskModel).req_client_pro("NoteFriend"),this.switchType(0),this.updateCount(),this.updateRedot()
+  },t.prototype.onSelectGroupChange=function(){
+    this.currentType=0==this.selectGroup.selectedIndex?1:2,this.scroller.viewport.scrollV=0,this.scroller.stopAnimation(),this.updateList()
+  },t.prototype.updateRedot=function(){
+    for(var e=this.travelNoteModel.getNoteList(),t=0,i=0,n=0,r=e;
+    n<r.length;
+    n++){
+      var o=r[n],a=0;
+      if(0==o.read)if(o.config.attach){
+        var s=this.travelNoteModel.getNoteById(o.config.attach);
+        s&&(a=s.config.type)
+      }else a=o.config.type;
+      1==a?t++:2==a&&i++
+    }this.i_redotType1.visible=this.disabledRedot[0]&&t>0,this.i_redotType2.visible=this.disabledRedot[1]&&i>0
+  },t.prototype.updateCount=function(){
+    var e=this.travelNoteModel.getNoteMaxByType(1),t=this.travelNoteModel.getNoteMaxByType(2),i=this.travelNoteModel.getNoteNumsByType(1),n=this.travelNoteModel.getNoteNumsByType(2);
+    this.type1Btn.t_cur.text=String(i),this.type1Btn.t_max.text=String(e),this.type2Btn.t_cur.text=String(n),this.type2Btn.t_max.text=String(t)
+  },t.prototype.setNoteReaded=function(e){
+    this.noteReadIDs.push(e)
+  },t.prototype.updateList=function(){
+    var e=this,t=this.travelNoteModel.getNoteListByType(this.currentType),i=function(t){
+      e.setNoteReaded(t.id)
+    },n=t.map(function(e){
+      return{
+        data:e,onShow:i
+      }
+    });
+    n.sort(function(e,t){
+      return t.data.timestamp-e.data.timestamp
+    }),this.l_note.dataProvider=new eui.ArrayCollection(n)
+  },t.prototype.switchType=function(e){
+    this.selectGroup.selectedIndex=e,this.disabledRedot[e]=!0,this.updateRedot()
+  },t
+}(WindowView);
+__reflect(TravelNoteView.prototype

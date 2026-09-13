@@ -1,0 +1,31 @@
+t.prototype.reset=function(){
+"webgl"==egret.Capabilities.renderMode&&e.prototype.reset.call(this)}
+,t}
+(core.DragonbonesView);
+__reflect(DragonbonesViewExtend.prototype,"DragonbonesViewExtend");
+var SpineView=function(e){
+function t(){
+var t=null!==e&&e.apply(this,arguments)||this;
+return t._animationName="default",t._animationLoop=0,t._skinName="default",t}
+return __extends(t,e),t.prototype.destroy=function(){
+}
+,t.prototype.load=function(){
+for(var e=this,t=[],i=0;
+i<arguments.length;
+i++)t[i]=arguments[i];
+var n,r,o;
+this._resource=t[0],1==t.length?(n=t[0]+"_atlas",r=t[0],o=t[0]+"_json"):(o=t[0]+"_json",r=t[1],n=t[2]+"_atlas"),4==t.length&&(this._skinName=t[3]),Promise.all([RES.getResAsync(n),RES.getResAsync(r+"_png"),RES.getResAsync(o)]).then(function(){
+var t={
+}
+;
+t[r+".png"]=RES.getRes(r+"_png");
+var i=SpineFactory.factory.createTextureAtlas(e._resource,RES.getRes(n),t),a=SpineFactory.factory.createSkeletonData(e._resource,RES.getRes(o),i),s=new spine.SkeletonAnimation(a);
+s.skeleton.setSkinByName(e._skinName),e.setAnimation(s),e._loadCallback&&e._loadCallback()}
+)}
+,t.prototype.$onAddToStage=function(t,i){
+e.prototype.$onAddToStage.call(this,t,i),this.stage&&this.armature&&SpineClock.instance.addAnimation(this.armature)}
+,t.prototype.$onRemoveFromStage=function(){
+e.prototype.$onRemoveFromStage.call(this),this.armature&&SpineClock.instance.removeAnimation(this.armature)}
+,t.prototype.setAnimation=function(e){
+this.armature&&(SpineClock.instance.removeAnimation(this.armature),this.armature.parent&&this.armature.parent.removeChild(this.armature)),this.armature=e,e&&(this.addChild(this.armature),this.stage&&SpineClock.instance.addAnimation(e),"__stop_anim"!=this._animationName&&(this.play(this._animationName,this._animationLoop),this._timeScale&&this.armature.setTimeScale(this._timeScale)))}
+,

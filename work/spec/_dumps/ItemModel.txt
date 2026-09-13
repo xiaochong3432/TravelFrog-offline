@@ -1,0 +1,284 @@
+var ItemModel=function(e){
+  function t(){
+    var t=e.call(this)||this;
+    return t.bagDataList=[-1,-1,-1,-1],t.deskDataList=[-1,-1,-1,-1,-1,-1,-1,-1],t.gachaColorBall=-1,t.collectionsList=[],t.specialtysList=[],t.bagLock=!1,t.selectGiftList=[],t.bagConflict=!1,t.deskConflict=!1,t.purchasedMap={
+      
+    },t.itemDataAll=new core.Dictionary,t.itemDataList=new core.Dictionary,t
+  }return __extends(t,e),t.prototype.destroy=function(){
+    e.prototype.destroy.call(this)
+  },t.prototype.initModel=function(){
+    this.addProtocolCallback("item_load_items","item_load_handbook","item_gacha","item_buy","item_load_shop_info","item_update","item_update_ticket","clover_update","clover_notice_get","item_gift_open","item_load_select_gift")
+  },t.prototype.clearData=function(){
+    
+  },t.prototype.getCollectionsList=function(){
+    return this.collectionsList
+  },t.prototype.getSpecialtysList=function(){
+    return this.specialtysList
+  },t.prototype.setBagData=function(e,t,i){
+    var n=this;
+    if(void 0===t&&(t=-1),this.bagDataList.length>e){
+      var r=this.bagDataList[e];
+      if(r!=t){
+        var o=new core.Action2(function(e){
+          n.bagConflict=e.conflict,i&&i.apply()
+        });
+        return-1==t?(this.addHouseItem(r,1),core.SocketManage.getInstance().send("item_takeout_bag",o,e+1)):(-1!=r&&(this.addHouseItem(r,1),core.SocketManage.getInstance().send("item_takeout_bag",o,e+1)),this.consumeHouseItem(t,1),core.SocketManage.getInstance().send("item_putin_bag",o,e+1,t)),this.bagDataList[e]=t,this.dispatchEvent(new core.Event(ItemEventType.updateBag)),!0
+      }
+    }return!1
+  },t.prototype.getBagDataList=function(){
+    return this.bagDataList
+  },t.prototype.setDeskData=function(e,t,i){
+    var n=this;
+    if(void 0===t&&(t=-1),this.deskDataList.length>e){
+      var r=this.deskDataList[e];
+      if(r!=t){
+        var o=new core.Action2(function(e){
+          n.deskConflict=e.conflict,i&&i.apply()
+        });
+        if(-1==t)this.addHouseItem(r,1),core.SocketManage.getInstance().send("item_takeout_desk",o,e+1);
+        else{
+          -1!=r&&(this.addHouseItem(r,1),core.SocketManage.getInstance().send("item_takeout_desk",o,e+1)),this.consumeHouseItem(t,1),core.SocketManage.getInstance().send("item_putin_desk",o,e+1,t);
+          var a=ProtocolList.protocolList.item_putin_desk,s=(a[0],a[1]);
+          s||BaseChannel.getInstance().jf_commit(!0,"js.error",{
+            reason:"putin_desk",version:GameConfig.version
+          })
+        }return this.deskDataList[e]=t,this.dispatchEvent(new core.Event(ItemEventType.updateDesk)),!0
+      }
+    }return!1
+  },t.prototype.getDeskDataList=function(){
+    return this.deskDataList
+  },t.prototype.getGachaColorBall=function(){
+    return this.gachaColorBall
+  },t.prototype.cleanGachaColorBall=function(){
+    this.gachaColorBall=-1
+  },t.prototype.hasDeskItem=function(e){
+    return-1!=this.deskDataList.indexOf(e)
+  },t.prototype.hasBagItem=function(e){
+    return-1!=this.bagDataList.indexOf(e)
+  },t.prototype.getHouseItemCount=function(e){
+    return this.itemDataAll.ContainsKey(e)?this.itemDataAll.GetValue(e):0
+  },t.prototype.getHouseDataAll=function(){
+    return this.itemDataAll
+  },t.prototype.getHouseList=function(){
+    return this.itemDataList
+  },t.prototype.getHouseTypeList=function(e){
+    return this.itemDataList.GetValue(e)
+  },t.prototype.getHouseItemsByType=function(e,t){
+    var i=Tabikaeru.DataManager.instance().ItemDB,n=this.itemDataList.GetValue(e),r=[];
+    if(n)for(var o=0,a=n.GetKeys();
+    o<a.length;
+    o++){
+      var s=a[o];
+      if(null!=t){
+        var c=i.get(s);
+        c&&c.sub_type==t&&r.push({
+          item_id:s,count:n.GetValue(s)
+        })
+      }else r.push({
+        item_id:s,count:n.GetValue(s)
+      })
+    }return r
+  },t.prototype.checkHouseItem=function(e){
+    return this.itemDataAll.ContainsKey(e)
+  },t.prototype.checkHaveItem=function(e){
+    return this.itemDataAll.ContainsKey(e)||-1!=this.bagDataList.indexOf(e)||-1!=this.deskDataList.indexOf(e)?!0:!1
+  },t.prototype.getHaveItem=function(e){
+    var t=0;
+    return this.itemDataAll.ContainsKey(e)&&(t+=this.itemDataAll.GetValue(e)),-1!=this.bagDataList.indexOf(e)&&(t+=1),-1!=this.deskDataList.indexOf(e)&&(t+=1),t
+  },t.prototype.getShopItemBuynums=function(e){
+    var t=Tabikaeru.DataManager.instance().ShopDataDB.get(e);
+    return t?this.purchasedMap[e]||0:0
+  },t.prototype.isShopItemBuyLimit=function(e){
+    var i=Tabikaeru.DataManager.instance().ShopDataDB.get(e);
+    if(i.limit>0){
+      var n=Tabikaeru.DataManager.instance().ItemDB.get(i.itemId);
+      return 1!=n.spend&&n.own_num>0?(this.purchasedMap[e]||0)>=i.limit||this.getModel(t).getHaveItem(i.itemId)>=n.own_num:(this.purchasedMap[e]||0)>=i.limit
+    }return!1
+  },t.prototype.addHouseItem=function(e,t,i){
+    void 0===i&&(i=!0)
+  },t.prototype.doAddHouseItem=function(e,t,i){
+    void 0===i&&(i=!0);
+    var n=this.getItemInfo(e);
+    if(n){
+      if(n.type==Tabikaeru.DataType.ItemType.RESOURCE){
+        if(n.sub_type==Tabikaeru.DataType.ItemResourceType.TICKET)return void this.getModel(UserModel).addTicket(t);
+        if(n.sub_type==Tabikaeru.DataType.ItemResourceType.COMPASS)return void(this.getModel(MuseumDayModel).data.compass+=t);
+        if(n.sub_type==Tabikaeru.DataType.ItemResourceType.CLOVER)return void this.getModel(UserModel).addClover(t);
+        if(n.sub_type==Tabikaeru.DataType.ItemResourceType.WATER)return void this.getModel(RechargeModel).data.water++;
+        if(n.sub_type==Tabikaeru.DataType.ItemResourceType.CHANGE)return void this.getModel(RechargeModel).data.change++
+      }if(n.type==Tabikaeru.DataType.ItemType.Specialty&&-1==this.specialtysList.indexOf(n.id)&&(this.specialtysList.push(n.id),this.dispatchEvent(new core.Event(ItemEventType.updateHandbookList))),this.itemDataAll.ContainsKey(e)){
+        var r=this.itemDataAll.GetValue(e);
+        this.itemDataAll.Add(e,t+r)
+      }else this.itemDataAll.Add(e,t);
+      var o=this.itemDataList.GetValue(n.type);
+      o?o.Add(e,this.itemDataAll.GetValue(e)):(o=new core.Dictionary,o.Add(e,t),this.itemDataList.Add(n.type,o)),i&&this.dispatchEvent(new core.Event(ItemEventType.updateHouseInfo,e,n.type))
+    }
+  },t.prototype.consumeHouseItem=function(e,t){
+    var i=this.itemDataAll.GetValue(e);
+    return i>=t?!0:!1
+  },t.prototype.doConsumeHouseItem=function(e,t){
+    if(this.itemDataAll.ContainsKey(e)){
+      var i=this.itemDataAll.GetValue(e);
+      if(i>=t){
+        i-=t;
+        var n=this.getItemInfo(e),r=this.itemDataList.GetValue(n.type);
+        return i>0?(this.itemDataAll.Add(e,i),r.Add(e,i)):(this.itemDataAll.Remove(e),r.Remove(e),0==r.Count&&this.itemDataList.Remove(n.type)),this.dispatchEvent(new core.Event(ItemEventType.updateHouseInfo,e)),!0
+      }
+    }return!1
+  },t.prototype.moveItemToGiftBox=function(e,t,i){
+    var n=this;
+    if(this.itemDataAll.ContainsKey(e)){
+      var r=this.itemDataAll.GetValue(e);
+      if(r>0){
+        var o=function(){
+          core.SocketManage.getInstance().send("travel_bag_to_gift",new core.Action2(function(o,a){
+            var s=n.getModel(MessageModel).getErrorInfo(o.code);
+            if(s&&0!=s.code){
+              if(s&&102==s.code&&null==core.DisplayManage.getInstance().getChildByName("ModalConfirm")){
+                var c=new ModalConfirm(_("礼品盒满了，要更换保存的特产的吗？"),function(){
+                  Music.play("SE_PageNext"),core.PageManage.getInstance().addViewControl(GiftBoxController,core.ViewLayerType.WindowLayer,core.RemoveViewType.RemoveBefore,{
+                    pageIndex:1
+                  }),i(s)
+                });
+                c.name="ModalConfirm",core.DisplayManage.getInstance().popup(c)
+              }
+            }else if(r=n.itemDataAll.GetValue(e),r>=t){
+              r-=t;
+              var l=n.getItemInfo(e);
+              n.dispatchEvent(new core.Event(ItemEventType.updateHouseInfo,e)),n.getModel(GiftBoxModel).onMoveItem({
+                item_id:l.id,count:1
+              })
+            }i()
+          }),e)
+        };
+        core.Time.dayCheck("bag_to_gift")?core.DisplayManage.getInstance().getNoticeLayer().addChild(new ModalConfirm("确认放入礼品盒?",function(){
+          o()
+        },function(){
+          i()
+        },!1,"bag_to_gift")):o()
+      }
+    }return!1
+  },t.prototype.getItemInfo=function(e){
+    return Tabikaeru.DataManager.instance().ItemDB.get(e)
+  },t.prototype.getBagLock=function(){
+    return this.bagLock
+  },t.prototype.setBagLock=function(e){
+    this.bagLock!=e&&(this.bagLock=e,core.SocketManage.getInstance().send("item_set_bag_completed",null,e))
+  },t.prototype.getInventory=function(e){
+    var t=this.itemDataAll,i=Tabikaeru.DataManager.instance().ItemDB,n=[];
+    switch(e){
+      case"handcraft_tool":for(var r=0,o=t.GetKeys();
+      r<o.length;
+      r++){
+        var a=o[r],s=i.get(a);
+        s&&s.type==Tabikaeru.DataType.ItemType.HandCraftTool&&n.push({
+          item_id:a,count:t.GetValue(a)
+        })
+      }
+    }return n
+  },t.prototype.item_load_shop_info=function(e,t){
+    if(e&&e.purchased){
+      this.purchasedMap={
+        
+      };
+      for(var i=(Tabikaeru.DataManager.instance().ShopDataDB,Array.isArray(e.purchased)?e.purchased:[]),n=0,r=i;
+      n<r.length;
+      n++){
+        var o=r[n];
+        this.purchasedMap[o.item_id]=o.count
+      }console.log(JSON.stringify(this.purchasedMap))
+    }
+  },t.prototype.item_update_ticket=function(e){
+    this.getModel(UserModel).setTicket(e.ticket)
+  },t.prototype.clover_update=function(e){
+    this.getModel(UserModel).setClover(e.clover)
+  },t.prototype.clover_notice_get=function(e){
+    var t;
+    "FurnitureBox"==e.reason&&(t="家具都领完了，还请收下这点赠礼");
+    var i=[{
+      item_id:2e5,count:e.clover
+    }];
+    core.PageManage.getInstance().addViewControl(ItemRewardViewControl,core.ViewLayerType.WindowLayer,null,i,function(){
+      var e=core.PageManage.getInstance().getControl(PartyCakeViewControl,core.ViewLayerType.WindowLayer);
+      e&&e.view.updateView()
+    },t)
+  },t.prototype.item_update=function(e){
+    if(e){
+      var t=this.getHouseItemCount(e.item.item_id);
+      0==e.item.count?this.doConsumeHouseItem(e.item.item_id,t):this.doAddHouseItem(e.item.item_id,e.item.count-t);
+      var i=Tabikaeru.DataManager.instance().ItemDB.get(e.item.item_id);
+      if(i.type==Tabikaeru.DataType.ItemType.COMPOSE){
+        core.ModelManage.getInstance().getModel(HandCraftModel).updateComposeRedot();
+        var n=core.PageManage.getInstance().getControl(ToolBagViewController,core.ViewLayerType.NoticeLayer);
+        n&&n.view.updatePage()
+      }
+    }
+  },t.prototype.item_gift_open=function(e){
+    if(e&&e.items){
+      for(var t=[],i=0,n=e.items;
+      i<n.length;
+      i++){
+        var r=n[i];
+        t.push({
+          item_id:r.item_id,count:r.count
+        })
+      }var o=core.PageManage.getInstance().getControl(CapsuleViewControl,core.ViewLayerType.WindowLayer);
+      if(o)return void o.view.setGiftItems(t);
+      core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.ViewLayerType.NoticeLayer,null,t)
+    }
+  },t.prototype.item_load_select_gift=function(e){
+    var t=this.selectGiftList;
+    this.selectGiftList=Utils.convertArray(e.list),t.length<=0&&core.PageManage.getInstance().getControl(MainOutController,core.ViewLayerType.SceneLayer)&&this.check_select_gift()
+  },t.prototype.check_select_gift=function(){
+    if(this.selectGiftList.length>0){
+      var e=this.selectGiftList[0];
+      core.DisplayManage.getInstance().popup(new GiftSelectView(e.num,e.items))
+    }
+  },t.prototype.req_select_gift=function(e,t){
+    var i=this;
+    this.selectGiftList.shift(),core.SocketManage.getInstance().send("item_select_gift",new core.Action2(function(e){
+      if(e.items&&e.items.length>0){
+        for(var n=[],r=0,o=e.items;
+        r<o.length;
+        r++){
+          var a=o[r];
+          n.push({
+            item_id:a.item_id,count:a.count
+          })
+        }core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.ViewLayerType.NoticeLayer,null,{
+          items:n,onClose:function(){
+            i.check_select_gift()
+          }
+        }),t&&t.apply()
+      }
+    }),e)
+  },t.prototype.item_load_items=function(e,t){
+    this.itemDataAll.Clear(),this.itemDataList.Clear();
+    for(var i,n=e.house,r=0,o=n.length;
+    o>r;
+    r++)i=n[r],i&&this.doAddHouseItem(i.item_id,i.count,!1);
+    this.bagDataList=e.bag,this.deskDataList=e.desk,this.bagLock=e.bag_completed||!1,this.bagConflict=e.bag_conflict||!1,this.deskConflict=e.desk_conflict||!1;
+    var a=e.gacha;
+    null!=a?null!=a.color_ball&&(this.gachaColorBall=a.color_ball):core.Log.warning("返回的协议 client_load_role 中的 gacha 属性不存在，请检查协议参数是否已修改"),core.ModelManage.getInstance().getModel(HandCraftModel).updateComposeRedot(),this.dispatchEvent(new core.Event(ItemEventType.updateAllItemInfo))
+  },t.prototype.item_load_handbook=function(e,t){
+    this.collectionsList=Array.isArray(e.collections)?e.collections:[],this.specialtysList=Array.isArray(e.specialtys)?e.specialtys:[],this.dispatchEvent(new core.Event(ItemEventType.updateHandbookList))
+  },t.prototype.item_gacha=function(e,t){
+    this.gachaColorBall=e.ticket,this.dispatchEvent(new core.Event(ItemEventType.updateGachaColorBall))
+  },t.prototype.item_buy=function(e,t){
+    if(null!=e.ticket&&(this.getModel(UserModel).addTicket(e.ticket),e.ticket>0&&this.dispatchEvent(new core.Event(ItemEventType.getTicket))),e.ads_id&&e.ads_id.length>0){
+      var i=this.getModel(AdsModel).getAdsPlace(e.ads_id);
+      i&&this.getModel(AdsModel).isValidAds(i)||(e.share_id=e.ads_id,e.ads_id="")
+    }e.ads_id&&e.ads_id.length>0?this.dispatchEvent(new core.Event(ItemEventType.ads_id,e.ads_id)):e.share_id&&e.share_id.length>0&&this.dispatchEvent(new core.Event(ItemEventType.share_id,e.share_id))
+  },t.prototype.decodeDropArr=function(e,t){
+    void 0===t&&(t=-1);
+    for(var i=[],n=0,r=e.length;
+    r>n;
+    n+=3){
+      var o=e[n];
+      (-1==t||t==o)&&i.push({
+        type:o,item_id:e[n+1],count:e[n+2]
+      })
+    }return i
+  },t
+}(core.Model);
+__reflect(ItemModel.prototype

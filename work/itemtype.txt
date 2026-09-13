@@ -1,0 +1,37 @@
+﻿=== enum @ 131728 ===
+ion(){var e=0,t=this.getModel(ItemModel).getHouseItemsByType(Tabikaeru.DataType.ItemType.COMPOSE);t.length>=3&&(e=1),Tabikaeru.RedotManager.instance().setRedotValue(Tabikaeru.RedotType.REDOT_COMPOSE,e)},t.prototype.pray_load_grays=function(e,t){e&&(this.prayCraftList=Utils.convertArray(e.wishs),this.stampCraftList=Utils.convertArray(e.stamps),this.boxCraftList=Utils.convertArray(e.boxes),this.makingPraycraft=e.wish_new,this.makingStampcraft=e.stamp_new,this.updateRedot())},t.prototype.confirm_make_box=function(){this.boxCraftList.length>0&&(this.boxCraftList=[],core.SocketManage.getInstance().
+
+=== items whose name has 花 (id/type/name) ===
+   6 type 0 椒盐花生
+   7 type 0 芥末花生
+   8 type 0 蜂蜜花生
+   9 type 0 原味花生
+   10 type 0 五香花生
+   15 type 0 桂花蒸米糕
+   37 type 0 桃花酥
+   43 type 0 桂花糯米藕
+   101 type 0 枣花酥
+   119 type 0 梅花糕
+   126 type 0 葱花缸炉
+   1201 type 1 幸运花
+   1202 type 1 幸运花
+   1203 type 1 幸运花
+   1204 type 1 幸运花
+   1205 type 1 幸运花
+   1206 type 1 幸运花
+   1207 type 1 幸运花
+   1208 type 1 幸运花
+   1209 type 1 幸运花
+   1210 type 1 幸运花
+   1211 type 1 幸运花
+   1212 type 1 幸运花
+   1213 type 1 幸运花
+   1214 type 1 幸运花
+   1215 type 1 幸运花
+   2010 type 2 围巾~雪花~
+   3005 type 3 麻花
+   3007 type 3 米花糖
+   3012 type 3 鲜花饼
+   5103 type 5 随机野花野草
+   10310 type 13 花瓶款式大全
+   202108 type 14 桂花

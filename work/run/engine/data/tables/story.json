@@ -1,0 +1,182 @@
+{
+ "const": {
+  "friend_choice_percent": 25
+ },
+ "story": [
+  {
+   "desc": "在墙角发现的蜡笔\n和小伙伴画了好多好多的画",
+   "icon": "storyItem_1",
+   "name": "凹凸不平的蜡笔",
+   "storyid": 1,
+   "type": 1
+  },
+  {
+   "desc": "形状很可爱的棒子\n留着作个纪念",
+   "icon": "storyItem_2",
+   "name": "缠在一起的棒子",
+   "storyid": 2,
+   "type": 1
+  },
+  {
+   "desc": "看不懂写了什么\n但是一起按手印很好玩",
+   "icon": "storyItem_3",
+   "name": "捡来的书",
+   "storyid": 3,
+   "type": 1
+  },
+  {
+   "desc": "在这里躲雨\n应该不会漏水吧",
+   "icon": "storyItem_4",
+   "name": "空空的包装袋",
+   "storyid": 4,
+   "type": 1
+  },
+  {
+   "desc": "信还没来得及看\n就被大风给刮走了",
+   "icon": "storyItem_5",
+   "name": "空空的信封",
+   "storyid": 5,
+   "type": 1
+  },
+  {
+   "desc": "只用一个梨子\n就和小伙伴完成了合奏",
+   "icon": "storyItem_6",
+   "name": "梨子小提琴",
+   "storyid": 6,
+   "type": 1
+  },
+  {
+   "desc": "画上这家伙\n总觉得在哪里见过",
+   "icon": "storyItem_7",
+   "name": "寻蛙启事",
+   "storyid": 7,
+   "type": 1
+  },
+  {
+   "desc": "钱包还好找回来了\n可里面的钱呢",
+   "icon": "storyItem_8",
+   "name": "破了洞的钱包",
+   "storyid": 8,
+   "type": 1
+  },
+  {
+   "desc": "河边漂来了一片红叶\n上面还画了东西",
+   "icon": "storyItem_9",
+   "name": "湿漉漉的红叶",
+   "storyid": 9,
+   "type": 1
+  },
+  {
+   "desc": "一个陌生家伙送来的东西\n松软又美味",
+   "icon": "storyItem_10",
+   "name": "手工烤制的面包",
+   "storyid": 10,
+   "type": 1
+  },
+  {
+   "desc": "锻炼身体的话\n用这个就够了",
+   "icon": "storyItem_11",
+   "name": "树枝双节棍",
+   "storyid": 11,
+   "type": 1
+  },
+  {
+   "desc": "天冷的时候\n裹在身上真暖和",
+   "icon": "storyItem_12",
+   "name": "四叶草手帕",
+   "storyid": 12,
+   "type": 1
+  },
+  {
+   "desc": "午饭吃得太多\n怎么摇也摇不动",
+   "icon": "storyItem_13",
+   "name": "西瓜跷跷板",
+   "storyid": 13,
+   "type": 2
+  },
+  {
+   "desc": "为了捡这玩意\n一连摔了好几个跤",
+   "icon": "storyItem_14",
+   "name": "光滑的肥皂",
+   "storyid": 14,
+   "type": 1
+  },
+  {
+   "desc": "桔子做成的小灯\n不知道会漂往哪里",
+   "icon": "storyItem_15",
+   "name": "小桔灯",
+   "storyid": 15,
+   "type": 1
+  },
+  {
+   "desc": "窄窄的独木桥上相遇\n话音刚落就....",
+   "icon": "storyItem_16",
+   "name": "沾了水的帽子",
+   "storyid": 16,
+   "type": 1
+  },
+  {
+   "desc": "睡了个午觉\n醒来跟小伙伴数着谁的印子多",
+   "icon": "storyItem_17",
+   "name": "苦瓜枕头",
+   "storyid": 17,
+   "type": 2
+  },
+  {
+   "desc": "拿着里边的豆子\n互相丢了一下午",
+   "icon": "storyItem_18",
+   "name": "绿豆沙袋",
+   "storyid": 18,
+   "type": 2
+  },
+  {
+   "desc": "在风铃里枕着草絮\n与小伙伴一起睡了个舒服的觉",
+   "icon": "storyItem_19",
+   "name": "风铃摇床",
+   "storyid": 19,
+   "type": 1
+  },
+  {
+   "desc": "画里也有一只青蛙\n约定好了带着它一起看世界",
+   "icon": "storyItem_20",
+   "name": "小朋友画作",
+   "storyid": 20,
+   "type": 1
+  },
+  {
+   "desc": "交换得来的礼盒\n不知道嘟嘟会不会介意",
+   "icon": "storyItem_21",
+   "name": "树叶礼盒",
+   "storyid": 21,
+   "type": 1
+  },
+  {
+   "desc": "银杏装裹的明信片\n是小伙伴的心意",
+   "icon": "storyItem_22",
+   "name": "银杏信封",
+   "storyid": 22,
+   "type": 1
+  },
+  {
+   "desc": "是怎么做到的\n每次的信封都不一样",
+   "icon": "storyItem_23",
+   "name": "绿叶信封",
+   "storyid": 23,
+   "type": 1
+  },
+  {
+   "desc": "你一笔我一画\n一个大蛋糕就勾勒出来了",
+   "icon": "storyItem_24",
+   "name": "蛋糕设计图",
+   "storyid": 24,
+   "type": 1
+  },
+  {
+   "desc": "除了挡雨\n也能换个方式看风景",
+   "icon": "storyItem_25",
+   "name": "荷叶漂流艇",
+   "storyid": 25,
+   "type": 1
+  }
+ ]
+}

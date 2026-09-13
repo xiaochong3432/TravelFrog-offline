@@ -1,0 +1,24 @@
+entType.getGachaColorBall,ItemEventType.updateGachaColorBall),this.close(),e.prototype.destroy.call(this)}
+,t.prototype.open=function(){
+null==this.view&&(this.view=new RaffleView),this.getParent().addChild(this.view),this.view.updateGachaColorBall(!0),this.isReward=this.getParam(0),this.isReward?this.view.reward_raffle():this.view.checkIsFristTimeEnterRaffle()}
+,t.prototype.close=function(){
+null!=this.view&&this.view.parent&&this.view.parent.removeChild(this.view),this.view=null}
+,t.prototype.totalCustomEvents=function(e){
+if(this.view)switch(e.getEventType()){
+case UserEventType.updateTicket:this.view.updateTicket();
+break;
+case ItemEventType.getGachaColorBall:this.view.updateGachaColorBall(!0);
+break;
+case ItemEventType.updateGachaColorBall:this.view.updateGachaColorBall()}
+}
+,t}
+(core.ViewController);
+__reflect(RaffleController.prototype,"RaffleController");
+var RaffleView=function(e){
+function t(){
+var t=e.call(this,core.PathManage.getInstance().getSkinsPath("Raffle/Raffle.exml"))||this;
+return t.raffleResultTweenDuration=3e3,t.isReward=!1,t.isRewardWatting=!1,t.userModel=t.getModel(UserModel),t.itemModel=t.getModel(ItemModel),t}
+return __extends(t,e),t.prototype.onComplete=function(){
+var e=this;
+this.updateTicket(),this.raffleBox.mask=new egret.Rectangle(this.raffleBox.x,this.raffleBox.y,this.raffleBox.width,this.raffleBox.height),this.raffleBox.visible=!1,this.raffleResult.visible=!1,this.cover.visible=!1,this.closeBtn.visible=!1,this.initRaffleImagePosX=this.raffleImage.x,this.initRaffleImagePosY=this.raffleImage.y,this.shopBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+Music.play("SE_Move"),core.PageManage.getInstance().removeControl(RaffleController,core.ViewLayerType.W

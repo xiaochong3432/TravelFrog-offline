@@ -1,0 +1,168 @@
+mptBuy){
+var r=this.getModel(UserModel).getClover();
+if(this.getModel(ItemModel).isShopItemBuyLimit(e))return void Music.play("SE_Cancel");
+if(i.price>r){
+Music.play("SE_Cancel");
+var o=_("三叶草不足");
+return void this.addChild(new ModalAlert(o))}
+Music.play("SE_Popup"),this.isPromptBuy=!0;
+var a=new ShopItemBuyingTips(e),s=new ModalConfirm(a,function(){
+t.isPromptBuy=!1,GuideFingerView.getInstance().hide(),t.buy(i.id,i.itemId,i.name)}
+,function(){
+t.isPromptBuy=!1}
+);
+return core.DisplayManage.getInstance().noticeLayer.addChild(s),void(n==GuideStep.BuyGoods&&(s.cancelBtn.visible=!1,s.confirmBtn.horizontalCenter=0,setTimeout(function(){
+GuideFingerView.getInstance().show(s.confirmBtn,FingerOrientation.Down,!1,egret.Point.create(0,0))}
+,200)))}
+Music.play("SE_Cursor"),this.selectedId=e,this.updateInfo(e)}
+,t.prototype.getTicket=function(){
+this.hintGetTicket=!0,this.hintBuySucceed||this.showGetTicket()}
+,t.prototype.showGetTicket=function(){
+var e=this;
+if(this.hintGetTicket){
+this.hintGetTicket=!1;
+var t=new eui.Component;
+t.skinName=core.PathManage.getInstance().getSkinsPath("Raffle/GetTicket.exml"),this.addChild(new ModalAlert(t,function(){
+e.showAds(),e.showShare()}
+))}
+else this.showAds(),this.showShare()}
+,t.prototype.getAdsID=function(e){
+this.hintAds=e,this.hintBuySucceed||this.hintGetTicket||this.showAds()}
+,t.prototype.showAds=function(){
+this.hintAds&&BaseChannel.getInstance().supportAds()&&(core.ModelManage.getInstance().getModel(AdsModel).promptNewAds(this.hintAds),this.hintAds=null)}
+,t.prototype.getShareID=function(e){
+this.hintShare=e,this.hintBuySucceed||this.hintGetTicket||this.showShare()}
+,t.prototype.showShare=function(){
+var e=this;
+if(this.hintShare){
+var t=this.hintShare;
+core.DisplayManage.getInstance().getNoticeLayer().addChild(new ModalConfirm(_("您好，我这里有一份小礼物给您，不过需要占用您一点儿时间到微信做个分享。"),function(){
+if(GameConfig.channel==ChannelType.Test)return void core.ModelManage.getInstance().getModel(AdsModel).share_ads(t);
+var i=new ShareView;
+i.visible=!1,i.show(300,ShareAnim.TopDown,ShareScene.scene),i.open_callback(function(){
+return __awaiter(e,void 0,void 0,function(){
+return __generator(this,function(e){
+return[2,"data"]}
+)}
+)}
+,function(e){
+core.ModelManage.getInstance().getModel(AdsModel).share_ads(t)}
+,null,"wechat_share"),GameConfig.quickShare||i.share(SharePlatformType.wechatMessenger),core.DisplayManage.getInstance().noticeLayer.addChild(i)}
+,null,{
+yes:"popup_btn_share_png",no:"no_png"}
+)),this.hintShare=null}
+}
+,t.prototype.buy=function(e,t,i){
+var n=this,r=function(){
+var r=(Tabikaeru.DataManager.instance().ShopDataDB.get(e),_("购买失败"));
+n.userModel.getClientSettings().guideStep===GuideStep.BuyGoods?(n.userModel.setClientSettings("guideStep",n.userModel.getNextGuideStep(GuideStep.BuyGoods)),n.checkGuide(),r=_("提示做旅行准备")):r=_("成功购买了{
+0}
+",i),Music.play("SE_Buy"),n.hintBuySucceed=!0,n.addChild(new ModalAlert(r,function(){
+n.hintBuySucceed=!1,n.showGetTicket();
+var e=Tabikaeru.DataManager.instance().ItemDB.get(t);
+e.type===Tabikaeru.DataType.ItemType.Tools&&n.checkIsFristTimeBuyTool()}
+))}
+;
+Tabikaeru.Game.instance().buyItem(e,t,new core.Action2(function(e,i){
+if(n.updateShop(),e.is_free){
+var o=function(e){
+e&&n.getModel(AdsModel).req_shop_free(new core.Action(function(){
+r()}
+))}
+,a=function(){
+return __awaiter(n,void 0,void 0,function(){
+var e,i,n,r=this;
+return __generator(this,function(a){
+switch(a.label){
+case 0:return GameConfig.channel==ChannelType.Test?(o(!0),this.getModel(AdsModel).req_share(5),[2]):(this.shareSelector||(this.shareSelector=new ShareView),e=Tabikaeru.DataManager.instance().ItemDB.get(t),GameConfig.quickShare?(n=new WXShareView(WXShareType.Collection,Tabikaeru.path.formatPathImage(e.img)),this.parent.addChild(n),[4,n.ShareTexture()]):[3,2]);
+case 1:i=a.sent(),n.parent&&n.parent.removeChild(n),a.label=2;
+case 2:return this.shareSelector.show(400,ShareAnim.TopDown,ShareScene.item,null,i,"呱，商店免单啦"),this.shareSelector.open_callback(null,function(e){
+o(!0),r.getModel(AdsModel).req_share(5),core.ModelManage.getInstance().getModel(ShareModel).reportBlog("share.shop_free")}
+),this.shareSelector.open_item(e.img,Prize.Rank.NONE),this.addChild(this.shareSelector),[2]}
+}
+)}
+)}
+;
+core.DisplayManage.getInstance().popup(new ShopAdsView(o,a))}
+else r()}
+))}
+,t.prototype.checkIsFristTimeBuyTool=function(){
+var e=core.ModelManage.getInstance().getModel(UserModel),t=core.ModelManage.getInstance().getModel(RoleModel);
+e.getClientSettings().hasBuyTool||GuideHelpView.getInstance().show(_("{
+0}
+首次购买道具",t.getNameEncode()),function(){
+e.setClientSettings("hasBuyTool",!0)}
+)}
+,t.prototype.updateInfo=function(e){
+for(var t=0,i=this.shopItemsData;
+t<i.length;
+t++){
+var n=i[t];
+if(n.id===e){
+var r=n.info.split(" ");
+this.info1.text=r[0],this.info2.text=r[1],this.info3.text=r[2]}
+}
+}
+,t.prototype.getAllItem=function(){
+var e=this;
+this.shopItemsData=[];
+for(var t=Tabikaeru.DataManager.instance(),i=(Tabikaeru.Game.instance(),this.getModel(ItemModel)),n=0;
+n<t.ShopDataDB.count();
+n++){
+var r=t.ShopDataDB.index(n),o=t.ItemDB.get(r.itemId).img,a=!1;
+i.isShopItemBuyLimit(r.id)&&(a=!0);
+var s=!1;
+a?r.is_sold_out_hide&&(s=!0):r.is_hide_before&&r.before_buy&&(s=!this.checkShopItemHideBefore(r)),s||this.shopItemsData.push({
+id:r.id,itemId:r.itemId,img:o,price:r.price,info:r.info,name:r.name,soldout:a,order:r.order}
+)}
+if(null==this.sortType){
+this.shopItemsData.sort(function(e,t){
+return Number(e.soldout)-Number(t.soldout)||e.order-t.order||e.id-t.id}
+),this.sortType={
+}
+;
+for(var n=0,c=this.shopItemsData.length;
+c>n;
+n++)this.shopItemsData[n].soldout&&(this.sortType[this.shopItemsData[n].id]=!0)}
+else this.shopItemsData.sort(function(t,i){
+return Number(Boolean(e.sortType[t.id]))-Number(Boolean(e.sortType[i.id]))||t.order-i.order||t.id-i.id}
+)}
+,t.prototype.checkShopItemHideBefore=function(e){
+if(e.before_buy){
+var t=e.before_buy[0],i=Number(e.before_buy[1]);
+switch(t){
+case"shop":return this.getModel(ItemModel).getShopItemBuynums(i)>0;
+case"item":return this.getModel(ItemModel).checkHaveItem(i)}
+}
+return!0}
+,t.prototype.updateShop=function(){
+var e=this.shopList.selectedIndex;
+this.shopList.selectedIndex=-1,this.getAllItem(),Utils.setArrayCollection(this.shopList,this.shopItemsData);
+var t=Math.ceil(this.shopItemsData.length/4)+1;
+if(t!=this.bgList.numChildren){
+for(var i=[],n=0,r=t;
+r>n;
+n++)i.push(null);
+this.bgList.dataProvider=new eui.ArrayCollection(i),this.bgScroller.viewport.scrollH=this.shopScroller.viewport.scrollH}
+this.shopList.selectedIndex=e}
+,t.prototype.reset=function(){
+if(this.sortType=null,this.info1.text="",this.info2.text="",this.info3.text="",this.selectedId||0==this.selectedId){
+var e=void 0;
+e&&e.unselect(),this.selectedId=void 0}
+this.updateShop(),this.checkGuide()}
+,t}
+(core.UIView);
+__reflect(ShopView.prototype,"ShopView");
+var ShopItem=function(e){
+function t(){
+var t=e.call(this)||this;
+return t.luminance=30,t.currentLuminance=0,t.colorMatrix=[1,0,0,0,t.luminance,0,1,0,0,t.luminance,0,0,1,0,t.luminance,0,0,0,1,0],t.colorFlilter=new egret.ColorMatrixFilter(t.colorMatrix),t.loopPlayEff=!1,t.ascending=!1,t.playEffIndex=0,t._select=!1,t.skinName=core.PathManage.getInstance().getSkinsPath("Shop/ShopItem.exml"),t}
+return __extends(t,e),t.prototype.dataChanged=function(){
+e.prototype.dataChanged.call(this),this.update(this.data,this.itemIndex%4)}
+,t.prototype.update=function(e,i,n,r){
+void 0===n&&(n=!1),this.shopID=e.id,this.id=e.itemId,this.name="shopItem",this.itemName.text=e.name,this.price.text=e.price.toString(),this.img.source=Tabikaeru.path.formatPathImage(e.img),this.box.source=t.boxImages[i],this.active.visible=n,this.soldOutLabel.visible=e.soldout,this.touchChildren=!1,this.addEventListener(egret.TouchEvent.TOUCH_BEGIN,this.totalTouchEvents,this)}
+,t.prototype.totalTouchEvents=function(e){
+if(this.stage)switch(e.type){
+case egret.TouchEvent.TOUCH_BEGIN:this.stage.addEventListener(egret.TouchEvent.TOUCH_END,this.totalTouchEvents,this),this.touchPoint=egret.Point.create(e.stageX,e.stageY),this.loopPlayEff=!0,this.playEff();
+break;
+case egret.TouchEvent.TOUCH_END:if(this.stage.removeEventListener(egret.TouchEvent.TOUCH_END,this.totalTouchEvents,this),this.loopPlayEff=!1,this.to

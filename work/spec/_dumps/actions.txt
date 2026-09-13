@@ -1,0 +1,49 @@
+unction(e){
+function t(){
+return null!==e&&e.apply(this,arguments)||this}
+return __extends(t,e),t.prototype.apply=function(){
+return this.call()}
+,t}
+(t);
+e.Action=i,__reflect(i.prototype,"core.Action");
+var n=function(e){
+function t(){
+return null!==e&&e.apply(this,arguments)||this}
+return __extends(t,e),t.prototype.apply=function(e){
+return this.call(e)}
+,t}
+(t);
+e.Action1=n,__reflect(n.prototype,"core.Action1");
+var r=function(e){
+function t(){
+return null!==e&&e.apply(this,arguments)||this}
+return __extends(t,e),t.prototype.apply=function(e,t){
+return this.call(e,t)}
+,t}
+(t);
+e.Action2=r,__reflect(r.prototype,"core.Action2");
+var o=function(e){
+function t(){
+return null!==e&&e.apply(this,arguments)||this}
+return __extends(t,e),t.prototype.apply=function(e,t,i){
+return this.call(e,t,i)}
+,t}
+(t);
+e.Action3=o,__reflect(o.prototype,"core.Action3");
+var a=function(e){
+function t(){
+return null!==e&&e.apply(this,arguments)||this}
+return __extends(t,e),t.prototype.apply=function(e,t,i,n){
+return this.call(e,t,i,n)}
+,t}
+(t);
+e.Action4=a,__reflect(a.prototype,"core.Action4");
+var s=function(e){
+function t(){
+return null!==e&&e.apply(this,arguments)||this}
+return __extends(t,e),t.prototype.apply=function(){
+return this.call()}
+,t}
+(t);
+e.Func=s,__reflect(s.prototype,"core.Func")}
+(co

@@ -1,0 +1,113 @@
+ge.texture=null)}
+,i.prototype.onImageAdded=function(){
+this.render()}
+,i}
+(egret.HashObject);
+e.PictureRenderHelper=h,__reflect(h.prototype,"Tabikaeru.PictureRenderHelper"),e.PathToName=a}
+(Tabikaeru||(Tabikaeru={
+}
+));
+var Tabikaeru;
+!function(e){
+function t(e){
+return new o(e,RES.getRes(e+"_json"))}
+function i(e,t){
+return void 0===t&&(t="id"),new a(e,RES.getRes(e+"_json"),t)}
+function n(e){
+return new s(e,RES.getRes(e+"_json"))}
+function r(e){
+return new c(e,RES.getRes(e+"_json"))}
+var o=function(){
+function e(e,t,i){
+void 0===i&&(i="id"),this.name=e,this.src=t,t||core.Log.warning("配置不存在，name：",e)}
+return e.prototype.get=function(e){
+return this.src[e]}
+,e.prototype.all=function(){
+var e=this,t=Object.keys(this.src);
+return t.map(function(t){
+return e.get(t)}
+)}
+,Object.defineProperty(e.prototype,"length",{
+get:function(){
+return Object.keys(this.src).length}
+,enumerable:!0,configurable:!0}
+),e}
+();
+__reflect(o.prototype,"KeyGetter");
+var a=function(){
+function e(e,t,i){
+if(void 0===i&&(i="id"),this.name=e,this.src=t,!t)throw e;
+var n={
+}
+;
+for(var r in t)n[t[r][i]]=t[r];
+this.dictSrc=n}
+return e.prototype.get=function(e){
+return this.dictSrc[e]}
+,e.prototype.count=function(){
+return void 0==this.src.length?Object.keys(this.src).length:this.src.length}
+,e.prototype.index=function(e){
+return this.src[e]}
+,e.prototype.list=function(){
+var e=this;
+return Array.isArray(this.src)?this.src:Object.keys(this.src).map(function(t){
+return e.src[t]}
+)}
+,e}
+();
+__reflect(a.prototype,"IdGetter");
+var s=function(e){
+function t(){
+return null!==e&&e.apply(this,arguments)||this}
+return __extends(t,e),t.prototype.getItem=function(e){
+for(var t=0,i=this.src;
+t<i.length;
+t++){
+var n=i[t];
+if(n.itemId===e)return n}
+}
+,t}
+(a);
+__reflect(s.prototype,"ItemGetter");
+var c=function(e){
+function t(){
+return null!==e&&e.apply(this,arguments)||this}
+return __extends(t,e),t.prototype.getName=function(e){
+for(var t=0,i=this.src;
+t<i.length;
+t++){
+var n=i[t];
+if(n.name===e)return n}
+}
+,t}
+(a);
+__reflect(c.prototype,"NameGetter");
+var l=function(e){
+function t(t,i,n){
+var r=e.call(this,t,i)||this;
+return r.key=n,r}
+return __extends(t,e),t.prototype.getName=function(e){
+for(var t=0,i=this.src;
+t<i.length;
+t++){
+var n=i[t];
+if(n[this.key]===e)return n}
+}
+,t}
+(a);
+__reflect(l.prototype,"KeyNameGetter");
+var h=function(){
+function e(e){
+this["const"]=e["const"],this.story=e.story}
+return e.prototype.getStory=function(e){
+for(var t=0;
+t<this.story.length;
+t++)if(this.story[t].storyid==e)return this.story[t];
+return null}
+,e}
+();
+__reflect(h.prototype,"StoryInfo");
+var u=function(){
+function e(){
+var e=RES.getRes(navigator.language+"_json");
+e||(e=RES.getRes("zh-CN_json")),this.Translation=e,this.CollectDB=i("Collection"),this.SpecialtyDB=n("Specialty"),this.CharaDB=i("Character"),this.PrizeDB=n("Prize"),this.ItemD

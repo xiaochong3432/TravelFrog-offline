@@ -1,0 +1,24 @@
+is.moment_token}
+,t.prototype.getUID=function(){
+return this.uid}
+,t.prototype.getClover=function(){
+return this.clover-this.sub_clover}
+,t.prototype.addClover=function(e){
+}
+,t.prototype.setClover=function(e){
+this.clover=e,this.dispatchEvent(new core.Event(UserEventType.updateClover))}
+,t.prototype.checkClover=function(e){
+return this.clover>=e}
+,t.prototype.consumeClover=function(e){
+return this.clover>=e?!0:!1}
+,t.prototype.subClover=function(e){
+return this.sub_clover+=e,this.dispatchEvent(new core.Event(UserEventType.updateClover)),!0}
+,t.prototype.AddCloverTween=function(e){
+this.sub_clover-=e,this.dispatchEvent(new core.Event(UserEventType.updateCloverTween))}
+,t.prototype.getTicket=function(){
+return this.ticket}
+,t.prototype.addTicket=function(e){
+}
+,t.prototype.setTicket=function(e){
+this.ticket=e,this.dispatchEvent(new core.Event(UserEventType.updateTicket))}
+,t.prototype.consumeTicket=function(e){

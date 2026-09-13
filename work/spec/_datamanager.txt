@@ -1,0 +1,76 @@
+or(),n=i.execute(t);
+n&&n instanceof Promise?n.then(function(t){
+e.onItemResolve(i,t)}
+):this.onItemResolve(i,n),this.next()}
+else this.stop(),this.onQueueComplete&&this.onQueueComplete()}
+,e.prototype.onItemResolve=function(e,t){
+this.emptyExecutorList.push(e),this.onItemComplete&&this.onItemComplete(t),this.next()}
+,e}
+();
+__reflect(Queue.prototype,"Queue");
+var core;
+!function(e){
+var t=function(){
+function e(){
+}
+return e.padLeft=function(e,t,i){
+return void 0===i&&(i="0"),(Array(t).join(i)+e).slice(-t)}
+,e.padRight=function(e,t,i){
+return void 0===i&&(i="0"),(e+Array(t).join(i)).substring(0,t)}
+,e.getClassName=function(e){
+return e.name}
+,e.getClassName_Obj=function(e){
+return null!=e.__proto__&&null!=e.__proto__.__class__?e.__proto__.__class__:typeof e}
+,e.getFunctionArgs=function(e){
+return e.length}
+,e.isNullOrEmpty=function(e){
+return null==e||""==e}
+,e.format=function(e){
+for(var t=[],i=1;
+i<arguments.length;
+i++)t[i-1]=arguments[i];
+if(0==t.length)return null;
+for(var n=e,r=0;
+r<t.length;
+r++){
+var o=new RegExp("\\{
+"+r+"\\}
+","gm");
+n=n.replace(o,t[r])}
+return n}
+,e.getQueryString=function(e){
+if(window&&window.location&&window.location.search){
+var t=new RegExp("(^|&)"+e+"=([^&]*)(&|$)","i"),i=window.location.search.substr(1).match(t);
+return null!=i?i[2]:null}
+return""}
+,e.uuid=function(e,t){
+void 0===e&&(e=0),void 0===t&&(t=0);
+var i="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".split(""),n=[];
+if(0>=t&&(t=i.length),e>0)for(var r=0;
+e>r;
+r++)n[r]=i[0|Math.random()*t];
+else{
+var o=void 0;
+n[8]=n[13]=n[18]=n[23]="-",n[14]="4";
+for(var r=0;
+36>r;
+r++)n[r]||(o=0|16*Math.random(),n[r]=i[19==r?3&o|8:o])}
+return n.join("")}
+,e.getCookie=function(e){
+if(GameConfig.isAPP||GameConfig.channel==ChannelType.WXgame){
+var t=egret.localStorage.getItem(this._cookiePrefix+"@"+e);
+return null!=t?t:egret.localStorage.getItem(e)}
+for(var i=document.cookie.split(";
+ "),n=0;
+n<i.length;
+n++){
+var r=i[n].split("=");
+if(r[0]==e)return window.unescape(r[1])}
+}
+,e.setCookiePrefix=function(e){
+this._cookiePrefix=e}
+,e.setCookie=function(e,t,i){
+if(void 0===i&&(i=999999),GameConfig.isAPP||GameConfig.channel==ChannelType.WXgame)egret.localStorage.setItem(this._cookiePrefix+"@"+e,t);
+else{
+var n=new Date;
+n.setTime(n.getTime()+24*i*

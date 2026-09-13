@@ -1,0 +1,17 @@
+).addHouseItem(n.sprite,1),t.apply())}
+,t.prototype.syncCookieHarvestClover=function(){
+try{
+this.harvestCloverList=JSON.parse(core.String.getCookie("clover_harvest_resend"))||[]}
+catch(e){
+this.harvestCloverList=[]}
+this.syncHarvestClover(!0)}
+,t.prototype.syncHarvestClover=function(e,t){
+var i=this;
+void 0===e&&(e=!1),void 0===t&&(t=null);
+var n=this.harvestCloverList.concat();
+if(n.length){
+if(e)for(var r=0,o=n;
+r<o.length;
+r++){
+var a=o[r];
+0==a.element?this.getModel(UserModel).addClover(1):1==a.element?this.getModel(ItemModel).addHouseItem(Tabikaeru.Define.FourLeafCloverID,1):2==a.element&&this.getModel(

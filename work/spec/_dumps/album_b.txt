@@ -1,0 +1,195 @@
+!1,!0):!1}
+,t.prototype.handleSharePicture=function(){
+return this.isShare?(this.isShare=!1,!0):!1}
+,t.prototype.getFirstNewPictureInfo=function(){
+for(var e={
+}
+,t=this.newPictureInfoList.length-1;
+t>=0;
+t--){
+var i=this.newPictureInfoList[t];
+null==e[i.id]?e[i.id]=i.id:this.newPictureInfoList.splice(t,1)}
+return this.newPictureInfoList.length>0?this.newPictureInfoList[0]:null}
+,t.prototype.getFirstVisitPictureInfo=function(){
+for(var e=0,t=this.newPictureInfoList;
+e<t.length;
+e++){
+var i=t[e];
+if(i.visit)return i}
+return null}
+,t.prototype.getFirstNewAdsPictureInfo=function(){
+return this.newAdsPictureInfoList.length>0?this.newAdsPictureInfoList[0]:null}
+,t.prototype.deleteAllAdsPicture=function(){
+for(var e,t=0;
+t<this.newAdsPictureInfoList.length;
+t++)e=this.newAdsPictureInfoList[t],core.SocketManage.getInstance().send("album_delete_new",null,e.id);
+this.newAdsPictureInfoList=[]}
+,t.prototype.getAllAdsPicture=function(e){
+for(var t=this.newAdsPictureInfoList.length-1;
+t>=0;
+t--){
+var i=this.newAdsPictureInfoList[t];
+-1!=e.indexOf(i.id)&&(this.newAdsPictureInfoList.splice(t,1),this.newPictureInfoList.push(i))}
+}
+,t.prototype.saveNewPictureInfo=function(e,t){
+for(var i,n=this,r=this.newPictureInfoList,o=0;
+o<r.length;
+o++)if(i=r[o],i.id==e)return void core.SocketManage.getInstance().send("album_save_new",new core.Action2(function(e,o){
+var a=n.getModel(MessageModel).getErrorInfo(e.code);
+if(a&&0==a.code){
+for(var s=!1,c=r.length-1;
+c>=0;
+c--)r[c].id==i.id&&(r.splice(c,1),s=!0);
+s&&(n.pictureCount++,n.pictureInfoList.push(i))}
+else if(a&&75==a.code)for(var c=r.length-1;
+c>=0;
+c--)r[c].id==i.id&&r.splice(c,1);
+t(a)}
+,this),e)}
+,t.prototype.deleteNewPictureInfo=function(e,t){
+for(var i,n=this,r=this.newPictureInfoList.length-1;
+r>=0;
+r--)i=this.newPictureInfoList[r],i.id==e&&(this.newPictureInfoList.splice(r,1),core.SocketManage.getInstance().send("album_delete_new",new core.Action2(function(e,i){
+var r=n.getModel(MessageModel).getErrorInfo(e.code);
+t(r)}
+,this),e))}
+,t.prototype.recoverPictureInfo=function(e,t){
+for(var i=this,n=function(n){
+var o=r.deletePictureInfoList[n];
+o.id==e&&(r.deletePictureInfoList.splice(n,1),core.SocketManage.getInstance().send("album_recover",new core.Action2(function(e,n){
+var r=i.getModel(MessageModel).getErrorInfo(e.code);
+r&&0==r.code&&(i.pictureCount++,i.pictureInfoList.push(o),i.dispatchEvent(new core.Event(TravelEventType.updateAlbum))),t(r)}
+,r),e))}
+,r=this,o=this.deletePictureInfoList.length-1;
+o>=0;
+o--)n(o)}
+,t.prototype.requestMail=function(){
+core.SocketManage.getInstance().send("mail_load")}
+,t.prototype.getMailInfoList=function(){
+return this.mailInfoList}
+,t.prototype.getMailStage=function(){
+var e,t=!1;
+if(this.mailInfoList&&this.mailInfoList.length>0)for(var i=0;
+i<this.mailInfoList.length;
+i++)if(e=this.mailInfoList[i],!e.read){
+t=!0;
+break}
+return t}
+,t.prototype.openMailInfo=function(e){
+for(var t,i=0;
+i<this.mailInfoList.length;
+i++)if(t=this.mailInfoList[i],t.id==e){
+if(this.mailInfoList.splice(i,1),t.resource&&(this.getModel(UserModel).addClover(t.resource.clover_point),this.getModel(UserModel).addTicket(t.resource.ticket)),t.items)for(var n=0,r=t.items;
+n<r.length;
+n++){
+var o=r[n];
+this.getModel(ItemModel).addHouseItem(o.item_id,o.count)}
+return t.opened=!0,core.SocketManage.getInstance().send("mail_open",null,e),void this.dispatchEvent(new core.Event(TravelEventType.updateMial))}
+}
+,t.prototype.readMailInfo=function(e){
+for(var t,i=0;
+i<this.mailInfoList.length;
+i++)if(t=this.mailInfoList[i],t.id==e)return BaseChannel.getInstance().jf_commit(!0,"js.warning",{
+reason:"read_mail",info:t}
+),t.read=!0,core.SocketManage.getInstance().send("mail_read",null,e),void this.dispatchEvent(new core.Event(TravelEventType.updateMial))}
+,t.prototype.checkMailItemType=function(e){
+function t(e){
+var t=0;
+return null!=e&&(t=Array.isArray(e)?e.length:Object.keys(e).length),t>0}
+function i(e){
+return null!=e&&(e.clover_point>0||e.ticket>0||e.reward_gacha>0||e.ads_id.length>0||e.share_id.length>0)?!0:!1}
+return e.type==Mail.EvtId.Drift?!0:e.type==Mail.EvtId.Captcha?!0:t(e.items)||i(e.resource)||e.pictures.length>0}
+,t.prototype.getRedpointState=function(){
+return this.redpointState}
+,t.prototype.openActivityShop=function(){
+}
+,t.prototype.filtrateEvent=function(){
+if(this.travelEventList){
+var e=this.getModel(GameplayModel).getGameplayList(),t=e?e[0]:null;
+if(t){
+var i=[];
+switch(t.Gameplay){
+case"邻居":i.push(TimerEvent.Type.Visitor)}
+for(var n=void 0,r=this.travelEventList.length-1;
+r>=0;
+r--)n=this.travelEventList[r],-1!=i.indexOf(n.evt_id)&&this.travelEventList.splice(r,1)}
+}
+}
+,t.prototype.client_load_events=function(e,t){
+this.travelEventList=Array.isArray(e)?e:[],this.travelEventList.sort(function(e,t){
+var i=e.evt_type==TimerEvent.Type.Picture,n=t.evt_type==TimerEvent.Type.Picture;
+return i==n?0:i?1:-1}
+);
+for(var i=0,n=0;
+n<this.travelEventList.length;
+n++){
+var r=this.travelEventList[n];
+switch(r.evt_type){
+case TimerEvent.Type.BackHome:i+=r.evt_value[2];
+break;
+case TimerEvent.Type.PartyResult:i+=r.evt_value[2]}
+}
+i>0&&this.getModel(UserModel).subClover(i),this.filtrateEvent(),this.dispatchEvent(new core.Event(TravelEventType.updateEvents,!1))}
+,t.prototype.guest_load=function(e,t){
+this.guestData=new GuestData(e)}
+,t.prototype.album_load=function(e,t){
+for(var i=Array.isArray(e.pictures)?e.pictures:[],n=0;
+n<i.length;
+n++)i[n]&&(this.pictureInfoList[e.start+n-1]=i[n]);
+this.pictureCount=e.total,this.dispatchEvent(new core.Event(TravelEventType.updateAlbum))}
+,t.prototype.album_load_all=function(e,t){
+if(e&&e.id_list){
+for(var i=Array.isArray(e.id_list)?e.id_list:[],n=0,r=i.length;
+r>n;
+n++)i[n].hash=i[n].id+"_"+n;
+for(var o={
+}
+,a=0,s=this.pictureInfoList;
+a<s.length;
+a++){
+var n=s[a];
+o[n.id]=n}
+this.pictureInfoList=i;
+for(var n=0,r=this.pictureInfoList.length;
+r>n;
+n++)o[this.pictureInfoList[n].id]&&(this.pictureInfoList[n]=o[this.pictureInfoList[n].id]);
+this.pictureCount=i.length,this.dispatchEvent(new core.Event(TravelEventType.updateAlbum))}
+}
+,t.prototype.album_load_by_id_list=function(e,t){
+if(e&&e.pic_list){
+for(var i=e.pic_list,n={
+}
+,r=0,o=i;
+r<o.length;
+r++){
+var a=o[r];
+null==n[a.id]?n[a.id]=[a]:n[a.id].push(a)}
+for(var s=0,c=this.pictureInfoList;
+s<c.length;
+s++){
+var a=c[s];
+n[a.id]&&n[a.id].length>0&&(a.layers=n[a.id].shift().layers)}
+this.dispatchEvent(new core.Event(TravelEventType.updateAlbumContent))}
+}
+,t.prototype.revice_mails=function(e){
+"1"==GameConfig.getAdminConfig("hideCouponMail")&&(e=e.filter(function(e){
+return e.title.indexOf("周边优惠券")<0}
+)),this.mailInfoList=e;
+for(var t,i=this.mailInfoList.length-1;
+i>=0;
+i--)if(t=this.mailInfoList[i]){
+t.message&&(t.message=core.String.chengeNewline(t.message,!0)),t.auto_open?this.openMailInfo(t.id):!this.checkMailItemType(t)&&t.expire>0&&t.expire<=core.Time.getServerTime()&&this.openMailInfo(t.id),t.type==Mail.EvtId.Drift&&t.read&&this.openMailInfo(t.id),t.type==Mail.EvtId.Captcha&&t.read&&this.openMailInfo(t.id),t.type==Mail.EvtId.Explor&&1!=t.opened&&this.getModel(MuseumDayModel).setEmail(!0);
+var n=t.resource.ads_id;
+if(n&&n.length>0){
+var r=this.getModel(AdsModel).getAdsPlace(n);
+r&&this.getModel(AdsModel).isValidAds(r)||(t.resource.ads_id="",t.resource.share_id=n)}
+}
+this.mailInfoList.sort(function(e,t){
+return e.type==Mail.EvtId.Explor&&t.type!=Mail.EvtId.Explor?1:e.type!=Mail.EvtId.Explor&&t.type==Mail.EvtId.Explor?-1:0}
+),this.mailInfoList.reverse(),this.dispatchEvent(new core.Event(TravelEventType.updateMial))}
+,t.prototype.mail_load=function(e,t){
+this.revice_mails(Utils.convertArray(e))}
+,t.prototype.mail_load_mails=function(e,t){
+for(var i=Array.isArray(e.mails)?e.mails:[],n=0;
+n<i.length;
+n++)this.mailInfoLi

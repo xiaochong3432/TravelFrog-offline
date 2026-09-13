@@ -1,0 +1,150 @@
+===== 'LotterySettleViewControl'  hits=5 =====
+
+--- [770374] ---
+Selector.parent)&&(this.shareSelector=new ShareView,this.shareSelector.visible=!1,this.shareSelector.show(300,ShareAnim.TopDown,ShareScene.scene),this.shareSelector.open_callback(function(){
+return __awaiter(e,void 0,void 0,function(){
+return __generator(this,function(e){
+return[2,"data"]}
+)}
+)}
+,function(t){
+core.ModelManage.getInstance().getModel(ShareModel).reportBlog("share.weekend_gift"),e.getModel(AdsModel).req_share(3)}
+,null,"wechat_share"),GameConfig.quickShare||this.shareSelector.share(SharePlatformType.wechatMessenger),core.DisplayManage.getInstance().noticeLayer.addChild(this.shareSelector)),void this.close())}
+,t}
+(core.UIView);
+__reflect(LotteryExtraView.prototype,"LotteryExtraView");
+var LotterySettleViewControl=function(e){
+function t(){
+return e.call(this,LotterySettleView)||this}
+return __extends(t,e),t.prototype.open=function(){
+e.prototype.open.call(this)}
+,t.prototype.close=function(){
+e.prototype.close.call(this),this.view=null}
+,t}
+(WindowController);
+__reflect(LotterySettleViewControl.prototype,"LotterySettleViewControl");
+var LotterySettleView=function(e){
+function t(){
+return e.call(this,core.PathManage.getInstance().getSkinsPath("Lottery/LotterySettleSkin.exml"),LotterySettleViewControl,core.ViewLayerType.WindowLayer)||this}
+return __extends(t,e),t.prototype.childrenCreated=function(){
+var t=this;
+e.prototype.childrenCreated.call(this),this.btnOk.addEventListener(egret.TouchEve
+
+--- [770652] ---
+,"data"]}
+)}
+)}
+,function(t){
+core.ModelManage.getInstance().getModel(ShareModel).reportBlog("share.weekend_gift"),e.getModel(AdsModel).req_share(3)}
+,null,"wechat_share"),GameConfig.quickShare||this.shareSelector.share(SharePlatformType.wechatMessenger),core.DisplayManage.getInstance().noticeLayer.addChild(this.shareSelector)),void this.close())}
+,t}
+(core.UIView);
+__reflect(LotteryExtraView.prototype,"LotteryExtraView");
+var LotterySettleViewControl=function(e){
+function t(){
+return e.call(this,LotterySettleView)||this}
+return __extends(t,e),t.prototype.open=function(){
+e.prototype.open.call(this)}
+,t.prototype.close=function(){
+e.prototype.close.call(this),this.view=null}
+,t}
+(WindowController);
+__reflect(LotterySettleViewControl.prototype,"LotterySettleViewControl");
+var LotterySettleView=function(e){
+function t(){
+return e.call(this,core.PathManage.getInstance().getSkinsPath("Lottery/LotterySettleSkin.exml"),LotterySettleViewControl,core.ViewLayerType.WindowLayer)||this}
+return __extends(t,e),t.prototype.childrenCreated=function(){
+var t=this;
+e.prototype.childrenCreated.call(this),this.btnOk.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+t.close(),t.getModel(LotteryModel).req_confirm_reward(new core.Action(function(){
+core.PageManage.getInstance().addViewControl(LotteryViewControl,core.ViewLayerType.WindowLayer)}
+))}
+,this);
+var i=this.getModel(LotteryModel).data,n=(i.last_phase-1)%4+1;
+this.
+
+--- [770688] ---
+Manage.getInstance().getModel(ShareModel).reportBlog("share.weekend_gift"),e.getModel(AdsModel).req_share(3)}
+,null,"wechat_share"),GameConfig.quickShare||this.shareSelector.share(SharePlatformType.wechatMessenger),core.DisplayManage.getInstance().noticeLayer.addChild(this.shareSelector)),void this.close())}
+,t}
+(core.UIView);
+__reflect(LotteryExtraView.prototype,"LotteryExtraView");
+var LotterySettleViewControl=function(e){
+function t(){
+return e.call(this,LotterySettleView)||this}
+return __extends(t,e),t.prototype.open=function(){
+e.prototype.open.call(this)}
+,t.prototype.close=function(){
+e.prototype.close.call(this),this.view=null}
+,t}
+(WindowController);
+__reflect(LotterySettleViewControl.prototype,"LotterySettleViewControl");
+var LotterySettleView=function(e){
+function t(){
+return e.call(this,core.PathManage.getInstance().getSkinsPath("Lottery/LotterySettleSkin.exml"),LotterySettleViewControl,core.ViewLayerType.WindowLayer)||this}
+return __extends(t,e),t.prototype.childrenCreated=function(){
+var t=this;
+e.prototype.childrenCreated.call(this),this.btnOk.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+t.close(),t.getModel(LotteryModel).req_confirm_reward(new core.Action(function(){
+core.PageManage.getInstance().addViewControl(LotteryViewControl,core.ViewLayerType.WindowLayer)}
+))}
+,this);
+var i=this.getModel(LotteryModel).data,n=(i.last_phase-1)%4+1;
+this.imageBg.source="anm_weekend_"+n+"_pn
+
+--- [770858] ---
+or.share(SharePlatformType.wechatMessenger),core.DisplayManage.getInstance().noticeLayer.addChild(this.shareSelector)),void this.close())}
+,t}
+(core.UIView);
+__reflect(LotteryExtraView.prototype,"LotteryExtraView");
+var LotterySettleViewControl=function(e){
+function t(){
+return e.call(this,LotterySettleView)||this}
+return __extends(t,e),t.prototype.open=function(){
+e.prototype.open.call(this)}
+,t.prototype.close=function(){
+e.prototype.close.call(this),this.view=null}
+,t}
+(WindowController);
+__reflect(LotterySettleViewControl.prototype,"LotterySettleViewControl");
+var LotterySettleView=function(e){
+function t(){
+return e.call(this,core.PathManage.getInstance().getSkinsPath("Lottery/LotterySettleSkin.exml"),LotterySettleViewControl,core.ViewLayerType.WindowLayer)||this}
+return __extends(t,e),t.prototype.childrenCreated=function(){
+var t=this;
+e.prototype.childrenCreated.call(this),this.btnOk.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+t.close(),t.getModel(LotteryModel).req_confirm_reward(new core.Action(function(){
+core.PageManage.getInstance().addViewControl(LotteryViewControl,core.ViewLayerType.WindowLayer)}
+))}
+,this);
+var i=this.getModel(LotteryModel).data,n=(i.last_phase-1)%4+1;
+this.imageBg.source="anm_weekend_"+n+"_png",this.imageBg.mask=this.imageMask,core.TweenExtend.playLoop(this.bgAnm,!0);
+for(var r=Tabikaeru.DataManager.instance().lotteryData,o=0,a=0;
+a<i.right_flag.length;
+a++)1==i
+
+--- [839391] ---
+,core.DisplayManage.getInstance().popupLayer.addChild(new ModalAlert(_("叮咚~邮箱有动静"))),t.miniGroup.visible=t.miniGroup.includeInLayout=!1)}
+));
+else{
+var i=new GuideMiniView;
+core.DisplayManage.getInstance().getPopupLayer().addChild(i)}
+}
+}
+):(core.DisplayManage.getInstance().popupLayer.addChild(new ModalAlert(_("叮咚~邮箱有动静"))),void(t.miniGroup.visible=t.miniGroup.includeInLayout=!1))}
+,this),this.getModel(RoleModel).canShowMini()&&wx.checkIsAddedToMyMiniProgram({
+success:function(e){
+e.added||(t.miniGroup.visible=t.miniGroup.includeInLayout=!0)}
+}
+),this.lotteryGroup.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+t.getModel(LotteryModel).isRewardState()?core.PageManage.getInstance().addViewControl(LotterySettleViewControl,core.ViewLayerType.WindowLayer):core.PageManage.getInstance().addViewControl(LotteryViewControl,core.ViewLayerType.WindowLayer)}
+,this),this.wishGroup.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+core.PageManage.getInstance().addViewControl(WishingPoolViewControl,core.ViewLayerType.WindowLayer)}
+,this),this.btnPot1.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+for(var e in t.plantList)if(t.plantList[e].info.sprite>0)return void t.addChild(new ModalAlert("呱~再等等"));
+t.addChild(new ModalAlert("呱~空的"))}
+,this),this.btnPublicityMap.visible=this.btnPublicityMap.includeInLayout=this.getModel(NoticeModel).canShowPublicityMap(),this.btnPublicityMap.addEventList
+
+##########################################################################################
+### literal "update_invite"  hits=0
+##########################################################################################

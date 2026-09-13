@@ -1,0 +1,70 @@
+chars 410600..413290
+
+3]="Nouth",e[e._AreaTypeMax=4]="_AreaTypeMax"}
+(i=e.AreaType||(e.AreaType={
+}
+));
+var n;
+!function(e){
+e[e.NONE=-1]="NONE",e[e.Mountain=0]="Mountain",e[e.Sea=1]="Sea",e[e.Cave=2]="Cave",e[e.NORMAL=3]="NORMAL",e[e._EventTypeMax=4]="_EventTypeMax"}
+(n=e.EventType||(e.EventType={
+}
+));
+var r;
+!function(e){
+e[e.NONE=0]="NONE",e[e.Mountain=1]="Mountain",e[e.Sea=2]="Sea",e[e.Cave=3]="Cave",e[e._WayTypeMax=4]="_WayTypeMax"}
+(r=e.WayType||(e.WayType={
+}
+))}
+(TravelNode||(TravelNode={
+}
+));
+var Collection;
+!function(e){
+var t;
+!function(e){
+e[e.NONE=-1]="NONE",e[e.C=0]="C",e[e.B=1]="B",e[e.A=2]="A",e[e.S=3]="S"}
+(t=e.Rare||(e.Rare={
+}
+));
+var i;
+!function(e){
+e[e.NONE=-1]="NONE",e[e.Collect=0]="Collect",e[e.Specialty=1]="Specialty"}
+(i=e.ShowType||(e.ShowType={
+}
+))}
+(Collection||(Collection={
+}
+));
+var Item;
+!function(e){
+var t;
+!function(e){
+e[e.NONE=-1]="NONE",e[e.LunchBox=0]="LunchBox",e[e.Amulet=1]="Amulet",e[e.Tool=2]="Tool",e[e.Specialty=3]="Specialty",e[e._ElmMax=4]="_ElmMax"}
+(t=e.Type||(e.Type={
+}
+));
+var i;
+!function(e){
+e[e.NONE=-1]="NONE",e[e.HP=0]="HP",e[e.AREA_DECIDE=1]="AREA_DECIDE",e[e.ITEM_PERCENT=2]="ITEM_PERCENT",e[e.WAY_SPEED=3]="WAY_SPEED",e[e.EVT_WAY=4]="EVT_WAY",e[e.FRIENDSHIP=5]="FRIENDSHIP",e[e.TELEPORT=6]="TELEPORT",e[e.FLAG_ITEM=7]="FLAG_ITEM",e[e._EffectTypeMax=8]="_EffectTypeMax"}
+(i=e.EffectType||(e.EffectType={
+}
+));
+var n;
+!function(e){
+e[e.NONE=-1]="NONE",e[e.H_UP=0]="H_UP",e[e.H_UP_RND=1]="H_UP_RND",e[e.H_MAXTIME=2]="H_MAXTIME",e[e.A_EAST=100]="A_EAST",e[e.A_WEST=101]="A_WEST",e[e.A_SOUTH=102]="A_SOUTH",e[e.A_NOUTH=103]="A_NOUTH",e[e.A_NEW_AREA=104]="A_NEW_AREA",e[e.I_UP=200]="I_UP",e[e.I_CLOVER=201]="I_CLOVER",e[e.I_CLOVER_RND=202]="I_CLOVER_RND",e[e.I_TICKET=203]="I_TICKET",e[e.W_MOUNTAIN=300]="W_MOUNTAIN",e[e.W_SEA=301]="W_SEA",e[e.W_CAVE=302]="W_CAVE",e[e.W_NONE=398]="W_NONE",e[e.W_ALL=399]="W_ALL",e[e.E_MOUNTAIN=400]="E_MOUNTAIN",e[e.E_SEA=401]="E_SEA",e[e.E_CAVE=402]="E_CAVE",e[e.E_NORMAL=403]="E_NORMAL",e[e.F_NONE=500]="F_NONE",e[e.F_0=501]="F_0",e[e.F_1=502]="F_1",e[e.F_2=503]="F_2",e[e.T_NONE=600]="T_NONE",e[e.FL_RARE=700]="FL_RARE",e[e.FL_VEGETABLE=701]="FL_VEGETABLE",e[e.FL_FRUITS=702]="FL_FRUITS",e[e.FL_CONPEITO=703]="FL_CONPEITO",e[e.FL_MANJU=704]="FL_MANJU",e[e.FL_NORMAL=705]="FL_NORMAL"}
+(n=e.EffectElm||(e.EffectElm={
+}
+))}
+(Item||(Item={
+}
+));
+var Mail;
+!function(e){
+var t;
+!function(e){
+e[e.NONE=0]="NONE",e[e.System=1]="System",e[e.Gift=3]="Gift",e[e.Leaflet=5]="Leaflet",e[e.StoryGift=6]="StoryGift",e[e.Taobao=7]="Taobao",e[e.Drift=8]="Drift",e[e.Captcha=9]="Captcha",e[e.ShareURL=10]="ShareURL",e[e.NewPicture=11]="NewPicture",e[e.Explor=12]="Explor",e[e.SpecPicture=13]="SpecPicture",e[e.CardGift=14]="CardGift",e[e.Notice=15]="Notice"}
+(t=e.EvtId||(e.EvtId={
+}
+))}
+(M

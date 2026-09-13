@@ -1,0 +1,54 @@
+ll();
+-1==e?(this.isRewardWatting=!1,core.SocketManage.getInstance().send("item_gacha",null,!0)):this.isRewardWatting=!0}
+,t.prototype.nextReward=function(){
+this.isRewardWatting?(this.isRewardWatting=!1,core.SocketManage.getInstance().send("item_gacha",null,!0)):this.isReward}
+,t.prototype.updateGachaColorBall=function(e){
+return void 0===e&&(e=!1),__awaiter(this,void 0,void 0,function(){
+var t,i,n,r,o,a,o,s,c=this;
+return __generator(this,function(l){
+switch(l.label){
+case 0:return t=this.itemModel.getGachaColorBall(),-1==t?(this.drawBtn.touchEnabled=!0,[2]):e?[3,2]:[4,this.playRaffleAnm(t)];
+case 1:l.sent(),l.label=2;
+case 2:return[4,this.showResult(t)];
+case 3:switch(l.sent(),Music.play("SE_Popup"),i=Tabikaeru.Game.instance().prizelist,t){
+case Prize.Rank.White:for(n=new eui.Component,n.skinName=core.PathManage.getInstance().getSkinsPath("Raffle/GetTicket.exml"),r=new ModalAlert(n),r.addEventListener(egret.Event.REMOVED_FROM_STAGE,function(){
+c.nextReward()}
+,null),this.addChild(r),o=0;
+o<i.length;
+o++)if(i[o].rank==t){
+this.itemModel.cleanGachaColorBall(),this.userModel.addTicket(i[o].stock),core.SocketManage.getInstance().send("item_redeem_prize",null,i[o].id);
+break}
+break;
+default:for(a=[],o=0;
+o<i.length;
+o++)i[o].rank==t&&a.push(i[o]);
+s=new PrizeSelector(a,this.isReward),s.addEventListener(egret.Event.REMOVED_FROM_STAGE,function(){
+c.nextReward()}
+,null),this.addChild(s)}
+return this.drawBtn.touchEnabled=!0,[2]}
+}
+)}
+)}
+,t.prototype.playRaffleAnm=function(e){
+return __awaiter(this,void 0,void 0,function(){
+var i=this;
+return __generator(this,function(n){
+return[2,new Promise(function(n,r){
+i.updateTicket(),i.raffleBox.visible=!0;
+var o=Math.floor(2*Math.random());
+i.raffleImage.source=t.PrizeDishImage[e][o],i.cover.visible=!0;
+var a=Math.floor(3*Math.random())+1;
+1==o&&(a+=3);
+var s=i["anm0"+a];
+s.play(0),i.tweenTimer&&egret.clearTimeout(i.tweenTimer),Utils.FpsManager.instance().boostIn(i.raffleResultTweenDuration),i.tweenTimer=egret.setTimeout(function(){
+i.tweenTimer=void 0,i.raffleBox.visible=!1,s.stop(),i.raffleImage.x=i.initRaffleImagePosX,i.raffleImage.y=i.initRaffleImagePosY,n()}
+,i,i.raffleResultTweenDuration)}
+)]}
+)}
+)}
+,t.prototype.showResult=function(e){
+return __awaiter(this,void 0,void 0,function(){
+var i=this;
+return __generator(this,function(n){
+return[2,new Promise(function(n,r){
+Music.play("SE_RaffleResult"),i.cover.visible=!0,i.raffleResult.visible=!0,i.resultImage.source=t.PrizeBa

@@ -1,0 +1,338 @@
+{
+ "flowerpot": {
+  "23001": {
+   "desc": "可以种上一点小植物",
+   "id": 23001,
+   "name": "陶瓷花盆",
+   "pic": "flowerpot_1_1",
+   "pos_list": [
+    [
+     -30,
+     -40
+    ],
+    [
+     27,
+     28
+    ]
+   ],
+   "type": 1
+  }
+ },
+ "plant": {
+  "2010101": {
+   "id": 2010101,
+   "name": "角堇·火龙果",
+   "pic": [
+    "zhongzhi_my_1",
+    "zhongzhi_jiaojin",
+    "zhongzhi_jiaojin_1"
+   ]
+  },
+  "2010102": {
+   "id": 2010102,
+   "name": "角堇·柠檬黄唇",
+   "pic": [
+    "zhongzhi_my_1",
+    "zhongzhi_jiaojin",
+    "zhongzhi_jiaojin_2"
+   ]
+  },
+  "2010103": {
+   "id": 2010103,
+   "name": "角堇·彩蝶",
+   "pic": [
+    "zhongzhi_my_1",
+    "zhongzhi_jiaojin",
+    "zhongzhi_jiaojin_3"
+   ]
+  },
+  "2010201": {
+   "id": 2010201,
+   "name": "葡风·日出",
+   "pic": [
+    "zhongzhi_my_2",
+    "zhongzhi_pufeng",
+    "zhongzhi_pufeng_1"
+   ]
+  },
+  "2010202": {
+   "id": 2010202,
+   "name": "葡风·白色魔术",
+   "pic": [
+    "zhongzhi_my_2",
+    "zhongzhi_pufeng",
+    "zhongzhi_pufeng_2"
+   ]
+  },
+  "2010203": {
+   "id": 2010203,
+   "name": "葡风·黑眼睛",
+   "pic": [
+    "zhongzhi_my_2",
+    "zhongzhi_pufeng",
+    "zhongzhi_pufeng_3"
+   ]
+  },
+  "2010301": {
+   "id": 2010301,
+   "name": "拇指萝卜·小拇指",
+   "pic": [
+    "zhongzhi_my_1",
+    "zhongzhi_huluobo",
+    "zhongzhi_huluobo_1"
+   ]
+  },
+  "2010302": {
+   "id": 2010302,
+   "name": "拇指萝卜·黄玛丽",
+   "pic": [
+    "zhongzhi_my_1",
+    "zhongzhi_huluobo",
+    "zhongzhi_huluobo_2"
+   ]
+  },
+  "2010303": {
+   "id": 2010303,
+   "name": "拇指萝卜·紫伶",
+   "pic": [
+    "zhongzhi_my_1",
+    "zhongzhi_huluobo",
+    "zhongzhi_huluobo_3"
+   ]
+  },
+  "2010401": {
+   "id": 2010401,
+   "name": "风信子·白珍珠",
+   "pic": [
+    "zhongzhi_my_2",
+    "zhongzhi_fengxinzi",
+    "zhongzhi_fengxinzi_1"
+   ]
+  },
+  "2010402": {
+   "id": 2010402,
+   "name": "风信子·吉普赛女王",
+   "pic": [
+    "zhongzhi_my_2",
+    "zhongzhi_fengxinzi",
+    "zhongzhi_fengxinzi_2"
+   ]
+  },
+  "2010403": {
+   "id": 2010403,
+   "name": "风信子·蓝星",
+   "pic": [
+    "zhongzhi_my_2",
+    "zhongzhi_fengxinzi",
+    "zhongzhi_fengxinzi_3"
+   ]
+  },
+  "2010501": {
+   "id": 2010501,
+   "name": "网脉鸢尾·冰冻星球",
+   "pic": [
+    "zhongzhi_my_2",
+    "zhongzhi_wmyw",
+    "zhongzhi_wmyw_1"
+   ]
+  },
+  "2010502": {
+   "id": 2010502,
+   "name": "网脉鸢尾·艾丽达",
+   "pic": [
+    "zhongzhi_my_2",
+    "zhongzhi_wmyw",
+    "zhongzhi_wmyw_2"
+   ]
+  },
+  "2010503": {
+   "id": 2010503,
+   "name": "网脉鸢尾·狂想曲",
+   "pic": [
+    "zhongzhi_my_2",
+    "zhongzhi_wmyw",
+    "zhongzhi_wmyw_3"
+   ]
+  },
+  "2010504": {
+   "id": 2010504,
+   "name": "网脉鸢尾·迪特",
+   "pic": [
+    "zhongzhi_my_2",
+    "zhongzhi_wmyw",
+    "zhongzhi_wmyw_4"
+   ]
+  },
+  "2010601": {
+   "id": 2010601,
+   "name": "郁金香·皇家红",
+   "pic": [
+    "zhongzhi_my_2",
+    "zhongzhi_yujinxiang",
+    "zhongzhi_yujinxiang_1"
+   ]
+  },
+  "2010602": {
+   "id": 2010602,
+   "name": "郁金香·命运女神",
+   "pic": [
+    "zhongzhi_my_2",
+    "zhongzhi_yujinxiang",
+    "zhongzhi_yujinxiang_2"
+   ]
+  },
+  "2010603": {
+   "id": 2010603,
+   "name": "郁金香·黄金岁月",
+   "pic": [
+    "zhongzhi_my_2",
+    "zhongzhi_yujinxiang",
+    "zhongzhi_yujinxiang_3"
+   ]
+  },
+  "2010604": {
+   "id": 2010604,
+   "name": "郁金香·夜皇后",
+   "pic": [
+    "zhongzhi_my_2",
+    "zhongzhi_yujinxiang",
+    "zhongzhi_yujinxiang_4"
+   ]
+  },
+  "2010701": {
+   "id": 2010701,
+   "name": "樱桃萝卜·芜菁",
+   "pic": [
+    "zhongzhi_my_1",
+    "zhongzhi_huluobo",
+    "zhongzhi_ytluobo_1"
+   ]
+  },
+  "2010702": {
+   "id": 2010702,
+   "name": "樱桃萝卜·红顶",
+   "pic": [
+    "zhongzhi_my_1",
+    "zhongzhi_huluobo",
+    "zhongzhi_ytluobo_2"
+   ]
+  },
+  "2010703": {
+   "id": 2010703,
+   "name": "樱桃萝卜·红樱桃",
+   "pic": [
+    "zhongzhi_my_1",
+    "zhongzhi_huluobo",
+    "zhongzhi_ytluobo_3"
+   ]
+  },
+  "2010801": {
+   "id": 2010801,
+   "name": "樱桃番茄·红鸟",
+   "pic": [
+    "zhongzhi_my_1",
+    "zhongzhi_fanqie",
+    "zhongzhi_fanqie_1"
+   ]
+  },
+  "2010802": {
+   "id": 2010802,
+   "name": "樱桃番茄·绿博士",
+   "pic": [
+    "zhongzhi_my_1",
+    "zhongzhi_fanqie",
+    "zhongzhi_fanqie_2"
+   ]
+  },
+  "2010803": {
+   "id": 2010803,
+   "name": "樱桃番茄·樱桃迪",
+   "pic": [
+    "zhongzhi_my_1",
+    "zhongzhi_fanqie",
+    "zhongzhi_fanqie_3"
+   ]
+  },
+  "2010901": {
+   "id": 2010901,
+   "name": "草莓·雪兔",
+   "pic": [
+    "zhongzhi_my_1",
+    "zhongzhi_caomei",
+    "zhongzhi_caomei_1"
+   ]
+  },
+  "2010902": {
+   "id": 2010902,
+   "name": "草莓·白雪公主",
+   "pic": [
+    "zhongzhi_my_1",
+    "zhongzhi_caomei",
+    "zhongzhi_caomei_2"
+   ]
+  },
+  "2010903": {
+   "id": 2010903,
+   "name": "草莓·红颜",
+   "pic": [
+    "zhongzhi_my_1",
+    "zhongzhi_caomei",
+    "zhongzhi_caomei_3"
+   ]
+  },
+  "2011001": {
+   "id": 2011001,
+   "name": "迷你南瓜·红贝贝",
+   "pic": [
+    "zhongzhi_my_1",
+    "zhongzhi_mnnangua",
+    "zhongzhi_mnnangua_1"
+   ]
+  },
+  "2011002": {
+   "id": 2011002,
+   "name": "迷你南瓜·金银桔",
+   "pic": [
+    "zhongzhi_my_1",
+    "zhongzhi_mnnangua",
+    "zhongzhi_mnnangua_2"
+   ]
+  },
+  "2011003": {
+   "id": 2011003,
+   "name": "迷你南瓜·翠贝贝",
+   "pic": [
+    "zhongzhi_my_1",
+    "zhongzhi_mnnangua",
+    "zhongzhi_mnnangua_3"
+   ]
+  },
+  "2011101": {
+   "id": 2011101,
+   "name": "铃兰·原生白",
+   "pic": [
+    "zhongzhi_my_2",
+    "zhongzhi_linglan",
+    "zhongzhi_linglan_1"
+   ]
+  },
+  "2011102": {
+   "id": 2011102,
+   "name": "铃兰·粉天使",
+   "pic": [
+    "zhongzhi_my_2",
+    "zhongzhi_linglan",
+    "zhongzhi_linglan_2"
+   ]
+  },
+  "2011103": {
+   "id": 2011103,
+   "name": "铃兰·蒙大拿",
+   "pic": [
+    "zhongzhi_my_2",
+    "zhongzhi_linglan",
+    "zhongzhi_linglan_3"
+   ]
+  }
+ }
+}

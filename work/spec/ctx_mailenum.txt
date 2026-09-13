@@ -1,0 +1,193 @@
+===== 'EvtId'  hits=37 =====
+
+--- [200217] ---
+Type.updateMial))}
+,t.prototype.checkMailItemType=function(e){
+function t(e){
+var t=0;
+return null!=e&&(t=Array.isArray(e)?e.length:Object.keys(e).length),t>0}
+function i(e){
+return null!=e&&(e.clover_point>0||e.ticket>0||e.reward_gacha>0||e.ads_id.length>0||e.share_id.length>0)?!0:!1}
+return e.type==Mail.EvtId.Drift?!0:e.type==Mail.EvtId.Captcha?!0:t(e.items)||i(e.resource)||e.pictures.length>0}
+,t.prototype.getRedpointState=function(){
+return this.redpointState}
+,t.prototype.openActivityShop=function(){
+}
+,t.prototype.filtrateEvent=function(){
+if(this.travelEventList){
+var e=this.getModel(GameplayModel).getGameplayList(),t=e?e[0]:null;
+if(t){
+var i=[];
+switch(t.Gameplay){
+case"邻居":i.push(TimerEvent.Type.Visitor)}
+for(var n=void 0,r=this.travelEventList.length-1;
+r>=0;
+r--)n=this.travelEventList[r],-1!=i.indexOf(n.evt_id)&&this.travelEventList.splice(r,1)}
+}
+}
+,t.prototype.client_load_events=function(e,t){
+this.travelEventList=Array.isArray(e)?e:[],this.travelEventList.sort(function(e,t){
+var i=e.evt_type==TimerEvent.Type.Picture,n=t.evt_type==TimerEvent.Type.Picture;
+return i==n?0:i?1:-1}
+);
+for(var i=0,n=0;
+n<this.travelEventList.length;
+n++){
+var r=this.travelEventList[n];
+switch(r.evt_type){
+case TimerEvent.Ty
+
+--- [200245] ---
+pe.checkMailItemType=function(e){
+function t(e){
+var t=0;
+return null!=e&&(t=Array.isArray(e)?e.length:Object.keys(e).length),t>0}
+function i(e){
+return null!=e&&(e.clover_point>0||e.ticket>0||e.reward_gacha>0||e.ads_id.length>0||e.share_id.length>0)?!0:!1}
+return e.type==Mail.EvtId.Drift?!0:e.type==Mail.EvtId.Captcha?!0:t(e.items)||i(e.resource)||e.pictures.length>0}
+,t.prototype.getRedpointState=function(){
+return this.redpointState}
+,t.prototype.openActivityShop=function(){
+}
+,t.prototype.filtrateEvent=function(){
+if(this.travelEventList){
+var e=this.getModel(GameplayModel).getGameplayList(),t=e?e[0]:null;
+if(t){
+var i=[];
+switch(t.Gameplay){
+case"邻居":i.push(TimerEvent.Type.Visitor)}
+for(var n=void 0,r=this.travelEventList.length-1;
+r>=0;
+r--)n=this.travelEventList[r],-1!=i.indexOf(n.evt_id)&&this.travelEventList.splice(r,1)}
+}
+}
+,t.prototype.client_load_events=function(e,t){
+this.travelEventList=Array.isArray(e)?e:[],this.travelEventList.sort(function(e,t){
+var i=e.evt_type==TimerEvent.Type.Picture,n=t.evt_type==TimerEvent.Type.Picture;
+return i==n?0:i?1:-1}
+);
+for(var i=0,n=0;
+n<this.travelEventList.length;
+n++){
+var r=this.travelEventList[n];
+switch(r.evt_type){
+case TimerEvent.Type.BackHome:i+=r.evt_value[2
+
+--- [202956] ---
+lInfoList=e;
+for(var t,i=this.mailInfoList.length-1;
+i>=0;
+i--)if(t=this.mailInfoList[i]){
+t.message&&(t.message=core.String.chengeNewline(t.message,!0)),t.auto_open?this.openMailInfo(t.id):!this.checkMailItemType(t)&&t.expire>0&&t.expire<=core.Time.getServerTime()&&this.openMailInfo(t.id),t.type==Mail.EvtId.Drift&&t.read&&this.openMailInfo(t.id),t.type==Mail.EvtId.Captcha&&t.read&&this.openMailInfo(t.id),t.type==Mail.EvtId.Explor&&1!=t.opened&&this.getModel(MuseumDayModel).setEmail(!0);
+var n=t.resource.ads_id;
+if(n&&n.length>0){
+var r=this.getModel(AdsModel).getAdsPlace(n);
+r&&this.getModel(AdsModel).isValidAds(r)||(t.resource.ads_id="",t.resource.share_id=n)}
+}
+this.mailInfoList.sort(function(e,t){
+return e.type==Mail.EvtId.Explor&&t.type!=Mail.EvtId.Explor?1:e.type!=Mail.EvtId.Explor&&t.type==Mail.EvtId.Explor?-1:0}
+),this.mailInfoList.reverse(),this.dispatchEvent(new core.Event(TravelEventType.updateMial))}
+,t.prototype.mail_load=function(e,t){
+this.revice_mails(Utils.convertArray(e))}
+,t.prototype.mail_load_mails=function(e,t){
+for(var i=Array.isArray(e.mails)?e.mails:[],n=0;
+n<i.length;
+n++)this.mailInfoList[n+e.start-1]=i[n];
+var r=BaseChannel.getInstance().isClearAds();
+t.start+t.count<=e.tot
+
+--- [203014] ---
+-)if(t=this.mailInfoList[i]){
+t.message&&(t.message=core.String.chengeNewline(t.message,!0)),t.auto_open?this.openMailInfo(t.id):!this.checkMailItemType(t)&&t.expire>0&&t.expire<=core.Time.getServerTime()&&this.openMailInfo(t.id),t.type==Mail.EvtId.Drift&&t.read&&this.openMailInfo(t.id),t.type==Mail.EvtId.Captcha&&t.read&&this.openMailInfo(t.id),t.type==Mail.EvtId.Explor&&1!=t.opened&&this.getModel(MuseumDayModel).setEmail(!0);
+var n=t.resource.ads_id;
+if(n&&n.length>0){
+var r=this.getModel(AdsModel).getAdsPlace(n);
+r&&this.getModel(AdsModel).isValidAds(r)||(t.resource.ads_id="",t.resource.share_id=n)}
+}
+this.mailInfoList.sort(function(e,t){
+return e.type==Mail.EvtId.Explor&&t.type!=Mail.EvtId.Explor?1:e.type!=Mail.EvtId.Explor&&t.type==Mail.EvtId.Explor?-1:0}
+),this.mailInfoList.reverse(),this.dispatchEvent(new core.Event(TravelEventType.updateMial))}
+,t.prototype.mail_load=function(e,t){
+this.revice_mails(Utils.convertArray(e))}
+,t.prototype.mail_load_mails=function(e,t){
+for(var i=Array.isArray(e.mails)?e.mails:[],n=0;
+n<i.length;
+n++)this.mailInfoList[n+e.start-1]=i[n];
+var r=BaseChannel.getInstance().isClearAds();
+t.start+t.count<=e.total?core.SocketManage.getInstance().send("mail_load_mails",
+
+--- [203074] ---
+ng.chengeNewline(t.message,!0)),t.auto_open?this.openMailInfo(t.id):!this.checkMailItemType(t)&&t.expire>0&&t.expire<=core.Time.getServerTime()&&this.openMailInfo(t.id),t.type==Mail.EvtId.Drift&&t.read&&this.openMailInfo(t.id),t.type==Mail.EvtId.Captcha&&t.read&&this.openMailInfo(t.id),t.type==Mail.EvtId.Explor&&1!=t.opened&&this.getModel(MuseumDayModel).setEmail(!0);
+var n=t.resource.ads_id;
+if(n&&n.length>0){
+var r=this.getModel(AdsModel).getAdsPlace(n);
+r&&this.getModel(AdsModel).isValidAds(r)||(t.resource.ads_id="",t.resource.share_id=n)}
+}
+this.mailInfoList.sort(function(e,t){
+return e.type==Mail.EvtId.Explor&&t.type!=Mail.EvtId.Explor?1:e.type!=Mail.EvtId.Explor&&t.type==Mail.EvtId.Explor?-1:0}
+),this.mailInfoList.reverse(),this.dispatchEvent(new core.Event(TravelEventType.updateMial))}
+,t.prototype.mail_load=function(e,t){
+this.revice_mails(Utils.convertArray(e))}
+,t.prototype.mail_load_mails=function(e,t){
+for(var i=Array.isArray(e.mails)?e.mails:[],n=0;
+n<i.length;
+n++)this.mailInfoList[n+e.start-1]=i[n];
+var r=BaseChannel.getInstance().isClearAds();
+t.start+t.count<=e.total?core.SocketManage.getInstance().send("mail_load_mails",null,t.start+t.count,5,r):(this.mailInfoList.length=e.mails.
+
+--- [203376] ---
+tId.Explor&&1!=t.opened&&this.getModel(MuseumDayModel).setEmail(!0);
+var n=t.resource.ads_id;
+if(n&&n.length>0){
+var r=this.getModel(AdsModel).getAdsPlace(n);
+r&&this.getModel(AdsModel).isValidAds(r)||(t.resource.ads_id="",t.resource.share_id=n)}
+}
+this.mailInfoList.sort(function(e,t){
+return e.type==Mail.EvtId.Explor&&t.type!=Mail.EvtId.Explor?1:e.type!=Mail.EvtId.Explor&&t.type==Mail.EvtId.Explor?-1:0}
+),this.mailInfoList.reverse(),this.dispatchEvent(new core.Event(TravelEventType.updateMial))}
+,t.prototype.mail_load=function(e,t){
+this.revice_mails(Utils.convertArray(e))}
+,t.prototype.mail_load_mails=function(e,t){
+for(var i=Array.isArray(e.mails)?e.mails:[],n=0;
+n<i.length;
+n++)this.mailInfoList[n+e.start-1]=i[n];
+var r=BaseChannel.getInstance().isClearAds();
+t.start+t.count<=e.total?core.SocketManage.getInstance().send("mail_load_mails",null,t.start+t.count,5,r):(this.mailInfoList.length=e.mails.length,this.revice_mails(Utils.convertArray(this.mailInfoList)))}
+,t.prototype.mail_ejoy_active_code=function(e){
+}
+,t.prototype.album_load_new=function(e){
+this.newAdsPictureInfoList=[],this.newPictureInfoList=[];
+for(var t=Array.isArray(e.pictures)?e.pictures:[],i=0;
+i<t.length;
+i++){
+var n=t[i];
+n.for_ads?t
+
+##########################################################################################
+### literal "DrawingState"  hits=0
+##########################################################################################
+
+
+##########################################################################################
+### literal "LotteryState"  hits=0
+##########################################################################################
+
+
+##########################################################################################
+### literal "TimerEvent"  hits=0
+##########################################################################################
+
+
+##########################################################################################
+### literal "LotteryState"  hits=0
+##########################################################################################
+
+
+##########################################################################################
+### literal "GuideStep"  hits=0
+##########################################################################################
+
+
+##########################################################################################
+### literal "NotificationType"  hits=0
+##########################################################################################

@@ -1,0 +1,29 @@
+ll,5e3))}
+function a(e){
+var t=e.lastIndexOf("/"),i=e.length,n=e.slice(t+1,i);
+return n+"_png"}
+e.getPicturePath=t,e.loadPicture=i;
+var s=new egret.DisplayObjectContainer,c={
+}
+;
+e.renderPicture=n,e.getPictureTexture=r;
+var l=null;
+e.releasePictureTexture=o;
+var h=function(t){
+function i(e){
+var i=t.call(this)||this;
+return i.image=e,e.addEventListener(egret.Event.REMOVED_FROM_STAGE,i.onImageRemoved,i),e.addEventListener(egret.Event.ADDED_TO_STAGE,i.onImageAdded,i),i}
+return __extends(i,t),i.prototype.setData=function(e){
+this.data=e,this.image.texture&&this.onImageRemoved(),this.image.stage&&this.onImageAdded()}
+,i.prototype.render=function(){
+if(this.data&&this.image){
+var t=e.getPictureTexture(this.data);
+this.image.texture=t}
+}
+,i.prototype.onImageRemoved=function(){
+this.image&&this.image.texture&&(e.releasePictureTexture(this.image.texture),this.image.texture=null)}
+,i.prototype.onImageAdded=function(){
+this.render()}
+,i}
+(egret.HashObject);
+e.PictureRenderHelper=h,__reflect(h.prototype,"Tabikaeru.PictureRe

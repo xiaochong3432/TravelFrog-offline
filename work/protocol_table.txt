@@ -1,0 +1,488 @@
+client_hello		REQ	375304
+client_load_role		REQ	375325
+client_set_name	name	REQ	375350
+client_set_client_envinfo	info	opt	375380
+client_set_achieve	id	opt	375420
+client_gm	cmd	REQ	375451
+client_set_lang	lang	opt	375474
+client_set_client	client	opt	375504
+client_load_events		REQ	375538
+client_confirm_event	id	opt	375565
+client_switch_push	turnon	REQ	375598
+client_switch_rank	turnon	REQ	375633
+client_rename_cost		REQ	375668
+client_user_action	name	opt	375695
+client_set_icon	id	opt	375728
+client_set_pic_show	id	opt	375756
+client_taobao_import	taobao_uid	REQ	375788
+client_draw_taobao	draw	REQ	375829
+client_load_all_info		REQ	375862
+client_load_decorate		REQ	375891
+client_change_decorate	id	REQ	375920
+client_set_ads	support	opt	375955
+client_set_channel	channel	opt	375987
+client_set_channel_id	id	opt	376023
+client_set_wx_open_id	open_id	REQ	376057
+client_add_push_id	push_id	opt	376096
+client_get_push_reward		REQ	376132
+client_get_my_wx_reward		REQ	376163
+client_share_publicity	id	REQ	376195
+clover_load_clovers		REQ	376230
+clover_harvest	clover_id	REQ	376258
+clover_harvest_resend	list	REQ	376292
+clover_update		REQ	376328
+clover_notice_get		REQ	376350
+hall_hello		REQ	376376
+hall_gen_token	account	REQ	376395
+hall_login	token	REQ	376427
+hall_enter_game		REQ	376453
+hall_leave_game		opt	376477
+hall_report_remote_addr	remote_addr,local_addr	opt	376501
+item_load_items		REQ	376559
+item_putin_bag	pos,item_id	REQ	376583
+item_takeout_bag	pos	REQ	376621
+item_putin_desk	pos,item_id	REQ	376651
+item_takeout_desk	pos	REQ	376690
+item_load_handbook		REQ	376721
+item_buy	shop_id	REQ	376748
+item_gacha	is_reward	REQ	376774
+item_redeem_prize	prize_id	opt	376804
+item_set_bag_completed	completed	opt	376840
+item_use_gift_code	gift_code	REQ	376882
+item_load_shop_info		REQ	376920
+item_update		REQ	376948
+item_update_ticket		REQ	376968
+item_load_select_gift		REQ	376995
+item_select_gift	index_list	REQ	377025
+guest_load		REQ	377062
+guest_confirm	id	opt	377081
+guest_serve	id,item_id	opt	377107
+guest_set_expire_time	time	opt	377141
+guest_finish		opt	377177
+album_load	start,count	REQ	377198
+album_load_all		REQ	377232
+album_load_by_id_list	id_list	REQ	377255
+album_load_new		REQ	377294
+album_load_recover		REQ	377317
+album_save_new	id	REQ	377344
+album_delete_new	id	REQ	377371
+album_delete	id	REQ	377400
+album_recover	id	REQ	377425
+mail_load_mails	start,count,is_clear	REQ	377451
+mail_load		REQ	377501
+mail_open	id	opt	377519
+mail_read	id	opt	377541
+mail_ejoy_active_code	ticket	REQ	377563
+story_load		REQ	377601
+story_send_gift	id,gift	opt	377620
+story_feedback_gift	id	opt	377655
+story_read_new_story		opt	377687
+tutorial_step_open_door		opt	377716
+tutorial_step_open_door_q		REQ	377748
+tutorial_step_ask_award		opt	377782
+tutorial_step_ask_award_q		REQ	377814
+visit_load		REQ	377848
+visit_open		opt	377867
+visit_set_expire_time	time	opt	377886
+visit_set_carpet	id	opt	377922
+rank_load	type,duration,start,count	REQ	377951
+rank_like	type,duration,uid	opt	378002
+rank_get_intro	type,duration,uid	REQ	378043
+travel_load_gift		REQ	378089
+travel_bag_to_gift	item_id	REQ	378114
+travel_gift_to_bag	item_id	REQ	378150
+travel_album_to_gift	picture_id	REQ	378186
+travel_gift_to_album	picture_id	REQ	378227
+travel_load_note		REQ	378268
+travel_read_note	id	opt	378293
+travel_gift_delete_album	id	REQ	378322
+pray_load_grays		REQ	378359
+pray_confirm_make_box		opt	378383
+pray_compose	id	REQ	378413
+cooking_refresh_task	id	REQ	378438
+cooking_complete_task	id	REQ	378471
+cooking_look_ad		REQ	378505
+cooking_share		REQ	378529
+cooking_start_cooking		REQ	378551
+cooking_load_cooking		REQ	378581
+cooking_select	index	REQ	378610
+hall_reconnect	token,account	REQ	378640
+museum_load		REQ	378680
+furniture_load_furniture		REQ	378700
+furniture_buy_shop	shop_id	REQ	378733
+furniture_putin_bench	pos,id	REQ	378769
+furniture_takeout_bench	pos	REQ	378809
+furniture_replace_fur	id	REQ	378846
+furniture_replace_tumbler	index	REQ	378880
+furniture_replace_compost	index	REQ	378921
+furniture_load_tumbler		REQ	378962
+furniture_load_compost		REQ	378993
+furniture_load_pocket		REQ	379024
+furniture_pocket_get		REQ	379054
+furniture_putin_box	pos,id	REQ	379083
+furniture_takeout_box	pos	REQ	379121
+furniture_replace_pocket	index	REQ	379156
+furniture_flowerpot_harvest	type,index	REQ	379196
+annual_load		REQ	379246
+annual_share		REQ	379266
+guest_load_drawing		REQ	379287
+guest_accept_invit	is_accept	REQ	379314
+guest_putin_bag	pos,id	REQ	379352
+guest_takeout_bag	pos	REQ	379386
+guest_lock_bag		REQ	379417
+museumday_load		REQ	379440
+museumday_refresh		REQ	379463
+museumday_random_compass		REQ	379489
+museumday_dir_compass	dir	REQ	379522
+museumday_get_items		REQ	379557
+museumday_arrive		REQ	379585
+museumday_start_advance	id	REQ	379610
+museumday_load_path		REQ	379646
+museumday_info		opt	379674
+museumday_inspire		REQ	379697
+koto_load		REQ	379723
+koto_refresh		REQ	379741
+koto_random_compass		REQ	379762
+koto_dir_compass	dir	REQ	379790
+koto_get_items		REQ	379820
+koto_arrive		REQ	379843
+koto_start_advance	id	REQ	379863
+koto_load_path		REQ	379894
+koto_info		opt	379917
+recharge_load		REQ	379935
+recharge_load_gift		REQ	379957
+recharge_water		REQ	379984
+recharge_change		REQ	380007
+recharge_update_num		REQ	380031
+recharge_ready_pay	id	REQ	380059
+recharge_cancel_pay	id	opt	380090
+task_load		REQ	380122
+task_load_list		REQ	380140
+task_get_reward	id	REQ	380163
+task_get_list_reward	id	REQ	380191
+task_client_pro	param	opt	380224
+greetcard_load		REQ	380255
+greetcard_load_count		REQ	380278
+greetcard_buy	id	REQ	380307
+greetcard_change_bg	id	REQ	380333
+greetcard_change_bless	id	REQ	380365
+greetcard_put_tags	pos,id	REQ	380400
+greetcard_send		REQ	380437
+greetcard_get_reward	id	REQ	380460
+greetcard_get_task_item		REQ	380493
+greetcard_get_task_reward		REQ	380525
+greetcard_send_gift	index,gift	opt	380559
+greetcard_feedback_gift	id	opt	380601
+greetcard_read_new		opt	380637
+greetcard_stock		REQ	380664
+capsule_load		REQ	380688
+capsule_load_coin		REQ	380709
+capsule_load_task		REQ	380735
+capsule_twist		REQ	380761
+capsule_patch		REQ	380783
+capsule_fast_task	index	REQ	380805
+capsule_get_coin		REQ	380838
+share_load		REQ	380863
+share_get_reward	id,is_get	REQ	380882
+partycake_load		REQ	380920
+partycake_load_mate		REQ	380943
+partycake_load_task		REQ	380971
+partycake_load_qa		REQ	380999
+partycake_get_mate		REQ	381025
+partycake_make	layer	REQ	381052
+partycake_reward_make		REQ	381082
+partycake_answer	index	REQ	381112
+partycake_reward_qa		REQ	381144
+partycake_light		REQ	381172
+partycake_reward_light		REQ	381196
+partycake_reward_share	index	REQ	381227
+springcard_load		REQ	381265
+springcard_load_count		REQ	381289
+springcard_buy		REQ	381319
+springcard_change_bg	id	REQ	381342
+springcard_change_bless	id	REQ	381375
+springcard_put_tags	pos,id	REQ	381411
+springcard_send		REQ	381449
+springcard_get_reward		REQ	381473
+springcard_get_task_item		REQ	381503
+springcard_get_task_reward		REQ	381536
+springcard_share_tags	tags_id	REQ	381571
+springcard_get_share_tags	share_code	REQ	381610
+adsmgr_load		REQ	381656
+adsmgr_share	ads_type	REQ	381676
+adsmgr_refuse		REQ	381707
+adsmgr_share_ads	ads_id	opt	381729
+adsmgr_shop_free		REQ	381762
+encyclopedia_load		REQ	381787
+encyclopedia_set_show_sub	long_id	opt	381813
+lottery_load		REQ	381856
+lottery_open		REQ	381877
+lottery_select	list	REQ	381898
+lottery_confirm_reward		REQ	381927
+calendar_load		REQ	381958
+calendar_load_note		REQ	381980
+calendar_task_update		REQ	382007
+calendar_get_beginer_reward		REQ	382036
+calendar_get_code_reward	day	REQ	382072
+calendar_get_st_reward		REQ	382110
+calendar_get_luck_reward		REQ	382141
+misc_moment_load		REQ	382174
+misc_moment_unlock	id	REQ	382199
+animpicture_load		REQ	382230
+animpicture_guide		REQ	382255
+animpicture_get_item		REQ	382281
+animpicture_select_pic	id	REQ	382310
+animpicture_add_pic	ids	REQ	382345
+animpicture_remove_pic	index,is_delete	REQ	382378
+animpicture_open_album	index	REQ	382428
+animpicture_album_add_pic	anim_index,pic_index,pic_uid	REQ	382466
+animpicture_album_remove_pic	anim_index,pic_index,is_delete	REQ	382534
+animpicture_use_item	id	REQ	382607
+wishingpool_load		REQ	382640
+wishingpool_wish		REQ	382665
+other_req_touch	id	REQ	382690
+
+--- all parsed entries ---
+client_hello		REQ	375304
+client_load_role		REQ	375325
+client_set_name	name	REQ	375350
+client_set_client_envinfo	info	opt	375380
+client_set_achieve	id	opt	375420
+client_gm	cmd	REQ	375451
+client_set_lang	lang	opt	375474
+client_set_client	client	opt	375504
+client_load_events		REQ	375538
+client_confirm_event	id	opt	375565
+client_switch_push	turnon	REQ	375598
+client_switch_rank	turnon	REQ	375633
+client_rename_cost		REQ	375668
+client_user_action	name	opt	375695
+client_set_icon	id	opt	375728
+client_set_pic_show	id	opt	375756
+client_taobao_import	taobao_uid	REQ	375788
+client_draw_taobao	draw	REQ	375829
+client_load_all_info		REQ	375862
+client_load_decorate		REQ	375891
+client_change_decorate	id	REQ	375920
+client_set_ads	support	opt	375955
+client_set_channel	channel	opt	375987
+client_set_channel_id	id	opt	376023
+client_set_wx_open_id	open_id	REQ	376057
+client_add_push_id	push_id	opt	376096
+client_get_push_reward		REQ	376132
+client_get_my_wx_reward		REQ	376163
+client_share_publicity	id	REQ	376195
+clover_load_clovers		REQ	376230
+clover_harvest	clover_id	REQ	376258
+clover_harvest_resend	list	REQ	376292
+clover_update		REQ	376328
+clover_notice_get		REQ	376350
+hall_hello		REQ	376376
+hall_gen_token	account	REQ	376395
+hall_login	token	REQ	376427
+hall_enter_game		REQ	376453
+hall_leave_game		opt	376477
+hall_report_remote_addr	remote_addr,local_addr	opt	376501
+item_load_items		REQ	376559
+item_putin_bag	pos,item_id	REQ	376583
+item_takeout_bag	pos	REQ	376621
+item_putin_desk	pos,item_id	REQ	376651
+item_takeout_desk	pos	REQ	376690
+item_load_handbook		REQ	376721
+item_buy	shop_id	REQ	376748
+item_gacha	is_reward	REQ	376774
+item_redeem_prize	prize_id	opt	376804
+item_set_bag_completed	completed	opt	376840
+item_use_gift_code	gift_code	REQ	376882
+item_load_shop_info		REQ	376920
+item_update		REQ	376948
+item_update_ticket		REQ	376968
+item_load_select_gift		REQ	376995
+item_select_gift	index_list	REQ	377025
+guest_load		REQ	377062
+guest_confirm	id	opt	377081
+guest_serve	id,item_id	opt	377107
+guest_set_expire_time	time	opt	377141
+guest_finish		opt	377177
+album_load	start,count	REQ	377198
+album_load_all		REQ	377232
+album_load_by_id_list	id_list	REQ	377255
+album_load_new		REQ	377294
+album_load_recover		REQ	377317
+album_save_new	id	REQ	377344
+album_delete_new	id	REQ	377371
+album_delete	id	REQ	377400
+album_recover	id	REQ	377425
+mail_load_mails	start,count,is_clear	REQ	377451
+mail_load		REQ	377501
+mail_open	id	opt	377519
+mail_read	id	opt	377541
+mail_ejoy_active_code	ticket	REQ	377563
+story_load		REQ	377601
+story_send_gift	id,gift	opt	377620
+story_feedback_gift	id	opt	377655
+story_read_new_story		opt	377687
+tutorial_step_open_door		opt	377716
+tutorial_step_open_door_q		REQ	377748
+tutorial_step_ask_award		opt	377782
+tutorial_step_ask_award_q		REQ	377814
+visit_load		REQ	377848
+visit_open		opt	377867
+visit_set_expire_time	time	opt	377886
+visit_set_carpet	id	opt	377922
+rank_load	type,duration,start,count	REQ	377951
+rank_like	type,duration,uid	opt	378002
+rank_get_intro	type,duration,uid	REQ	378043
+travel_load_gift		REQ	378089
+travel_bag_to_gift	item_id	REQ	378114
+travel_gift_to_bag	item_id	REQ	378150
+travel_album_to_gift	picture_id	REQ	378186
+travel_gift_to_album	picture_id	REQ	378227
+travel_load_note		REQ	378268
+travel_read_note	id	opt	378293
+travel_gift_delete_album	id	REQ	378322
+pray_load_grays		REQ	378359
+pray_confirm_make_box		opt	378383
+pray_compose	id	REQ	378413
+cooking_refresh_task	id	REQ	378438
+cooking_complete_task	id	REQ	378471
+cooking_look_ad		REQ	378505
+cooking_share		REQ	378529
+cooking_start_cooking		REQ	378551
+cooking_load_cooking		REQ	378581
+cooking_select	index	REQ	378610
+hall_reconnect	token,account	REQ	378640
+museum_load		REQ	378680
+furniture_load_furniture		REQ	378700
+furniture_buy_shop	shop_id	REQ	378733
+furniture_putin_bench	pos,id	REQ	378769
+furniture_takeout_bench	pos	REQ	378809
+furniture_replace_fur	id	REQ	378846
+furniture_replace_tumbler	index	REQ	378880
+furniture_replace_compost	index	REQ	378921
+furniture_load_tumbler		REQ	378962
+furniture_load_compost		REQ	378993
+furniture_load_pocket		REQ	379024
+furniture_pocket_get		REQ	379054
+furniture_putin_box	pos,id	REQ	379083
+furniture_takeout_box	pos	REQ	379121
+furniture_replace_pocket	index	REQ	379156
+furniture_flowerpot_harvest	type,index	REQ	379196
+annual_load		REQ	379246
+annual_share		REQ	379266
+guest_load_drawing		REQ	379287
+guest_accept_invit	is_accept	REQ	379314
+guest_putin_bag	pos,id	REQ	379352
+guest_takeout_bag	pos	REQ	379386
+guest_lock_bag		REQ	379417
+museumday_load		REQ	379440
+museumday_refresh		REQ	379463
+museumday_random_compass		REQ	379489
+museumday_dir_compass	dir	REQ	379522
+museumday_get_items		REQ	379557
+museumday_arrive		REQ	379585
+museumday_start_advance	id	REQ	379610
+museumday_load_path		REQ	379646
+museumday_info		opt	379674
+museumday_inspire		REQ	379697
+koto_load		REQ	379723
+koto_refresh		REQ	379741
+koto_random_compass		REQ	379762
+koto_dir_compass	dir	REQ	379790
+koto_get_items		REQ	379820
+koto_arrive		REQ	379843
+koto_start_advance	id	REQ	379863
+koto_load_path		REQ	379894
+koto_info		opt	379917
+recharge_load		REQ	379935
+recharge_load_gift		REQ	379957
+recharge_water		REQ	379984
+recharge_change		REQ	380007
+recharge_update_num		REQ	380031
+recharge_ready_pay	id	REQ	380059
+recharge_cancel_pay	id	opt	380090
+task_load		REQ	380122
+task_load_list		REQ	380140
+task_get_reward	id	REQ	380163
+task_get_list_reward	id	REQ	380191
+task_client_pro	param	opt	380224
+greetcard_load		REQ	380255
+greetcard_load_count		REQ	380278
+greetcard_buy	id	REQ	380307
+greetcard_change_bg	id	REQ	380333
+greetcard_change_bless	id	REQ	380365
+greetcard_put_tags	pos,id	REQ	380400
+greetcard_send		REQ	380437
+greetcard_get_reward	id	REQ	380460
+greetcard_get_task_item		REQ	380493
+greetcard_get_task_reward		REQ	380525
+greetcard_send_gift	index,gift	opt	380559
+greetcard_feedback_gift	id	opt	380601
+greetcard_read_new		opt	380637
+greetcard_stock		REQ	380664
+capsule_load		REQ	380688
+capsule_load_coin		REQ	380709
+capsule_load_task		REQ	380735
+capsule_twist		REQ	380761
+capsule_patch		REQ	380783
+capsule_fast_task	index	REQ	380805
+capsule_get_coin		REQ	380838
+share_load		REQ	380863
+share_get_reward	id,is_get	REQ	380882
+partycake_load		REQ	380920
+partycake_load_mate		REQ	380943
+partycake_load_task		REQ	380971
+partycake_load_qa		REQ	380999
+partycake_get_mate		REQ	381025
+partycake_make	layer	REQ	381052
+partycake_reward_make		REQ	381082
+partycake_answer	index	REQ	381112
+partycake_reward_qa		REQ	381144
+partycake_light		REQ	381172
+partycake_reward_light		REQ	381196
+partycake_reward_share	index	REQ	381227
+springcard_load		REQ	381265
+springcard_load_count		REQ	381289
+springcard_buy		REQ	381319
+springcard_change_bg	id	REQ	381342
+springcard_change_bless	id	REQ	381375
+springcard_put_tags	pos,id	REQ	381411
+springcard_send		REQ	381449
+springcard_get_reward		REQ	381473
+springcard_get_task_item		REQ	381503
+springcard_get_task_reward		REQ	381536
+springcard_share_tags	tags_id	REQ	381571
+springcard_get_share_tags	share_code	REQ	381610
+adsmgr_load		REQ	381656
+adsmgr_share	ads_type	REQ	381676
+adsmgr_refuse		REQ	381707
+adsmgr_share_ads	ads_id	opt	381729
+adsmgr_shop_free		REQ	381762
+encyclopedia_load		REQ	381787
+encyclopedia_set_show_sub	long_id	opt	381813
+lottery_load		REQ	381856
+lottery_open		REQ	381877
+lottery_select	list	REQ	381898
+lottery_confirm_reward		REQ	381927
+calendar_load		REQ	381958
+calendar_load_note		REQ	381980
+calendar_task_update		REQ	382007
+calendar_get_beginer_reward		REQ	382036
+calendar_get_code_reward	day	REQ	382072
+calendar_get_st_reward		REQ	382110
+calendar_get_luck_reward		REQ	382141
+misc_moment_load		REQ	382174
+misc_moment_unlock	id	REQ	382199
+animpicture_load		REQ	382230
+animpicture_guide		REQ	382255
+animpicture_get_item		REQ	382281
+animpicture_select_pic	id	REQ	382310
+animpicture_add_pic	ids	REQ	382345
+animpicture_remove_pic	index,is_delete	REQ	382378
+animpicture_open_album	index	REQ	382428
+animpicture_album_add_pic	anim_index,pic_index,pic_uid	REQ	382466
+animpicture_album_remove_pic	anim_index,pic_index,is_delete	REQ	382534
+animpicture_use_item	id	REQ	382607
+wishingpool_load		REQ	382640
+wishingpool_wish		REQ	382665
+other_req_touch	id	REQ	382690

@@ -1,0 +1,5 @@
+rray.isArray(e.specialtys)?e.specialtys:[],this.dispatchEvent(new core.Event(ItemEventType.updateHandbookList))}
+,t.prototype.item_gacha=function(e,t){
+this.gachaColorBall=e.ticket,this.dispatchEvent(new core.Event(ItemEventType.updateGachaColorBall))}
+,t.prototype.item_buy=function(e,t){
+if(null!=e.tic

@@ -1,0 +1,19 @@
+bikaeru.DataType.DropType.ITEM;
+if(this.data.item_id>=0){
+t=!1;
+var o=Tabikaeru.DataManager.instance().ItemDB.get(this.data.item_id);
+switch(r){
+case Tabikaeru.DataType.DropType.RESOURCE:switch(this.data.item_id){
+case 1e5:i="goods_40_png";
+break;
+case 100001:i="goods_41_png";
+break;
+default:i=Tabikaeru.getPicturePath(this.data.item_id)}
+break;
+case Tabikaeru.DataType.DropType.CARDTAGS:var a=GreetCardUtils.getTagsCfg(this.data.item_id);
+i=a.pic+"_png";
+break;
+case Tabikaeru.DataType.DropType.SPRINGCARDTAGS:var a=SpringCardUtils.getTagsCfg(this.data.item_id);
+i=a.pic+"_png";
+break;
+case Tabikaeru.DataType.DropTy

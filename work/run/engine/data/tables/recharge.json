@@ -1,0 +1,56 @@
+[
+ {
+  "count": 400,
+  "coupon_id": 0,
+  "id": 1,
+  "money": 6.0,
+  "name": "",
+  "shopID": 1001,
+  "shopID_iOS": "com.Aligames.lxqw.6"
+ },
+ {
+  "count": 1000,
+  "coupon_id": 0,
+  "id": 2,
+  "money": 12.0,
+  "name": "",
+  "shopID": 1002,
+  "shopID_iOS": "com.Aligames.lxqw.12"
+ },
+ {
+  "count": 1800,
+  "coupon_id": 0,
+  "id": 3,
+  "money": 18.0,
+  "name": "",
+  "shopID": 1003,
+  "shopID_iOS": "com.Aligames.lxqw.18"
+ },
+ {
+  "count": 2800,
+  "coupon_id": 0,
+  "id": 4,
+  "money": 25.0,
+  "name": "",
+  "shopID": 1004,
+  "shopID_iOS": "com.Aligames.lxqw.25"
+ },
+ {
+  "count": 150,
+  "coupon_id": 1,
+  "id": 5,
+  "money": 1.0,
+  "name": "充值特惠1元好礼",
+  "shopID": 1005,
+  "shopID_iOS": "com.Aligames.lxqw.1"
+ },
+ {
+  "count": 300,
+  "coupon_id": 0,
+  "id": 6,
+  "money": 3.0,
+  "name": "充值特惠3元好礼",
+  "shopID": 1006,
+  "shopID_iOS": "com.Aligames.lxqw.3"
+ }
+]

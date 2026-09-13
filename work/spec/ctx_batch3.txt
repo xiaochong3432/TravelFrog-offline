@@ -1,0 +1,82 @@
+chars 769500..773430
+
+wShare=function(){
+var e=this;
+return GameConfig.channel==ChannelType.Test?(this.close(),void this.getModel(AdsModel).req_share(3)):((null==this.shareSelector||null==this.shareSelector.parent)&&(this.shareSelector=new ShareView,this.shareSelector.visible=!1,this.shareSelector.show(300,ShareAnim.TopDown,ShareScene.scene),this.shareSelector.open_callback(function(){
+return __awaiter(e,void 0,void 0,function(){
+return __generator(this,function(e){
+return[2,"data"]}
+)}
+)}
+,function(t){
+core.ModelManage.getInstance().getModel(ShareModel).reportBlog("share.weekend_gift"),e.getModel(AdsModel).req_share(3)}
+,null,"wechat_share"),GameConfig.quickShare||this.shareSelector.share(SharePlatformType.wechatMessenger),core.DisplayManage.getInstance().noticeLayer.addChild(this.shareSelector)),void this.close())}
+,t}
+(core.UIView);
+__reflect(LotteryExtraView.prototype,"LotteryExtraView");
+var LotterySettleViewControl=function(e){
+function t(){
+return e.call(this,LotterySettleView)||this}
+return __extends(t,e),t.prototype.open=function(){
+e.prototype.open.call(this)}
+,t.prototype.close=function(){
+e.prototype.close.call(this),this.view=null}
+,t}
+(WindowController);
+__reflect(LotterySettleViewControl.prototype,"LotterySettleViewControl");
+var LotterySettleView=function(e){
+function t(){
+return e.call(this,core.PathManage.getInstance().getSkinsPath("Lottery/LotterySettleSkin.exml"),LotterySettleViewControl,core.ViewLayerType.WindowLayer)||this}
+return __extends(t,e),t.prototype.childrenCreated=function(){
+var t=this;
+e.prototype.childrenCreated.call(this),this.btnOk.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+t.close(),t.getModel(LotteryModel).req_confirm_reward(new core.Action(function(){
+core.PageManage.getInstance().addViewControl(LotteryViewControl,core.ViewLayerType.WindowLayer)}
+))}
+,this);
+var i=this.getModel(LotteryModel).data,n=(i.last_phase-1)%4+1;
+this.imageBg.source="anm_weekend_"+n+"_png",this.imageBg.mask=this.imageMask,core.TweenExtend.playLoop(this.bgAnm,!0);
+for(var r=Tabikaeru.DataManager.instance().lotteryData,o=0,a=0;
+a<i.right_flag.length;
+a++)1==i.right_flag[a]&&o++;
+var s=r.get("select_list")[n];
+this.imageGuest.source=s.pic+"_png";
+var c=core.String.format(r.get("settle_desc")[o],s.name);
+5==i.egg_num&&(c+=r.get("extra_desc")[n][o]),this.lbAsk.text=c;
+for(var a=0;
+a<i.answer.length;
+a++){
+var l=new eui.Group,h=new eui.Image;
+h.source="item_size_80x80_png",h.horizontalCenter=h.verticalCenter=0;
+var u=new eui.Image,p=Tabikaeru.DataManager.instance().ItemDB.get(i.answer[a]);
+u.width=u.height=70,u.source=Tabikaeru.path.formatPathImage(p.img),u.horizontalCenter=u.verticalCenter=0,l.addChild(h),l.addChild(u),0==i.right_flag[a]&&(l.filters=Utils.getBlackFilter()),this.groupItem.addChild(l)}
+for(var a=0;
+a<i.reward.length;
+a++){
+var d=i.reward[a],l=new eui.Group,h=new eui.Image;
+h.source="item_size_80x80_png",h.horizontalCenter=h.verticalCenter=0;
+var u=new eui.Image,p=Tabikaeru.DataManager.instance().ItemDB.get(d.id);
+u.width=u.height=70,u.horizontalCenter=u.verticalCenter=0,u.source=Tabikaeru.path.formatPathImage(p.img);
+var g=new eui.Label;
+if(g.text=String(d.num),g.right=g.bottom=2,g.textColor=5528908,l.addChild(h),l.addChild(u),l.addChild(g),1==d.is_egg){
+var f=new eui.Image;
+f.source="tips_egg_gift_png",f.right=f.top=-10,l.addChild(f)}
+this.groupReward.addChild(l)}
+}
+,t}
+(WindowView);
+__reflect(LotterySettleView.prototype,"LotterySettleView");
+var LotteryViewControl=function(e){
+function t(){
+return e.call(this,LotteryView)||this}
+return __extends(t,e),t.prototype.open=function(){
+e.prototype.open.call(this),this.addEventListeners(this.onEvent,this,LotteryEventType.EXTRA_GET)}
+,t.prototype.close=function(){
+e.prototype.close.call(this),this.view=null,this.removeEventListeners(this.onEvent,this,!1,LotteryEventType.EXTRA_GET)}
+,t.prototype.onEvent=function(e){
+switch(e.getEventType()){
+case LotteryEventType.EXTRA_GET:this.view.updateState()}
+}
+,t}
+(WindowController);
+__reflect(LotteryViewControl.prototype,"LotteryViewControl

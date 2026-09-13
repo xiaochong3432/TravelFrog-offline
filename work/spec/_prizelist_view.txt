@@ -1,0 +1,37 @@
+d]=["lottery_dish_02_png","lottery_dish_05_png"],_b[Prize.Rank.Gold]=["lottery_dish_06_png","lottery_dish_04_png"],_b),t}
+(core.UIView);
+__reflect(RaffleView.prototype,"RaffleView");
+var PrizeList=function(e){
+function t(){
+var t=e.call(this)||this;
+return Utils.euiComplete(t,t.onAddToStage),t.horizontalCenter=0,t.skinName=core.PathManage.getInstance().getSkinsPath("Raffle/PrizeList.exml"),t}
+return __extends(t,e),t.prototype.onAddToStage=function(){
+for(var e=(s={
+}
+,s[Prize.Rank.Blue]=this.blue,s[Prize.Rank.Purple]=this.purple,s[Prize.Rank.Green]=this.green,s[Prize.Rank.Red]=this.red,s[Prize.Rank.Gold]=this.golden,s),t=Tabikaeru.Game.instance().prizelist.slice(),i=function(i){
+t.filter(function(e){
+return e.rank===+i}
+).forEach(function(t,i){
+var n=e[t.rank],r=Tabikaeru.DataManager.instance().ItemDB.get(t.itemId),o=new eui.Component;
+o.skinName=core.PathManage.getInstance().getSkinsPath("Raffle/PrizeListItem.exml"),o.item_img.source=Tabikaeru.path.formatPathImage(r.img),o.x=74*i,n.addChild(o)}
+)}
+,n=0,r=Object.keys(e);
+n<r.length;
+n++){
+var o=r[n];
+i(o)}
+var a=new eui.Component;
+a.skinName=core.PathManage.getInstance().getSkinsPath("Raffle/PrizeListItem.exml"),a.item_img.source="mail_ticket_png",this.white.addChild(a);
+var s}
+,t}
+(eui.Component);
+__reflect(PrizeList.prototype,"PrizeList");
+var ModalPrizeList=function(e){
+function t(){
+return e.call(this,core.PathManage.getInstance().getSkinsPath("Raffle/ModalPrizeLIst.exml"))||this}
+return __extends(t,e),t.getInstance=function(){
+return null==t._instance&&(t._instance=new t),t._instance}
+,t.prototype.onComplete=function(){
+this.scroller.content=new PrizeList,this.cover.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this),this.closeBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this)}
+,t.prototype.close=function(){
+Music.play("SE_Canc

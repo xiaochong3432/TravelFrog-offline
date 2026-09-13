@@ -1,0 +1,30 @@
+null,core.DisplayManage.getInstance().getNoticeLayer()));
+if(i){
+if(this.getModel(CalendarModel).checkBeginnerCode(i))return;
+this.btn_yes.touchEnabled=!1,core.SocketManage.getInstance().send("item_use_gift_code",new core.Action2(function(e,i){
+t.btn_yes.touchEnabled=!0;
+var n;
+if(200==e.code)core.PageManage.getInstance().removeControl(CdkeyViewController,t.control.getViewLayerType()),n=_("礼包码兑换成功");
+else{
+var r=t.getModel(MessageModel).getErrorInfo(e.code);
+n=r?r.desc:_("礼包码无效")}
+GuideHelpView.getInstance().show(n,null,core.DisplayManage.getInstance().getNoticeLayer())}
+,this),i)}
+else GuideHelpView.getInstance().show(_("请输入礼包码"),null,core.DisplayManage.getInstance().getNoticeLayer())}
+}
+,t}
+(core.UIView);
+__reflect(CdkeyView.prototype,"CdkeyView");
+var CdkeyViewController=function(e){
+function t(){
+return e.call(this)||this}
+return __extends(t,e),t.prototype.destroy=function(){
+this.close(),this.view=null,e.prototype.destroy.call(this)}
+,t.prototype.open=function(){
+null==this.view&&(this.view=new CdkeyView(this)),this.view.setData(this.getParam(0)),this.getParent().addChild(this.view),this.view.open()}
+,t.prototype.close=function(){
+null!=this.view&&this.view.parent&&this.view.parent.removeChild(this.view)}
+,t}
+(core.ViewController);
+__reflect(CdkeyViewController.prototype,"CdkeyViewController");
+var Coll

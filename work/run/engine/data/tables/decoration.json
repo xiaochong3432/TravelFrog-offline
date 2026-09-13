@@ -1,0 +1,498 @@
+{
+ "100": {
+  "achieve": "DECO_LM",
+  "desc": "带一枝蜡梅回家 等待满屋的幽香 和一抹冬日的亮黄",
+  "desc_handbook": "樟目/蜡梅科/蜡梅属 香气似梅捻蜡所成",
+  "icon": "liwu_lamei",
+  "id": 100,
+  "name": "蜡梅",
+  "pic": [
+   "liwu_huabao",
+   "liwu_huaduo"
+  ],
+  "pic_growth": [
+   "",
+   ""
+  ]
+ },
+ "1001": {
+  "achieve": "",
+  "desc": "",
+  "desc_handbook": "禾本目/禾本科/狗尾草属 一年生草本植物",
+  "icon": "chahua_yc_gouweicao_icon",
+  "id": 1001,
+  "name": "狗尾草",
+  "pic": [
+   "chahua_yc_gouweicao_1",
+   "chahua_yc_gouweicao_2"
+  ],
+  "pic_growth": [
+   "yc_gouweicao",
+   "yc_gouweicao_1"
+  ]
+ },
+ "10011": {
+  "achieve": "",
+  "desc": "",
+  "desc_handbook": "堇菜科/堇菜属 粉白色系角堇",
+  "icon": "icon_chahua_zhongzhi_jiaojin_1",
+  "id": 10011,
+  "name": "角堇·火龙果",
+  "pic": [
+   "chahua_zhongzhi_jiaojin_1",
+   "chahua_zhongzhi_jiaojin_kw"
+  ],
+  "pic_growth": [
+   "",
+   ""
+  ]
+ },
+ "10012": {
+  "achieve": "",
+  "desc": "",
+  "desc_handbook": "堇菜科/堇菜属 黄白色系角堇",
+  "icon": "icon_chahua_zhongzhi_jiaojin_2",
+  "id": 10012,
+  "name": "角堇·柠檬黄唇",
+  "pic": [
+   "chahua_zhongzhi_jiaojin_2",
+   "chahua_zhongzhi_jiaojin_kw"
+  ],
+  "pic_growth": [
+   "",
+   ""
+  ]
+ },
+ "10013": {
+  "achieve": "",
+  "desc": "",
+  "desc_handbook": "堇菜科/堇菜属 紫白色系角堇",
+  "icon": "icon_chahua_zhongzhi_jiaojin_3",
+  "id": 10013,
+  "name": "角堇·彩蝶",
+  "pic": [
+   "chahua_zhongzhi_jiaojin_3",
+   "chahua_zhongzhi_jiaojin_kw"
+  ],
+  "pic_growth": [
+   "",
+   ""
+  ]
+ },
+ "1002": {
+  "achieve": "",
+  "desc": "",
+  "desc_handbook": "禾本目/禾本科/画眉草属 南风知我意",
+  "icon": "chahua_yc_zhifengcao_icon",
+  "id": 1002,
+  "name": "知风草",
+  "pic": [
+   "chahua_yc_zhifengcao_1",
+   "chahua_yc_zhifengcao_2"
+  ],
+  "pic_growth": [
+   "yc_zhifengcao",
+   "yc_zhifengcao_1"
+  ]
+ },
+ "10021": {
+  "achieve": "",
+  "desc": "",
+  "desc_handbook": "百合目/百合科/蓝壶花属 粉色系葡萄风信子",
+  "icon": "icon_chahua_zhongzhi_pufeng_1",
+  "id": 10021,
+  "name": "葡风·日出",
+  "pic": [
+   "chahua_zhongzhi_pufeng_1",
+   "chahua_zhongzhi_pufeng_kw"
+  ],
+  "pic_growth": [
+   "",
+   ""
+  ]
+ },
+ "10022": {
+  "achieve": "",
+  "desc": "",
+  "desc_handbook": "百合目/百合科/蓝壶花属 白色系葡萄风信子",
+  "icon": "icon_chahua_zhongzhi_pufeng_2",
+  "id": 10022,
+  "name": "葡风·白色魔术",
+  "pic": [
+   "chahua_zhongzhi_pufeng_2",
+   "chahua_zhongzhi_pufeng_kw"
+  ],
+  "pic_growth": [
+   "",
+   ""
+  ]
+ },
+ "10023": {
+  "achieve": "",
+  "desc": "",
+  "desc_handbook": "百合目/百合科/蓝壶花属 紫色系葡萄风信子",
+  "icon": "icon_chahua_zhongzhi_pufeng_3",
+  "id": 10023,
+  "name": "葡风·黑眼睛",
+  "pic": [
+   "chahua_zhongzhi_pufeng_3",
+   "chahua_zhongzhi_pufeng_kw"
+  ],
+  "pic_growth": [
+   "",
+   ""
+  ]
+ },
+ "1003": {
+  "achieve": "",
+  "desc": "",
+  "desc_handbook": "蓼目/蓼科/蓼属 浅沙丛蓼红堆岸",
+  "icon": "chahua_yc_hongliao_icon",
+  "id": 1003,
+  "name": "蓼",
+  "pic": [
+   "chahua_yc_hongliao_1",
+   "chahua_yc_hongliao_2"
+  ],
+  "pic_growth": [
+   "yc_hongliao",
+   "yc_hongliao_1"
+  ]
+ },
+ "10031": {
+  "achieve": "",
+  "desc": "",
+  "desc_handbook": "天门冬目/天门冬科/风信子属 白色系风信子",
+  "icon": "icon_chahua_zhongzhi_fengxinzi_1",
+  "id": 10031,
+  "name": "风信子·白珍珠",
+  "pic": [
+   "chahua_zhongzhi_fengxinzi_1",
+   "chahua_zhongzhi_fengxinzi_kw"
+  ],
+  "pic_growth": [
+   "",
+   ""
+  ]
+ },
+ "10032": {
+  "achieve": "",
+  "desc": "",
+  "desc_handbook": "天门冬目/天门冬科/风信子属 橙红色系风信子",
+  "icon": "icon_chahua_zhongzhi_fengxinzi_2",
+  "id": 10032,
+  "name": "风信子·吉普赛女王",
+  "pic": [
+   "chahua_zhongzhi_fengxinzi_2",
+   "chahua_zhongzhi_fengxinzi_kw"
+  ],
+  "pic_growth": [
+   "",
+   ""
+  ]
+ },
+ "10033": {
+  "achieve": "",
+  "desc": "",
+  "desc_handbook": "天门冬目/天门冬科/风信子属 紫色系风信子",
+  "icon": "icon_chahua_zhongzhi_fengxinzi_3",
+  "id": 10033,
+  "name": "风信子·蓝星",
+  "pic": [
+   "chahua_zhongzhi_fengxinzi_3",
+   "chahua_zhongzhi_fengxinzi_kw"
+  ],
+  "pic_growth": [
+   "",
+   ""
+  ]
+ },
+ "1004": {
+  "achieve": "",
+  "desc": "",
+  "desc_handbook": "桔梗目/菊科/蒲公英属 一个蒲公英的梦想",
+  "icon": "chahua_yc_pugongying_icon",
+  "id": 1004,
+  "name": "蒲公英",
+  "pic": [
+   "chahua_yc_pugongying_1",
+   "chahua_yc_pugongying_2"
+  ],
+  "pic_growth": [
+   "yc_pugongying",
+   "yc_pugongying_1"
+  ]
+ },
+ "10041": {
+  "achieve": "",
+  "desc": "",
+  "desc_handbook": "天门冬目/鸢尾科/鸢尾属 蓝白色系小型鸢尾",
+  "icon": "icon_chahua_zhongzhi_wmyw_1",
+  "id": 10041,
+  "name": "网脉鸢尾·冰冻星球",
+  "pic": [
+   "chahua_zhongzhi_wmyw_1",
+   "chahua_zhongzhi_wmyw_kw"
+  ],
+  "pic_growth": [
+   "",
+   ""
+  ]
+ },
+ "10042": {
+  "achieve": "",
+  "desc": "",
+  "desc_handbook": "天门冬目/鸢尾科/鸢尾属 蓝色系小型鸢尾",
+  "icon": "icon_chahua_zhongzhi_wmyw_2",
+  "id": 10042,
+  "name": "网脉鸢尾·艾丽达",
+  "pic": [
+   "chahua_zhongzhi_wmyw_2",
+   "chahua_zhongzhi_wmyw_kw"
+  ],
+  "pic_growth": [
+   "",
+   ""
+  ]
+ },
+ "10043": {
+  "achieve": "",
+  "desc": "",
+  "desc_handbook": "天门冬目/鸢尾科/鸢尾属 紫色系小型鸢尾",
+  "icon": "icon_chahua_zhongzhi_wmyw_3",
+  "id": 10043,
+  "name": "网脉鸢尾·狂想曲",
+  "pic": [
+   "chahua_zhongzhi_wmyw_3",
+   "chahua_zhongzhi_wmyw_kw"
+  ],
+  "pic_growth": [
+   "",
+   ""
+  ]
+ },
+ "10044": {
+  "achieve": "",
+  "desc": "",
+  "desc_handbook": "天门冬目/鸢尾科/鸢尾属 紫色系小型鸢尾",
+  "icon": "icon_chahua_zhongzhi_wmyw_4",
+  "id": 10044,
+  "name": "网脉鸢尾·迪特",
+  "pic": [
+   "chahua_zhongzhi_wmyw_4",
+   "chahua_zhongzhi_wmyw_kw"
+  ],
+  "pic_growth": [
+   "",
+   ""
+  ]
+ },
+ "1005": {
+  "achieve": "",
+  "desc": "",
+  "desc_handbook": "禾本目/禾本科/兔尾草属 长不了的兔子尾巴",
+  "icon": "chahua_yc_tuweicao_icon",
+  "id": 1005,
+  "name": "兔尾草",
+  "pic": [
+   "chahua_yc_tuweicao_1",
+   "chahua_yc_tuweicao_2"
+  ],
+  "pic_growth": [
+   "yc_tuweicao",
+   "yc_tuweicao_1"
+  ]
+ },
+ "10051": {
+  "achieve": "",
+  "desc": "",
+  "desc_handbook": "百合目/百合科/郁金香属 红色系郁金香",
+  "icon": "icon_chahua_zhongzhi_yujinxiang_1",
+  "id": 10051,
+  "name": "郁金香·皇家红",
+  "pic": [
+   "chahua_zhongzhi_yujinxiang_1",
+   "chahua_zhongzhi_yujinxiang_kw"
+  ],
+  "pic_growth": [
+   "",
+   ""
+  ]
+ },
+ "10052": {
+  "achieve": "",
+  "desc": "",
+  "desc_handbook": "百合目/百合科/郁金香属 粉色系郁金香",
+  "icon": "icon_chahua_zhongzhi_yujinxiang_2",
+  "id": 10052,
+  "name": "郁金香·命运女神",
+  "pic": [
+   "chahua_zhongzhi_yujinxiang_2",
+   "chahua_zhongzhi_yujinxiang_kw"
+  ],
+  "pic_growth": [
+   "",
+   ""
+  ]
+ },
+ "10053": {
+  "achieve": "",
+  "desc": "",
+  "desc_handbook": "百合目/百合科/郁金香属 黄色系郁金香",
+  "icon": "icon_chahua_zhongzhi_yujinxiang_3",
+  "id": 10053,
+  "name": "郁金香·黄金岁月",
+  "pic": [
+   "chahua_zhongzhi_yujinxiang_3",
+   "chahua_zhongzhi_yujinxiang_kw"
+  ],
+  "pic_growth": [
+   "",
+   ""
+  ]
+ },
+ "10054": {
+  "achieve": "",
+  "desc": "",
+  "desc_handbook": "百合目/百合科/郁金香属 暗色系郁金香",
+  "icon": "icon_chahua_zhongzhi_yujinxiang_4",
+  "id": 10054,
+  "name": "郁金香·夜皇后",
+  "pic": [
+   "chahua_zhongzhi_yujinxiang_4",
+   "chahua_zhongzhi_yujinxiang_kw"
+  ],
+  "pic_growth": [
+   "",
+   ""
+  ]
+ },
+ "10061": {
+  "achieve": "",
+  "desc": "",
+  "desc_handbook": "天门冬目/天门冬科/铃兰属 白色系铃兰",
+  "icon": "icon_chahua_zhongzhi_linglan_1",
+  "id": 10061,
+  "name": "铃兰·原生白",
+  "pic": [
+   "chahua_zhongzhi_linglan_1",
+   "chahua_zhongzhi_linglan_kw"
+  ],
+  "pic_growth": [
+   "",
+   ""
+  ]
+ },
+ "10062": {
+  "achieve": "",
+  "desc": "",
+  "desc_handbook": "天门冬目/天门冬科/铃兰属 粉色系铃兰",
+  "icon": "icon_chahua_zhongzhi_linglan_2",
+  "id": 10062,
+  "name": "铃兰·粉天使",
+  "pic": [
+   "chahua_zhongzhi_linglan_2",
+   "chahua_zhongzhi_linglan_kw"
+  ],
+  "pic_growth": [
+   "",
+   ""
+  ]
+ },
+ "10063": {
+  "achieve": "",
+  "desc": "",
+  "desc_handbook": "天门冬目/天门冬科/铃兰属 绿白色系铃兰",
+  "icon": "icon_chahua_zhongzhi_linglan_3",
+  "id": 10063,
+  "name": "铃兰·蒙大拿",
+  "pic": [
+   "chahua_zhongzhi_linglan_3",
+   "chahua_zhongzhi_linglan_kw"
+  ],
+  "pic_growth": [
+   "",
+   ""
+  ]
+ },
+ "101": {
+  "achieve": "DECO_MJ",
+  "desc": "带一枝木槿回家 轻抚一抹淡香 品味一种温柔的坚持 ",
+  "desc_handbook": "锦葵目/锦葵科/木槿属 主要分布在热带和亚热带地区",
+  "icon": "liwu_mujin",
+  "id": 101,
+  "name": "木槿",
+  "pic": [
+   "mujin_huabao",
+   "mujin_huaduo"
+  ],
+  "pic_growth": [
+   "",
+   ""
+  ]
+ },
+ "102": {
+  "achieve": "",
+  "desc": "采一枝桂花 今夜月明人尽望 不知秋思落谁家",
+  "desc_handbook": "捩花目/木犀科/木犀属 画阑开处冠中秋",
+  "icon": "icon_liwu_guihua",
+  "id": 102,
+  "name": "桂花",
+  "pic": [
+   "chahua_liwu_guihua_1",
+   "chahua_liwu_guihua_2"
+  ],
+  "pic_growth": [
+   "",
+   ""
+  ]
+ },
+ "103": {
+  "achieve": "",
+  "desc": "撑一把油纸伞 希望逢着一位丁香一般的姑娘",
+  "desc_handbook": "捩花目/木犀科/丁香属 纵放繁枝散诞春",
+  "icon": "icon_liwu_dingxiang",
+  "id": 103,
+  "name": "丁香",
+  "pic": [
+   "chahua_liwu_dingxiang_1",
+   "chahua_liwu_dingxiang_2"
+  ],
+  "pic_growth": [
+   "",
+   ""
+  ]
+ },
+ "104": {
+  "achieve": "",
+  "desc": "拾幽兰一支 含薰待清风",
+  "desc_handbook": "天门冬目/兰科/兰属 任是无人也自香",
+  "icon": "icon_liwu_jianlan",
+  "id": 104,
+  "name": "建兰",
+  "pic": [
+   "chahua_liwu_jianlan_1",
+   "chahua_liwu_jianlan_2"
+  ],
+  "pic_growth": [
+   "",
+   ""
+  ]
+ },
+ "105": {
+  "achieve": "",
+  "desc": "撷水仙一支 时有天香散远风",
+  "desc_handbook": "天门冬目/石蒜科/水仙属 寒香寂寞动冰肌",
+  "icon": "icon_liwu_shuixian",
+  "id": 105,
+  "name": "水仙",
+  "pic": [
+   "chahua_liwu_shuixian_1",
+   "chahua_liwu_shuixian_2"
+  ],
+  "pic_growth": [
+   "",
+   ""
+  ]
+ }
+}

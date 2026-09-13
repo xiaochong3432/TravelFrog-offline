@@ -1,0 +1,146 @@
+.replace_index=o.compost+1),n.compostData.show_index=o.compost+1),a--,0>=a&&s&&(egret.clearTimeout(s),i.apply()),n.dispatchEvent(new core.Event(FurnitureEventType.UPDATE_COMPOST))}
+),o.compost+1),o.pocket>=0&&core.SocketManage.getInstance().send("furniture_replace_pocket",new core.Action2(function(e){
+-1!=e.code&&(1==e.code?n.pocketData.replace_index=0:0==e.code&&(n.pocketData.replace_index=o.pocket+1),n.pocketData.show_index=o.pocket+1),a--,0>=a&&s&&(egret.clearTimeout(s),i.apply()),n.dispatchEvent(new core.Event(FurnitureEventType.UPDATE_POCKET))}
+),o.pocket+1),this.getModel(t).resetReplaceData()}
+,t.prototype.updateRedot=function(){
+if(this.isOpen()){
+var e=!1;
+if(this.getBenchTools().filter(function(e){
+return-1!=e}
+).length<1&&(e=!0),5==this.getBenchItems().filter(function(e){
+return-1==e}
+).length){
+var t=this.getModel(ItemModel).getHouseItemsByType(Tabikaeru.DataType.ItemType.FURNITURE_ITEM);
+t.length>=2&&(e=!0)}
+e?Tabikaeru.RedotManager.instance().setRedotValue(Tabikaeru.RedotType.FURNITURE_BENCH,1):Tabikaeru.RedotManager.instance().setRedotValue(Tabikaeru.RedotType.FURNITURE_BENCH,0)}
+else Tabikaeru.RedotManager.instance().setRedotValue(Tabikaeru.RedotType.FURNITURE_BENCH,0)}
+,t.prototype.updatePocketRedot=function(){
+var e=0,t=Tabikaeru.DataManager.instance().pocketCommonData.get("base_info")||50;
+this.pocketData.clover>=t&&(e=1),Tabikaeru.RedotManager.instance().setRedotValue(Tabikaeru.RedotType.FURNITURE_POCKET,e)}
+,t.prototype.setCompostItem=function(e,t){
+var i=this,n=new core.Action2(function(n,r){
+if(n&&0==n.code){
+var o=i.compostData.box_list[e-1];
+i.compostData.box_list[e-1]=t,o>0&&i.getModel(ItemModel).addHouseItem(o,1),0!=t&&i.getModel(ItemModel).consumeHouseItem(t,1),i.updateRedot(),i.dispatchEvent(new core.Event(FurnitureEventType.UPDATE_COMPOST))}
+}
+);
+0==t?core.SocketManage.getInstance().send("furniture_takeout_box",n,e):this.compostData.box_list[e-1]>0?core.SocketManage.getInstance().send("furniture_takeout_box",new core.Action2(function(i,r){
+core.SocketManage.getInstance().send("furniture_putin_box",n,e,t)}
+),e):core.SocketManage.getInstance().send("furniture_putin_box",n,e,t)}
+,t.prototype.request_pocket_get=function(e){
+var t=this,i=this.pocketData.clover;
+core.SocketManage.getInstance().send("furniture_pocket_get",new core.Action2(function(n,r){
+0==n.code&&(t.pocketData.clover=0,t.updatePocketRedot(),e(n.code,i))}
+))}
+,t.prototype.req_flowerpot_harvest=function(e,t,i){
+var n=this;
+core.SocketManage.getInstance().send("furniture_flowerpot_harvest",new core.Action2(function(r){
+if(r.item_list){
+for(var o=0;
+o<n.flowerpotData.plant_list.length;
+o++){
+var a=n.flowerpotData.plant_list[o];
+if(e==a.type&&t==a.index){
+n.flowerpotData.plant_list.splice(o,1);
+break}
+}
+if(r.item_list.length>0){
+for(var s=[],c=0,l=r.item_list;
+c<l.length;
+c++){
+var o=l[c];
+s.push({
+item_id:o.item_id,count:o.num,type:Tabikaeru.DataType.DropType.ITEM}
+)}
+core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.ViewLayerType.NoticeLayer,null,s)}
+i()}
+}
+),e,t)}
+,t.prototype.getMateList=function(){
+return this.serverData.mate_list}
+,t.prototype.getShopData=function(){
+return this.serverData.shop}
+,t.prototype.isLockBench=function(){
+return 1==this.serverData.bench_lock}
+,t.prototype.isOpen=function(){
+return this.getShopData().start_time>0}
+,t.prototype.isOpenShop=function(){
+var e=core.Time.getServerTime();
+return this.getShopData().start_time<e&&this.getShopData().leave_time>e?!0:!1}
+,t.prototype.getReplaced=function(){
+for(var e=[],t=Tabikaeru.DataManager.instance().FurnitureDB,i=0,n=this.serverData.put_fur;
+i<n.length;
+i++){
+var r=n[i],o=t.get(r.id);
+-1!=this.serverData.replace_fur.indexOf(o.type)&&e.push(r.id)}
+return e}
+,t}
+(core.Model);
+__reflect(FurnitureModel.prototype,"FurnitureModel");
+var Furniture;
+!function(e){
+var t;
+!function(e){
+e[e.verry_happy=1]="verry_happy",e[e.happy=2]="happy",e[e.calm=3]="calm",e[e.angry=4]="angry",e[e.very_angry=5]="very_angry"}
+(t=e.Mood||(e.Mood={
+}
+))}
+(Furniture||(Furniture={
+}
+));
+var GameplayModel=function(e){
+function t(){
+return e.call(this)||this}
+return __extends(t,e),t.prototype.destroy=function(){
+e.prototype.destroy.call(this)}
+,t.prototype.initModel=function(){
+}
+,t.prototype.clearData=function(){
+}
+,t.prototype.getGameplayInfo=function(e){
+return Tabikaeru.DataManager.instance().gamePalyDB[e]}
+,t.prototype.getGameplayList=function(){
+var e,t=[],i=this.getModel(TravelModel).getGuestData();
+if(i&&i.id>=0){
+var n="邻居";
+if(e=this.getGameplayInfo(n)){
+if(i.expire_time>0&&i.expire_time>core.Time.getServerTime())return[e];
+(0!=e.OverdueContinue||0==i.expire_time||i.expire_time>core.Time.getServerTime())&&t.push(e)}
+else core.Log.warning("玩法配置表中未定义玩法："+n)}
+var r=this.getModel(VisitorModel).getVisitorData();
+if(r){
+var o="串门";
+if(e=this.getGameplayInfo(o)){
+if(r.expire_time>0&&r.expire_time>core.Time.getServerTime())return[e];
+(0!=e.OverdueContinue||0==r.expire_time||r.expire_time>core.Time.getServerTime())&&t.push(e)}
+else core.Log.warning("玩法配置表中未定义玩法："+o)}
+return t.sort(function(e,t){
+return e.Sort<t.Sort?-1:e.Sort>t.Sort?1:0}
+),t}
+,t}
+(core.Model);
+__reflect(GameplayModel.prototype,"GameplayModel");
+var GiftBoxModel=function(e){
+function t(){
+var t=null!==e&&e.apply(this,arguments)||this;
+return t.specialityList=new ModelDataProvider,t.pictureList=new ModelDataProvider,t.isOpenCache=!1,t}
+return __extends(t,e),t.prototype.destroy=function(){
+e.prototype.destroy.call(this)}
+,t.prototype.initModel=function(){
+this.addProtocolCallback("travel_load_gift","")}
+,t.prototype.requestData=function(){
+core.SocketManage.getInstance().send("travel_load_gift")}
+,t.prototype.delete_album=function(e,t){
+var i=this;
+core.SocketManage.getInstance().send("travel_gift_delete_album",new core.Action2(function(){
+for(var n=0,r=i.pictureList.length;
+r>n;
+n++)if(i.pictureList.getItemAt(n).id==e){
+i.pictureList.removeItemAt(n);
+break}
+t()}
+),e)}
+,t.prototype.onMovePicture=function(e){
+this.pictureList.addItem(e),this.dispatchEvent(new core.Event(GiftBoxEventType.updateGiftBox))}
+,t.prototype.onMoveItem=function(e){
+this.specialityList

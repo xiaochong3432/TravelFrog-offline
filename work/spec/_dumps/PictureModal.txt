@@ -1,0 +1,54 @@
+var PictureModal=function(e){
+  function t(t,i,n,r,o){
+    var a=e.call(this,core.PathManage.getInstance().getSkinsPath("Album/PictureModal.exml"))||this;
+    return a.naviteSaving=!1,a.showNaviteSave=!0,a.dataChangeFlag=!1,a.setData(t,i,n,r,o),a
+  }return __extends(t,e),t.prototype.onComplete=function(){
+    this.share.visible=this.getModel(UserModel).getShowShareBtn(),this.share.visible||(this.put.left=this["delete"].left=this.share.left),this.picture.source="picture_loader_png",this["delete"].addEventListener(egret.TouchEvent.TOUCH_TAP,this.onDeleteBtn,this),this.cover.addEventListener(egret.TouchEvent.TOUCH_TAP,this.closeView,this),this.close.addEventListener(egret.TouchEvent.TOUCH_TAP,this.closeView,this),this.put.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onPutBtn,this),this.out.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onOutBtn,this),this.share.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onShareBtn,this),this.naviteSave.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_naviteSave_tap,this),this.update()
+  },t.prototype.setData=function(e,t,i,n,r){
+    this.pic=e,this.shareCallback=t,this.onDelete=i,this.onPut=n,this.onOut=r,this.dataChangeFlag=!0,this.invalidateProperties()
+
+  },t.prototype.clear=function(){
+    this.picture.source="picture_loader_png"
+  },t.prototype.commitProperties=function(){
+    e.prototype.commitProperties.call(this),this.dataChangeFlag&&(this.dataChangeFlag=!1,this.update())
+  },t.prototype.update=function(){
+    this.pic&&(this.picture.data=this.pic),this.share.visible=this.share.includeInLayout=Boolean(this.shareCallback)&&this.getModel(UserModel).getShowShareBtn(),this.put.visible=this.put.includeInLayout=Boolean(this.onPut),this.out.visible=this.out.includeInLayout=Boolean(this.onOut),this.naviteSave.visible=this.naviteSave.includeInLayout=!1,this.showNaviteSave&&(GameConfig.channel==ChannelType.Test||GameConfig.channel==ChannelType.WXgame||GameConfig.remoteArgs&&GameConfig.remoteArgs.enableSaveAlbum)&&(this.naviteSave.visible=this.naviteSave.includeInLayout=!0)
+  },t.prototype.onDeleteBtn=function(){
+    var e=this;
+    Music.play("SE_Popup");
+    var t=new ModalConfirm(_("确认删除图片吗?"),function(){
+      Music.play("SE_Enter"),e.onDelete(e),e.parent&&e.parent.removeChild(e),e.dispatchEventWith(egret.Event.CLOSE)
+    });
+    this.addChild(t)
+  },t.prototype.on_naviteSave_tap=function(){
+    var e=this;
+    this.naviteSaving||this.picture.texture&&(this.naviteSaving=!0,BaseChannel.getInstance().check_permission("album").then(function(t){
+      return __awaiter(e,void 0,void 0,function(){
+        var e,i;
+        return __generator(this,function(n){
+          switch(n.label){
+            case 0:if(!t)return[3,5];
+            n.label=1;
+            case 1:return n.trys.push([1,3,,4]),[4,BaseChannel.getInstance().save_texture_to_album(this.picture.texture,!0)];
+            case 2:return e=n.sent(),e?GuideHelpView.getInstance().show(_("保存成功"),null,core.DisplayManage.getInstance().getNoticeLayer()):GuideHelpView.getInstance().show(_("保存失败"),null,core.DisplayManage.getInstance().getNoticeLayer()),this.naviteSaving=!1,[3,4];
+            case 3:return i=n.sent(),this.naviteSaving=!1,GuideHelpView.getInstance().show(_("保存失败"),null,core.DisplayManage.getInstance().getNoticeLayer()),[3,4];
+            case 4:return[3,6];
+            case 5:GuideHelpView.getInstance().show(_("请同意相关权限"),function(){
+              Music.play("SE_Enter"),Promise.reject(null)
+            },core.DisplayManage.getInstance().getNoticeLayer()),n.label=6;
+            case 6:return[2]
+          }
+        })
+      })
+    }))
+  },t.prototype.onShareBtn=function(){
+    Music.play("SE_Cancel"),this.shareCallback(this.pic,this.picture.texture)
+  },t.prototype.onOutBtn=function(){
+    Music.play("SE_Enter"),this.closeView(),this.onOut&&this.onOut(this)
+  },t.prototype.onPutBtn=function(){
+    Music.play("SE_Enter"),this.closeView(),this.onPut&&this.onPut(this)
+  },t.prototype.closeView=function(){
+    Music.play("SE_Cancel"),this.parent.removeChild(this),this.dispatchEventWith(egret.Event.CLOSE)
+  },t
+}(core.UIView);
+__reflect(PictureModal.prototype

@@ -1,0 +1,18 @@
+Math.floor(e.Time.getServerTime()),u.cmd=c,a.length>0){
+u.data={
+}
+;
+for(var p=0;
+p<a.length;
+p++)u.data[a[p]]=n[p]}
+var d=JSON.stringify(u);
+e.Log.print("发送协议："+d),s&&(i&&(u.callbackFun=i),this.activateProtocol[u.session]=u),this._socket.send(d)}
+,t.prototype.socketLongCallback=function(t){
+switch(t.getEventType()){
+case e.SocketEventType.ConnectionSucceed:e.Log.print("连接成功"),this.sessionID=0,this.activateProtocol={
+}
+,this.DispatchEventToControl(t);
+break;
+case e.SocketEventType.ConnectionFailure:e.Log.print("连接失败"),this.DispatchEventToControl(t);
+break;
+case e.SocketEventType.Disconnect:e.Log.print("断开连接"),this.DispatchEventTo

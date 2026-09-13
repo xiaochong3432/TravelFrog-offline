@@ -1,0 +1,25 @@
+var PostcardListItem=function(e){
+  function t(){
+    var t=null!==e&&e.apply(this,arguments)||this;
+    return t.loadID=0,t.updating=!1,t.modalType=0,t
+
+  }return __extends(t,e),t.prototype.dataChanged=function(){
+    e.prototype.dataChanged.call(this),this.modal&&this.modal.clear(),this.updating||(this.updating=!0,null==this.modal&&(this.modal=new PictureModal,this.modal.showNaviteSave=0==this.modalType,this.modal.addEventListener(egret.Event.CLOSE,this.data.onClose,this),this.addChild(this.modal)),this.data&&this.modal.setData(null,this.data.shareCallback,this.data.onDelete,this.data.onPut,this.data.onOut),egret.setTimeout(this.update,this,10))
+  },t.prototype.update=function(){
+    var e=this;
+    if(this.updating=!1,this.data){
+      this.loadID++;
+      var t=this.loadID;
+      if(this.modal.clear(),null==this.data.pic.layers){
+        var i=this.data;
+        core.ModelManage.getInstance().getModel(TravelModel).checkPictureByIds([this.data.pic],new core.Action(function(){
+          if(t==e.loadID&&i==e.data){
+            var n=core.ModelManage.getInstance().getModel(TravelModel).getPictureById(e.data.pic.id);
+            e.modal.setData(n,e.data.shareCallback,e.data.onDelete,e.data.onPut,e.data.onOut),e.modal.commitProperties()
+          }
+        }))
+      }else this.modal.setData(this.data.pic,this.data.shareCallback,this.data.onDelete,this.data.onPut,this.data.onOut),this.modal.commitProperties()
+    }else this.modal&&this.modal.clear()
+  },t
+}(eui.ItemRenderer);
+__reflect(PostcardListItem.prototype

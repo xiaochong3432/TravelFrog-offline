@@ -1,0 +1,5 @@
+__reflect(BagTable.prototype,"BagTable");
+var Bag=function(e){
+function t(t){
+var i=e.call(this)||this;
+return i.guideCallback=t,i.onClose=new Utils.Trigger,i.onChangeItem=new Utils.Trigger,i.itemModel=co

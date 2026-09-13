@@ -1,0 +1,115 @@
+===== 'getFriendTaste'  hits=2 =====
+
+--- [441568] ---
+ndexOf(t.id)>=0?r.push({
+cfg:t,count:1}
+):r.push({
+cfg:t,count:0}
+);
+return r.sort(function(e,t){
+return t.cfg.type-e.cfg.type||e.cfg.id-t.cfg.id}
+),r}
+,enumerable:!0,configurable:!0}
+),Object.defineProperty(t.prototype,"specialtyList",{
+get:function(){
+for(var t,i=e.DataManager.instance(),n=this.itemModel.getSpecialtysList(),r=[],o=0;
+o<i.SpecialtyDB.count();
+o++)t=i.SpecialtyDB.index(o),n.indexOf(t.itemId)>=0?r.push(t):r.push(-1);
+return r}
+,enumerable:!0,configurable:!0}
+),t.prototype.raffle=function(){
+var e=[Prize.Rank.Gold,Prize.Rank.Red,Prize.Rank.Green,Prize.Rank.Blue,Prize.Rank.White],t=Math.floor(Math.random()*e.length),i=e[t];
+return new Promise(function(e,t){
+setTimeout(function(){
+e(i)}
+,200)}
+)}
+,Object.defineProperty(t.prototype,"prizelist",{
+get:function(){
+for(var t=e.DataManager.instance().PrizeDB,i=[],n=0;
+n<t.count();
+n++)i.push(t.index(n));
+return i}
+,enumerable:!0,configurable:!0}
+),t.prototype.getFriendTaste=function(t,i){
+for(var n=e.DataManager.instance().CharaDB,r=e.DataManager.instance().SpecialtyDB,o=n.src.data.find(function(e){
+return e.id===t}
+),a=-1,s=r.list(),c=0;
+c<s.length;
+c++)if(s[c].itemId===i){
+a=c;
+break}
+return{
+friend:o,feeling:o.taste[a]}
+}
+,t._instance=null,t}
+();
+e.Game=t,__reflect(t.prototype,"Tabikaeru.Game")}
+(Tabikaeru||(Tabikaeru={
+}
+));
+var Tabikaeru;
+!function(e){
+var t=function(){
+function e(){
+this.openMap={
+}
+}
+return e.prototype.setOpen=function(e,t){
+this.openMap[e]=t}
+,e.prototype.isOpen=function(e){
+return this.openMap[e]?this.openMap[e]:!0}
+,e.instance=function(){
+return this._instance?this._instance:this._instance=new e}
+,e}
+();
+e.OpenManager=t,__reflect(t.prototype,"Tabikaeru.OpenManager")}
+(Tabikaeru||(Tabikaeru={
+}
+));
+var Tabikaeru;
+!function(e){
+var t;
+!function(e){
+e[e.NEW_NOTE="NEW_NOTE"]="NEW_NOTE",e[e.STAMP_CRAFT="stampcraft"]="STAMP_CRAFT",e[e.PRAY_CRAFT="praycraft"]="P
+
+--- [870770] ---
+rning",message:"friendClick():guest_data_empty:"+this.travelModel.getGuestData().id}
+),Music.play("SE_Popup"),this.travelModel.getGuestData().served)return void this.addChild(new ModalAlert(_("已经给小伙伴赠送过礼物了。")));
+if(this.playerBag)this.playerBag.show(Tabikaeru.DataType.ItemType.Specialty);
+else{
+this.playerBag=new PlayerBag(!0,!1,Tabikaeru.DataType.ItemType.Specialty,PlayerBag_ParentType.Neighbor,!0),core.DisplayManage.getInstance().getPopupLayer().addChild(this.playerBag);
+var i=new core.Action1;
+i.add(function(e){
+if(t.travelModel.getGuestData().id>=0){
+var i=new ModalConfirm("确认喂食小伙伴吗？",function(){
+t.travelModel.sendGuestServed(e),t.friendFeedBack(e)}
+);
+core.DisplayManage.getInstance().popup(i)}
+else t.addChild(new ModalAlert(_("小伙伴已经离开了")))}
+,this),this.playerBag.callback=i}
+}
+,t.prototype.friendFeedBack=function(e){
+var t=Tabikaeru.Game.instance(),i=this.getModel(ItemModel).getItemInfo(e).name,n=t.getFriendTaste(this.travelModel.getGuestData().id,e),r=n.friend,o=n.feeling,a=["困困","胖胖","跳跳"],s=a[r.id],c=new ModalAlert(_("{
+0}
+{
+1}
+招待提示",i,s),function(){
+var e;
+e=o>=80?_("{
+0}
+\n两眼放光 高兴地扑了上来",s):o>=60?_("{
+0}
+\n吃得津津有味 嘴巴吧唧个不停",s):o>=20?_("{
+0}
+\n一声不吭 顽强填饱了肚子",s):_("{
+0}
+\n看了一眼 没有什么胃口",s);
+var t=new ModalAlert(e);
+core.DisplayManage.getInstance().getPopupLayer().addChild(t)}
+);
+core.DisplayManage.getInstance().getPopupLayer().addChild(c)}
+,t.prototype.updateHouseLight=function(){
+!Tabikaeru.Game.instance().isHome||this.roleModel.isFrogSleep()&&!this.getModel(EasterEggModel).hasFrogEgg()?(this.imgHouseLight.source="mainout_season"+this.seasonKey+"_light_off_png",this.imgLightCover.visible=!1):(this.imgHouseLight.source="mainout_season"+this.seasonKey+"_light_on_png",this.imgLightCover.visible=!0)}
+,t.prototype.scroll=function(e){
+e||(this.scroller.viewport.scrollH=this.background.width-this.scroller.width-

@@ -1,0 +1,61 @@
+var GiftBoxAlbumView=function(e){
+  function t(){
+    var t=e.call(this,core.PathManage.getInstance().getSkinsPath("GiftBox/GiftBoxAlbumPage.exml"))||this;
+    
+return t.numsPageItem=6,t
+  }return __extends(t,e),t.prototype.onComplete=function(){
+    var e=this;
+    this.deleteBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_deleteBtn,this),this.popBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_popBtn,this),this.l_picture.addEventListener(egret.Event.CHANGE,this.on_l_picture_change,this),this.albumBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_albumBtn,this),this.l_picture.addEventListener(eui.ItemTapEvent.ITEM_TAP,this.onItemTap,this),this.c_scroller.setCursors(this.prevBtn,this.nextBtn),this.c_scroller.onPageChange=function(){
+      return e.onPageChanged()
+    },this.l_picture.itemRenderer=PictureItemRender,this.l_picture.dataProvider=this.getModel(GiftBoxModel).getPictureList(),this.update(),this.on_l_picture_change(),this.onPageChanged()
+  },t.prototype.onPageChanged=function(){
+    this.currentPage.text=String(this.c_scroller.curPageIndex+1),this.maxPage.text=String(this.c_scroller.numPages)
+  },t.prototype.onItemTap=function(e){
+    var t=this,i=e.item;
+    if(i&&0==this.l_picture.allowMultipleSelection&&e.itemRenderer.selected){
+      Music.play("SE_Popup");
+      var n=new PostcardListView("gitbox");
+      this.addChild(n);
+      var r=this.l_picture.dataProvider,o=r.getItemIndex(i);
+      n.setData(r.source,o,function(e){
+        t.selectPictureAt(e)
+      },null,function(e){
+        t.deletePicture(e.pic),n.parent&&n.parent.removeChild(n)
+      },function(e){
+        t.getModel(GiftBoxModel).gift_to_album([e.pic.id],!1,null),n.parent&&n.parent.removeChild(n)
+      })
+    }
+  },t.prototype.on_deleteBtn=function(){
+    var e=this,t=this.l_picture.selectedItems,i=new ModalConfirm(_("确认删除图片吗?"),function(){
+      for(var i=0,n=t;
+      i<n.length;
+      i++){
+        var r=n[i];
+        e.deletePicture(r)
+      }Music.play("SE_Enter")
+    });
+    this.addChild(i)
+  },t.prototype.on_popBtn=function(){
+    var e=this.l_picture.selectedItems;
+    this.getModel(GiftBoxModel).gift_to_album(e.map(function(e){
+      return e.id
+    }),this.data&&!this.data.disableAlbum),this.l_picture.selectedIndices=[],this.on_l_picture_change()
+  },t.prototype.on_albumBtn=function(){
+    Music.play("SE_PageNext"),core.PageManage.getInstance().addViewControl(AlbumController,core.ViewLayerType.WindowLayer,core.RemoveViewType.Retain)
+  },t.prototype.on_l_picture_change=function(){
+    var e=this.l_picture.selectedIndices,t=e.length>0;
+    t?(this.deleteBtn.enable(),this.popBtn.enable()):(this.deleteBtn.disable(),this.popBtn.disable())
+  },t.prototype.update=function(){
+    var e=this.getModel(GiftBoxModel).getPictureList();
+    e.length>0?(this.c_scroller.curPageIndex=this.c_scroller.curPageIndex,this.currentState="normal"):this.currentState="empty",this.l_picture.validateNow(),this.onPageChanged()
+  },t.prototype.selectPictureAt=function(e){
+    var t=e/this.numsPageItem>>0;
+    this.c_scroller.curPageIndex=t,this.l_picture.selectedIndex=e
+  },t.prototype.deletePicture=function(e){
+    var t=this;
+    this.l_picture.selectedIndices=[],this.on_l_picture_change(),e&&this.getModel(GiftBoxModel).delete_album(e.id,function(){
+      t.update()
+    })
+  },t
+}(core.UIView);
+__reflect(GiftBoxAlbumView.prototype

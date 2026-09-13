@@ -1,0 +1,17 @@
+var GiftBoxSpecialtyItem=function(e){
+  function t(){
+    return null!==e&&e.apply(this,arguments)||this
+  }return __extends(t,e),t.prototype.childrenCreated=function(){
+    e.prototype.childrenCreated.call(this),this.outBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onOutBtn,this)
+  },t.prototype.dataChanged=function(){
+    if(e.prototype.dataChanged.call(this),this.data){
+      var t=Tabikaeru.DataManager.instance().ItemDB.get(this.data.item_id);
+      if(!t)return;
+      var i=void 0;
+      i=-1==t.info.toString().indexOf(" ")?[t.info.toString()]:t.info.split(" "),this.itemName.text=t.name,this.info1.text=i[0],this.info2.text=i[1],this.image.source=Tabikaeru.path.formatPathImage(t.img)
+    }
+  },t.prototype.onOutBtn=function(){
+    this.dispatchEventWith("GiftBoxSpecialtyItem.outBtn",!0)
+  },t
+}(eui.ItemRenderer);
+__reflect(GiftBoxSpecialtyItem.prototype

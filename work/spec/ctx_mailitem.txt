@@ -1,0 +1,82 @@
+===== 'sender|senderCharaId|charaId'  hits=3 =====
+
+--- [191127] ---
+his.id=0,this.layers=[],this.for_ads=!1,this.visit=!1,this.hash=""}
+return e}
+();
+__reflect(PictureInfo.prototype,"PictureInfo");
+var ResourceInfo=function(){
+function e(){
+this.ticket=0,this.clover_point=0,this.reward_gacha=0,this.ads_id=null,this.share_id=null}
+return e}
+();
+__reflect(ResourceInfo.prototype,"ResourceInfo");
+var ItemInfo=function(){
+function e(){
+this.item_id=0,this.count=0}
+return e}
+();
+__reflect(ItemInfo.prototype,"ItemInfo");
+var MailInfo=function(){
+function e(){
+this.id=0,this.type=0,this.sender=0,this.timestamp=0,this.title="",this.message="",this.expire=0,this.auto_open=!1,this.read=!1,this.opened=!1}
+return e}
+();
+__reflect(MailInfo.prototype,"MailInfo");
+var Redmsg=function(){
+function e(){
+this.type=0,this.position=0,this.display=0,this.number=0}
+return e}
+();
+__reflect(Redmsg.prototype,"Redmsg");
+var TravelModel=function(e){
+function t(){
+var t=e.call(this)||this;
+return t.pictureCount=0,t.redpointState=!1,t.hasAds=!1,t.isShare=!1,t.newPictureIDs=[],t.requestMailInterval=1e3,t.requestMa
+
+--- [787038] ---
+P,this.acceptTouchEvents,this)}
+,t.prototype.clean=function(){
+this.acceptCallback=null}
+,t.prototype.setInfo=function(e,t,i){
+this.mailView=e,this.mailInfo=t,this.acceptCallback=i;
+var n=t.title;
+this.t_title.text=n,this.i_mailSender.visible=!0;
+var r=!0,o=!0;
+switch(this.currentState="type1",t.type){
+case Mail.EvtId.System:this.i_mailSender.source="mail_system_png",r=!1;
+break;
+case Mail.EvtId.Notice:this.i_mailSender.source="mail_system_png",this.currentState="type3";
+break;
+case Mail.EvtId.Gift:switch(t.sender){
+case 0:this.i_mailSender.source="mail_wugui_png";
+break;
+case 1:this.i_mailSender.source="mail_maotouying_png";
+break;
+case 2:this.i_mailSender.source="mail_songshu_png";
+break;
+default:this.i_mailSender.visible=!1}
+break;
+case Mail.EvtId.StoryGift:this.i_mailSender.source="mail_friendGiftIcon_png";
+break;
+case Mail.EvtId.Taobao:this.i_mailSender.source="mail_taobao_png";
+break;
+case Mail.EvtId.Leaflet:break;
+case Mail.EvtId.Drift:this.i_mailSender.source="mail_system_png",this.fillItems(),r=!1,this.
+
+--- [792087] ---
+i=new ModalConfirm(_("是否感谢他的赠礼？"),function(){
+core.SocketManage.getInstance().send("greetcard_feedback_gift",null,t.mailInfo.id),t.acceptCallback&&t.acceptCallback.apply(t,t.mailInfo)}
+,function(){
+t.acceptCallback&&t.acceptCallback.apply(t,t.mailInfo)}
+);
+core.DisplayManage.getInstance().getPopupLayer().addChild(i)}
+else if(this.mailInfo.type==Mail.EvtId.Drift){
+var n=core.ModelManage.getInstance().getModel(ActivityModel).getActivity("travelmap");
+if(n)if(n.params&&n.params.isOpen){
+var r=this.mailInfo.sender;
+core.PageManage.getInstance().addViewControl(TravelMapController,core.ViewLayerType.WindowLayer,core.RemoveViewType.Retain,n.params.url,{
+action:"bbsDetail",city:r}
+),this.acceptCallback&&this.acceptCallback.apply(this,this.mailInfo),this.mailView.hideBanner()}
+else this.acceptCallback&&this.acceptCallback.apply(this,this.mailInfo),core.DisplayManage.getInstance().getPopupLayer().addChild(new ModalAlert(_("活动还没开启")));
+else this.acceptCallback&&this.acceptCallback.apply(this,this.mailInfo),cor

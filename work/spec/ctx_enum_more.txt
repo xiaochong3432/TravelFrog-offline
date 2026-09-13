@@ -1,0 +1,196 @@
+===== 'e\\[e\\.Complete='  hits=3 =====
+
+--- [415537] ---
+.INDEX=-1]="INDEX",e[e.Album=0]="Album",e[e.Temp=9]="Temp"}
+(r=e.SaveType||(e.SaveType={
+}
+))}
+(Picture||(Picture={
+}
+));
+var Tutorial;
+!function(e){
+var t;
+!function(e){
+e[e.NONE=-1]="NONE",e[e.a0_MO_FrogTap=0]="a0_MO_FrogTap",e[e.a1_MO_FrogName=1]="a1_MO_FrogName",e[e.a2_MO_GoHome=2]="a2_MO_GoHome",e[e.b0_MI_GoOut=3]="b0_MI_GoOut",e[e.c0_MO_GetStandby=4]="c0_MO_GetStandby",e[e.c1_MO_GetClover=5]="c1_MO_GetClover",e[e.c2_MO_GoShop=6]="c2_MO_GoShop",e[e.d0_SH_BuyStandby=7]="d0_SH_BuyStandby",e[e.d1_SH_BuyItem=8]="d1_SH_BuyItem",e[e.d2_SH_GoHome=9]="d2_SH_GoHome",e[e.e0_MI_OpenBag=10]="e0_MI_OpenBag",e[e.e1_MI_ReStart=11]="e1_MI_ReStart",e[e.f0_MO_Standby=12]="f0_MO_Standby",e[e._StepMax=13]="_StepMax",e[e.Complete=99]="Complete"}
+(t=e.Step||(e.Step={
+}
+));
+var i;
+!function(e){
+e[e.NONE=-1]="NONE",e[e.TUTORIAL_CLOVER=0]="TUTORIAL_CLOVER",e[e.TUTORIAL_FOURLEAF=1]="TUTORIAL_FOURLEAF",e[e.FIRST_SHOW_DESK=2]="FIRST_SHOW_DESK",e[e.FIRST_BUY_TOOL=3]="FIRST_BUY_TOOL",e[e.FIRST_COME_FRIEND=4]="FIRST_COME_FRIEND",e[e.FIRST_RAFFLE_ROLL=5]="FIRST_RAFFLE_ROLL",e[e.FIRST_OPTION_DOZE=6]="FIRST_OPTION_DOZE",e[e._FlagMax=7]="_FlagMax"}
+(i=e.Flag||(e.Flag={
+}
+))}
+(Tutorial||(Tutorial={
+}
+));
+var TimerEvent;
+!function(e){
+var t;
+!function(e){
+e[e.NONE=0]="NONE",e[e.GoTravel=1]="GoTravel",e[e.BackHome=2]="BackHome",e[e.Picture=3]="Picture",e[e.Drift=4]="Drift",e[e.Return=5]="Return",e[e.Guest=6]="Guest",e[e.Gift=7]="Gift",e[e.Story=8]="Story",e[e.StoryGift=9]="StoryGift",e[e.StoryFeedback=10]="StoryFeedback",e[e.Visitor=11]="Visitor",e[e.Recharge=12]="Recharge",e[e.Decoration=13]="Decoration",e[e.AntiAddition=14]="AntiAd
+
+--- [417944] ---
+}
+));
+var i;
+!function(e){
+e[e.NONE=-1]="NONE",e[e.Clover=0]="Clover",e[e.FourClover=1]="FourClover",e[e.Ticket=2]="Ticket",e[e.MAX=3]="MAX"}
+(i=e.Gift||(e.Gift={
+}
+));
+var n;
+!function(e){
+e[e.NONE=-1]="NONE",e[e.LunchBox=0]="LunchBox",e[e.Amulet=1]="Amulet",e[e.Tool_1=2]="Tool_1",e[e.Tool_2=3]="Tool_2",e[e.MAX=4]="MAX"}
+(n=e.BagItem||(e.BagItem={
+}
+));
+var r;
+!function(e){
+e[e.NONE=-1]="NONE",e[e.LunchBox_1=0]="LunchBox_1",e[e.LunchBox_2=1]="LunchBox_2",e[e.Amulet_1=2]="Amulet_1",e[e.Amulet_2=3]="Amulet_2",e[e.Tool_1=4]="Tool_1",e[e.Tool_2=5]="Tool_2",e[e.Tool_3=6]="Tool_3",e[e.Tool_4=7]="Tool_4",e[e.MAX=8]="MAX"}
+(r=e.DeskItem||(e.DeskItem={
+}
+));
+var o;
+!function(e){
+e[e.Open=0]="Open",e[e.Select=1]="Select",e[e.Complete=2]="Complete",e[e.Reward=3]="Reward"}
+(o=e.LotteryState||(e.LotteryState={
+}
+));
+var a;
+!function(e){
+e[e.None=0]="None",e[e.Grooming=1]="Grooming",e[e.Drowsy=2]="Drowsy",e[e.Cook=3]="Cook",e[e.Zongzi=4]="Zongzi",e[e.Watermelon=5]="Watermelon",e[e.DDShelter=101]="DDShelter",e[e.TTShelter=102]="TTShelter",e[e.KKShelter=103]="KKShelter",e[e.PPShelter=104]="PPShelter",e[e.FireFly=201]="FireFly"}
+(a=e.EasterEgg||(e.EasterEgg={
+}
+)),e.EasterEggPos=(s={
+}
+,s[a.Grooming]=[-200,850],s[a.Drowsy]=[-32,-10],s[a.Cook]=[-126,330],s[a.Zongzi]=[-25,-45],s),e.Define={
+IntMaxValue:2147483647,IntMinValue:-2147483648,VERSION:1.07,BUILD:"",BUILD_NUM:0,STOP_DEBUGLOG:!0,STOP_DEBUG_WINDOW:!0,SHORT_DEBUGLOG:!0,SHOW_PICTURE_DATE:!1,SHOW_PICTURE_NAME:!1,SaveName_Serialize:"/GameData.sav",SaveName_Binary:"/Tabikaeru.sav",SaveName_Binary_PicDir:"/Picture",SaveName_Binary_PicDir_SimplePath:"/Picture",PicSaveDict:(c
+
+--- [709424] ---
+var i=core.PageManage.getInstance().getControl(MainOutController,core.ViewLayerType.SceneLayer),n=i&&i.getView();
+n&&(n.miniGroup.visible=n.miniGroup.includeInLayout=!1),core.SocketManage.getInstance().send("client_get_my_wx_reward",new core.Action2(function(e){
+0==e.code&&(core.ModelManage.getInstance().getModel(RoleModel).wxMyReward=!0,core.DisplayManage.getInstance().popupLayer.addChild(new ModalAlert(_("叮咚~邮箱有动静"))))}
+))}
+else core.DisplayManage.getInstance().popupLayer.addChild(new ModalAlert(_("添加到我的小程序后才可以领奖哦~")))}
+}
+)}
+,this)}
+,t}
+(core.UIView);
+__reflect(GuideMiniView.prototype,"GuideMiniView");
+var GuideName_Step;
+!function(e){
+e[e.Start=0]="Start",e[e.Describe=1]="Describe",e[e.Name=2]="Name",e[e.Complete=3]="Complete"}
+(GuideName_Step||(GuideName_Step={
+}
+));
+var GuideNamedView=function(e){
+function t(t,i){
+var n=e.call(this,core.PathManage.getInstance().getSkinsPath("Guide/GuideNamedSkin.exml"))||this;
+return n.completeCallback=t,n.callback=i,n}
+return __extends(t,e),t.prototype.destroy=function(){
+this.btn_yes.removeEventListener(egret.TouchEvent.TOUCH_TAP,this.totalTouchEvents,this),null!=this.friendView&&(this.friendView.destroy(),this.friendView.parent&&this.friendView.parent.removeChild(this.friendView),this.friendView=null),e.prototype.destroy.call(this),this.parent&&this.parent.removeChild(this)}
+,t.prototype.onComplete=function(){
+this.roleModel=this.getModel(RoleModel),this.c_start.touchEnabled=!1,this.c_start.touchChildren=!1,this.c_complete.touchEnabled=!1,this.c_complete.touchChildren=!1,this.c_role.touchEnabled=!1,this.c_role.touchChildren=!1,this.canvas.touchEnabled=!0,t
+
+##########################################################################################
+### literal "e\\[e\\.Guest="  hits=0
+##########################################################################################
+
+
+##########################################################################################
+### literal "Yellow_Friend"  hits=1
+##########################################################################################
+
+--- [898096] ---
+.resume()}
+)}
+,t.prototype.onCloseTap=function(){
+var e=this;
+if(this.btn_share.visible&&this.shareClover&&!this.isTipShare)return void this.onTipsShare();
+if(1==this.panelShare.visible)return this.panelShare.visible=!1,void(this.panelMain.visible=!0);
+var t=core.ModelManage.getInstance().getModel(TravelModel);
+Utils.disableButtonOneTime(this.close,500),Music.play("SE_Popup");
+var i=new ModalConfirm(_("确认放弃保存图片吗?"),function(){
+Music.play("SE_Enter"),t.deleteNewPictureInfo(e.pic.id,function(t){
+e.parent&&e.parent.removeChild(e)}
+)}
+);
+this.addChild(i)}
+,t}
+(core.UIView);
+e.ReceivePostcard=i,__reflect(i.prototype,"Result.ReceivePostcard");
+var n;
+!function(e){
+e[e.Red_Travel=1]="Red_Travel",e[e.Yellow_Friend=2]="Yellow_Friend",e[e.Blue_Result=3]="Blue_Result",e[e.Green_Picture=4]="Green_Picture"}
+(n=e.NotificationType||(e.NotificationType={
+}
+));
+var r=function(e){
+function t(){
+return e.call(this,core.PathManage.getInstance().getSkinsPath("MainOut/Notification.exml"))||this}
+return __extends(t,e),t.prototype.onComplete=function(){
+var e=this;
+this.panel.source="label_0"+this.type+"_png",this.label.text=this.labelText,this.cover.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+e.onClose&&e.onClose(),e.parent.removeChild(e)}
+,this)}
+,t.prototype.notify=function(e,t,i,n){
+this.type=t,this.labelText=i,this.onClose=n,e.addChild(this)}
+,t}
+(core.UIView);
+e.MainOutNotification=r,__reflect(r.prototype,"Result.MainOutNotification");
+var o=function(e){
+function t(t,i,n){
+var r=e.call(this)||this;
+return r.onClose=n,r.percentHeight=100,r.percentWidth=100,Utils.euiComplete(r,function(){
+r.clover.text=t.toString(),r.tic
+
+
+##########################################################################################
+### literal "DRAWING_BOOK"  hits=1
+##########################################################################################
+
+--- [417064] ---
+]="Recharge",e[e.Decoration=13]="Decoration",e[e.AntiAddition=14]="AntiAddition",e[e.NewNote=15]="NewNote",e[e.VisitFriend=16]="VisitFriend",e[e.DropReward=17]="DropReward",e[e.Consume=18]="Consume",e[e.DriftBottle=19]="DriftBottle",e[e.MuseumMiss=20]="MuseumMiss",e[e.FurnitureFinish=21]="FurnitureFinish",e[e.FurniturePut=22]="FurniturePut",e[e.PartyGo=23]="PartyGo",e[e.PartyResult=24]="PartyResult",e[e.CardGift=25]="CardGift",e[e.CardFeedback=26]="CardFeedback",e[e.CardNew=27]="CardNew",e[e.FurnitureVersion=1022]="FurnitureVersion",e[e.AunnalReview=1023]="AunnalReview"}
+(t=e.Type||(e.Type={
+}
+))}
+(TimerEvent||(TimerEvent={
+}
+));
+var Tabikaeru;
+!function(e){
+var t;
+!function(e){
+e[e.DRAWING_BOOK=7001]="DRAWING_BOOK",e[e.WATAR=7002]="WATAR",e[e.FERTILIZER=7003]="FERTILIZER",e[e.CLOVER=2e5]="CLOVER",e[e.TICKET=200001]="TICKET",e[e.COMPASS=200002]="COMPASS"}
+(t=e.ItemID||(e.ItemID={
+}
+));
+var i;
+!function(e){
+e[e.NONE=-1]="NONE",e[e.Clover=0]="Clover",e[e.FourClover=1]="FourClover",e[e.Ticket=2]="Ticket",e[e.MAX=3]="MAX"}
+(i=e.Gift||(e.Gift={
+}
+));
+var n;
+!function(e){
+e[e.NONE=-1]="NONE",e[e.LunchBox=0]="LunchBox",e[e.Amulet=1]="Amulet",e[e.Tool_1=2]="Tool_1",e[e.Tool_2=3]="Tool_2",e[e.MAX=4]="MAX"}
+(n=e.BagItem||(e.BagItem={
+}
+));
+var r;
+!function(e){
+e[e.NONE=-1]="NONE",e[e.LunchBox_1=0]="LunchBox_1",e[e.LunchBox_2=1]="LunchBox_2",e[e.Amulet_1=2]="Amulet_1",e[e.Amulet_2=3]="Amulet_2",e[e.Tool_1=4]="Tool_1",e[e.Tool_2=5]="Tool_2",e[e.Tool_3=6]="Tool_3",e[e.Tool_4=7]="Tool_4",e[e.MAX=8]="MAX"}
+(r=e.DeskItem||(e.DeskItem={
+}
+));
+var o;
+!function(e){
+e[e.Open=0]="Open",e[e.Select=1]="Select",e[e.Complete=2]="Com
+
+
+##########################################################################################
+### literal "e\\[e\\.Select="  hits=0
+##########################################################################################

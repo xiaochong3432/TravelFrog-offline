@@ -1,0 +1,144 @@
+===== 'req_client_pro'  hits=4 =====
+
+--- [128372] ---
+ertArray(e.tasks);
+for(var t=Utils.convertArray(e.list),i=0,n=t;
+i<n.length;
+i++){
+var r=n[i];
+this.dataList[r.id]=r.pro}
+this.updateRedot(),this.dispatchEvent(new core.Event(GuideTaskEventType.UPDATE))}
+,t.prototype.task_load_list=function(e){
+for(var t=Utils.convertArray(e.reward),i=0,n=t;
+i<n.length;
+i++){
+var r=n[i];
+this.dataReward[r.id]=r.pro}
+this.updateRedot()}
+,t.prototype.req_list_reward=function(e,t,i){
+var n=this;
+t++;
+var r=100*e+t;
+core.SocketManage.getInstance().send("task_get_list_reward",new core.Action1(function(r){
+0==r.code&&(n.dataReward[e]=t,i&&i.apply(),n.updateRedot())
+}
+),r)}
+,t.prototype.req_client_pro=function(e){
+core.SocketManage.getInstance().send("task_client_pro",null,e)}
+,t.prototype.updateRedot=function(){
+var e=Tabikaeru.DataManager.instance().TaskDB.get("task_list"),t={
+}
+;
+if(null==this.redotMap){
+this.redotMap={
+}
+;
+var i=[];
+for(var n in e){
+var r=e[n];
+if(null==this.redotMap[r.type]){
+this.redotMap[r.type]="GUIDE_TASK_"+r.type;
+var o=new ValueBroadCastNode;
+i.push(o),Tabikaeru.Redot
+
+--- [731903] ---
+unction(e){
+function t(){
+var t=e.call(this,core.PathManage.getInstance().getSkinsPath("GuideTask/GuideTaskViewSkin.exml"),GuideTaskViewControl,core.ViewLayerType.WindowLayer)||this;
+return t.typeMap={
+}
+,t.btnMap={
+}
+,t.lockMap={
+}
+,t.listToDo=[],t.playEffIndex=0,t.randomIndex=0,t}
+return __extends(t,e),t.prototype.close=function(){
+e.prototype.close.call(this),this.clearEff()}
+,t.prototype.childrenCreated=function(){
+var t=this;
+e.prototype.childrenCreated.call(this);
+var i=this.getModel(ActivityModel).getActivity("travelmap");
+(null==i||null==i.params||null==i.params.isOpen)&&this.getModel(GuideTaskModel).req_client_pro("Map"),this.frog.source="task_list_order_ani",this.frog.view.play(""),this.btnClose.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this),this.cover.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this),this.groupList.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onListTap,this),this.btnMap=(a={
+}
+,a[1]=[this.btn1],a[2]=[this.btn2,this.btn2_1],a[3]=[this.btn3],a[4]=[t
+
+--- [1133331] ---
+ataProvider=new eui.ArrayCollection(this.data.data)
+}
+,t.prototype.onClose=function(){
+this.data.onClose&&this.data.onClose()}
+,t}
+(WindowView);
+__reflect(TravelDropView.prototype,"TravelDropView");
+var TravelMapController=function(e){
+function t(){
+return e.call(this)||this}
+return __extends(t,e),t.prototype.destroy=function(){
+this.close(),e.prototype.destroy.call(this)}
+,t.prototype.onModelEvents=function(e){
+switch(e.getEventType()){
+case NetworkEventType.OFFLINE:this.viewView&&this.viewView.callback("offline",{
+type:e.getParam(0)}
+)}
+}
+,t.prototype.open=function(){
+var i=this;
+this.getModel(GuideTaskModel).req_client_pro("Map"),e.prototype.addEventListeners.call(this,this.onModelEvents,this,NetworkEventType.OFFLINE);
+var n=function(){
+return __awaiter(i,void 0,void 0,function(){
+var e,i,n,r,o,a,s,c,c,l,h,u,p,d,g,f=this;
+return __generator(this,function(v){
+switch(v.label){
+case 0:return e=this.getParam(0),i=this.getParam(1),n={
+}
+,r=".",o=/([a-z]+:\/\/)?([^\/\:\?\\]+)/i.exec(e),o&&o[2]&&(a=o[2].split("."),a
+
+--- [1140822] ---
+ravelNote/TravelNote.exml"),TravelNoteController,core.ViewLayerType.WindowLayer)||this;
+return t.currentType=2,t.disabledRedot=[!0,!0],t.noteReadIDs=[],t}
+return __extends(t,e),t.prototype.onLoad=function(){
+this.travelNoteModel=this.getModel(TravelNoteModel),this.l_note.itemRenderer=TravelNoteItem,this.selectGroup.addEventListener(egret.Event.CHANGE,this.onSelectGroupChange,this),this.backBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this)}
+,t.prototype.onClose=function(){
+this.travelNoteModel.sendReadNote(this.noteReadIDs)}
+,t.prototype.onShow=function(){
+this.getModel(GuideTaskModel).req_client_pro("NoteFriend"),this.switchType(0),this.updateCount(),this.updateRedot()}
+,t.prototype.onSelectGroupChange=function(){
+this.currentType=0==this.selectGroup.selectedIndex?1:2,this.scroller.viewport.scrollV=0,this.scroller.stopAnimation(),this.updateList()}
+,t.prototype.updateRedot=function(){
+for(var e=this.travelNoteModel.getNoteList(),t=0,i=0,n=0,r=e;
+n<r.length;
+n++){
+var o=r[n],a=0;
+if(0==
+
+##########################################################################################
+### literal "mail_ejoy_active_code"  hits=1
+##########################################################################################
+
+--- [192026] ---
+,"Redmsg");
+var TravelModel=function(e){
+function t(){
+var t=e.call(this)||this;
+return t.pictureCount=0,t.redpointState=!1,t.hasAds=!1,t.isShare=!1,t.newPictureIDs=[],t.requestMailInterval=1e3,t.requestMailTimer=null,t.eventUpdateNewAlbum=new core.Action,t.travelEventList=[],t.pictureInfoList=[],t.mailInfoList=[],t.newPictureInfoList=[],t.newAdsPictureInfoList=[],t.deletePictureInfoList=[],t}
+return __extends(t,e),t.prototype.destroy=function(){
+e.prototype.destroy.call(this)}
+,t.prototype.initModel=function(){
+this.addProtocolCallback("client_load_events","guest_load","album_load","mail_load_mails","mail_ejoy_active_code","album_load_new","album_load_recover","album_load_all","album_load_by_id_list","notify_new_event","notify_redmsg","notify_new_mail","mail_load")}
+,t.prototype.clearData=function(){
+}
+,t.prototype.getTravelEventList=function(){
+return this.travelEventList}
+,t.prototype.getFirstTravelEvent=function(){
+return this.travelEventList.length>0?this.travelEventList[0]:null}
+,t.prototype.cr
+
+
+##########################################################################################
+### literal "ItemID.TICKET"  hits=0
+##########################################################################################
+
+
+##########################################################################################
+### literal "isRewardState"  hits=0
+##########################################################################################

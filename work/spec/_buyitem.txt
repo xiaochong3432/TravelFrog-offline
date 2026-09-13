@@ -1,0 +1,19 @@
+t:function(){
+return this.userModel.getClover()}
+,enumerable:!0,configurable:!0}
+),t.prototype.buyItem=function(t,i,n){
+var r=this,o=e.DataManager.instance(),a=core.ModelManage.getInstance().getModel(UserModel),s=o.ShopDataDB.get(t);
+return null===s?!1:this.itemModel.isShopItemBuyLimit(t)?!1:a.getClover()-s.price<0?!1:(core.ModelManage.getInstance().getModel(RoleModel).syncHarvestClover(!1,new core.Action(function(){
+core.SocketManage.getInstance().send("item_buy",new core.Action2(function(e,o){
+e&&(r.itemModel.purchasedMap[t]=(r.itemModel.purchasedMap[t]||0)+1,r.itemModel.addHouseItem(i,1),n.apply(e,o))}
+),t)}
+)),a.consumeClover(s.price),!0)}
+,t.prototype.getPlayerBagItems=function(t){
+function i(e,i){
+for(var n,r,s=0,c=e.length;
+c>s;
+s++)n=e[s],-1!=n&&(r=i.itemModel.getItemInfo(n),null!=r&&r.type==t&&-1==o.indexOf(n)&&(o.push(n),a.push(0)))}
+var n=e.DataManager.instance(),r=this.itemModel.getHouseTypeList(t),o=[],a=[];
+null!=r&&(o=o.concat(r.GetKeys()),a=a.concat(r.GetValues())),i(this.itemModel.getBagDataList(),this),i(this.itemModel.getDeskDataList(),this);
+return o.map(function(e){
+var t=o.indexO

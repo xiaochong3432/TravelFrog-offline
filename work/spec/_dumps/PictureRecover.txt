@@ -1,0 +1,35 @@
+var PictureRecover=function(e){
+  function t(){
+    var t=e.call(this,core.PathManage.getInstance().getSkinsPath("Album/PictureRecover.exml"))||this;
+    return t.CacheList=[],t
+  }return __extends(t,e),t.prototype.onComplete=function(){
+    var e=this;
+    this.btnPut.disable(),this.cover.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this),this.btnClose.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this),this.btnPut.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+      if(e.lastSelectItem){
+        var t=new ModalConfirm(_("确认恢复图片吗?"),function(){
+          Music.play("SE_Enter"),e.getModel(TravelModel).recoverPictureInfo(e.lastSelectItem.pic.id,function(e){
+            return e&&0!=e.code?void GuideHelpView.getInstance().show(e.desc):void core.SocketManage.getInstance().send("album_load_recover",null)
+          })
+        });
+        e.addChild(t)
+      }
+    },this);
+    for(var t=0;
+    6>t;
+    t++){
+      var i=new AlbumPicture;
+      i.visible=!1,i.horizontalCenter=t%2===0?-130:130,i.y=180*Math.floor(t/2),i.init(null,t),i.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onSelectPicture,this),this.groupPic.addChild(i),this.CacheList.push(i)
+    }
+  },t.prototype.onSelectPicture=function(e){
+    var t=e.currentTarget;
+    t.active||(Music.play("SE_Cursor"),this.lastSelectItem&&this.lastSelectItem.unselect(),t.select(),this.lastSelectItem=t,this.btnPut.enable())
+  },t.prototype.updatePic=function(){
+    this.lastSelectItem=void 0,this.btnPut.disable();
+    for(var e=this.getModel(TravelModel).getDeletePictureInfoList(),t=0;
+    t<this.CacheList.length;
+    t++)e[t]?(this.CacheList[t].unselect(),this.CacheList[t].visible=!0,this.CacheList[t].updateData(e[t])):this.CacheList[t].visible=!1
+  },t.prototype.close=function(){
+    Music.play("SE_Cancel"),this.parent&&this.parent.removeChild(this)
+  },t
+}(core.UIView);
+__reflect(PictureRecover.prototype

@@ -1,0 +1,12 @@
+vents,t,UserEventType.updateClover,TravelEventType.updateRedpoint,ItemEventType.updateDesk,ItemEventType.updateBag,TravelNoteEventType.checkNoteGuide,FurnitureEventType.UPDATE,DrawingEventType.ITEM_CHANGE,RoleEventType.updateDecoration),t}
+return __extends(t,e),t.prototype.destroy=function(){
+this.removeEventListeners(this.totalCustomEvents,this,!1,UserEventType.updateClover,TravelEventType.updateRedpoint,ItemEventType.updateDesk,ItemEventType.updateBag,TravelNoteEventType.checkNoteGuide,FurnitureEventType.UPDATE,DrawingEventType.ITEM_CHANGE,RoleEventType.updateDecoration),this.close(),this.view=null,e.prototype.destroy.call(this)}
+,t.prototype.open=function(){
+var e=!1;
+null==this.view&&(this.view=new MainInView,e=!0),this.getParent().addChild(this.view),e||this.view.reset()}
+,t.prototype.close=function(){
+null!=this.view&&this.view.parent&&this.view.parent.removeChild(this.view)}
+,t.prototype.getView=function(){
+return this.view}
+,t.prototype.totalCustomEvents=function(e){
+switch(e.getEventType

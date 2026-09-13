@@ -1,0 +1,25 @@
+tweenTimer),this.tweenTimer=void 0),e.prototype.destroy.call(this)}
+,t.prototype.updateTicket=function(){
+this.ticket.text=this.userModel.getTicket().toString()}
+,t.prototype.raffle=function(){
+return __awaiter(this,void 0,void 0,function(){
+var e;
+return __generator(this,function(t){
+return this.userModel.consumeTicket(Tabikaeru.Define.RAFFEL_NEEDTICKETS)?(this.drawBtn.touchEnabled=!1,core.SocketManage.getInstance().send("item_gacha",null,!1),[2]):(Music.play("SE_Popup"),e=new ModalAlert(_("抽奖券不足")),this.addChild(e),[2])}
+)}
+)}
+,t.prototype.reward_raffle=function(){
+this.isReward=!0,this.drawBtn.visible=!1,this.ticketGroup.visible=!1,this.shopBtn.visible=!1,this.titleName.visible=!1,this.description.visible=!1,this.showPrizeBtn.visible=!1,this.closeBtn.visible=!1;
+var e=this.itemModel.getGachaColorBall();
+-1==e?(this.isRewardWatting=!1,core.SocketManage.getInstance().send("item_gacha",null,!0)):this.isRewardWatting=!0}
+,t.prototype.nextReward=function(){
+this.isRewardWatting?(this.isRewardWatting=!1,core.SocketManage.getInstance().send("item_gacha",null,!0)):this.isReward}
+,t.prototype.updateGachaColorBall=function(e){
+return void 0===e&&(e=!1),__awaiter(this,void 0,void 0,function(){
+var t,i,n,r,o,a,o,s,c=this;
+return __generator(this,function(l){
+switch(l.label){
+case 0:return t=this.itemModel.getGachaColorBall(),-1==t?(this.drawBtn.touchEnabled=!0,[2]):e?[3,2]:[4,this.playRaffleAnm(t)];
+case 1:l.sent(),l.label=2;
+case 2:return[4,this.showResult(t)];
+case 3:switch(l.sent(),Music.play("SE_Popup"),

@@ -1,0 +1,41 @@
+e TimerEvent.Type.VisitFriend:var Ct=g.evt_value[0],Mt=Utils.convertArray(g.evt_value).slice(1),Et=g.evt_pic;
+Music.play("SE_Popup");
+var bt=new VisitReturnGiftView;
+bt.data={
+friendId:Ct,rewardArr:Mt,pictures:Et,onConfirm:function(){
+if(Et.length>0){
+var e,t=function(){
+var i=core.ModelManage.getInstance().getModel(TravelModel).getFirstVisitPictureInfo();
+i&&(core.ModelManage.getInstance().getModel(TravelModel).eventUpdateNewAlbum.remove(t,d),egret.clearTimeout(e),p())}
+;
+core.ModelManage.getInstance().getModel(TravelModel).eventUpdateNewAlbum.add(t,d),e=egret.setTimeout(function(){
+core.ModelManage.getInstance().getModel(TravelModel).eventUpdateNewAlbum.remove(t,d),p()}
+,d,5e3),T.readTraveEvents(g)}
+else p()}
+}
+,c.addChild(bt);
+break;
+case TimerEvent.Type.PartyGo:Music.play("SE_Popup");
+var V=g.evt_value[0]&&g.evt_value[0]>0?"{
+0}
+精力充沛地出去聚会了":"{
+0}
+出去聚会了",It=_(V,y),St=new r;
+St.notify(c,n.Yellow_Friend,It,function(){
+p()}
+);
+break;
+case TimerEvent.Type.PartyResult:var kt=_("{
+0}
+回来了。",y),Pt=new r;
+Pt.notify(c,n.Yellow_Friend,kt,function(){
+var e=g.evt_id,t=Utils.convertArray(g.evt_value);
+core.PageManage.getInstance().addViewControl(PartyResultViewControl,core.ViewLayerType.NoticeLayer,core.RemoveViewType.Retain,{
+guest:e,page:t[0],coll:t[1],clover:t[2],ticket:t[3],items:t.splice(4),onClose:function(){
+v.AddCloverTween(t[2]),p()}
+}
+)}
+);
+break;
+case TimerEvent.Type.CardNew:Music.play("SE_Popup");
+var Lt=_("好像有故事发生"

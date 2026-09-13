@@ -1,0 +1,98 @@
+var TravelMapController=function(e){
+  function t(){
+    return e.call(this)||this
+  }return __extends(t,e),t.prototype.destroy=function(){
+    this.close(),e.prototype.destroy.call(this)
+  },t.prototype.onModelEvents=function(e){
+    switch(e.getEventType()){
+      case NetworkEventType.OFFLINE:this.viewView&&this.viewView.callback("offline",{
+        type:e.getParam(0)
+      })
+    }
+  },t.prototype.open=function(){
+    var i=this;
+    this.getModel(GuideTaskModel).req_client_pro("Map"),e.prototype.addEventListeners.call(this,this.onModelEvents,this,NetworkEventType.OFFLINE);
+    var n=function(){
+      return __awaiter(i,void 0,void 0,function(){
+        var e,i,n,r,o,a,s,c,c,l,h,u,p,d,g,f=this;
+        return __generator(this,function(v){
+          switch(v.label){
+            case 0:return e=this.getParam(0),i=this.getParam(1),n={
+              
+            },r=".",o=/([a-z]+:\/\/)?([^\/\:\?\\]+)/i.exec(e),o&&o[2]&&(a=o[2].split("."),a.length>=2?(a=a.slice(a.length-2),r="."+a.join(".")):r=a.join(".")),s=[],BaseChannel.getInstance().supportShareWechat()?[4,BaseChannel.getInstance().is_support(SharePlatformType.wechatMessenger)]:[3,2];
+            case 1:c=v.sent(),c=c[0],(c===!0||1===c||c.has_installed&&c.has_share_infos)&&(s.push(SharePlatformType.wechatMessenger),s.push(SharePlatformType.wechatTimeline)),v.label=2;
+            case 2:return BaseChannel.getInstance().supportShareWeibo()?[4,BaseChannel.getInstance().is_support(SharePlatformType.sinaWeibo)]:[3,4];
+            case 3:c=v.sent(),c=c[0],(c===!0||1===c||c.has_installed&&c.has_share_infos)&&s.push(SharePlatformType.sinaWeibo),v.label=4;
+            case 4:return l=this.getModel(UserModel).getMomentToken(),n[r]={
+              startupData:{
+                moment_token:l,support_platforms:s
+              }
+            },h=BaseChannel.getInstance().openWebView(),this.viewView=h,h&&e&&(u=e+(-1==e.indexOf("?")?"?":"&")+"state="+l,i&&"bbsDetail"==i.action&&(p="",d="",i.city&&(g=Tabikaeru.DataManager.instance().GoalNumberDB.get(i.city),g&&(p=g.tag,d=g.name)),u+="&action=bbsDetail&city="+p+"&city_name="+encodeURI(d)),console.log("!!!!"+u),this.viewView.open(u,n,{
+              hide_close_btn:!0,compactMode:!0,use_fragment:!0
+            }),this.viewView.onEvent.add(this.onWebViewEvent,this),this.viewView.onClose.add(function(){
+              core.PageManage.getInstance().removeControl(t,core.ViewLayerType.WindowLayer),f.viewView=null
+            },this)),[2]
+          }
+        })
+      })
+    };
+    n().then()
+  },t.prototype.close=function(){
+    e.prototype.removeEventListeners.call(this,this.onModelEvents,this,!1,NetworkEventType.OFFLINE),this.viewView&&this.viewView.close()
+  },t.prototype.onWebViewEvent=function(e){
+    var t=this,i=e instanceof Array?e[0]:e;
+    if(i&&i.args)switch(i.args.action){
+      case"reload":NetworkControl.getInstance().webReload();
+      break;
+      case"exit":BaseChannel.getInstance().end({
+        
+      });
+      break;
+      case"getPictureList":core.Log.print("!!收到webview消息:getPictureList");
+      for(var n=this.getModel(TravelModel).getPictureInfoList(),r=[],o=Tabikaeru.DataManager.instance().GoalNumberDB,a=Tabikaeru.DataManager.instance().PictureDB,s=Tabikaeru.DataManager.instance().PictureTagDB.list(),c={
+        
+      },l=0,h=s;
+      l<h.length;
+      l++)for(var u=h[l],p=0,d=u.picNames;
+      p<d.length;
+      p++){
+        var g=d[p];
+        c[g]=u
+      }for(var f=0,v=n;
+      f<v.length;
+      f++){
+        var u=v[f],_={
+          id:u.id,city:"",city_name:""
+        },y=a.get(u.pic_id);
+        if(y){
+          var m=(y.name,(Number(y.place)||0)>>0),w=o.get(m);
+          if(w&&(_.city=w.tag,_.city_name=w.name,w.tag.indexOf("g_bwg_")>=0))continue;
+          if(""==_.city)continue
+        }core.Log.print("添加照片:"+JSON.stringify(_)),r.push(_)
+      }this.viewView.callback(i.args.callback,r);
+      break;
+      case"getPictureData":core.Log.print("!!收到webview消息:getPictureData");
+      var T=this.getModel(TravelModel).getPictureById(i.args.id),C=function(){
+        var e=Tabikaeru.getPictureTexture(T);
+        if(core.Log.print("!!加载图片",null!=e),e){
+          var n=e.toDataURL("image/png",null);
+          Tabikaeru.releasePictureTexture(e),t.viewView.callback(i.args.callback,{
+            id:T.id,base64:n
+          })
+        }else t.viewView.callback(i.args.callback,{
+          id:T.id,base64:""
+        })
+      },M=function(){
+        null==T.layers?t.getModel(TravelModel).checkPictureByIds([T],new core.Action(function(){
+          core.Log.print("!!获取服务器信息"),T=t.getModel(TravelModel).getPictureById(i.args.id),Tabikaeru.loadPicture(T).then(function(){
+            C()
+          })
+        })):C()
+      };
+      null==T?this.viewView.callback(i.args.callback,{
+        id:T.id,base64:""
+      }):M()
+    }
+  },t
+}(core.ViewController);
+__reflect(TravelMapController.prototype

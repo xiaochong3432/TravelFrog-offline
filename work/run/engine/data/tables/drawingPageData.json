@@ -1,0 +1,170 @@
+{
+ "1": {
+  "guest": 0,
+  "id": 1,
+  "pic": {
+   "index": "draw_paper_1",
+   "src": "Scene/Drawing/draw_paper"
+  }
+ },
+ "101": {
+  "guest": 1,
+  "id": 101,
+  "pic": {
+   "index": "draw_paper_101",
+   "src": "Scene/Drawing/draw_paper"
+  }
+ },
+ "102": {
+  "guest": 1,
+  "id": 102,
+  "pic": {
+   "index": "draw_paper_102",
+   "src": "Scene/Drawing/draw_paper"
+  }
+ },
+ "103": {
+  "guest": 1,
+  "id": 103,
+  "pic": {
+   "index": "draw_paper_103",
+   "src": "Scene/Drawing/draw_paper"
+  }
+ },
+ "104": {
+  "guest": 1,
+  "id": 104,
+  "pic": {
+   "index": "draw_paper_104",
+   "src": "Scene/Drawing/draw_paper"
+  }
+ },
+ "105": {
+  "guest": 1,
+  "id": 105,
+  "pic": {
+   "index": "draw_paper_105",
+   "src": "Scene/Drawing/draw_paper"
+  }
+ },
+ "106": {
+  "guest": 1,
+  "id": 106,
+  "pic": {
+   "index": "draw_paper_106",
+   "src": "Scene/Drawing/draw_paper"
+  }
+ },
+ "107": {
+  "guest": 1,
+  "id": 107,
+  "pic": {
+   "index": "draw_paper_107",
+   "src": "Scene/Drawing/draw_paper"
+  }
+ },
+ "2": {
+  "guest": 0,
+  "id": 2,
+  "pic": {
+   "index": "draw_paper_2",
+   "src": "Scene/Drawing/draw_paper"
+  }
+ },
+ "201": {
+  "guest": 2,
+  "id": 201,
+  "pic": {
+   "index": "draw_paper_201",
+   "src": "Scene/Drawing/draw_paper"
+  }
+ },
+ "202": {
+  "guest": 2,
+  "id": 202,
+  "pic": {
+   "index": "draw_paper_202",
+   "src": "Scene/Drawing/draw_paper"
+  }
+ },
+ "203": {
+  "guest": 2,
+  "id": 203,
+  "pic": {
+   "index": "draw_paper_203",
+   "src": "Scene/Drawing/draw_paper"
+  }
+ },
+ "204": {
+  "guest": 2,
+  "id": 204,
+  "pic": {
+   "index": "draw_paper_204",
+   "src": "Scene/Drawing/draw_paper"
+  }
+ },
+ "205": {
+  "guest": 2,
+  "id": 205,
+  "pic": {
+   "index": "draw_paper_205",
+   "src": "Scene/Drawing/draw_paper"
+  }
+ },
+ "206": {
+  "guest": 2,
+  "id": 206,
+  "pic": {
+   "index": "draw_paper_206",
+   "src": "Scene/Drawing/draw_paper"
+  }
+ },
+ "207": {
+  "guest": 2,
+  "id": 207,
+  "pic": {
+   "index": "draw_paper_207",
+   "src": "Scene/Drawing/draw_paper"
+  }
+ },
+ "3": {
+  "guest": 0,
+  "id": 3,
+  "pic": {
+   "index": "draw_paper_3",
+   "src": "Scene/Drawing/draw_paper"
+  }
+ },
+ "4": {
+  "guest": 0,
+  "id": 4,
+  "pic": {
+   "index": "draw_paper_4",
+   "src": "Scene/Drawing/draw_paper"
+  }
+ },
+ "5": {
+  "guest": 0,
+  "id": 5,
+  "pic": {
+   "index": "draw_paper_5",
+   "src": "Scene/Drawing/draw_paper"
+  }
+ },
+ "6": {
+  "guest": 0,
+  "id": 6,
+  "pic": {
+   "index": "draw_paper_6",
+   "src": "Scene/Drawing/draw_paper"
+  }
+ },
+ "7": {
+  "guest": 0,
+  "id": 7,
+  "pic": {
+   "index": "draw_paper_7",
+   "src": "Scene/Drawing/draw_paper"
+  }
+ }
+}

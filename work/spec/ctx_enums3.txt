@@ -1,0 +1,4 @@
+chars 95860..95960
+
+out_bag"),this.data={
+state:DrawingState.accept,guest:-1,bag:[],pages:[],colls:[],show_coll:0,pen_mot

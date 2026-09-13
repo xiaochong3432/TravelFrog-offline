@@ -1,0 +1,54 @@
+
+
+====================================================================================================
+### item_update   (len=511)
+====================================================================================================
+prototype.item_update=function(e){
+  if(e){
+    var t=this.getHouseItemCount(e.item.item_id);
+    0==e.item.count?this.doConsumeHouseItem(e.item.item_id,t):this.doAddHouseItem(e.item.item_id,e.item.count-t);
+    var i=Tabikaeru.DataManager.instance().ItemDB.get(e.item.item_id);
+    if(i.type==Tabikaeru.DataType.ItemType.COMPOSE){
+      core.ModelManage.getInstance().getModel(HandCraftModel).updateComposeRedot();
+      var n=core.PageManage.getInstance().getControl(ToolBagViewController,core.ViewLayerType.NoticeLayer);
+      n&&n.view.updatePage()
+    }
+  }
+}
+
+====================================================================================================
+### item_update_ticket   (len=86)
+====================================================================================================
+prototype.item_update_ticket=function(e){
+  this.getModel(UserModel).setTicket(e.ticket)
+}
+
+====================================================================================================
+### clover_update   (len=81)
+====================================================================================================
+prototype.clover_update=function(e){
+  this.getModel(UserModel).setClover(e.clover)
+}
+
+====================================================================================================
+### item_load_items   (len=634)
+====================================================================================================
+prototype.item_load_items=function(e,t){
+  this.itemDataAll.Clear(),this.itemDataList.Clear();
+  for(var i,n=e.house,r=0,o=n.length;
+  o>r;
+  r++)i=n[r],i&&this.doAddHouseItem(i.item_id,i.count,!1);
+  this.bagDataList=e.bag,this.deskDataList=e.desk,this.bagLock=e.bag_completed||!1,this.bagConflict=e.bag_conflict||!1,this.deskConflict=e.desk_conflict||!1;
+  var a=e.gacha;
+  null!=a?null!=a.color_ball&&(this.gachaColorBall=a.color_ball):core.Log.warning("返回的协议 client_load_role 中的 gacha 属性不存在，请检查协议参数是否已修改"),core.ModelManage.getInstance().getModel(HandCraftModel).updateComposeRedot(),this.dispatchEvent(new core.Event(ItemEventType.updateAllItemInfo))
+}
+
+====================================================================================================
+### item_buy   (len=525)
+====================================================================================================
+prototype.item_buy=function(e,t){
+  if(null!=e.ticket&&(this.getModel(UserModel).addTicket(e.ticket),e.ticket>0&&this.dispatchEvent(new core.Event(ItemEventType.getTicket))),e.ads_id&&e.ads_id.length>0){
+    var i=this.getModel(AdsModel).getAdsPlace(e.ads_id);
+    i&&this.getModel(AdsModel).isValidAds(i)||(e.share_id=e.ads_id,e.ads_id="")
+  }e.ads_id&&e.ads_id.length>0?this.dispatchEvent(new core.Event(ItemEventType.ads_id,e.ads_id)):e.share_id&&e.share_id.length>0&&this.dispatchEvent(new core.Event(ItemEventType.share_id,e.share_id))
+}

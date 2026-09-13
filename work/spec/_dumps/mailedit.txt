@@ -1,0 +1,9 @@
+eURL=10]="ShareURL",e[e.NewPicture=11]="NewPicture",e[e.Explor=12]="Explor",e[e.SpecPicture=13]="SpecPicture",e[e.CardGift=14]="CardGift",e[e.Notice=15]="Notice"}
+(t=e.EvtId||(e.EvtId={
+}
+))}
+(Mail||(Mail={
+}
+));
+var Prize;
+!fun

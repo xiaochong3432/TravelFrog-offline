@@ -1,0 +1,20 @@
+();
+var n=core.PageManage.getInstance().getControl(ToolBagViewController,core.ViewLayerType.NoticeLayer);
+n&&n.view.updatePage()}
+}
+}
+,t.prototype.item_gift_open=function(e){
+if(e&&e.items){
+for(var t=[],i=0,n=e.items;
+i<n.length;
+i++){
+var r=n[i];
+t.push({
+item_id:r.item_id,count:r.count}
+)}
+var o=core.PageManage.getInstance().getControl(CapsuleViewControl,core.ViewLayerType.WindowLayer);
+if(o)return void o.view.setGiftItems(t);
+core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.ViewLayerType.NoticeLayer,null,t)}
+}
+,t.prototype.item_load_select_gift=function(e){
+var t=this.selectGiftLis

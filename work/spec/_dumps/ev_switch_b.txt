@@ -1,0 +1,76 @@
+i=g.evt_value[4],n=g.evt_value.slice(5),r=[],s=[],l=0,h=n;
+l<h.length;
+l++){
+var u=h[l],d=Tabikaeru.DataManager.instance().ItemDB.get(u);
+d&&d.type==Tabikaeru.DataType.ItemType.Specialty?r.push(u):s.push({
+item_id:u,count:-1}
+)}
+var f=new o(e,t,function(){
+v.AddCloverTween(e);
+var t=function(){
+s.length>0?core.PageManage.getInstance().addViewControl(TravelDropController,core.ViewLayerType.NoticeLayer,null,{
+data:s,onClose:function(){
+p()}
+}
+):p()}
+;
+if(-1===i&&0===r.length)t();
+else{
+Music.play("SE_Popup");
+var n=new a(i,r,t);
+c.addChild(n)}
+}
+);
+c.addChild(f)}
+,H=new r;
+H.notify(c,n.Blue_Result,N,F);
+break;
+case TimerEvent.Type.Story:Music.play("SE_Popup");
+var W=_("好像有故事发生"),j=new r;
+j.notify(c,n.Yellow_Friend,W,p);
+break;
+case TimerEvent.Type.StoryGift:Music.play("SE_Popup");
+var q=_("{
+0}
+\n送来了礼物",g.evt_string[0]),z=new r;
+z.notify(c,n.Yellow_Friend,q,p);
+break;
+case TimerEvent.Type.StoryFeedback:Music.play("SE_Popup");
+var Y=_("{
+0}
+\n收到了你的赠礼",g.evt_string[0]),X=new r;
+X.notify(c,n.Yellow_Friend,Y,p);
+break;
+case TimerEvent.Type.Visitor:Music.play("SE_Popup");
+var K=_("{
+0}
+在庭院里小憩了一会",g.evt_string[0]),$=new r;
+$.notify(c,n.Yellow_Friend,K,p);
+break;
+case TimerEvent.Type.DriftBottle:Music.play("SE_Popup");
+var J=_("邮箱内好像有东西在闪闪发光",g.evt_string[0]),Z=new r;
+Z.notify(c,n.Green_Picture,J,p);
+break;
+case TimerEvent.Type.FurnitureFinish:Music.play("SE_Popup");
+var Q=Number(g.evt_id),et="",tt=Tabikaeru.DataManager.instance().FurnitureDB.get(Q),it=Tabikaeru.DataManager.instance().TumblerData.get(Q),nt=Tabikaeru.DataManager.instance().CompostData.get(Q),rt=Tabikaeru.DataManager.instance().pocketData.get(Q);
+if(tt){
+et=_("获得新家具");
+var ot=new r;
+core.SocketManage.getInstance().send("furniture_load_furniture"),ot.notify(c,n.Green_Picture,et,function(){
+core.PageManage.getInstance().addViewControl(FurnitureItemTipsController,core.ViewLayerType.NoticeLayer,core.RemoveViewType.Retain,{
+img:tt.icon,title:tt.name,area:tt.name,info:tt.info,closeCallback:p}
+)}
+)}
+else if(it){
+et=_("新物什完成了");
+var at=new r;
+at.notify(c,n.Green_Picture,et,function(){
+for(var e={
+id:Q,layers:[]}
+,t=1,i=g.evt_value.length;
+i>t;
+t+=g.evt_value[0])e.layers.push({
+layer:g.evt_value.slice(t,t+g.evt_value[0])}
+);
+var n=new TumblerLoader;
+n.load(e),n.scaleX=1.4,n.scaleY=1.4,core.PageManage.getInstance().addViewControl(Furnitur

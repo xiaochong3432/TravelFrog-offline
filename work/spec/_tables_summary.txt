@@ -1,0 +1,20 @@
+========== eab shopData list 64
+========== eab Shop list 22
+========== eab Prize list 23
+========== eab Item list 410
+========== eab Collection list 62
+========== eab Specialty list 64
+========== eab GiftData dict 3
+========== eab lotteryData dict 3
+========== eab Character dict 2
+
+shopData keys sample: [{"before_buy": [], "id": 0, "info": "香喷喷的原味华夫饼 涂上甜甜的奶油 嘴馋的时候就来一个吧", "is_hide_before": 0, "is_sold_out_hide": 0, "itemId": 0, "limit": 0, "name": "奶油华夫饼", "order": 0, "price": 10}, {"before_buy": [], "id": 1, "info": "奶香味十足的薄煎饼 卷上新鲜的草莓 想少吃点就选这个吧", "is_hide_before": 0, "is_sold_out_hide": 0, "itemId": 1, "limit": 0, "name": "草莓可丽饼", "order": 1, "price": 30}]
+shopData ids: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63]
+item types: Counter({0: 91, 14: 83, 3: 64, 1: 55, 13: 30, 15: 17, 12: 15, 2: 12, 5: 12, 11: 11, 10: 7, 8: 5, 16: 3, 9: 3, 7: 2})
+item keys union: ['id', 'img', 'info', 'name', 'own_num', 'price', 'spend', 'sub_type', 'type']
+shopData keys union: ['before_buy', 'id', 'info', 'is_hide_before', 'is_sold_out_hide', 'itemId', 'limit', 'name', 'order', 'price']
+Shop keys union: ['fixPos_Y', 'id', 'info', 'itemId']
+Collection keys union: ['id', 'img', 'info', 'info2', 'name', 'place', 'type']
+Collection types: Counter({1: 35, 3: 20, 2: 7})
+Specialty keys union: ['id', 'itemId', 'place']
+lotteryData keys: ['extra_desc', 'select_list', 'settle_desc']

@@ -1,0 +1,52 @@
+# ============================================================================
+#  文本统一按 LF 存：这些文件会被 PowerShell / Python / Node 交叉读写，
+#  CRLF 混入会在 diff 里制造噪音。
+#
+#  ⚠️ 与 .gitignore 一样，属性行不支持行尾注释，注释必须单独成行。
+# ============================================================================
+* text=auto eol=lf
+
+*.js      text eol=lf
+*.mjs     text eol=lf
+*.json    text eol=lf
+*.py      text eol=lf
+*.md      text eol=lf
+*.txt     text eol=lf
+*.cs      text eol=lf
+*.java    text eol=lf
+*.xml     text eol=lf
+*.html    text eol=lf
+*.css     text eol=lf
+
+# PowerShell 脚本保存为「UTF-8 with BOM」：
+# tools/test_launcher_port.ps1 的读取逻辑依赖 BOM，否则中文提示会乱码。
+*.ps1     text eol=crlf
+
+# Windows 启动脚本：cmd 需要 CRLF
+*.bat     text eol=crlf
+*.cmd     text eol=crlf
+
+# ------------------------------------------------------------------ 二进制
+*.png     binary
+*.jpg     binary
+*.jpeg    binary
+*.gif     binary
+*.mp3     binary
+*.mp4     binary
+*.zip     binary
+*.apk     binary
+*.so      binary
+*.dex     binary
+*.eab     binary
+*.jar     binary
+*.pk8     binary
+
+# ------------------------------------------------------------------ 语言统计
+docs/**                          linguist-documentation
+work/spec/**                     linguist-documentation
+work/notes/**                    linguist-documentation
+work/spec/_dumps/**              linguist-generated
+work/spec/data/**                linguist-generated
+work/run/engine/data/tables/**   linguist-generated
+work/run/web/__offline-engine.js linguist-generated
+work/run/web/js/main.min.js      linguist-vendored

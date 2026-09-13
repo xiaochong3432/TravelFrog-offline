@@ -1,0 +1,107 @@
+({
+using:1==this.data.replaceSelection[r.id],replacing:2==this.data.replaceSelection[r.id]||3==this.data.replaceSelection[r.id],data:r,icon:Tabikaeru.path.formatPathImage(r.icon)}
+)}
+}
+t.sort(function(e,t){
+return e.data.id-t.data.id}
+),this.list.dataProvider=new eui.ArrayCollection(t)}
+,t}
+(eui.ItemRenderer);
+__reflect(FurnitureBookListItem.prototype,"FurnitureBookListItem");
+var FurnitureCargoPage=function(e){
+function t(){
+var t=e.call(this,core.PathManage.getInstance().getSkinsPath("Furniture/FurnitureCargoPageSkin.exml"))||this;
+return t.replaceSelection={
+tumbler:t.getModel(FurnitureModel).tumblerData.replace_index-1,compost:t.getModel(FurnitureModel).compostData.replace_index-1,pocket:t.getModel(FurnitureModel).pocketData.replace_index-1}
+,t
+}
+return __extends(t,e),t.prototype.onHide=function(){
+e.prototype.onHide.call(this),this.data.replaceMode&&(this.getModel(FurnitureModel).replaceData.other=this.replaceSelection)}
+,t.prototype.childrenCreated=function(){
+e.prototype.childrenCreated.call(this),this.list.itemRenderer=FurnitureCargoListItem,this.data.replaceMode&&(this.replaceSelection=this.getModel(FurnitureModel).replaceData.other),this.update()}
+,t.prototype.onSelectGroupChange=function(){
+this.update()}
+,t.prototype.update=function(){
+var e={
+}
+,t=Tabikaeru.DataManager.instance().CompostData.all().length,i=this.getModel(FurnitureModel).compostData.compost_list,n=i.length,r=this.getModel(FurnitureModel).tumblerData.tumbler_list;
+r.length>0&&(e[2]={
+render:TumblerListItem,items:[],replaceKey:"tumbler",replaceSelection:this.replaceSelection,title:_("不倒翁"),onTap:this.onTumblerTap.bind(this)}
+),i.length&&(e[3]={
+render:CompostListItem,items:[],replaceKey:"compost",replaceSelection:this.replaceSelection,title:_("堆肥箱({
+0}
+/{
+1}
+)",n,t),onTap:this.onCompostTap.bind(this)}
+);
+var o=Tabikaeru.DataManager.instance().pocketData.all().length,a=this.getModel(FurnitureModel).pocketData.list;
+a.length&&(e[4]={
+render:PocketListItem,items:[],replaceKey:"pocket",replaceSelection:this.replaceSelection,title:_("挂兜({
+0}
+/{
+1}
+)",a.length,o),onTap:this.onPocketTap.bind(this)}
+);
+for(var s=this.getModel(FurnitureModel).tumblerData.show_index,c=this.getModel(FurnitureModel).tumblerData.replace_index,l=0,h=r.length;
+h>l;
+l++){
+var u=r[l];
+e[2].items.push({
+data:u,index:l,show_index:s-1,replace_index:c-1}
+)}
+s=this.getModel(FurnitureModel).compostData.show_index,c=this.getModel(FurnitureModel).compostData.replace_index;
+for(var l=0,h=i.length;
+h>l;
+l++){
+var p=Tabikaeru.path.formatPathImage(Tabikaeru.DataManager.instance().CompostData.get(i[l]).res);
+e[3].items.push({
+data:i[l],source:p,index:l,show_index:s-1,replace_index:c-1}
+)}
+s=this.getModel(FurnitureModel).pocketData.show_index,c=this.getModel(FurnitureModel).pocketData.replace_index;
+for(var l=0,h=a.length;
+h>l;
+l++){
+var p=Tabikaeru.path.formatPathImage(Tabikaeru.DataManager.instance().pocketData.get(a[l]).res);
+e[4].items.push({
+data:a[l],source:p,index:l,show_index:s-1,replace_index:c-1}
+)}
+var d=[];
+for(var l in e)d.push(e[l]);
+this.scrollList.stopAnimation(),this.scrollList.viewport.scrollV=0,this.list.dataProvider=new eui.ArrayCollection(d)}
+,t.prototype.onCompostTap=function(e){
+if(this.data.replaceMode){
+this.replaceSelection.compost=e.index,(e.replacing||e.using)&&(this.replaceSelection.compost=-1);
+for(var t=0,i=this.list.$children;
+t<i.length;
+t++){
+var n=i[t];
+n.dataChanged()}
+this.getModel(FurnitureModel).replaceData.other=this.replaceSelection}
+else{
+var r=Tabikaeru.DataManager.instance().CompostData.get(e.data);
+core.PageManage.getInstance().addViewControl(FurnitureItemTipsController,core.ViewLayerType.NoticeLayer,core.RemoveViewType.Retain,{
+img:Tabikaeru.path.formatPathImage(r.res),title:r.name,area:r.name,info:r.desc,shareCallback:function(){
+return Tabikaeru.path.formatPathImage(r.res)}
+}
+)}
+}
+,t.prototype.onPocketTap=function(e){
+if(this.data.replaceMode){
+this.replaceSelection.pocket=e.index,(e.replacing||e.using)&&(this.replaceSelection.pocket=-1);
+for(var t=0,i=this.list.$children;
+t<i.length;
+t++){
+var n=i[t];
+n.dataChanged()}
+this.getModel(FurnitureModel).replaceData.other=this.replaceSelection}
+else{
+var r=Tabikaeru.DataManager.instance().pocketData.get(e.data);
+core.PageManage.getInstance().addViewControl(FurnitureItemTipsController,core.ViewLayerType.NoticeLayer,core.RemoveViewType.Retain,{
+img:Tabikaeru.path.formatPathImage(r.res),title:r.name,area:r.name,info:r.desc,shareCallback:function(){
+return Tabikaeru.path.formatPathImage(r.res)}
+}
+)}
+}
+,t.prototype.onTumblerTap=function(e){
+if(this.data.replaceMode){
+this.replaceSelection.tumbler=e.index,
