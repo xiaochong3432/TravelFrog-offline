@@ -2,3 +2,8 @@ __codex_tmp_tests/
 tmp-codex-craft-test/
 tmp-codex-craft-test.js
 last-port.txt
+android-sdk/
+android-tools/
+android-apk/.gradle/
+android-apk/app/build/
+*.apk

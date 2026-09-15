@@ -1,0 +1,22 @@
+plugins {
+    id "com.android.application"
+}
+
+android {
+    namespace "com.travelfrog.offline"
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "com.travelfrog.offline"
+        minSdk 23
+        targetSdk 35
+        versionCode 1
+        versionName "1.0.0-offline"
+    }
+
+    sourceSets {
+        main {
+            assets.srcDirs = ["../../web"]
+        }
+    }
+}
