@@ -29,8 +29,19 @@ jp.co.hit_point.tabikaeru.apk
 /work/jp_apk/
 
 # ---------------------------------------------------------------- 客户端资源
-# 需要时由 tools/extract_game.py 生成；如要入库请自行删除下面这行
+# 由 tools/extract_game.py 生成；这些**永远**不进仓库（见 CONTRIBUTING.md）
 /work/run/web/resource/
+/web/
+/work/cdn/
+/work/run/v3web/
+
+# ---------------------------------------------------------------- 安卓构建
+/android-apk/.gradle/
+/android-apk/build/
+/android-apk/app/build/
+/android-apk/local.properties
+/android-sdk/
+/android-tools/
 
 # ---------------------------------------------------------------- 打包与验证产物
 /work/build/
@@ -48,17 +59,12 @@ jp.co.hit_point.tabikaeru.apk
 /work/dl/
 /work/__pycache__/
 
-# ---------------------------------------------------------------- Codex 临时测试产物
+# ---------------------------------------------------------------- 杂项
+# 本地临时测试产物（早期脚本用过这些目录名）
 __codex_tmp_tests/
 tmp-codex-craft-test/
 tmp-codex-craft-test.js
 last-port.txt
-android-sdk/
-android-tools/
-android-apk/.gradle/
-android-apk/app/build/
-
-# ---------------------------------------------------------------- 杂项
 __pycache__/
 *.pyc
 *.tmp

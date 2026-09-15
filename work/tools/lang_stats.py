@@ -18,6 +18,7 @@ import fnmatch
 import io
 import os
 import re
+import subprocess
 import sys
 
 # extension -> language (only what this repository actually contains, plus a few
@@ -105,33 +106,51 @@ def main():
     root = os.path.abspath(args.root)
 
     rules = parse_gitattributes(root)
+    # GitHub 只统计**默认分支里被跟踪的文件**，所以这里也用 git 的清单；
+    # 不在 git 仓库里时才退回遍历工作区（否则本地未跟踪的资源会被算进去）。
+    tracked = None
+    try:
+        out = subprocess.run(['git', '-C', root, 'ls-files', '-z'],
+                             capture_output=True, check=True).stdout.decode('utf-8', 'replace')
+        tracked = [p for p in out.split('\0') if p]
+    except Exception:
+        tracked = None
+
     per_lang = collections.Counter()
     counted = []
     excluded = collections.Counter()
-    for dp, dn, fn in os.walk(root):
-        dn[:] = [d for d in dn if d != '.git']
-        for f in fn:
-            p = os.path.join(dp, f)
-            rel = os.path.relpath(p, root).replace(os.sep, '/')
-            ext = os.path.splitext(f)[1].lower()
-            size = os.path.getsize(p)
-            a = attrs_for(rules, rel)
-            lang = LANG.get(ext)
-            if ext in BINARY_EXT or ext in UNKNOWN_EXT or not lang:
-                excluded['unknown/binary'] += size
-                continue
-            if a.get('linguist-vendored') or a.get('linguist-generated') \
-                    or a.get('linguist-documentation'):
-                excluded['attribute'] += size
-                continue
-            if a.get('linguist-detectable') is False:
-                excluded['not detectable'] += size
-                continue
-            if lang in PROSE:
-                excluded['prose (documentation)'] += size
-                continue
-            per_lang[lang] += size
-            counted.append((size, rel, lang))
+
+    def consider(rel, size):
+        ext = os.path.splitext(rel)[1].lower()
+        a = attrs_for(rules, rel)
+        lang = LANG.get(ext)
+        if ext in BINARY_EXT or ext in UNKNOWN_EXT or not lang:
+            excluded['unknown/binary'] += size
+            return
+        if a.get('linguist-vendored') or a.get('linguist-generated') \
+                or a.get('linguist-documentation'):
+            excluded['attribute'] += size
+            return
+        if a.get('linguist-detectable') is False:
+            excluded['not detectable'] += size
+            return
+        if lang in PROSE:
+            excluded['prose (documentation)'] += size
+            return
+        per_lang[lang] += size
+        counted.append((size, rel, lang))
+
+    if tracked is not None:
+        for rel in tracked:
+            p = os.path.join(root, rel)
+            if os.path.isfile(p):
+                consider(rel.replace(os.sep, '/'), os.path.getsize(p))
+    else:
+        for dp, dn, fn in os.walk(root):
+            dn[:] = [d for d in dn if d != '.git']
+            for f in fn:
+                p = os.path.join(dp, f)
+                consider(os.path.relpath(p, root).replace(os.sep, '/'), os.path.getsize(p))
 
     total = sum(per_lang.values()) or 1
     print('language bar this .gitattributes would produce (%s):' % root)

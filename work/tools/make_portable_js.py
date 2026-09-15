@@ -40,25 +40,23 @@ TARGETS = [
     ('work/tools/test_launcher_port.ps1', 2),
 ]
 
-#: extra scripts discovered on the fly (probe helpers, one-off debuggers)
-DISCOVER_DIRS = ['work', 'work/probe', 'work/tools']
+#: extra scripts discovered on the fly (probe helpers, one-off debuggers…)
 SKIP_DIRS = {'.git', '__pycache__', 'resource', 'node_modules', 'shots', 'build',
              'jdk', 'jre', 'bt', 'plat', 'adb', 'cdn', 'jp_apk', 'logs', 'raw',
              'extracted', 'full', 'base', 'merge-backup', 'spec', 'jsdiff',
-             'compare-eab', 'compare-res', 'from-their-apk', 'conv', 'portable-backup'}
+             'compare-eab', 'compare-res', 'from-their-apk', 'conv', 'portable-backup',
+             'v3web', 'v3check'}
 
 
 def discover():
-    """Every .js/.mjs under work/ (that is not in a skipped directory)."""
+    """Every .js/.mjs under work/ that is not inside a skipped directory."""
     found = []
-    for rel in DISCOVER_DIRS:
-        d = os.path.join(ROOT, rel.replace('/', os.sep))
-        if not os.path.isdir(d):
-            continue
-        for f in sorted(os.listdir(d)):
-            p = os.path.join(d, f)
-            if not os.path.isfile(p) or not f.endswith(('.js', '.mjs')):
+    for dp, dn, fn in os.walk(os.path.join(ROOT, 'work')):
+        dn[:] = [d for d in dn if d not in SKIP_DIRS]
+        for f in sorted(fn):
+            if not f.endswith(('.js', '.mjs')):
                 continue
+            p = os.path.join(dp, f)
             depth = len(os.path.relpath(p, ROOT).split(os.sep)) - 1
             found.append((os.path.relpath(p, ROOT).replace(os.sep, '/'), depth))
     return found
@@ -85,11 +83,16 @@ def backup(path):
 
 
 def preamble_js(text, depth, esm):
+    """只补该文件缺的那几行 —— 有些文件把 import 写在注释块之后，
+    盲目插入会造成 'Identifier path has already been declared'。"""
     if esm:
-        lines = ["import path from 'node:path';",
-                 "import { fileURLToPath } from 'node:url';",
-                 '']
-        up = ", '..'".join([''] * depth)[2:] if depth else ''
+        lines = []
+        if not re.search(r"from\s+'node:path'|require\('path'\)", text):
+            lines.append("import path from 'node:path';")
+        if 'fileURLToPath' not in text:
+            lines.append("import { fileURLToPath } from 'node:url';")
+        if lines:
+            lines.append('')
         expr = ("path.resolve(path.dirname(fileURLToPath(import.meta.url))"
                 + (', ' + ', '.join(["'..'"] * depth) if depth else '') + ')')
         lines.append('// 仓库根：按本文件自身位置推导，不写死绝对路径')

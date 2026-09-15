@@ -116,7 +116,11 @@ async function evaluate(client, expression) {
   const r = await client.send('Runtime.evaluate', {
     expression, returnByValue: true, awaitPromise: false,
   });
-  if (r.exceptionDetails) throw new Error('page exception: ' + JSON.stringify(r.exceptionDetails.text));
+  if (r.exceptionDetails) {
+    // Report the WHOLE detail: "Uncaught" alone sent me hunting for a bug in the page
+    // when the real cause was the page not being loaded at all.
+    throw new Error('page exception: ' + JSON.stringify(r.exceptionDetails));
+  }
   return r.result && r.result.value;
 }
 

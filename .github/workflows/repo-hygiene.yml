@@ -1,0 +1,42 @@
+name: repo-hygiene
+
+# 每条 push / PR 都跑一遍本仓库的硬规矩：
+#   ① 不含客户端原始美术/音频（resource/、work/cdn、根 web/）
+#   ② 不含成品包与构建产物
+#   ③ 不含任何本机绝对路径
+#   ④ 单文件 ≤5 MB，跟踪体积 ≤60 MB
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+jobs:
+  hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 仓库规矩（路径 / 成品包 / 本机路径 / 体积）
+        run: node work/tools/staged_check.js --all
+
+      - name: 机器路径全量扫描（含二进制与 UTF-16）
+        run: python work/tools/scan_machine_paths.py .
+
+      - name: 文档引用是否都存在
+        run: python work/tools/check_doc_links.py .
+
+      - name: 入库体积核算（打印，不阻断）
+        run: node work/tools/git_scope_report.js || true
+
+      - name: 语言统计预估（打印，不阻断）
+        run: python work/tools/lang_stats.py . || true

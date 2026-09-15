@@ -356,6 +356,7 @@
                 return null;
             }
             try { scheduleCalendarFix(cls); } catch (e) { }
+            try { scheduleCreditsFix(cls); } catch (e) { }
             try { scheduleAnnualFix(cls); } catch (e) { }
             try { installOfflinePay(); } catch (e) { }
             try { installOfflineChannel(); } catch (e) { }
@@ -787,13 +788,160 @@
         };
         P.openPrivacy = P.openAgreement;
 
-        /* the help menu does `.then()` on the result, so this must be a thenable */
+        /* ---- 帮助菜单里的「制作人员」-----------------------------------------------
+           The client's Help view (skin Menu/Help.exml) has a `btn_customer` whose tap goes
+           through BaseChannel.open_custom_service(). The original shipped the operator's
+           own contact panel (Menu/Customer.exml: 官方微博 / 官方Q群), which is meaningless
+           offline, and the button label itself lives inside the client's encrypted config
+           bundle -- so the label is rewritten AT RUNTIME (see relabelHelpButton) and the
+           content is this overlay. */
+        var CREDITS_TITLE = '制作人员';
+        var CREDITS_GROUP = '旅行青蛙离线版制作组';
+        var CREDITS_NAMES = ['Balticx', '兔子国国王', '西瓜给我咬一口', 'yxcatqwq'];
+
+        function showCredits() {
+            if (!document || !document.body) return false;
+            var old = document.getElementById('__credits');
+            if (old && old.parentNode) old.parentNode.removeChild(old);
+            var wrap = document.createElement('div');
+            wrap.id = '__credits';
+            wrap.style.cssText = [
+                'position:fixed', 'left:0', 'top:0', 'right:0', 'bottom:0',
+                'z-index:2147483000', 'background:rgba(20,18,14,.72)',
+                'display:flex', 'align-items:center', 'justify-content:center',
+                'font-family:"PingFang SC","Microsoft YaHei","Heiti SC",sans-serif',
+            ].join(';');
+            var card = document.createElement('div');
+            card.style.cssText = [
+                'min-width:250px', 'max-width:80vw', 'background:#f6f2e6',
+                'border:2px solid #b9ad8d', 'border-radius:12px',
+                'box-shadow:0 8px 26px rgba(0,0,0,.45)', 'padding:16px 20px 14px',
+                'color:#4a4433', 'text-align:center',
+            ].join(';');
+            var h = document.createElement('div');
+            h.textContent = CREDITS_TITLE;
+            h.style.cssText = 'font-size:17px;font-weight:700;letter-spacing:.12em;'
+                + 'padding-bottom:8px;margin-bottom:10px;border-bottom:1px solid #d8cfb4';
+            card.appendChild(h);
+            var g = document.createElement('div');
+            g.textContent = CREDITS_GROUP;
+            g.style.cssText = 'font-size:15px;font-weight:600;color:#5b7f43;margin-bottom:8px';
+            card.appendChild(g);
+            for (var i = 0; i < CREDITS_NAMES.length; i++) {
+                var n = document.createElement('div');
+                n.textContent = CREDITS_NAMES[i];
+                n.style.cssText = 'font-size:14px;line-height:1.9';
+                card.appendChild(n);
+            }
+            var btn = document.createElement('button');
+            btn.id = '__credits_close';
+            btn.textContent = '关闭';
+            btn.style.cssText = [
+                'margin-top:14px', 'min-width:88px', 'height:32px', 'border-radius:16px',
+                'border:1px solid #b9ad8d', 'background:#fffdf6', 'color:#4a4433',
+                'font:14px inherit', 'cursor:pointer',
+            ].join(';');
+            btn.onclick = function () { if (wrap.parentNode) wrap.parentNode.removeChild(wrap); };
+            card.appendChild(btn);
+            wrap.appendChild(card);
+            wrap.onclick = function (ev) { if (ev.target === wrap) btn.onclick(); };
+            document.body.appendChild(wrap);
+            push('[shell]', ['credits shown']);
+            return true;
+        }
+        window.__showCredits = showCredits;   /* exposed for probes */
+
+        /* The label ships inside the client's encrypted config bundle, so it has to be
+           overwritten on the live component. `btn_customer` is an eui.Button, so setting
+           `.label` updates its labelDisplay. */
+        function relabelHelpButton() {
+            var hits = 0;
+            function walk(node, depth) {
+                if (!node || depth > 14) return;
+                var b = null;
+                try { b = node.btn_customer; } catch (e) { b = null; }
+                if (b) {
+                    /* The shipped button is an eui.Image whose label is baked into
+                       button_02_png, so the visible name comes from that texture (see
+                       tools/patch_help_button.py). Only a REAL eui.Button can be relabelled
+                       at runtime -- check before writing, so this never pretends. */
+                    try {
+                        if (b.labelDisplay) {
+                            if (b.labelDisplay.text !== CREDITS_TITLE) {
+                                b.labelDisplay.text = CREDITS_TITLE;
+                            }
+                            if (b.label !== CREDITS_TITLE) {
+                                b.label = CREDITS_TITLE;
+                            }
+                            hits++;
+                        } else if (b.source === 'button_02_png') {
+                            hits++;      /* label is in the texture; nothing to do here */
+                        }
+                    } catch (e) { push('[credits-error]', [String(e && e.message)]); }
+                }
+                var kids = node.$children || null;
+                if (!kids) return;
+                for (var i = 0; i < kids.length; i++) walk(kids[i], depth + 1);
+            }
+            try { walk(egret.MainContext.instance.stage, 0); } catch (e) { /* stage not up */ }
+            return hits;
+        }
+        window.__relabelHelpButton = relabelHelpButton;
+
+        /* The Help panel is a SINGLETON added straight to the popup layer
+           (`Help.getInstance()` + getPopupLayer().addChild(...)), so it never goes through
+           addViewControl and the view-open poll above cannot see it. Hook the two places
+           where it actually appears. */
+        function hookCreditsTargets() {
+            var hooked = 0;
+            try {
+                var H = window.Help;
+                if (H && H.prototype && H.prototype.show && !H.prototype.__creditsHooked) {
+                    var oShow = H.prototype.show;
+                    H.prototype.show = function () {
+                        var r = oShow.apply(this, arguments);
+                        try { relabelHelpButton(); } catch (e) { }
+                        return r;
+                    };
+                    H.prototype.__creditsHooked = true;
+                    hooked++;
+                }
+            } catch (e) { push('[credits-error]', ['Help.show hook: ' + (e && e.message)]); }
+            try {
+                var layer = core.DisplayManage.getInstance().getPopupLayer();
+                if (layer && !layer.__creditsHooked) {
+                    var oAdd = layer.addChild;
+                    layer.addChild = function (child) {
+                        var r = oAdd.apply(this, arguments);
+                        try {
+                            if (child && child.btn_customer) scheduleCreditsFix(null);
+                        } catch (e) { }
+                        return r;
+                    };
+                    layer.__creditsHooked = true;
+                    hooked++;
+                }
+            } catch (e) { push('[credits-error]', ['popup hook: ' + (e && e.message)]); }
+            return hooked;
+        }
+        window.__hookCreditsTargets = hookCreditsTargets;
+
+        /* The Help view builds its skin asynchronously, so poll briefly after it opens. */
+        function scheduleCreditsFix(cls) {
+            var tries = 0;
+            var t = setInterval(function () {
+                tries++;
+                var hits = 0;
+                try { hits = relabelHelpButton(); } catch (e) { }
+                if (hits > 0 || tries > 30) clearInterval(t);
+            }, 200);
+        }
+
         P.open_custom_service = function () {
             try {
-                core.PageManage.getInstance().addViewControl(
-                    CustomerViewController, core.ViewLayerType.NoticeLayer);
+                showCredits();
             } catch (e) {
-                push('[kefu-error]', [String(e && e.stack || e)]);
+                push('[credits-error]', [String(e && e.stack || e)]);
             }
             return Promise.resolve();
         };
@@ -840,6 +988,9 @@
             }
             return oGetAnnInfo.apply(this, arguments);
         };
+
+        /* the Help panel can appear at any time later, so both hooks are installed now */
+        try { hookCreditsTargets(); } catch (e) { }
 
         P.__offlineChannelInstalled = true;
         push('[shell]', ['offline channel installed: 协议 / 联系客服 / 退出游戏 are wired up']);
@@ -1036,7 +1187,7 @@
             'color:' + INK,
         ].join(';');
 
-        var BUILD_STAMP = '2026-09-12 22:01';
+        var BUILD_STAMP = '2026-09-15 18:32';
 
         var title = document.createElement('div');
         title.textContent = '存档编辑';
@@ -1185,9 +1336,28 @@
             },
         ]);
 
-        /* Hand the browser a file. This used to live in the old button helper; the ball
-           replaced that function and took the helper with it, so 导出存档 threw
-           "saveOut is not defined" and the client turned that into 呱呱吃坏肚子了. */
+        /* ---- where an exported save actually goes -----------------------------------
+           The Android case is the one that matters: a Blob download is SILENTLY DROPPED
+           inside a WebView (this wrapper installs no DownloadListener), so the old code
+           printed "已导出 frog-save-….json" while writing nothing at all -- a success
+           message for a file that did not exist.
+
+           The wrapper's real channel is FrogNative.exportSave(name, json):
+             · Android 10+ (API 29): writes straight into 内部存储/Download and returns
+               that path -- no permission needed, and no dialog to hunt through;
+             · older Androids: opens the system 保存到 dialog and reports the chosen
+               location afterwards through window.__saveExported().
+           So the bridge comes first, and neither path is allowed to claim success that
+           we cannot see. */
+        window.__saveExported = function (where) {
+            note('存档已导出到：' + where + '\n（要用的时候，点「导入存档」把它选回来）');
+        };
+        window.__saveExportFailed = function (why) {
+            note('导出没有完成：' + (why || '已取消'));
+        };
+
+        /* PC / browser fallback. (This helper also used to go missing entirely, which is
+           what made 导出存档 throw "saveOut is not defined" -> 呱呱吃坏肚子了.) */
         function saveOut(text, filename) {
             try {
                 var blob = new Blob([String(text)], { type: 'application/json' });
@@ -1201,7 +1371,7 @@
                     document.body.removeChild(a);
                     URL.revokeObjectURL(url);
                 }, 1000);
-                note('已导出 ' + a.download);
+                note('已导出 ' + a.download + '\n（在你浏览器的下载目录里）');
             } catch (e) {
                 /* A WebView that blocks blob downloads still has the text: show it so the
                    player can copy it out rather than losing the save. */
@@ -1212,13 +1382,33 @@
         row(['导出存档', '导入存档'], [
             function () {
                 var stamp = new Date().toISOString().slice(0, 10);
+                var name = 'frog-save-' + stamp + '.json';
                 if (usingLocalEngine()) {
                     var data = window.localStorage.getItem('frog.offline.save') || '{}';
-                    saveOut(data, 'frog-save-' + stamp + '.json');
-                    note('已导出 frog-save-' + stamp + '.json');
+                    /* On the APK this is the only channel that writes anything, and it is
+                       the one that can tell us WHERE. */
+                    if (window.FrogNative && FrogNative.exportSave) {
+                        var where = '';
+                        try {
+                            where = String(FrogNative.exportSave(name, data) || '');
+                        } catch (e) {
+                            where = '';
+                        }
+                        if (where === 'PICKER') {
+                            note('已打开系统的「保存到」窗口：\n选好文件夹 → 保存。文件名 ' + name
+                                + '\n保存完成后这里会告诉你具体位置。');
+                        } else if (where) {
+                            note('存档已导出到：' + where
+                                + '\n（要用的时候，点「导入存档」把它选回来）');
+                        } else {
+                            note('导出没有完成：系统没有给出保存位置。');
+                        }
+                        return;
+                    }
+                    saveOut(data, name);
                 } else {
                     fetch('/__export').then(function (r) { return r.text(); })
-                        .then(function (t) { saveOut(t, 'frog-save-' + stamp + '.json'); })
+                        .then(function (t) { saveOut(t, name); })
                         .catch(function (e) { note('导出失败: ' + e); });
                 }
             },

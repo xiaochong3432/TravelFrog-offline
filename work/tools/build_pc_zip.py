@@ -45,8 +45,19 @@ LAUNCHERS = [
     ("play_frog.bat", "play_frog.bat"),
     ("play_frog.py", "play_frog.py"),
     ("play-pc.ps1", "play-pc.ps1"),
-    ("说明书.txt", "说明-先看这个.txt"),
 ]
+# The player manual has been renamed more than once (说明书.txt -> 说明书-V2.txt); accept any
+# of them so a rename cannot stop the packaging, and never ship a package without one.
+DOC_CANDIDATES = ["说明书.txt", "说明书-V2.txt", "说明-V2.txt", "说明.txt", "说明-先看这个.txt"]
+DOC_DEST = "说明-先看这个.txt"
+DOC_FALLBACK = """旅行青蛙·中国之旅 —— 离线单机版（PC）
+
+解压后双击「旅行青蛙.exe」开始游戏（不需要安装任何东西）。
+如果它被系统拦下，可以改用 play_frog.bat / play_frog.py / play-pc.ps1，效果相同。
+
+游戏文件在 web 子目录里，请保留整个文件夹一起解压。
+存档在浏览器里；进游戏后点画面左侧那颗圆球即可「导出存档 / 导入存档」搬家。
+"""
 
 
 def log(*a):
@@ -67,13 +78,25 @@ def main():
     os.makedirs(STAGE)
 
     # ---- launchers + docs (top level, next to web/)
+    docs = []
     for src_name, dst_name in LAUNCHERS:
         src = os.path.join(DIST, src_name)
         if not os.path.isfile(src):
-            log("!! missing launcher/doc:", src)
+            log("!! missing launcher:", src)
             return 1
         shutil.copy2(src, os.path.join(STAGE, dst_name))
+        docs.append((dst_name, src))
         log("  + %s" % dst_name)
+    manual = next((os.path.join(DIST, n) for n in DOC_CANDIDATES
+                   if os.path.isfile(os.path.join(DIST, n))), None)
+    if manual:
+        shutil.copy2(manual, os.path.join(STAGE, DOC_DEST))
+        log("  + %s  (from %s)" % (DOC_DEST, os.path.basename(manual)))
+    else:
+        with io.open(os.path.join(STAGE, DOC_DEST), "w", encoding="utf-8") as fh:
+            fh.write(DOC_FALLBACK)
+        log("  + %s  (fallback: no manual found in dist/)" % DOC_DEST)
+    docs.append((DOC_DEST, None))
 
     # ---- the game
     files = 0
@@ -96,7 +119,7 @@ def main():
                     z.write(full, "TravelFrog-PC/web/" + rel)
                 files += 1
                 raw += os.path.getsize(full)
-        for src_name, dst_name in LAUNCHERS:
+        for dst_name, _src in docs:
             p = os.path.join(STAGE, dst_name)
             z.write(p, "TravelFrog-PC/" + dst_name)
 

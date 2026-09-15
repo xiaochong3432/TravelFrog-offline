@@ -47,7 +47,10 @@ import _toolchain  # noqa: E402
 ROOT = str(PROJECT_ROOT)
 APP = os.path.join(ROOT, "work", "app")
 BUILD = os.path.join(ROOT, "work", "build", "wrapper")
-WEB = os.path.join(ROOT, "work", "run", "web")
+# Which web payload to package. Default is this project's own build; FROG_WEB_DIR lets a
+# handover payload (a payload extracted from someone else's APK) be packed with the same
+# wrapper, manifest and key -- see tools/extract_v3_payload.py.
+WEB = os.environ.get("FROG_WEB_DIR") or os.path.join(ROOT, "work", "run", "web")
 BASE_APK = os.path.join(ROOT, "base.apk")
 
 AAPT2 = _toolchain.build_tool("aapt2")

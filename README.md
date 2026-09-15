@@ -14,13 +14,19 @@
 docs/               开发者文档（先读这里）
 work/run/engine/    游戏服务端全部逻辑（引擎 + 协议 + 数据表）
 work/run/server/    路线 A：本地 WebSocket 服务端（仅调试用）
-work/run/web/       游戏网页运行时（客户端资源 + 离线补丁 + 内联引擎）
+work/run/web/       游戏网页运行时（页面代码 + 离线补丁 + 内联引擎；resource/ 本地生成）
 work/tools/         数据解密、打包、验收、单测等工具
 work/spec/          字段级逆向规格与解出的权威数据表
 work/notes/         专题发现记录
 work/pristine/      原版客户端 JS 的独立副本（补丁与比对用）
-dist/               发行说明、启动器、签名证书（APK 与压缩包走 Releases）
+android-apk/        接手团队贡献的 Gradle 出包工程（自带 SDK 的构建路径，见其 README）
+dist/               玩家说明书、启动器脚本、签名证书（**不含** APK / 压缩包）
 ```
+
+> **仓库里有什么、没有什么**：本仓库只放**代码 + 数据表 + 规格 + 文档**。
+> **不含**客户端原始美术/音频（`resource/`，约 260 MB）、**不含**成品包（APK / 压缩包），
+> **也不使用 GitHub Releases 分发**。资源请从你自己合法持有的游戏安装包提取（见下节），
+> 成品请从项目自身的发布渠道获取或自行构建。规矩与自查命令见 `CONTRIBUTING.md`。
 
 ## 两条运行路线
 
@@ -54,7 +60,7 @@ python work/tools/apk_identity.py              # 期望 RESULT: OK
 
 ## 关于游戏资源
 
-本仓库默认**不包含客户端的原始美术/音频资源**（`work/run/web/resource/`，约 260 MB）。
+本仓库**不包含**客户端的原始美术/音频资源（`resource/`，约 260 MB），
 这些资源属于原权利人，请从你合法持有的游戏安装包中自行提取：
 
 ```bash
@@ -63,9 +69,16 @@ python work/tools/patch_game.py       # 应用离线补丁（幂等，从原始 
 python work/tools/bundle_engine.py    # 重建内联引擎
 ```
 
-需要一份自带资源的完整副本时，可用
-`python work/tools/stage_repo.py --with-assets` 重新生成入库目录。
-详见 `docs/数据与逆向说明.md`。
+跑完这三步，`work/run/web/` 就是一份可运行的完整运行时（静态服务器打开即可）。
+详见 `docs/数据与逆向说明.md`。需要自带资源的完整副本时可用
+`python work/tools/stage_repo.py --with-assets` 生成到工作区之外，**不要提交进仓库**。
+
+## 成品包从哪里来
+
+仓库**不提供**成品包，也**不使用 GitHub Releases**。成品（安卓 APK / PC 解压即玩包）
+由项目自身的发布渠道提供；需要自己出包时按 `docs/构建与打包.md` 构建。
+两个 Android 包名（本仓库的 `com.frog.offline` 与早期接手版本的 `com.travelfrog.offline`）
+**存档互不相通**，换包前请先在游戏内悬浮球里「导出存档」。
 
 ## 可移植性
 
@@ -95,6 +108,7 @@ export FROG_BROWSER=/path/to/chrome        # 无头浏览器（默认自动查�
 | `docs/开发历史.md` | 按时间顺序的改动记录（问题 → 处理 → 验证） |
 | `docs/文件清单.md` | 仓库内每个目录/关键文件的用途，哪些是生成物 |
 | `docs/game-data-reference.md` | 游戏数据结构参考（表、字段、取值） |
+| `docs/GitHub连接问题.md` | 国内网络下推送失败的原因诊断与四种解法（SSH/443、hosts、代理、重试脚本） |
 | `docs/权利归属与使用限制.md` | 权利声明与使用限制 |
 
 ## 权利归属

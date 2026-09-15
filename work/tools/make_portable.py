@@ -27,6 +27,12 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 TOOLS = os.path.join(ROOT, 'work', 'tools')
 BACKUP = os.path.join(ROOT, 'work', 'portable-backup')
 
+#: 递归扫描 work/ 时要跳过的重目录（工具链、客户端资源、产物、归档）
+SKIP_DIRS = {'__pycache__', 'resource', 'node_modules', 'shots', 'build', 'jdk',
+             'jre', 'bt', 'plat', 'adb', 'cdn', 'jp_apk', 'logs', 'raw', 'extracted',
+             'full', 'base', 'merge-backup', 'portable-backup', 'v3web', 'v3check',
+             'jsdiff', 'compare-eab', 'compare-res', 'from-their-apk', 'conv'}
+
 # the literal we are replacing, in any escaping/spelling style
 ROOT_RX = re.compile(r'H:(?:\\\\|\\|/)+AI(?:\\\\|\\|/)+frog', re.I)
 
@@ -249,12 +255,19 @@ def main():
     for f in sorted(os.listdir(work_dir)):
         if f.endswith('.py') and args.only in f:
             targets.append((os.path.join(work_dir, f), 1))
-    # archived one-off helpers kept as evidence (work/spec/_dumps/)
-    dumps = os.path.join(ROOT, 'work', 'spec', '_dumps')
-    if os.path.isdir(dumps):
-        for f in sorted(os.listdir(dumps)):
-            if f.endswith('.py') and args.only in f:
-                targets.append((os.path.join(dumps, f), 3))
+    # 整个 work/ 递归（跳过重目录），深度按路径自动算 —— 以后新加的工具也漏不掉
+    seen = set(t[0] for t in targets)
+    for dp, dn, fn in os.walk(work_dir):
+        dn[:] = [d for d in dn if d not in SKIP_DIRS]
+        for f in sorted(fn):
+            if not f.endswith('.py') or args.only not in f:
+                continue
+            p = os.path.join(dp, f)
+            if p in seen:
+                continue
+            seen.add(p)
+            depth = len(os.path.relpath(p, ROOT).split(os.sep)) - 1
+            targets.append((p, depth))
 
     if args.fix_bom:
         n = 0

@@ -1,0 +1,15 @@
+#!/bin/sh
+# 提交前检查：不含客户端美术/音频、不含成品包、不含本机绝对路径、单文件 ≤5MB。
+# 启用方式（克隆后执行一次）：
+#     git config core.hooksPath .githooks
+#
+# 绕过（不建议）：git commit --no-verify
+ROOT=$(git rev-parse --show-toplevel)
+
+if command -v node >/dev/null 2>&1; then
+  exec node "$ROOT/work/tools/staged_check.js"
+fi
+
+# 没有 Node 时不阻塞提交，但要明确告诉提交者检查被跳过了
+echo "pre-commit: 未找到 node，跳过仓库规矩检查（请装 Node.js 18+ 后重跑 work/tools/staged_check.js）" >&2
+exit 0
