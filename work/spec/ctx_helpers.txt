@@ -1,0 +1,45 @@
+===== 'taskData'  hits=1 =====
+
+--- [407369] ---
+lectData"),this.DrawingCommon=i("drawingCommonData"),this.MuseumDayDescData=t("museumDayDesc"),this.MuseumDayCommonData=t("museumDayCommon"),this.MuseumDayData=t("museumDayData"),this.TumblerData=i("tumblerData"),this.TumblerPathData=i("tumblerPathData"),this.BenchData=i("benchData"),this.GuideTaskData=i("benchData"),this.FlowerData=t("flowerData"),this.CompostData=t("compostData"),this.TaskDB=t("taskData"),this.pocketData=t("pocketData"),this.pocketCommonData=t("pocketCommonData"),this.greetCardData=t("greetCard"),this.capsuleData=t("capsuleData"),this.partycakeData=t("PartyCakeData"),this.springCardData=t("springCard"),this.flowerpotData=t("flowerpotData"),this.encyData=t("encyclopedia"),this.lotteryData=t("lotteryData"),this.momentData=t("momentData"),this.calendarData=t("calendarData"),this.animPictureData=t("animpictureData")}
+return e.instance=function(){
+return this._instance||(this._instance=new e),this._instance}
+,e._instance=null,e}
+();
+e.DataManager=u,__reflect(u.prototype,"Tabikaeru.DataManager")}
+(Tabikaeru||(Tabikaeru={
+}
+));
+var Tabikaeru;
+!function(e){
+var t;
+!function(e){
+var t;
+!
+
+##########################################################################################
+### literal "calendarData"  hits=1
+##########################################################################################
+
+--- [407754] ---
+this.TaskDB=t("taskData"),this.pocketData=t("pocketData"),this.pocketCommonData=t("pocketCommonData"),this.greetCardData=t("greetCard"),this.capsuleData=t("capsuleData"),this.partycakeData=t("PartyCakeData"),this.springCardData=t("springCard"),this.flowerpotData=t("flowerpotData"),this.encyData=t("encyclopedia"),this.lotteryData=t("lotteryData"),this.momentData=t("momentData"),this.calendarData=t("calendarData"),this.animPictureData=t("animpictureData")}
+return e.instance=function(){
+return this._instance||(this._instance=new e),this._instance}
+,e._instance=null,e}
+();
+e.DataManager=u,__reflect(u.prototype,"Tabikaeru.DataManager")}
+(Tabikaeru||(Tabikaeru={
+}
+));
+var Tabikaeru;
+!function(e){
+var t;
+!function(e){
+var t;
+!function(e){
+e[e.DEFAULT=0]="DEFAULT",e[e.GOTRAVEL=1]="GOTRAVEL",e[e.COLLECT_NUM=2]="COLLECT_NUM",e[e.SPECIALTY_NUM=3]="SPECIALTY_NUM",e[e.NORMALFOODS_NUM=4]="NORMALFOODS_NUM",e[e.TRAVEL_TIMEMIN=5]="TRAVEL_TIMEMIN",e[e.TRAVEL_TIMEMAX=6]="TRAVEL_TIMEMAX",e[e.CLOVER_NUM=7]="CLOVER_NUM",e[e.ROLL_NUM=8]="ROLL_NUM",e[e.CONPEITO_COMBOMAX=9]="CONPEITO_COMBOMAX",e[e.MANJU_NUM=10]="MANJU_NUM"
+
+
+##########################################################################################
+### literal "encyData"  hits=0
+##########################################################################################

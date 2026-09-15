@@ -1,0 +1,172 @@
+===== 'visitorData'  hits=14 =====
+
+--- [218778] ---
+tProvince=function(){
+return this.cityArray[0]||""}
+,e.prototype.getCity=function(){
+return this.cityArray[1]||""}
+,e}
+();
+__reflect(VisitorData.prototype,"VisitorData");
+var VisitorModel=function(e){
+function t(){
+var t=e.call(this)||this;
+return t.acquireList=[],t}
+return __extends(t,e),t.prototype.destroy=function(){
+e.prototype.destroy.call(this)}
+,t.prototype.initModel=function(){
+this.addProtocolCallback("visit_load")}
+,t.prototype.clearData=function(){
+}
+,t.prototype.getVisitorData=function(){
+return this.visitorData}
+,t.prototype.getAcquireList=function(){
+return this.acquireList}
+,t.prototype.getVisitorInfoList=function(){
+for(var e,t=[],i=Tabikaeru.DataManager.instance().visitorDB.provinceList,n=0,r=Object.keys(i);
+n<r.length;
+n++){
+var o=r[n];
+e=i[o],-1==this.acquireList.indexOf(e.Province)?t.push(-1):t.push(e)}
+return t}
+,t.prototype.getVisitorInfo=function(e){
+return Tabikaeru.DataManager.instance().visitorDB.provinceList[e]}
+,t.prototype.getVisitorResInfo=function(e){
+return Tabikaeru.DataManager.insta
+
+--- [219356] ---
+prototype.getVisitorInfoList=function(){
+for(var e,t=[],i=Tabikaeru.DataManager.instance().visitorDB.provinceList,n=0,r=Object.keys(i);
+n<r.length;
+n++){
+var o=r[n];
+e=i[o],-1==this.acquireList.indexOf(e.Province)?t.push(-1):t.push(e)}
+return t}
+,t.prototype.getVisitorInfo=function(e){
+return Tabikaeru.DataManager.instance().visitorDB.provinceList[e]}
+,t.prototype.getVisitorResInfo=function(e){
+return Tabikaeru.DataManager.instance().visitorDB.actionList[e.toString()]}
+,t.prototype.open=function(){
+if(this.visitorData){
+if(core.SocketManage.getInstance().send("visit_open"),this.visitorData.first)this.acquireList.push(this.visitorData.getProvince()),this.dispatchEvent(new core.Event(VisitorEventType.updateAcquireList));
+else switch(this.visitorData.gift.item_id){
+case 1e5:this.getModel(UserModel).addClover(this.visitorData.gift.count);
+break;
+case 100001:this.getModel(UserModel).addTicket(this.visitorData.gift.count);
+break;
+default:this.getModel(ItemModel).addHouseItem(this.visitorData.gift.item_id,this.
+
+--- [219428] ---
+anager.instance().visitorDB.provinceList,n=0,r=Object.keys(i);
+n<r.length;
+n++){
+var o=r[n];
+e=i[o],-1==this.acquireList.indexOf(e.Province)?t.push(-1):t.push(e)}
+return t}
+,t.prototype.getVisitorInfo=function(e){
+return Tabikaeru.DataManager.instance().visitorDB.provinceList[e]}
+,t.prototype.getVisitorResInfo=function(e){
+return Tabikaeru.DataManager.instance().visitorDB.actionList[e.toString()]}
+,t.prototype.open=function(){
+if(this.visitorData){
+if(core.SocketManage.getInstance().send("visit_open"),this.visitorData.first)this.acquireList.push(this.visitorData.getProvince()),this.dispatchEvent(new core.Event(VisitorEventType.updateAcquireList));
+else switch(this.visitorData.gift.item_id){
+case 1e5:this.getModel(UserModel).addClover(this.visitorData.gift.count);
+break;
+case 100001:this.getModel(UserModel).addTicket(this.visitorData.gift.count);
+break;
+default:this.getModel(ItemModel).addHouseItem(this.visitorData.gift.item_id,this.visitorData.gift.count)}
+this.visitorData=null,this.dispatchEvent(new cor
+
+--- [219473] ---
+r=Object.keys(i);
+n<r.length;
+n++){
+var o=r[n];
+e=i[o],-1==this.acquireList.indexOf(e.Province)?t.push(-1):t.push(e)}
+return t}
+,t.prototype.getVisitorInfo=function(e){
+return Tabikaeru.DataManager.instance().visitorDB.provinceList[e]}
+,t.prototype.getVisitorResInfo=function(e){
+return Tabikaeru.DataManager.instance().visitorDB.actionList[e.toString()]}
+,t.prototype.open=function(){
+if(this.visitorData){
+if(core.SocketManage.getInstance().send("visit_open"),this.visitorData.first)this.acquireList.push(this.visitorData.getProvince()),this.dispatchEvent(new core.Event(VisitorEventType.updateAcquireList));
+else switch(this.visitorData.gift.item_id){
+case 1e5:this.getModel(UserModel).addClover(this.visitorData.gift.count);
+break;
+case 100001:this.getModel(UserModel).addTicket(this.visitorData.gift.count);
+break;
+default:this.getModel(ItemModel).addHouseItem(this.visitorData.gift.item_id,this.visitorData.gift.count)}
+this.visitorData=null,this.dispatchEvent(new core.Event(VisitorEventType.updateVisitor))}
+}
+,t.
+
+--- [219588] ---
+turn t}
+,t.prototype.getVisitorInfo=function(e){
+return Tabikaeru.DataManager.instance().visitorDB.provinceList[e]}
+,t.prototype.getVisitorResInfo=function(e){
+return Tabikaeru.DataManager.instance().visitorDB.actionList[e.toString()]}
+,t.prototype.open=function(){
+if(this.visitorData){
+if(core.SocketManage.getInstance().send("visit_open"),this.visitorData.first)this.acquireList.push(this.visitorData.getProvince()),this.dispatchEvent(new core.Event(VisitorEventType.updateAcquireList));
+else switch(this.visitorData.gift.item_id){
+case 1e5:this.getModel(UserModel).addClover(this.visitorData.gift.count);
+break;
+case 100001:this.getModel(UserModel).addTicket(this.visitorData.gift.count);
+break;
+default:this.getModel(ItemModel).addHouseItem(this.visitorData.gift.item_id,this.visitorData.gift.count)}
+this.visitorData=null,this.dispatchEvent(new core.Event(VisitorEventType.updateVisitor))}
+}
+,t.prototype.visit_load=function(e,t){
+e.visitor&&(this.visitorData=new VisitorData(e.visitor),this.visitorData.carpet<
+
+--- [219663] ---
+.instance().visitorDB.provinceList[e]}
+,t.prototype.getVisitorResInfo=function(e){
+return Tabikaeru.DataManager.instance().visitorDB.actionList[e.toString()]}
+,t.prototype.open=function(){
+if(this.visitorData){
+if(core.SocketManage.getInstance().send("visit_open"),this.visitorData.first)this.acquireList.push(this.visitorData.getProvince()),this.dispatchEvent(new core.Event(VisitorEventType.updateAcquireList));
+else switch(this.visitorData.gift.item_id){
+case 1e5:this.getModel(UserModel).addClover(this.visitorData.gift.count);
+break;
+case 100001:this.getModel(UserModel).addTicket(this.visitorData.gift.count);
+break;
+default:this.getModel(ItemModel).addHouseItem(this.visitorData.gift.item_id,this.visitorData.gift.count)}
+this.visitorData=null,this.dispatchEvent(new core.Event(VisitorEventType.updateVisitor))}
+}
+,t.prototype.visit_load=function(e,t){
+e.visitor&&(this.visitorData=new VisitorData(e.visitor),this.visitorData.carpet<=0&&(this.visitorData.carpet=core.MathExtend.Range(1,8),core.SocketManage.g
+
+--- [219745] ---
+eturn Tabikaeru.DataManager.instance().visitorDB.actionList[e.toString()]}
+,t.prototype.open=function(){
+if(this.visitorData){
+if(core.SocketManage.getInstance().send("visit_open"),this.visitorData.first)this.acquireList.push(this.visitorData.getProvince()),this.dispatchEvent(new core.Event(VisitorEventType.updateAcquireList));
+else switch(this.visitorData.gift.item_id){
+case 1e5:this.getModel(UserModel).addClover(this.visitorData.gift.count);
+break;
+case 100001:this.getModel(UserModel).addTicket(this.visitorData.gift.count);
+break;
+default:this.getModel(ItemModel).addHouseItem(this.visitorData.gift.item_id,this.visitorData.gift.count)}
+this.visitorData=null,this.dispatchEvent(new core.Event(VisitorEventType.updateVisitor))}
+}
+,t.prototype.visit_load=function(e,t){
+e.visitor&&(this.visitorData=new VisitorData(e.visitor),this.visitorData.carpet<=0&&(this.visitorData.carpet=core.MathExtend.Range(1,8),core.SocketManage.getInstance().send("visit_set_carpet",null,this.visitorData.carpet)),this.dispatchE
+
+--- [219826] ---
+otype.open=function(){
+if(this.visitorData){
+if(core.SocketManage.getInstance().send("visit_open"),this.visitorData.first)this.acquireList.push(this.visitorData.getProvince()),this.dispatchEvent(new core.Event(VisitorEventType.updateAcquireList));
+else switch(this.visitorData.gift.item_id){
+case 1e5:this.getModel(UserModel).addClover(this.visitorData.gift.count);
+break;
+case 100001:this.getModel(UserModel).addTicket(this.visitorData.gift.count);
+break;
+default:this.getModel(ItemModel).addHouseItem(this.visitorData.gift.item_id,this.visitorData.gift.count)}
+this.visitorData=null,this.dispatchEvent(new core.Event(VisitorEventType.updateVisitor))}
+}
+,t.prototype.visit_load=function(e,t){
+e.visitor&&(this.visitorData=new VisitorData(e.visitor),this.visitorData.carpet<=0&&(this.visitorData.carpet=core.MathExtend.Range(1,8),core.SocketManage.getInstance().send("visit_set_carpet",null,this.visitorData.carpet)),this.dispatchEvent(new core.Event(VisitorEventType.updateVisitor))),e.acquire&&(this.acquireLis

@@ -1,0 +1,8 @@
+Item||(Item={
+}
+));
+var Mail;
+!function(e){
+var t;
+!function(e){
+e[e.NONE=0]="NONE",e[e.System=1]="System",e[e.Gift=3]="Gift",e[e.Leaflet=5]="Leaflet",e[e.StoryGift=6]="StoryGift",e[e.Taobao=7]="Taobao",e[e.Drift=8]="Drift",e[e.Captcha=9]="Captcha",e[e.ShareURL=10]="ShareURL",e[e.NewPicture=11]="NewPicture",e[e.Explor=12]="Explor",e[e.SpecPicture=13]="SpecPicture",e[e.CardGift=14]="CardGift",e[e.Notice=15]="Notice

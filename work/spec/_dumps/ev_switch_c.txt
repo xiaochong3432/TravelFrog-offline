@@ -1,0 +1,69 @@
+eItemTipsController,core.ViewLayerType.NoticeLayer,core.RemoveViewType.Retain,{
+img:n,title:it.name,area:it.name,info:it.info,closeCallback:p}
+)}
+)}
+else if(nt){
+et=_("新物什完成了");
+var st=new r;
+st.notify(c,n.Green_Picture,et,function(){
+core.PageManage.getInstance().addViewControl(FurnitureItemTipsController,core.ViewLayerType.NoticeLayer,core.RemoveViewType.Retain,{
+img:nt.res,title:nt.name,area:nt.name,info:nt.desc,closeCallback:p}
+)}
+)}
+else if(rt){
+et=_("新物什完成了");
+var ct=new r;
+ct.notify(c,n.Green_Picture,et,function(){
+core.PageManage.getInstance().addViewControl(FurnitureItemTipsController,core.ViewLayerType.NoticeLayer,core.RemoveViewType.Retain,{
+img:rt.res,title:rt.name,area:rt.name,info:rt.desc,closeCallback:p}
+)}
+)}
+else p();
+break;
+case TimerEvent.Type.FurniturePut:Music.play("SE_Popup");
+var lt=_("小屋好像发生了一点变化"),ht=new r;
+ht.notify(c,n.Green_Picture,lt,p);
+break;
+case TimerEvent.Type.FurnitureVersion:Music.play("SE_Popup");
+var ut=_("庭院好像发生了一点变化"),pt=new r;
+pt.notify(c,n.Green_Picture,ut,p);
+break;
+case TimerEvent.Type.AunnalReview:Music.play("SE_Popup");
+var dt=_("快来查看你的年终总结"),gt=new r;
+gt.notify(c,n.Yellow_Friend,dt,p);
+break;
+case TimerEvent.Type.Picture:case TimerEvent.Type.Gift:case TimerEvent.Type.Guest:p();
+break;
+case TimerEvent.Type.Recharge:var ft=g.evt_id,vt=Tabikaeru.DataManager.instance().rechargeDB.get(ft);
+if(vt){
+core.String.setCookie("recharge_field_seed_"+vt.id,Math.random()),core.ModelManage.getInstance().getModel(RechargeModel).recharge_reset(ft);
+var _t=[];
+g.evt_value[0]>0&&_t.push({
+item_id:Tabikaeru.ItemID.CLOVER,count:g.evt_value[0]}
+);
+for(var I=1,yt=g.evt_value.length-1;
+yt>I;
+I+=2)_t.push({
+item_id:g.evt_value[I],count:g.evt_value[I+1]}
+);
+if(u){
+var mt=core.ModelManage.getInstance().getModel(RechargeModel);
+mt.onBuy(ft);
+for(var I=1,yt=g.evt_value.length-1;
+yt>I;
+I+=2)core.ModelManage.getInstance().getModel(ItemModel).addHouseItem(g.evt_value[I],g.evt_value[I+1],!0);
+core.ModelManage.getInstance().getModel(UserModel).addClover(g.evt_value[0])}
+core.PageManage.getInstance().addViewControl(RechargeRewardViewController,core.ViewLayerType.NoticeLayer,null,{
+items:_t,onClose:function(){
+p()}
+}
+)}
+else p();
+break;
+case TimerEvent.Type.Decoration:var k=_("获得礼物"),P=new r;
+P.notify(c,n.Yellow_Friend,k,function(){
+var e=new DecorationGetView(core.ModelManage.getInstance().getModel(RoleModel).getDecorationInfo(g.evt_id),p);
+c.addChild(e)}
+);
+break;
+case TimerEvent.Type.AntiAddition:core.Log.print(

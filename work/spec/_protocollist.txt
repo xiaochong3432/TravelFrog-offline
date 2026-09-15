@@ -1,0 +1,10 @@
+y?this._factory:this._factory=new e}
+,enumerable:!0,configurable:!0}
+),e._factory=null,e}
+();
+__reflect(SpineFactory.prototype,"SpineFactory");
+var ProtocolList=function(){
+function e(){
+}
+return e.protocolList={
+client_hello:[[],!0],client_load_role:[[],!0],client_set_name:[["name"],!0],client_set_client_envinfo:[["info"],!1],client_set_achieve:[["id"],!1],client_gm:[["cmd"],!0],client_set_lang:[["lang"],!1],client_set_client:[["client"],!1],client_load_events:[[],!0],client_confirm_event:[["id"],!1],client_switch_push:[["turnon"],!0],client_switch_rank:[["turnon"],!0],client_rename_cost:[[],!0],client_user_action:[["name"],!1],client_set_icon:[["id"],!1],client_set_pic_show:[["id"],!1],client_taobao_import:[["taobao_uid"],!0],client_draw_taobao:[["draw"],!0],client_load_all_info:[[],!0],client_load_decorate:[[],!0],client_change_decorate:[["id"],!0],client_set_ads:[["support"],!1],client_set_channel:[["channel"],!1],client_set_channel_id:[["id"],!1],client_set_wx_open_id:[["open_id"],!0],client_add_push_id:[["push_id"],!1],client_get_push_reward:[[],!0],client_get_my_wx_reward:[[],!0],client_share_publicity:[["id"],!0],clover_load_clovers:[[],!0],clover_harvest:[["clover_id"],!0],clover_harvest_resend:[["list"],!0],clover_update:[[],!0],clover_notice_get:[[],!0],hall_hello:[[],!0],hall_gen_token:[["account"],!0],hall_login:[["token"],!0],hall_enter_game:[[],!0],hall_leave_game:[[],!1],hall_report_remote_addr:[["remote_addr","local_addr"],!1],item_load_items:[[],!0],item_putin_bag:[["pos","item_id"],!0],item_takeout_bag:[["pos"],!0],item_putin_desk:[["pos","item_id"],!0],item_takeout_desk:[["pos"],!0],item_load_handbook:[[],!0],item_buy:[["shop_id"],!0],item_gacha:[["is_reward"],!0],item_redeem_prize:[["prize_id"],!1],item_set_bag_completed:[["completed"],!1],item_use_gift_code:[["gift_code"],!0],item_load_shop_info:[[],!0],item_update:[[],!0],item_update_ticket:[[],!0],item_

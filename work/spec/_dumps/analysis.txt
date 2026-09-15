@@ -1,0 +1,9 @@
+this.DispatchEventToControl(t);
+break;
+case e.SocketEventType.ReceiveData:this.AnalysisProtocol(t.getParam(0),t.getParam(1))}
+}
+,t.prototype.AnalysisProtocol=function(t,i){
+var n;
+if(t==egret.WebSocket.TYPE_STRING){
+n=i,e.Log.print("接收协议："+n);
+var r=JSON.par

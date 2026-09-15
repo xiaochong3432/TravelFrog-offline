@@ -1,0 +1,12 @@
+var GiftBagView=function(e){
+  function t(){
+    return e.call(this,core.PathManage.getInstance().getSkinsPath("Common/GiftBagViewSkin.exml"),GiftBagViewControl,core.ViewLayerType.NoticeLayer)||this
+  }return __extends(t,e),t.prototype.onComplete=function(){
+    this.list.itemRenderer=BagItemRender,this.list.requireSelection=!1,this.list.touchEnabled=!1,this.list.touchChildren=!1,this.cover.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onCover,this)
+  },t.prototype.dataChanged=function(){
+    e.prototype.dataChanged.call(this),this.list.dataProvider=new eui.ArrayCollection(this.data.items)
+  },t.prototype.onCover=function(){
+    this.data.onClose&&this.data.onClose(),this.close()
+  },t
+}(WindowView);
+__reflect(GiftBagView.prototype

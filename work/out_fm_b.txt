@@ -1,0 +1,111 @@
+age.getInstance().popup(new ModalAlert(_("嘟嘟已经收拾回家了")))),i.dispatchEvent(new core.Event(FurnitureEventType.UPDATE))}
+,this,1e3*(this.serverData.shop.leave_time-n)+1e3)),this.dispatchEvent(new core.Event(FurnitureEventType.UPDATE)),this.updateRedot(),this.loadFurnitureRes()}
+}
+,t.prototype.loadFurnitureRes=function(){
+if(0!=this.flagloadFurnitureRes){
+this.flagloadFurnitureRes=!1;
+for(var e=this.getModel(t).getHomeFurnitures(),i=[],n=0,r=e;
+n<r.length;
+n++){
+var o=r[n],a=Tabikaeru.DataManager.instance().FurnitureDB.get(o.id);
+if(a)for(var s=Furniture.getFurnitureSlot(a.type),c=0;
+c<s.length;
+c++)if(a.res[c]){
+var l=a.res[c]+"_png";
+RES.hasRes(l)&&i.push(l)}
+}
+i.length>0&&(RES.createGroup("furniture_home",i),RES.loadGroup("furniture_home",1).then(function(e){
+console.log(e)}
+)["catch"](function(){
+GuideHelpViewWithConfrim.getInstance().show(_("资源加载异常，请重新登录"),function(){
+NetworkControl.getInstance().reloading(Reload.Force)}
+)}
+))}
+}
+,t.prototype.furniture_buy_shop=function(e,t){
+}
+,t.prototype.furniture_putin_bench=function(e,t){
+this.dispatchEvent(new core.Event(FurnitureEventType.UPDATE_BENCH))}
+,t.prototype.furniture_takeout_bench=function(e,t){
+this.dispatchEvent(new core.Event(FurnitureEventType.UPDATE_BENCH))}
+,t.prototype.getOwnedFurnitures=function(){
+return this.serverData?this.serverData.has_fur:void 0}
+,t.prototype.getHomeFurnitures=function(){
+return this.serverData?this.serverData.put_fur:void 0}
+,t.prototype.getHomeFurniture=function(e){
+if(this.serverData)for(var t=0,i=this.serverData.put_fur;
+t<i.length;
+t++){
+var n=i[t];
+if(n.type==e)return n.id}
+}
+,t.prototype.hasHomeFurniture=function(e){
+if(this.serverData)for(var t=0,i=this.serverData.put_fur;
+t<i.length;
+t++){
+var n=i[t];
+if(n.id==e)return!0}
+}
+,t.prototype.getBenchTools=function(){
+return this.serverData.bench?this.serverData.bench.slice(0,5):[-1,-1,-1,-1,-1]}
+,t.prototype.setBenchTool=function(e,t){
+var i=this,n=new core.Action2(function(n,r){
+n&&0==n.code&&(i.serverData.bench[e]=t,i.updateRedot(),i.dispatchEvent(new core.Event(FurnitureEventType.UPDATE_BENCH)))}
+);
+-1==t?core.SocketManage.getInstance().send("furniture_takeout_bench",n,e+1):-1!=this.serverData.bench[e]?core.SocketManage.getInstance().send("furniture_takeout_bench",new core.Action2(function(i,r){
+core.SocketManage.getInstance().send("furniture_putin_bench",n,e+1,t)}
+),e+1):core.SocketManage.getInstance().send("furniture_putin_bench",n,e+1,t)}
+,t.prototype.getBenchItems=function(){
+return this.serverData.bench?this.serverData.bench.slice(5):[-1,-1,-1,-1,-1]}
+,t.prototype.setBenchItem=function(e,t){
+var i=this,n=new core.Action2(function(n,r){
+if(n&&0==n.code){
+var o=i.serverData.bench[e+5];
+i.serverData.bench[e+5]=t,i.getModel(ItemModel).addHouseItem(o,1),-1!=t&&i.getModel(ItemModel).consumeHouseItem(t,1),i.updateRedot(),i.dispatchEvent(new core.Event(FurnitureEventType.UPDATE_BENCH))}
+}
+);
+-1==t?core.SocketManage.getInstance().send("furniture_takeout_bench",n,e+1+5):-1!=this.serverData.bench[e+5]?core.SocketManage.getInstance().send("furniture_takeout_bench",new core.Action2(function(i,r){
+core.SocketManage.getInstance().send("furniture_putin_bench",n,e+5+1,t)}
+),e+5+1):core.SocketManage.getInstance().send("furniture_putin_bench",n,e+5+1,t)}
+,t.prototype.resetReplaceData=function(){
+this.replaceData={
+fur:{
+}
+,other:{
+tumbler:-1,compost:-1,pocket:-1}
+}
+}
+,t.prototype.replaceFurniture=function(e,i){
+var n=this,r=Object.keys(e.fur).filter(function(t){
+return 2==e.fur[t]}
+).map(function(e){
+return Number(e)}
+),o=e.other,a=r.length;
+o.tumbler>=0&&a++,o.compost>=0&&a++;
+for(var s=egret.setTimeout(function(){
+s=null,i.apply()}
+,this,2e3),c=Tabikaeru.DataManager.instance().FurnitureDB,l=function(e){
+core.SocketManage.getInstance().send("furniture_replace_fur",new core.Action2(function(t){
+var r=c.get(e).type;
+if(-1!=t.code){
+if(1==t.code){
+var o=n.serverData.replace_fur.indexOf(r);
+-1!=o&&n.serverData.replace_fur.splice(o,1)}
+else 0==t.code&&n.serverData.replace_fur.push(r);
+for(var l=n.serverData.put_fur.length-1;
+l>=0;
+l--)n.serverData.put_fur[l].type==r&&n.serverData.put_fur.splice(l,1);
+n.serverData.put_fur.push({
+type:r,id:e}
+)}
+a--,0>=a&&s&&(egret.clearTimeout(s),i.apply()),n.dispatchEvent(new core.Event(FurnitureEventType.UPDATE))}
+),e)}
+,h=0,u=r;
+h<u.length;
+h++){
+var p=u[h];
+l(p)}
+o.tumbler>=0&&core.SocketManage.getInstance().send("furniture_replace_tumbler",new core.Action2(function(e){
+-1!=e.code&&(1==e.code?n.tumblerData.replace_index=0:0==e.code&&(n.tumblerData.replace_index=o.tumbler+1),n.tumblerData.show_index=o.tumbler+1),a--,0>=a&&s&&(egret.clearTimeout(s),i.apply()),n.dispatchEvent(new core.Event(FurnitureEventType.UPDATE_TUMBER))}
+),o.tumbler+1),o.compost>=0&&core.SocketManage.getInstance().send("furniture_replace_compost",new core.Action2(function(e){
+-1!=e.code&&(1==e.code?n.compostData.replace_index=0:0==e.code&&(n.compostData

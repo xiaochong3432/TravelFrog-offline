@@ -1,0 +1,32 @@
+== calendar_get_st_reward
+   '"calendar_get_st_reward",new core.Action2(function(n){if(0==n.code){var r=[];r.push({item_id:i.data.st_days[e],count:1}),core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.Vie'
+== calendar_get_luck_reward
+   '"calendar_get_luck_reward",new core.Action2(function(n){if(0==n.code){var r=[];r.push({item_id:i.data.lucky_days[e],count:1}),core.PageManage.getInstance().addViewControl(GiftPackageViewController,cor'
+== calendar_get_beginer_reward
+   '"calendar_get_beginer_reward",new core.Action2(function(i){if(i.day>0){t.data.new_flag[i.day-1]=1;var n=Tabikaeru.DataManager.instance().calendarData.get("beginner"),r=[];r.push({item_id:n[i.day].item'
+== calendar_get_code_reward
+   '"calendar_get_code_reward",new core.Action2(function(e){if(e.day>0){i.data.new_flag[e.day-1]=1;var n=Tabikaeru.DataManager.instance().calendarData.get("beginner"),r=[];r.push({item_id:n[e.day].item_id'
+== encyclopedia_set_show_sub
+   '"encyclopedia_set_show_sub",null,e)},t.prototype.isOpen=function(){return this.data.unlock_list.length>0},t.prototype.isDescUnlock=function(e,t){var i=this.data.unlock_desc[e];if(!i)return!1;for(var n'
+== guest_finish
+   '"guest_finish"))}switch(t.Gameplay){case"邻居":this.checkFriend(t);break;case"串门":this.updateVisitor(t)}}},t.prototype.updateVisitorGift=function(){this.i_gift.visible=!1,this.i_gift.removeEventListener'
+== story_read_new_story
+   '"story_read_new_story"))},t.prototype.getNewStoryID=function(){return this.newStoryID},t.prototype.getStoryData=function(e){for(var t=0;t<this.storyList.length;t++)if(this.storyList[t].id==e)return th'
+== guest_lock_bag
+   '"guest_lock_bag",new core.Action1(function(i){i&&0==i.code&&(t.data.state=DrawingState.lock,e&&e.apply())})):e&&e.apply()},t.prototype.unlockBag=function(e){var t=this;this.data.state==DrawingState.lo'
+   '"guest_lock_bag",new core.Action1(function(i){i&&0==i.code&&(t.data.state=DrawingState.accept,e&&e.apply())})):e&&e.apply()},t.prototype.isOpen=function(){return this.getModel(ItemModel).getHouseItemC'
+== guest_accept_invit
+   '"guest_accept_invit","guest_putin_bag","guest_takeout_bag"),this.data={state:DrawingState.accept,guest:-1,bag:[],pages:[],colls:[],show_coll:0,pen_motion:"write"}},t.prototype.request_accept_invit=fun'
+   '"guest_accept_invit",new core.Action2(function(t){0==t.code&&(e.data.state=DrawingState.accept,e.dispatchEvent(new core.Event(DrawingEventType.UPDATE)))\n}),!0)},t.prototype.request_reject_invit=functi'
+   '"guest_accept_invit",new core.Action2(function(t){0==t.code&&(e.data.state=DrawingState.wait,e.dispatchEvent(new core.Event(DrawingEventType.UPDATE)))}),!1)},t.prototype.guest_load_drawing=function(e)'
+== story_feedback_gift
+   '"story_feedback_gift",null,t.mailInfo.id),t.acceptCallback&&t.acceptCallback.apply(t,t.mailInfo)},function(){t.acceptCallback&&t.acceptCallback.apply(t,t.mailInfo)});core.DisplayManage.getInstance().g'
+== task_get_reward
+   '"task_get_reward",new core.Action1(function(i){if(0==i.code)for(var n=0,r=t.data;n<r.length;n++){var o=r[n];if(o.id==e){o.is_reward=!0;var a=Tabikaeru.DataManager.instance().TaskDB.get("task_list")[e]'
+== item_gacha
+   '"item_gacha","item_buy","item_load_shop_info","item_update","item_update_ticket","clover_update","clover_notice_get","item_gift_open","item_load_select_gift")},t.prototype.clearData=function(){},t.pro'
+   '"item_gacha",null,!1),[2]):(Music.play("SE_Popup"),e=new ModalAlert(_("抽奖券不足")),this.addChild(e),[2])})})},t.prototype.reward_raffle=function(){this.isReward=!0,this.drawBtn.visible=!1,this.ticketGrou'
+   '"item_gacha",null,!0)):this.isRewardWatting=!0},t.prototype.nextReward=function(){this.isRewardWatting?(this.isRewardWatting=!1,core.SocketManage.getInstance().send("item_gacha",null,!0)):this.isRewar'
+   '"item_gacha",null,!0)):this.isReward},t.prototype.updateGachaColorBall=function(e){return void 0===e&&(e=!1),__awaiter(this,void 0,void 0,function(){var t,i,n,r,o,a,o,s,c=this;return __generator(this,'
+== story_send_gift
+   '"story_send_gift",null,e,t),!0):!1;return!1},t.prototype.story_load=function(e,t){this.storyList=Array.isArray(e.stories)?e.stories:[],this.newStoryID=e.new_story_id||0},t}(core.Model);__reflect(Story'

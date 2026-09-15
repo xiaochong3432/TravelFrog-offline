@@ -1,0 +1,15 @@
+otocolCallback=e}
+,t.prototype.addProtocolCallback=function(){
+for(var e=[],t=0;
+t<arguments.length;
+t++)e[t]=arguments[t];
+for(var i=0;
+i<e.length;
+i++)this.addEventListener(e[i],this.protocolCallback,this)}
+,t.prototype.protocolCallback=function(t){
+if(this.activateProtocolCallback){
+var i=this[t.getEventType()];
+if(null!=i){
+e.String.getFunctionArgs(i);
+i.apply(this,t.getParams())}
+else e.Log.error("协议回调失败，数

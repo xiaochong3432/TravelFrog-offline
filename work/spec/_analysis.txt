@@ -1,0 +1,47 @@
+_STRING){
+n=i,e.Log.print("接收协议："+n);
+var r=JSON.parse(n);
+if(e.String.isNullOrEmpty(r.cmd))if(null!=r.session){
+var o=this.activateProtocol[r.session];
+if(o){
+delete this.activateProtocol[r.session];
+var a=o.cmd.replace(".","_"),s=o.callbackFun;
+this.HasEventListener(a)||null!=s?(e.Log.print("处理协议："+a),this.HasEventListener(a)&&this.DispatchEvent(new e.Event(a,r.data,o.data)),s&&s.apply(r.data,o.data)):e.Log.warning("协议："+a+" 未定义回调函数，请确认该协议是否有效")}
+else e.Log.warning("协议编号："+r.session+" 不存在")}
+else e.Log.warning("返回协议失败，协议名未定义");
+else{
+var a=r.cmd.replace(".","_");
+this.HasEventListener(a)?this.DispatchEvent(new e.Event(a,r.data)):e.Log.warning("协议："+a+" 未定义回调函数，请确认该协议是否有效")}
+}
+else e.Log.error("返回协议解析数据未定义，二进制数据解析未完善")}
+,t.prototype.DispatchEvent=function(t){
+return e.ServiceDispatcher.getInstance().dispatchEvent(t)}
+,t.prototype.DispatchEventToControl=function(t){
+return e.ControllerDispatcher.getInstance().dispatchEvent(t)}
+,t.prototype.HasEventListener=function(t){
+return e.ServiceDispatcher.getInstance().hasEventListener(t)}
+,t}
+();
+e.SocketManage=t,__reflect(t.prototype,"core.SocketManage",["core.IBasicObject"])}
+(core||(core={
+}
+));
+var ChannelType;
+!function(e){
+e[e.Undefined=0]="Undefined",e[e.Test=1]="Test",e[e.Alipay=2]="Alipay",e[e.Ejoy=3]="Ejoy",e[e.WXgame=4]="WXgame",e[e.End=5]="End"}
+(ChannelType||(ChannelType={
+}
+));
+var GameConfig=function(){
+function e(){
+}
+return e.getAdminConfig=function(t){
+var i=e.adminConfig[t],n=BaseChannel.getInstance().getPkgInfo();
+if(i&&n){
+var r=n.versions.app_version_name;
+if(i.filter&&!("*"!=i.filter.app_version_name&&-1==i.filter.app_version_name.indexOf(r)||"*"!=i.filter.os&&-1==i.filter.os.indexOf(n.os)))return i.value}
+else if(i&&egret.Capabilities.runtimeType==egret.RuntimeType.WXGAME&&i.filter&&("*"==i.filter.app_version_name||-1!=i.filter.app_version_name.indexOf("wxgame")))return i.value;
+return null}
+,e.activate=!0,e.maxWidth=854,e.maxHeight=1420,e.designSizeWidth=640,e.designSizeHeight=1136,e.designSizeAspectRatio=e.designSizeWidth/e.designSizeHeight,e.language=window&&window.gameLanguage?window.gameLanguage:"China",e.channel=ChannelType.Test,e.channelDictionaries=(_a={
+}
+,_a[ChannelType.Test]=TestChannel,_a[ChannelType.Alipay]=AlipayChannel,_a[ChannelType.Ejoy]=EjoyChannel,_a[ChannelType.WXgame]=WXgameChannel,_a),e.serverURL="ws://127.0.0.1:8080",

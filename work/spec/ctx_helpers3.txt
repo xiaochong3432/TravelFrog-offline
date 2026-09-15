@@ -1,0 +1,26 @@
+chars 403300..403930
+
+is.render()}
+,i}
+(egret.HashObject);
+e.PictureRenderHelper=h,__reflect(h.prototype,"Tabikaeru.PictureRenderHelper"),e.PathToName=a}
+(Tabikaeru||(Tabikaeru={
+}
+));
+var Tabikaeru;
+!function(e){
+function t(e){
+return new o(e,RES.getRes(e+"_json"))}
+function i(e,t){
+return void 0===t&&(t="id"),new a(e,RES.getRes(e+"_json"),t)}
+function n(e){
+return new s(e,RES.getRes(e+"_json"))}
+function r(e){
+return new c(e,RES.getRes(e+"_json"))}
+var o=function(){
+function e(e,t,i){
+void 0===i&&(i="id"),this.name=e,this.src=t,t||core.Log.warning("配置不存在，name：",e)}
+return e.prototype.get=function(e){
+return this.src[e]}
+,e.prototype.all=function(){
+var e=this,t=Obj

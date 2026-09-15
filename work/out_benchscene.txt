@@ -1,0 +1,39 @@
+layer.parent&&this.player.parent.removeChild(this.player),this.player=new SpineView,this.player.load(o);
+var s=0,c=function(){
+e.player.play(a,1),e.player.once(egret.Event.LOOP_COMPLETE,function(){
+s++>=3+8*Math.random()>>0?(s=0,a="special",c()):(a="default",c())}
+,e)}
+;
+c(),this.player.touchEnabled=!0,this.player.visible=!0,r.addChild(this.player),this.curAnimName=i}
+else r.visible=!1}
+,t.prototype.updateFurniture=function(){
+var e=this,t=this.getModel(FurnitureModel).isOpenShop(),i=this.getModel(FurnitureModel).isOpen();
+if(i?(this.imgFurnitureBench.visible=!0,this.imgFurnitureBenchEmpty.visible=!1,this.btn_enterFurnitureBench.visible=!0,this.getModel(FurnitureModel).serverData.mood==Furniture.Mood.very_angry?this.imgFurnitureBench.source="mainout_season"+this.seasonKey+"_gzt_strike_png":this.imgFurnitureBench.source="mainout_season"+this.seasonKey+"_gzt_png"):(this.imgFurnitureBench.visible=!1,this.imgFurnitureBenchEmpty.visible=!0,this.btn_enterFurnitureBench.visible=!1),t){
+var n=this.userModel.getClientSettings().guideStep;
+if(n==GuideStep.Complete){
+if(this.shop_mc.visible=!0,this.hasFurnitureShop=!0,null==this.shop_dragonbones){
+this.shop_dragonbones=new SpineView;
+var r;
+this.getModel(EasterEggModel).hasEgg(Tabikaeru.EasterEgg.DDShelter)?(this.shopAnimName="egg_101_rain_dd",this.shop_dragonbones.load("egg_101_rain_dd"),r=function(){
+e.shop_dragonbones.play("default")}
+):(this.shopAnimName="drummer",this.shop_dragonbones.load("drummer"),r=function(){
+var t=["default","special1","special2"];
+e.shop_dragonbones.play(t[t.length*Math.random()>>0],1),e.shop_dragonbones.addEventListener(egret.Event.LOOP_COMPLETE,r,e)}
+),this.shop_dragonbones.load(this.shopAnimName),r(),this.shop_mc.addChild(this.shop_dragonbones),egret.clearTimeout(this.timerUpdateFurniture),this.timerUpdateFurniture=egret.setTimeout(function(){
+e.updateFurniture()}
+,this,1e3*(this.getModel(FurnitureModel).getShopData().leave_time-core.Time.getServerTime()))}
+}
+else this.shop_dragonbones,this.shop_mc.visible=!1;
+this.checkGuide()}
+else this.shop_mc.visible=!1}
+,t.prototype.onSyncComplete=function(){
+var e=core.ModelManage.getInstance().getModel(UserModel),t=GameConfig.channel==ChannelType.Test||"1"==GameConfig.getAdminConfig("showAnnualReview"),i=!e.getClientSettings().guideAnnualReview;
+if(t&&i&&e.getClientSettings().guideStep==GuideStep.Complete){
+e.setClientSettings("guideAnnualReview",!0);
+var n=new TravelEventInfo;
+n.id=9e5,n.client=!0,n.evt_type=TimerEvent.Type.AunnalReview,this.getModel(TravelModel).pushTravelEvent(n)}
+var r=core.ModelManage.getInstance().getModel(FurnitureModel).isOpen(),o=!e.getClientSettings().guideFurnitureNotice;
+if(r&&o&&e.getClientSettings().guideStep==GuideStep.Complete){
+var a=new TravelEventInfo;
+e.setClientSettings("guideFurnitureNotice",!0),a.evt_type=TimerEvent.Type.FurnitureVersion,a.id=900001,a.client=!0,this.getModel(TravelModel).pushTravelEvent(a)}
+this.checkEventSystem(!1),th

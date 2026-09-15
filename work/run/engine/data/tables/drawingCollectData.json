@@ -1,0 +1,464 @@
+{
+ "1": {
+  "desc": "困困的小收藏",
+  "guest": 0,
+  "id": 1,
+  "info": "还是有点好奇 困困用它做了什么",
+  "name": "有洞的头巾",
+  "page": 0,
+  "pic": {
+   "index": "draw_icon_1",
+   "src": "Icon/drawing"
+  },
+  "position": "-243,-240,17501",
+  "scene": {
+   "index": "draw_collection_1",
+   "src": "Scene/Drawing/draw_collection"
+  },
+  "show": {
+   "index": "back_collection_1",
+   "src": "Scene/Drawing/draw_back"
+  }
+ },
+ "101": {
+  "desc": "胖胖的小收藏",
+  "guest": 1,
+  "id": 101,
+  "info": "缺了一部分的地毯 不影响它柔软又暖和",
+  "name": "柔软的地毯",
+  "page": 0,
+  "pic": {
+   "index": "draw_icon_101",
+   "src": "Icon/drawing"
+  },
+  "position": "",
+  "scene": {
+   "index": "",
+   "src": ""
+  },
+  "show": {
+   "index": "back_collection_101",
+   "src": "Scene/Drawing/draw_back"
+  }
+ },
+ "102": {
+  "desc": "胖胖的小收藏",
+  "guest": 1,
+  "id": 102,
+  "info": "沾有彩色颜料的羽毛 写笔记应该还是很顺手吧",
+  "name": "彩色画笔",
+  "page": 0,
+  "pic": {
+   "index": "draw_icon_102",
+   "src": "Icon/drawing"
+  },
+  "position": "",
+  "scene": {
+   "index": "",
+   "src": ""
+  },
+  "show": {
+   "index": "back_collection_102",
+   "src": "Scene/Drawing/draw_back"
+  }
+ },
+ "103": {
+  "desc": "胖胖的小收藏",
+  "guest": 1,
+  "id": 103,
+  "info": "沾有蓝色颜料的羽毛 写笔记应该还是很顺手吧",
+  "name": "蓝色画笔",
+  "page": 0,
+  "pic": {
+   "index": "draw_icon_103",
+   "src": "Icon/drawing"
+  },
+  "position": "",
+  "scene": {
+   "index": "",
+   "src": ""
+  },
+  "show": {
+   "index": "back_collection_103",
+   "src": "Scene/Drawing/draw_back"
+  }
+ },
+ "104": {
+  "desc": "胖胖的小收藏",
+  "guest": 1,
+  "id": 104,
+  "info": "沾有红色颜料的羽毛 写笔记应该还是很顺手吧",
+  "name": "红色画笔",
+  "page": 0,
+  "pic": {
+   "index": "draw_icon_104",
+   "src": "Icon/drawing"
+  },
+  "position": "",
+  "scene": {
+   "index": "",
+   "src": ""
+  },
+  "show": {
+   "index": "back_collection_104",
+   "src": "Scene/Drawing/draw_back"
+  }
+ },
+ "105": {
+  "desc": "胖胖的小收藏",
+  "guest": 1,
+  "id": 105,
+  "info": "沾有黄色颜料的羽毛 写笔记应该还是很顺手吧",
+  "name": "黄色画笔",
+  "page": 0,
+  "pic": {
+   "index": "draw_icon_105",
+   "src": "Icon/drawing"
+  },
+  "position": "",
+  "scene": {
+   "index": "",
+   "src": ""
+  },
+  "show": {
+   "index": "back_collection_105",
+   "src": "Scene/Drawing/draw_back"
+  }
+ },
+ "2": {
+  "desc": "困困的小收藏",
+  "guest": 0,
+  "id": 2,
+  "info": "黄色贴纸对准了书桌 坐姿感觉变标准了",
+  "name": "黄飞机坐垫",
+  "page": 0,
+  "pic": {
+   "index": "draw_icon_2",
+   "src": "Icon/drawing"
+  },
+  "position": "",
+  "scene": {
+   "index": "",
+   "src": ""
+  },
+  "show": {
+   "index": "back_collection_2",
+   "src": "Scene/Drawing/draw_back"
+  }
+ },
+ "201": {
+  "desc": "跳跳的小收藏",
+  "guest": 2,
+  "id": 201,
+  "info": "跳跳赠送的花衣服 居然是赢得比赛的奖品",
+  "name": "奖品“花衣服”",
+  "page": 0,
+  "pic": {
+   "index": "draw_icon_201",
+   "src": "Icon/drawing"
+  },
+  "position": "-35,-280,17500",
+  "scene": {
+   "index": "draw_collection_201",
+   "src": "Scene/Drawing/draw_collection"
+  },
+  "show": {
+   "index": "back_collection_201",
+   "src": "Scene/Drawing/draw_back"
+  }
+ },
+ "202": {
+  "desc": "跳跳的小收藏",
+  "guest": 2,
+  "id": 202,
+  "info": "与绘纸上的形象相差无几 就是多了几个牙印",
+  "name": "木头蛙",
+  "page": 201,
+  "pic": {
+   "index": "draw_icon_202",
+   "src": "Icon/drawing"
+  },
+  "position": "",
+  "scene": {
+   "index": "",
+   "src": ""
+  },
+  "show": {
+   "index": "back_collection_202",
+   "src": "Scene/Drawing/draw_back"
+  }
+ },
+ "203": {
+  "desc": "跳跳的小收藏",
+  "guest": 2,
+  "id": 203,
+  "info": "一串串铃兰 组成了一片多彩的帘子",
+  "name": "铃兰挂帘",
+  "page": 0,
+  "pic": {
+   "index": "draw_icon_203",
+   "src": "Icon/drawing"
+  },
+  "position": "",
+  "scene": {
+   "index": "",
+   "src": ""
+  },
+  "show": {
+   "index": "back_collection_203",
+   "src": "Scene/Drawing/draw_back"
+  }
+ },
+ "204": {
+  "desc": "跳跳的小收藏",
+  "guest": 2,
+  "id": 204,
+  "info": "风吹拂过的小风车 带着沙沙的声音",
+  "name": "落叶风车",
+  "page": 0,
+  "pic": {
+   "index": "draw_icon_204",
+   "src": "Icon/drawing"
+  },
+  "position": "",
+  "scene": {
+   "index": "",
+   "src": ""
+  },
+  "show": {
+   "index": "back_collection_204",
+   "src": "Scene/Drawing/draw_back"
+  }
+ },
+ "3": {
+  "desc": "困困的小收藏",
+  "guest": 0,
+  "id": 3,
+  "info": "红色贴纸对准了书桌 坐姿感觉变标准了",
+  "name": "红飞机坐垫",
+  "page": 0,
+  "pic": {
+   "index": "draw_icon_3",
+   "src": "Icon/drawing"
+  },
+  "position": "",
+  "scene": {
+   "index": "",
+   "src": ""
+  },
+  "show": {
+   "index": "back_collection_3",
+   "src": "Scene/Drawing/draw_back"
+  }
+ },
+ "301": {
+  "desc": "小伙伴的收藏品",
+  "guest": -1,
+  "id": 301,
+  "info": "滑溜溜的木制衣帽架 只有底部贴纸按起来略有弹性",
+  "name": "奇怪的帽架子",
+  "page": 0,
+  "pic": {
+   "index": "draw_icon_301",
+   "src": "Icon/drawing"
+  },
+  "position": "",
+  "scene": {
+   "index": "",
+   "src": ""
+  },
+  "show": {
+   "index": "back_collection_301",
+   "src": "Scene/Drawing/draw_back"
+  }
+ },
+ "302": {
+  "desc": "小伙伴的收藏品",
+  "guest": -1,
+  "id": 302,
+  "info": "买回来的小铁蛙 是小伙伴外出找灵感发现的",
+  "name": "小铁蛙",
+  "page": 0,
+  "pic": {
+   "index": "draw_icon_302",
+   "src": "Icon/drawing"
+  },
+  "position": "",
+  "scene": {
+   "index": "",
+   "src": ""
+  },
+  "show": {
+   "index": "back_collection_302",
+   "src": "Scene/Drawing/draw_back"
+  }
+ },
+ "303": {
+  "desc": "小伙伴的收藏品",
+  "guest": -1,
+  "id": 303,
+  "info": "阳光下蠢蠢欲动 闪耀着明亮的光芒",
+  "name": "流光彩珠",
+  "page": 0,
+  "pic": {
+   "index": "draw_icon_303",
+   "src": "Icon/drawing"
+  },
+  "position": "",
+  "scene": {
+   "index": "",
+   "src": ""
+  },
+  "show": {
+   "index": "back_collection_303",
+   "src": "Scene/Drawing/draw_back"
+  }
+ },
+ "304": {
+  "desc": "小伙伴的收藏品",
+  "guest": -1,
+  "id": 304,
+  "info": "阳光下蠢蠢欲动 一抹金黄跃入眼帘",
+  "name": "金色珠子",
+  "page": 0,
+  "pic": {
+   "index": "draw_icon_304",
+   "src": "Icon/drawing"
+  },
+  "position": "",
+  "scene": {
+   "index": "",
+   "src": ""
+  },
+  "show": {
+   "index": "back_collection_304",
+   "src": "Scene/Drawing/draw_back"
+  }
+ },
+ "305": {
+  "desc": "小伙伴的收藏品",
+  "guest": -1,
+  "id": 305,
+  "info": "阳光下蠢蠢欲动 一簇赤焰跃入眼帘",
+  "name": "赤色珠子",
+  "page": 0,
+  "pic": {
+   "index": "draw_icon_305",
+   "src": "Icon/drawing"
+  },
+  "position": "",
+  "scene": {
+   "index": "",
+   "src": ""
+  },
+  "show": {
+   "index": "back_collection_305",
+   "src": "Scene/Drawing/draw_back"
+  }
+ },
+ "306": {
+  "desc": "小伙伴的收藏品",
+  "guest": -1,
+  "id": 306,
+  "info": "阳光下蠢蠢欲动 一条溪流跃入眼帘",
+  "name": "蓝色珠子",
+  "page": 0,
+  "pic": {
+   "index": "draw_icon_306",
+   "src": "Icon/drawing"
+  },
+  "position": "",
+  "scene": {
+   "index": "",
+   "src": ""
+  },
+  "show": {
+   "index": "back_collection_306",
+   "src": "Scene/Drawing/draw_back"
+  }
+ },
+ "307": {
+  "desc": "小伙伴的收藏品",
+  "guest": -1,
+  "id": 307,
+  "info": "阳光下蠢蠢欲动 一股青烟跃入眼帘",
+  "name": "青色珠子",
+  "page": 0,
+  "pic": {
+   "index": "draw_icon_307",
+   "src": "Icon/drawing"
+  },
+  "position": "",
+  "scene": {
+   "index": "",
+   "src": ""
+  },
+  "show": {
+   "index": "back_collection_307",
+   "src": "Scene/Drawing/draw_back"
+  }
+ },
+ "308": {
+  "desc": "小伙伴的收藏品",
+  "guest": -1,
+  "id": 308,
+  "info": "不平衡的小圆桌 缠绕棉线才勉强保持稳固",
+  "name": "悠悠球桌",
+  "page": 0,
+  "pic": {
+   "index": "draw_icon_308",
+   "src": "Icon/drawing"
+  },
+  "position": "",
+  "scene": {
+   "index": "",
+   "src": ""
+  },
+  "show": {
+   "index": "back_collection_308",
+   "src": "Scene/Drawing/draw_back"
+  }
+ },
+ "4": {
+  "desc": "困困的小收藏",
+  "guest": 0,
+  "id": 4,
+  "info": "蓝色贴纸对准了书桌 坐姿感觉变标准了",
+  "name": "蓝飞机坐垫",
+  "page": 0,
+  "pic": {
+   "index": "draw_icon_4",
+   "src": "Icon/drawing"
+  },
+  "position": "",
+  "scene": {
+   "index": "",
+   "src": ""
+  },
+  "show": {
+   "index": "back_collection_4",
+   "src": "Scene/Drawing/draw_back"
+  }
+ },
+ "5": {
+  "desc": "困困的小收藏",
+  "guest": 0,
+  "id": 5,
+  "info": "绿色贴纸对准了书桌 坐姿感觉变标准了",
+  "name": "绿飞机坐垫",
+  "page": 0,
+  "pic": {
+   "index": "draw_icon_5",
+   "src": "Icon/drawing"
+  },
+  "position": "",
+  "scene": {
+   "index": "",
+   "src": ""
+  },
+  "show": {
+   "index": "back_collection_5",
+   "src": "Scene/Drawing/draw_back"
+  }
+ }
+}

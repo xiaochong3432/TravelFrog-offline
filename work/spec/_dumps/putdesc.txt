@@ -1,0 +1,3 @@
+Red]=350,g[Prize.Rank.Gold]=1e3,g),ComposeId:5502,ItemPutDesc:(f={
+}
+,f[e.DataType.ItemType.LunchBox]="物品栏-食物",f[e.DataType.ItemType.Amulet]="物品栏-护身符",f[e.DataType.ItemType.Tools]="物品栏-道具",f[e.DataType.ItemType.Specialty]="物品栏-特产",f[e.DataType.ItemType.HandCraftTool]="工具栏-工具",f[e.DataType.ItemType.Han

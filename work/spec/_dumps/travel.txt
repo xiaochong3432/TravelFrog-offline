@@ -1,0 +1,37 @@
+
+
+====================================================================================================
+### travel_load_note   (len=347)
+====================================================================================================
+prototype.travel_load_note=function(e,t){
+  var i=[];
+  if(Array.isArray(e.note_list))for(var n=Tabikaeru.DataManager.instance().TravelNoteDB,r=0,o=e.note_list;
+  r<o.length;
+  r++){
+    var a=o[r],s=n.get(a.id);
+    if(s){
+      var c=new TravelNoteData;
+      c.id=a.id,c.read=a.read,c.timestamp=a.timestamp,c.config=n.get(a.id),i.push(c)
+    }
+  }this.travelNodeList=i,this.updateRedot()
+}
+
+====================================================================================================
+### travel_load_gift   (len=444)
+====================================================================================================
+prototype.travel_load_gift=function(e,t){
+  this.pictureList.source=Array.isArray(e.pictures)?e.pictures:[];
+  for(var i=Array.isArray(e.specialtys)?e.specialtys:[],n=i.length-1;
+  n>=0;
+  n--){
+    var r=i[n].item_id,o=i[n].count;
+    if(o>1){
+      i.splice(n,1);
+      for(var a=0;
+      o>a;
+      a++)i.splice(n,0,{
+        item_id:r,count:1
+      })
+    }
+  }this.specialityList.source=i,this.specialityList.refresh(),this.pictureList.refresh(),this.dispatchEvent(new core.Event(GiftBoxEventType.updateGiftBox))
+}

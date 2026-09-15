@@ -1,0 +1,8 @@
+var GiftBagViewControl=function(e){
+  function t(){
+    return e.call(this,GiftBagView)||this
+  }return __extends(t,e),t.prototype.open=function(){
+    e.prototype.open.call(this),this.view.setData(this.getParam(0))
+  },t
+}(WindowController);
+__reflect(GiftBagViewControl.prototype

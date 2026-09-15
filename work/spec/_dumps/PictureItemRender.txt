@@ -1,0 +1,22 @@
+var PictureItemRender=function(e){
+  function t(){
+    var t=null!==e&&e.apply(this,arguments)||this;
+    return t._selected=!1,t
+  }return __extends(t,e),t.prototype.$onRemoveFromStage=function(){
+    e.prototype.$onRemoveFromStage.call(this)
+  },Object.defineProperty(t.prototype,"data",{
+    get:function(){
+      return this._data
+    },set:function(e){
+      this._data!=e&&(this._data=e,this.image.source="picture_loader_png",e&&this.data&&this.data.id==e.id&&(this.image.data=this.data))
+    },enumerable:!0,configurable:!0
+  }),Object.defineProperty(t.prototype,"selected",{
+    get:function(){
+      return this._selected
+    },set:function(e){
+      var t=this.parent,i=!1;
+      t&&(i=t.allowMultipleSelection),this._selected=e,i?(this.activeMark&&(this.activeMark.visible=!1),this.i_masking&&(this.i_masking.visible=e),this.i_checkbox&&(this.i_checkbox.visible=e)):(this.i_masking&&(this.i_masking.visible=!1),this.i_checkbox&&(this.i_checkbox.visible=!1),this.activeMark&&(this.activeMark.visible=e))
+    },enumerable:!0,configurable:!0
+  }),t
+}(core.UIView);
+__reflect(PictureItemRender.prototype

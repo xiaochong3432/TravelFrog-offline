@@ -1,0 +1,25 @@
+var GiftBoxSpecialtyView=function(e){
+  function t(){
+    return e.call(this,core.PathManage.getInstance().getSkinsPath("GiftBox/GiftBoxSpecialtyPage.exml"))||this
+  }return __extends(t,e),t.prototype.onComplete=function(){
+    var e=this;
+    this.specialtyBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_specialtyBtn,this),this.c_scroller.setCursors(this.prevBtn,this.nextBtn),this.c_scroller.onPageChange=function(){
+      return e.onPageChanged()
+    },this.l_item.itemRenderer=GiftBoxSpecialtyItem,this.l_item.addEventListener("GiftBoxSpecialtyItem.outBtn",this.onItemAction,this),this.l_item.dataProvider=this.getModel(GiftBoxModel).getSpecialtyList(),this.update(),this.onPageChanged()
+  },t.prototype.onPageChanged=function(){
+    this.c_scroller.curPageIndex=this.c_scroller.curPageIndex,this.currentPage.text=String(this.c_scroller.curPageIndex+1),this.maxPage.text=String(this.c_scroller.numPages)
+  },t.prototype.onItemAction=function(e){
+    e.stopImmediatePropagation();
+    var t=e.target.data;
+    core.ModelManage.getInstance().getModel(GiftBoxModel).gift_to_bag([t.item_id])
+  },t.prototype.update=function(){
+    var e=this.getModel(GiftBoxModel).getSpecialtyList();
+    e.length>0?this.currentState="normal":this.currentState="empty",this.onPageChanged()
+  },t.prototype.on_specialtyBtn=function(){
+    var e=this;
+    this.playerBag?this.playerBag.show():(this.playerBag=new PlayerBag(!1,!1,Tabikaeru.DataType.ItemType.Specialty,PlayerBag_ParentType.GiftBox),this.playerBag.onClose=new Utils.Trigger,this.playerBag.onClose.add(function(){
+      e.playerBag&&e.playerBag.parent&&e.playerBag.parent.removeChild(e.playerBag),e.playerBag=null,e.getModel(GiftBoxModel).requestData()
+    },this),core.DisplayManage.getInstance().getPopupLayer().addChild(this.playerBag))
+  },t
+}(core.UIView);
+__reflect(GiftBoxSpecialtyView.prototype

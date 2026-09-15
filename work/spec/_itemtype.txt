@@ -1,0 +1,24 @@
+bikaeru.DataType.DropType.ITEM;
+if(this.data.item_id>=0){
+t=!1;
+var o=Tabikaeru.DataManager.instance().ItemDB.get(this.data.item_id);
+switch(r){
+case Tabikaeru.DataType.DropType.RESOURCE:switch(this.data.item_id){
+case 1e5:i="goods_40_png";
+break;
+case 100001:i="goods_41_png";
+break;
+default:i=Tabikaeru.getPicturePath(this.data.item_id)}
+break;
+case Tabikaeru.DataType.DropType.CARDTAGS:var a=GreetCardUtils.getTagsCfg(this.data.item_id);
+i=a.pic+"_png";
+break;
+case Tabikaeru.DataType.DropType.SPRINGCARDTAGS:var a=SpringCardUtils.getTagsCfg(this.data.item_id);
+i=a.pic+"_png";
+break;
+case Tabikaeru.DataType.DropType.ITEM:default:if(o&&(i=Tabikaeru.path.formatPathImage(o.img)),o&&o.type==Tabikaeru.DataType.ItemType.Amulet&&o.sub_type==Tabikaeru.DataType.ItemAmuletType.FLOWER){
+var s=Tabikaeru.DataManager.instance().FlowerData.get(o.id);
+s&&(n=new PromiseTexture(this.image,FlowerTextureFactory.instance.createTexture(s)))}
+}
+}
+this.image&&(0==t?n?this.image.texture=n:this.image.source=i:this.image.source=""),this.t_count&&(this.t_count.text=this.data.count>=0?this.data.count.toString():""),this.bg&&(this.bg.visible=!0),this.emptyDisplay&&(this.emptyDisplay.visible=t),this.fullDisplay&&(this.fullDisplay.visible

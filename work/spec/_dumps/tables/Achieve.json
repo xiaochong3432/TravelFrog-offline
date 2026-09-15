@@ -1,0 +1,709 @@
+[
+     {
+          "info": "（默认）", 
+          "description": "旅行的小生活要开始了！", 
+          "is_special": "", 
+          "id": 0, 
+          "name": "一只蛙的旅行"
+     }, 
+     {
+          "info": "旅行达到10次", 
+          "description": "前几次的旅行总是那么新鲜！", 
+          "is_special": "", 
+          "id": 1, 
+          "name": "说走就走的旅行家"
+     }, 
+     {
+          "info": "旅行达到25次", 
+          "description": "体验一下什么叫浪子天涯~", 
+          "is_special": "", 
+          "id": 2, 
+          "name": "流浪的蛙"
+     }, 
+     {
+          "info": "旅行达到50次", 
+          "description": "旅行多了，内心有点新的小躁动~", 
+          "is_special": "", 
+          "id": 3, 
+          "name": "冒险大王"
+     }, 
+     {
+          "info": "获得所有特产食材", 
+          "description": "这么多农产品，可以开农庄了！", 
+          "is_special": "", 
+          "id": 6, 
+          "name": "鉴赏名家"
+     }, 
+     {
+          "info": "出发不到30分钟就回家", 
+          "description": "去哪溜达一圈回来了...", 
+          "is_special": "", 
+          "id": 7, 
+          "name": "好天气 散个步"
+     }, 
+     {
+          "info": "出发超过24小时还没回家", 
+          "description": "这么久不回家，是不是外面有蛙了！", 
+          "is_special": "", 
+          "id": 8, 
+          "name": "一只不回家的蛙"
+     }, 
+     {
+          "info": "拥有超过10万棵三叶草", 
+          "description": "富家子弟，羡慕羡慕！", 
+          "is_special": "", 
+          "id": 9, 
+          "name": "蛙与三叶草"
+     }, 
+     {
+          "info": "抽奖20次以上", 
+          "description": "努力的转啊转，求你不要再白色了！", 
+          "is_special": "", 
+          "id": 10, 
+          "name": "天灵灵地灵灵"
+     }, 
+     {
+          "info": "连续4次带“果汁”出发", 
+          "description": "营养满满~天天喝都不腻~", 
+          "is_special": "", 
+          "id": 11, 
+          "name": "果汁喝到饱"
+     }, 
+     {
+          "info": "获得5种纪念品", 
+          "description": "纪念品好像稍稍多起来了~", 
+          "is_special": "", 
+          "id": 13, 
+          "name": "随手捎些小玩意"
+     }, 
+     {
+          "info": "获得10种纪念品", 
+          "description": "咱家纪念品多得需要一个展示柜了！", 
+          "is_special": "", 
+          "id": 14, 
+          "name": "旅行就是买买买"
+     }, 
+     {
+          "info": "获得15种纪念品", 
+          "description": "纪念品已经一个柜子放不下了乖乖！", 
+          "is_special": "", 
+          "id": 15, 
+          "name": "礼物堆成山"
+     }, 
+     {
+          "info": "获得20种纪念品", 
+          "description": "感觉可以开一家纪念品专卖店了！", 
+          "is_special": "", 
+          "id": 16, 
+          "name": "没钱也要任性"
+     }, 
+     {
+          "info": "获得20种特产", 
+          "description": "好像这里太多好吃的特产了！", 
+          "is_special": "", 
+          "id": 17, 
+          "name": "走到哪吃到哪"
+     }, 
+     {
+          "info": "获得30种特产", 
+          "description": "见到好吃的就管不住手，必买！", 
+          "is_special": "", 
+          "id": 18, 
+          "name": "每逢出门胖三斤"
+     }, 
+     {
+          "info": "获得40种特产", 
+          "description": "晚饭吃什么好呢？宵夜吃什么好呢？", 
+          "is_special": "", 
+          "id": 19, 
+          "name": "吃货的自我修养"
+     }, 
+     {
+          "info": "旅行达到100次", 
+          "description": "不知不觉，旅行已经上百次了~", 
+          "is_special": "", 
+          "id": 20, 
+          "name": "浪迹天涯"
+     }, 
+     {
+          "info": "登录达到60天", 
+          "description": "感激这两个月的陪伴^^", 
+          "is_special": "", 
+          "id": 21, 
+          "name": "不再陌生蛙"
+     }, 
+     {
+          "info": "登录达到100天", 
+          "description": "今天是我们一百天纪念日噢^^", 
+          "is_special": "", 
+          "id": 22, 
+          "name": "分享小旅程"
+     }, 
+     {
+          "info": "登录达到180天", 
+          "description": "这半年的不愁吃喝，是多么幸福！", 
+          "is_special": "", 
+          "id": 23, 
+          "name": "遇见好幸运"
+     }, 
+     {
+          "info": "双皮奶超过10个", 
+          "description": "家里好像有不少双皮奶呀~", 
+          "is_special": "", 
+          "id": 24, 
+          "name": "双倍热量的快乐"
+     }, 
+     {
+          "info": "豆腐乳超过10个", 
+          "description": "家里好像有不少豆腐乳呀~", 
+          "is_special": "", 
+          "id": 25, 
+          "name": "素食养生爱好者"
+     }, 
+     {
+          "info": "西湖龙井超过10个", 
+          "description": "家里好像有不少西湖龙井呀~", 
+          "is_special": "", 
+          "id": 26, 
+          "name": "初学茶道"
+     }, 
+     {
+          "info": "苏州西瓜子超过10个", 
+          "description": "家里好像有不少苏州西瓜子呀~", 
+          "is_special": "", 
+          "id": 27, 
+          "name": "嗑瓜子乐队成员"
+     }, 
+     {
+          "info": "京味点心超过10个", 
+          "description": "家里好像有不少京味点心呀~", 
+          "is_special": "", 
+          "id": 28, 
+          "name": "致胖美味"
+     }, 
+     {
+          "info": "麻花超过10个", 
+          "description": "家里好像有不少麻花呀~", 
+          "is_special": "", 
+          "id": 29, 
+          "name": "麻花商之友"
+     }, 
+     {
+          "info": "咂酒超过10个", 
+          "description": "家里好像有不少咂酒呀~", 
+          "is_special": "", 
+          "id": 30, 
+          "name": "真的不是酒鬼"
+     }, 
+     {
+          "info": "米花糖超过10个", 
+          "description": "家里好像有不少米花糖呀~", 
+          "is_special": "", 
+          "id": 31, 
+          "name": "高热量的幸福"
+     }, 
+     {
+          "info": "牛轧糖超过10个", 
+          "description": "家里好像有不少牛轧糖呀~", 
+          "is_special": "", 
+          "id": 32, 
+          "name": "牛轧糖爱好者"
+     }, 
+     {
+          "info": "麻糬超过10个", 
+          "description": "家里好像有不少麻糬呀~", 
+          "is_special": "", 
+          "id": 33, 
+          "name": "与你度过甜蜜时光"
+     }, 
+     {
+          "info": "松子超过10个", 
+          "description": "家里好像有不少松子呀~", 
+          "is_special": "", 
+          "id": 34, 
+          "name": "松鼠看了想打人"
+     }, 
+     {
+          "info": "老冰棍超过10个", 
+          "description": "家里好像有不少老冰棍呀~", 
+          "is_special": "", 
+          "id": 35, 
+          "name": "家里凉凉哒"
+     }, 
+     {
+          "info": "鲜花饼超过10个", 
+          "description": "家里好像有不少鲜花饼呀~", 
+          "is_special": "", 
+          "id": 36, 
+          "name": "小花痴"
+     }, 
+     {
+          "info": "椰子超过10个", 
+          "description": "家里好像有不少椰子呀~", 
+          "is_special": "", 
+          "id": 37, 
+          "name": "向海岛奔跑"
+     }, 
+     {
+          "info": "热干面超过10个", 
+          "description": "家里好像有不少热干面呀~", 
+          "is_special": "", 
+          "id": 38, 
+          "name": "小吃摊常客"
+     }, 
+     {
+          "info": "姜糖超过10个", 
+          "description": "家里好像有不少姜糖呀~", 
+          "is_special": "", 
+          "id": 39, 
+          "name": "爱甜也爱辣"
+     }, 
+     {
+          "info": "凉皮超过10个", 
+          "description": "家里好像有不少凉皮呀~", 
+          "is_special": "", 
+          "id": 40, 
+          "name": "辣味美食家"
+     }, 
+     {
+          "info": "八大件超过10个", 
+          "description": "家里好像有不少八大件呀~", 
+          "is_special": "", 
+          "id": 41, 
+          "name": "不孤独的甜食家"
+     }, 
+     {
+          "info": "李广杏超过10个", 
+          "description": "家里好像有不少李广杏呀~", 
+          "is_special": "", 
+          "id": 42, 
+          "name": "酸甜出真味"
+     }, 
+     {
+          "info": "酥油茶超过10个", 
+          "description": "家里好像有不少酥油茶呀~", 
+          "is_special": "", 
+          "id": 43, 
+          "name": "甜茶爱好者"
+     }, 
+     {
+          "info": "五香豆超过10个", 
+          "description": "家里好像有不少五香豆呀~", 
+          "is_special": "", 
+          "id": 44, 
+          "name": "牙口好才是真的好"
+     }, 
+     {
+          "info": "鸡蛋仔超过10个", 
+          "description": "家里好像有不少鸡蛋仔呀~", 
+          "is_special": "", 
+          "id": 45, 
+          "name": "街头美食家"
+     }, 
+     {
+          "info": "米超过30个", 
+          "description": "家里的米缸已经满上！", 
+          "is_special": "", 
+          "id": 46, 
+          "name": "一顿不吃饿得慌"
+     }, 
+     {
+          "info": "卷心菜超过30个", 
+          "description": "瞄一眼仓库，满满的卷心菜！", 
+          "is_special": "", 
+          "id": 47, 
+          "name": "你是我的小卷心菜"
+     }, 
+     {
+          "info": "洋葱超过30个", 
+          "description": "瞄一眼仓库，满满的洋葱！", 
+          "is_special": "", 
+          "id": 48, 
+          "name": "辣眼睛"
+     }, 
+     {
+          "info": "大蒜超过30个", 
+          "description": "瞄一眼仓库，满满的大蒜！", 
+          "is_special": "", 
+          "id": 49, 
+          "name": "好大的口气啊"
+     }, 
+     {
+          "info": "辣韭超过30个", 
+          "description": "瞄一眼仓库，满满的辣韭！", 
+          "is_special": "", 
+          "id": 50, 
+          "name": "泡菜爱好者"
+     }, 
+     {
+          "info": "辣椒超过30个", 
+          "description": "瞄一眼仓库，满满的辣椒！", 
+          "is_special": "", 
+          "id": 51, 
+          "name": "不怕不怕辣"
+     }, 
+     {
+          "info": "草莓超过30个", 
+          "description": "瞄一眼仓库，满满的草莓！", 
+          "is_special": "", 
+          "id": 52, 
+          "name": "感觉自己萌萌哒"
+     }, 
+     {
+          "info": "柿子超过30个", 
+          "description": "瞄一眼仓库，满满的柿子！", 
+          "is_special": "", 
+          "id": 53, 
+          "name": "垒柿成饼"
+     }, 
+     {
+          "info": "栗子超过30个", 
+          "description": "瞄一眼仓库，满满的栗子！", 
+          "is_special": "", 
+          "id": 54, 
+          "name": "举个栗子"
+     }, 
+     {
+          "info": "香蕉超过30个", 
+          "description": "瞄一眼仓库，满满的香蕉！", 
+          "is_special": "", 
+          "id": 55, 
+          "name": "花果山大王"
+     }, 
+     {
+          "info": "芒果超过30个", 
+          "description": "瞄一眼仓库，满满的芒果！", 
+          "is_special": "", 
+          "id": 56, 
+          "name": "芒果之吻"
+     }, 
+     {
+          "info": "蜜柑超过30个", 
+          "description": "瞄一眼仓库，满满的蜜柑！", 
+          "is_special": "", 
+          "id": 57, 
+          "name": "我去买几个橘子"
+     }, 
+     {
+          "info": "桃子超过30个", 
+          "description": "瞄一眼仓库，满满的桃子！", 
+          "is_special": "", 
+          "id": 58, 
+          "name": "甜蜜蜜"
+     }, 
+     {
+          "info": "苹果超过30个", 
+          "description": "瞄一眼仓库，满满的苹果！", 
+          "is_special": "", 
+          "id": 59, 
+          "name": "医生远离我"
+     }, 
+     {
+          "info": "牛奶超过30个", 
+          "description": "瞄一眼仓库，满满的牛奶！", 
+          "is_special": "", 
+          "id": 60, 
+          "name": "一切为了长高"
+     }, 
+     {
+          "info": "芝士超过30个", 
+          "description": "瞄一眼仓库，满满的芝士！", 
+          "is_special": "", 
+          "id": 61, 
+          "name": "芝士就是力量"
+     }, 
+     {
+          "info": "茶叶超过30个", 
+          "description": "瞄一眼仓库，满满的茶叶！", 
+          "is_special": "", 
+          "id": 62, 
+          "name": "沉迷养生"
+     }, 
+     {
+          "info": "水超过30个", 
+          "description": "家里的水缸已经满上！", 
+          "is_special": "", 
+          "id": 63, 
+          "name": "没事记得多喝水噢"
+     }, 
+     {
+          "info": "枸杞子超过10个", 
+          "description": "家里好像有不少枸杞子呀~", 
+          "is_special": "", 
+          "id": 64, 
+          "name": "长寿的秘诀"
+     }, 
+     {
+          "info": "刺梨超过10个", 
+          "description": "家里好像有不少刺梨呀~", 
+          "is_special": "", 
+          "id": 65, 
+          "name": "扎手了老铁"
+     }, 
+     {
+          "info": "龙眼超过10个", 
+          "description": "家里好像有不少龙眼呀~", 
+          "is_special": "", 
+          "id": 66, 
+          "name": "大眼亮晶晶"
+     }, 
+     {
+          "info": "脐橙超过10个", 
+          "description": "家里好像有不少脐橙呀~", 
+          "is_special": "", 
+          "id": 67, 
+          "name": "心想是橙"
+     }, 
+     {
+          "info": "黄山烧饼超过10个", 
+          "description": "家里好像有不少黄山烧饼呀~", 
+          "is_special": "", 
+          "id": 68, 
+          "name": "一口一个不能停"
+     }, 
+     {
+          "info": "烤冷面超过10个", 
+          "description": "家里好像有不少烤冷面呀~", 
+          "is_special": "", 
+          "id": 69, 
+          "name": "街头小霸王"
+     }, 
+     {
+          "info": "焖子超过10个", 
+          "description": "家里好像有不少焖子呀~", 
+          "is_special": "", 
+          "id": 70, 
+          "name": "童年的味道"
+     }, 
+     {
+          "info": "登录达到280天", 
+          "description": "时光在变，守候不变", 
+          "is_special": "", 
+          "id": 71, 
+          "name": "无言的守候"
+     }, 
+     {
+          "info": "登录达到360天", 
+          "description": "陪伴，是最长情的告白", 
+          "is_special": "", 
+          "id": 72, 
+          "name": "相伴每一天"
+     }, 
+     {
+          "info": "腊梅开放阶段1，花苞期", 
+          "description": "腊梅长出了小花苞，快去看看吧~", 
+          "is_special": "", 
+          "id": 73, 
+          "name": "含苞待放"
+     }, 
+     {
+          "info": "腊梅开放阶段2，开花期", 
+          "description": "桌边的腊梅开花了，快去看看吧~", 
+          "is_special": "", 
+          "id": 74, 
+          "name": "幽香满屋"
+     }, 
+     {
+          "info": "香梨超过10个", 
+          "description": "香梨！友情的见证品", 
+          "is_special": "", 
+          "id": 75, 
+          "name": "全是汁水"
+     }, 
+     {
+          "info": "樱桃超过10个", 
+          "description": "樱桃！友情的见证品", 
+          "is_special": "", 
+          "id": 76, 
+          "name": "闪闪发光"
+     }, 
+     {
+          "info": "蜂蜜超过10个", 
+          "description": "蜂蜜！友情的见证品", 
+          "is_special": "", 
+          "id": 77, 
+          "name": "嘴角全是丝"
+     }, 
+     {
+          "info": "六一期间登录", 
+          "description": "一大份的快乐淹没了小小的烦恼", 
+          "is_special": "", 
+          "id": 78, 
+          "name": "小小少年 很少烦恼"
+     }, 
+     {
+          "info": "木槿开放阶段1，花苞期", 
+          "description": "木槿长出了小花苞，快去看看吧~", 
+          "is_special": "", 
+          "id": 79, 
+          "name": "含蓄的等待"
+     }, 
+     {
+          "info": "木槿开放阶段2，开花期", 
+          "description": "桌边的木槿开花了，快去看看吧~", 
+          "is_special": "", 
+          "id": 80, 
+          "name": "温柔的坚持"
+     }, 
+     {
+          "info": "旅行地图中全国所有城市都有照片", 
+          "description": "打卡全部城市，走出了一身肌肉", 
+          "is_special": "", 
+          "id": 81, 
+          "name": "天涯海角走出腹肌"
+     }, 
+     {
+          "info": "获得4个典藏（博物馆）", 
+          "description": "收集典藏？这是发现新地方了吧~", 
+          "is_special": "", 
+          "id": 82, 
+          "name": "只是逛逛"
+     }, 
+     {
+          "info": "获得8个典藏（博物馆）", 
+          "description": "哪儿找的，每一个典藏还不一样", 
+          "is_special": "", 
+          "id": 83, 
+          "name": "长见识了"
+     }, 
+     {
+          "info": "获得12个典藏（博物馆）", 
+          "description": "有空就来坐坐，顺便看看典藏", 
+          "is_special": "", 
+          "id": 84, 
+          "name": "老熟人"
+     }, 
+     {
+          "info": "获得20个典藏（博物馆）", 
+          "description": "这么多典藏，到底旅行了多少次", 
+          "is_special": "", 
+          "id": 85, 
+          "name": "岁月的馈赠"
+     }, 
+     {
+          "info": "双面神人文创雪糕超过10个", 
+          "description": "囤了不少双面神人的文创雪糕呀~", 
+          "is_special": "", 
+          "id": 86, 
+          "name": "屋内满是寒风"
+     }, 
+     {
+          "info": "周年庆称号", 
+          "description": "和蛙一起过了一个特别的日子~", 
+          "is_special": "", 
+          "id": 87, 
+          "name": "周年的相守"
+     }, 
+     {
+          "info": "亚醜钺文创雪糕超过10个", 
+          "description": "囤了不少亚醜钺的文创雪糕呀~", 
+          "is_special": "", 
+          "id": 88, 
+          "name": "欢乐的气息"
+     }, 
+     {
+          "info": "龙凤纹重环玉佩绿茶饼超过10个", 
+          "description": "囤了不少龙凤纹重环玉佩造型的绿茶饼呀~", 
+          "is_special": "", 
+          "id": 89, 
+          "name": "亲近自然"
+     }, 
+     {
+          "info": "影青粉盒慕斯蛋糕超过10个", 
+          "description": "囤了不少影青粉盒外观的慕斯蛋糕呀~", 
+          "is_special": "", 
+          "id": 90, 
+          "name": "颜值担当"
+     }, 
+     {
+          "info": "芒果味鸟尊雪糕超过10个", 
+          "description": "囤了不少芒果味的鸟型雪糕呀~", 
+          "is_special": "", 
+          "id": 91, 
+          "name": "金光闪闪"
+     }, 
+     {
+          "info": "莜面超过10个", 
+          "description": "一家吃着十家香~", 
+          "is_special": "", 
+          "id": 92, 
+          "name": "莜面十家香"
+     }, 
+     {
+          "info": "玉木耳超过10个", 
+          "description": "一碗两碗三四碗五碗六碗七八碗~", 
+          "is_special": "", 
+          "id": 93, 
+          "name": "大碗装小碗"
+     }, 
+     {
+          "info": "葡挞超过10个", 
+          "description": "甜甜又不腻，十个一起打包吧~", 
+          "is_special": "", 
+          "id": 94, 
+          "name": "澳门美食家"
+     }, 
+     {
+          "info": "甜醅超过10个", 
+          "description": "带着青稞的酒香，这是喝的第十碗~", 
+          "is_special": "", 
+          "id": 95, 
+          "name": "青海美食家"
+     }, 
+     {
+          "info": "拇指萝卜超过30个", 
+          "description": "拇指萝卜大丰收！一分耕耘一分收获！", 
+          "is_special": "", 
+          "id": 96, 
+          "name": "丰收的胡萝卜"
+     }, 
+     {
+          "info": "樱桃萝卜超过30个", 
+          "description": "樱桃萝卜大丰收！一分耕耘一分收获！", 
+          "is_special": "", 
+          "id": 97, 
+          "name": "丰收的圆萝卜"
+     }, 
+     {
+          "info": "樱桃番茄超过30个", 
+          "description": "樱桃番茄大丰收！一分耕耘一分收获！", 
+          "is_special": "", 
+          "id": 98, 
+          "name": "丰收的小番茄"
+     }, 
+     {
+          "info": "迷你南瓜超过30个", 
+          "description": "迷你南瓜大丰收！一分耕耘一分收获！", 
+          "is_special": "", 
+          "id": 99, 
+          "name": "丰收的小南瓜"
+     }, 
+     {
+          "info": "蜂蜜麻糖超过10个", 
+          "description": "淡黄透明的花瓣 是一瓣一瓣的香甜", 
+          "is_special": "", 
+          "id": 100, 
+          "name": "河北美食家"
+     }, 
+     {
+          "info": "通过道具解锁", 
+          "description": "与画笔一起带来的神奇力量~", 
+          "is_special": 1, 
+          "id": 900, 
+          "name": "蛙选之人"
+     }, 
+     {
+          "info": "通过道具解锁", 
+          "description": "已经是小有名气的蛙了！", 
+          "is_special": 1, 
+          "id": 901, 
+          "name": "明星小蛙"
+     }, 
+     {
+          "info": "通过道具解锁", 
+          "description": "一手打造充满艺术氛围的家！", 
+          "is_special": 1, 
+          "id": 902, 
+          "name": "蛙界艺术家"
+     }
+]

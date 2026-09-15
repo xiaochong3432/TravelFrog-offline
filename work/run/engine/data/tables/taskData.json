@@ -1,0 +1,926 @@
+{
+ "list_map": {
+  "101": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>不想走太远，就吃个<font color=0x5b93be>【华夫饼】</font>\n华夫饼虽然便宜，但是不耐饿哦！</font></font>",
+   "id": 101,
+   "title": "出门随便逛逛",
+   "type": 1
+  },
+  "102": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>走过相似的风景，<font color=0x5b93be>【目的地】</font>也终将达到\n旅途中，有过路照、特殊照、目的地照，你在期待怎样的风景呢？</font></font>",
+   "id": 102,
+   "title": "有目标一定能到达",
+   "type": 1
+  },
+  "103": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>打开相册里的<font color=0x5b93be>【地图】</font>看看吧\n我们的目标是——走遍大好河山！</font></font>",
+   "id": 103,
+   "title": "去看更大的世界",
+   "type": 1
+  },
+  "201": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>把旅行带回的<font color=0x5b93be>【特产】</font>和邻居分享\n每个邻居性格不同，口味喜好也不同</font></font>",
+   "id": 201,
+   "title": "跟邻居打个招呼",
+   "type": 2
+  },
+  "202": {
+   "count": 100,
+   "desc": "<font color=0x545d4c><font size=18>收<font color=0x5b93be>【100株】</font>三叶草\n最多4个小时草就能长满了，勤快的人会收获更多</font></font>",
+   "id": 202,
+   "title": "等一片草原",
+   "type": 2
+  },
+  "203": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>插到<font color=0x5b93be>【花瓶】</font>里的不是花，而是浪漫\n门前的田地会长出<font color=0x5b93be>野草</font>\n旅行也会带回好看的<font color=0x5b93be>鲜花</font></font></font>",
+   "id": 203,
+   "title": "学着浪漫一点",
+   "type": 2
+  },
+  "204": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>在<font color=0x5b93be>【邮箱-兑换码】</font>中输入<font color=0x5b93be>【给自己的信】</font>\n试着给过去、现在或未来的自己写一封信\n更多福利兑换，可关注社交平台官方号</font></font>",
+   "id": 204,
+   "title": "给自己寄一封信",
+   "type": 2
+  },
+  "205": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>试试带上<font color=0x5b93be>【草莓可丽饼】</font>出门\n准备好一点，会走得更远一些\n虽然不一定能达到\n那就多试几次</font></font>",
+   "id": 205,
+   "title": "这次决定走远一点",
+   "type": 2
+  },
+  "301": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>逛个<font color=0x5b93be>【商店】</font>，买点<font color=0x5b93be>【旅行道具】</font>（围巾/雨伞/睡垫）回来\n道具跟食物不同，道具可以重复使用</font></font>",
+   "id": 301,
+   "title": "找到一个解压的方式",
+   "type": 3
+  },
+  "302": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>带上<font color=0x5b93be>【沙拉皮塔饼】</font>出门\n没有一顿美食治愈不了的心情\n如果不行，那就多吃几个吧</font></font>",
+   "id": 302,
+   "title": "用美食治愈一切",
+   "type": 3
+  },
+  "303": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>带上<font color=0x5b93be>【茄汁蛋包饭】</font>，向目的地进发\n真正温暖你的，无非是一碗人间烟火，吃完早点回家！</font></font>",
+   "id": 303,
+   "title": "吃一顿蛋包饭",
+   "type": 3
+  },
+  "304": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18><font color=0x5b93be>【装满背包】</font>出发吧！\n<font color=0x5b93be>便当</font>是必不可少的\n<font color=0x5b93be>护身符</font>或许可以许愿一个方向\n<font color=0x5b93be>道具</font>可以带来意外的收获</font></font>",
+   "id": 304,
+   "title": "做最好的准备",
+   "type": 3
+  },
+  "305": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>食物、护身符、道具放满整个<font color=0x5b93be>【桌子】</font>\n大概这就是不容错过的安全感吧</font></font>",
+   "id": 305,
+   "title": "可以安排得更周全一点",
+   "type": 3
+  },
+  "306": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>点击阁楼上的<font color=0x5b93be>【书桌】</font>，看看<font color=0x5b93be>【笔记】</font>\n如果还没有获得笔记，那就多出门走走，去寻找灵感</font>",
+   "id": 306,
+   "title": "多记笔记",
+   "type": 3
+  },
+  "401": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>打开<font color=0x5b93be>【小仓库-故事】</font>\n轻点左边的<font color=0x5b93be>【小红心】</font>，是一种缘分的牵绊</font></font>",
+   "id": 401,
+   "title": "有一种安静的牵绊",
+   "type": 4
+  },
+  "402": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>不需要的<font color=0x5b93be>【照片和特产】</font>可以放进<font color=0x5b93be>【小仓库-礼品盒】</font>\n出门时候，顺路<font color=0x5b93be>捎给旅友</font>，分享一份快乐</font></font>",
+   "id": 402,
+   "title": "互助的快乐",
+   "type": 4
+  },
+  "403": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>在<font color=0x5b93be>【商店】</font>中购买<font color=0x5b93be>【友情绘本】</font>\n等待发起的一场<font color=0x5b93be>邻居聚会</font>\n记得不要遗漏在家门口的<font color=0x5b93be>邀请函</font></font></font>",
+   "id": 403,
+   "title": "到邻居家串个门",
+   "type": 4
+  },
+  "404": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>投食小乌龟<font color=0x5b93be>【困困】</font>\n老犯困的小乌龟，来点提神的食物吧</font></font>",
+   "id": 404,
+   "title": "困困的口味是提神的",
+   "type": 4
+  },
+  "405": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>投食猫头鹰<font color=0x5b93be>【胖胖】</font>\n胖胖的愿望是，多吃甜也不胖</font></font>",
+   "id": 405,
+   "title": "胖胖的口味是香甜的",
+   "type": 4
+  },
+  "406": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>投食松鼠<font color=0x5b93be>【跳跳】</font>\n跳跳喜欢吃的东西最简单，树上长的就行</font></font>",
+   "id": 406,
+   "title": "跳跳的口味是新鲜的",
+   "type": 4
+  },
+  "407": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>打开<font color=0x5b93be>【小仓库-日历】</font>\n在节气当日完成任务，可以获得时令美食</font></font>",
+   "id": 407,
+   "title": "时令美食",
+   "type": 4
+  },
+  "408": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>准备<font color=0x5b93be>【香葱烤包子】</font>\n有较大概率可以抵达西部</font></font>",
+   "id": 408,
+   "title": "去看大漠风光",
+   "type": 4
+  },
+  "409": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>准备<font color=0x5b93be>【海苔煎豆腐】</font>\n有较大概率去往沿海</font></font>",
+   "id": 409,
+   "title": "到海边吹吹风",
+   "type": 4
+  },
+  "410": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>准备<font color=0x5b93be>【桂花蒸米糕】</font>\n有较大概率前往江南水乡</font></font>",
+   "id": 410,
+   "title": "看一眼水乡的柔情",
+   "type": 4
+  },
+  "411": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>准备<font color=0x5b93be>【彩椒烙蛋饼】</font>\n有较大概率往北走</font></font>",
+   "id": 411,
+   "title": "寻一片北国雪花",
+   "type": 4
+  },
+  "412": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>准备<font color=0x5b93be>【水果沙拉】</font>\n有较大概率前往山区</font></font>",
+   "id": 412,
+   "title": "到山中避暑",
+   "type": 4
+  },
+  "501": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>去博物馆，需要准备一张<font color=0x5b93be>【门票】</font>\n门票可以放在护身符的位置</font></font>",
+   "id": 501,
+   "title": "去趟博物馆",
+   "type": 5
+  },
+  "502": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>在商店购买<font color=0x5b93be>【手工品制作工具】</font>后开启\n还要再准备点<font color=0x5b93be>【手工品材料】</font>\n制作完成会留在桌上，旅行归来便会<font color=0x5b93be>收纳</font>起来</font></font>",
+   "id": 502,
+   "title": "做一枚绿色印章",
+   "type": 5
+  },
+  "503": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>多做点印章练练手\n不要忘了准备<font color=0x5b93be>【手工品材料】</font></font></font>",
+   "id": 503,
+   "title": "做一枚灰色印章",
+   "type": 5
+  },
+  "504": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>手艺熟练后就可以做祈愿物了</font></font>",
+   "id": 504,
+   "title": "做一枚红色印章",
+   "type": 5
+  },
+  "505": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>祈愿更多的三叶草和兑换券</font></font>",
+   "id": 505,
+   "title": "雕刻一株三叶草",
+   "type": 5
+  },
+  "506": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>祈愿记录旅行的小细节</font></font>",
+   "id": 506,
+   "title": "雕刻一本笔记",
+   "type": 5
+  },
+  "507": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>祈愿和旅友相约</font></font>",
+   "id": 507,
+   "title": "雕刻一个柳环",
+   "type": 5
+  },
+  "508": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>祈愿和旅友交换小礼物</font></font>",
+   "id": 508,
+   "title": "雕刻一个礼品盒",
+   "type": 5
+  },
+  "509": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>祈愿更多的特产</font></font>",
+   "id": 509,
+   "title": "雕刻一个果篮",
+   "type": 5
+  },
+  "510": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>祈愿一个纪念品</font></font>",
+   "id": 510,
+   "title": "雕刻一个中国结",
+   "type": 5
+  },
+  "511": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>祈愿一个特殊的旅行方向</font></font>",
+   "id": 511,
+   "title": "雕刻一个路标",
+   "type": 5
+  },
+  "601": {
+   "count": 5,
+   "desc": "<font color=0x545d4c><font size=18>旅途中遇到合适的材料带回家\n可以省下不少三叶草呢</font></font>",
+   "id": 601,
+   "title": "合适的材料带回家",
+   "type": 6
+  },
+  "602": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>从<font color=0x5b93be>【嘟嘟】</font>处可购买<font color=0x5b93be>【家具图纸】</font>\n嘟嘟是个行程不定的旅行商人\n但是晚饭的时候一般都回来了</font></font>",
+   "id": 602,
+   "title": "学会粉刷墙壁",
+   "type": 6
+  },
+  "603": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>像地板这样的大件\n需要消耗较多<font color=0x5b93be>【普通材料】</font>\n制作的时间也会长一些\n有时候做一半就出门旅行了</font></font>",
+   "id": 603,
+   "title": "学会地板的制作",
+   "type": 6
+  },
+  "604": {
+   "count": 1,
+   "desc": "",
+   "id": 604,
+   "title": "学会阁楼的制作",
+   "type": 6
+  },
+  "605": {
+   "count": 1,
+   "desc": "",
+   "id": 605,
+   "title": "学会制作栏杆",
+   "type": 6
+  },
+  "606": {
+   "count": 1,
+   "desc": "",
+   "id": 606,
+   "title": "学会制作窗户",
+   "type": 6
+  },
+  "607": {
+   "count": 1,
+   "desc": "",
+   "id": 607,
+   "title": "学会制作仓门",
+   "type": 6
+  },
+  "608": {
+   "count": 1,
+   "desc": "",
+   "id": 608,
+   "title": "学会制作帘幕",
+   "type": 6
+  },
+  "609": {
+   "count": 1,
+   "desc": "",
+   "id": 609,
+   "title": "学会装饰地图",
+   "type": 6
+  },
+  "610": {
+   "count": 1,
+   "desc": "",
+   "id": 610,
+   "title": "学会制作床铺",
+   "type": 6
+  },
+  "611": {
+   "count": 1,
+   "desc": "",
+   "id": 611,
+   "title": "学会制作花瓶",
+   "type": 6
+  },
+  "612": {
+   "count": 1,
+   "desc": "",
+   "id": 612,
+   "title": "学会制作便签",
+   "type": 6
+  },
+  "613": {
+   "count": 1,
+   "desc": "",
+   "id": 613,
+   "title": "学会制作书桌",
+   "type": 6
+  },
+  "614": {
+   "count": 1,
+   "desc": "",
+   "id": 614,
+   "title": "学会制作坐垫",
+   "type": 6
+  },
+  "615": {
+   "count": 1,
+   "desc": "",
+   "id": 615,
+   "title": "学会制作储柜",
+   "type": 6
+  },
+  "616": {
+   "count": 1,
+   "desc": "",
+   "id": 616,
+   "title": "学会制作装饰",
+   "type": 6
+  },
+  "617": {
+   "count": 1,
+   "desc": "",
+   "id": 617,
+   "title": "学会制作箱子",
+   "type": 6
+  },
+  "618": {
+   "count": 1,
+   "desc": "",
+   "id": 618,
+   "title": "学会制作餐桌",
+   "type": 6
+  },
+  "619": {
+   "count": 1,
+   "desc": "",
+   "id": 619,
+   "title": "学会制作餐椅",
+   "type": 6
+  },
+  "620": {
+   "count": 1,
+   "desc": "",
+   "id": 620,
+   "title": "学会编织地毯",
+   "type": 6
+  },
+  "621": {
+   "count": 1,
+   "desc": "",
+   "id": 621,
+   "title": "学会搭建厨灶",
+   "type": 6
+  },
+  "622": {
+   "count": 1,
+   "desc": "",
+   "id": 622,
+   "title": "学会整理厨杂",
+   "type": 6
+  },
+  "623": {
+   "count": 1,
+   "desc": "",
+   "id": 623,
+   "title": "学会制作立镜",
+   "type": 6
+  },
+  "624": {
+   "count": 1,
+   "desc": "",
+   "id": 624,
+   "title": "学会制作衣架",
+   "type": 6
+  },
+  "625": {
+   "count": 1,
+   "desc": "",
+   "id": 625,
+   "title": "学会制作屏风",
+   "type": 6
+  },
+  "626": {
+   "count": 1,
+   "desc": "",
+   "id": 626,
+   "title": "学会装置照明",
+   "type": 6
+  },
+  "627": {
+   "count": 1,
+   "desc": "",
+   "id": 627,
+   "title": "学会制作衣柜",
+   "type": 6
+  },
+  "628": {
+   "count": 1,
+   "desc": "",
+   "id": 628,
+   "title": "学会储藏杂物",
+   "type": 6
+  },
+  "629": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>通过<font color=0x5b93be>【聚会】</font>有机会跟邻居学习到<font color=0x5b93be>【庭院物什】</font>的制作\n别忘了带上邻居喜欢的特产</font></font>",
+   "id": 629,
+   "title": "学会制作不倒翁",
+   "type": 6
+  },
+  "630": {
+   "count": 1,
+   "desc": "<font color=0x545d4c><font size=18>聚会归来如果拿到图纸\n还需要准备<font color=0x5b93be>【特殊材料】</font>才可以制作物什\n嘟嘟会售卖一些特价物什材料</font></font>",
+   "id": 630,
+   "title": "学会制作堆肥箱",
+   "type": 6
+  }
+ },
+ "list_type": {
+  "1": {
+   "name": "是日清单",
+   "reward": [
+    1
+   ],
+   "target": [
+    3
+   ]
+  },
+  "2": {
+   "name": "当周计划",
+   "reward": [
+    202103,
+    2
+   ],
+   "target": [
+    2,
+    5
+   ]
+  },
+  "3": {
+   "name": "半月计划",
+   "reward": [
+    3,
+    4
+   ],
+   "target": [
+    3,
+    6
+   ]
+  },
+  "4": {
+   "name": "月度计划",
+   "reward": [
+    5,
+    15,
+    16,
+    33,
+    1104
+   ],
+   "target": [
+    2,
+    4,
+    6,
+    8,
+    12
+   ]
+  },
+  "5": {
+   "name": "当季计划",
+   "reward": [
+    8000,
+    8000,
+    1103
+   ],
+   "target": [
+    3,
+    7,
+    11
+   ]
+  },
+  "6": {
+   "name": "年度计划",
+   "reward": [
+    10103,
+    10104,
+    10106,
+    10102,
+    10105
+   ],
+   "target": [
+    4,
+    9,
+    14,
+    21,
+    30
+   ]
+  }
+ },
+ "task_list": {
+  "1": {
+   "count": 1,
+   "id": 1,
+   "num": 10,
+   "pic": "task_pic_1",
+   "reward_id": 200000,
+   "title": "等蛙旅行回来",
+   "type": 1
+  },
+  "101": {
+   "count": 1,
+   "id": 101,
+   "num": 1,
+   "pic": "task_pic_101",
+   "reward_id": 1000,
+   "title": "旅行有感",
+   "type": 2
+  },
+  "102": {
+   "count": 20,
+   "id": 102,
+   "num": 50,
+   "pic": "task_pic_102",
+   "reward_id": 200000,
+   "title": "一连串的见闻叙事",
+   "type": 2
+  },
+  "103": {
+   "count": 1,
+   "id": 103,
+   "num": 1,
+   "pic": "task_pic_103",
+   "reward_id": 14,
+   "title": "蛙友的结伴记录",
+   "type": 2
+  },
+  "104": {
+   "count": 1,
+   "id": 104,
+   "num": 10,
+   "pic": "task_pic_104",
+   "reward_id": 200000,
+   "title": "蛙友待续的故事",
+   "type": 2
+  },
+  "105": {
+   "count": 1,
+   "id": 105,
+   "num": 1,
+   "pic": "task_pic_105",
+   "reward_id": 17,
+   "title": "见一见旅行的朋友",
+   "type": 2
+  },
+  "2": {
+   "count": 10,
+   "id": 2,
+   "num": 1,
+   "pic": "task_pic_2",
+   "reward_id": 14,
+   "title": "旅行成了常态",
+   "type": 1
+  },
+  "201": {
+   "count": 1,
+   "id": 201,
+   "num": 1,
+   "pic": "task_pic_201",
+   "reward_id": 8000,
+   "title": "材料不可缺",
+   "type": 3
+  },
+  "202": {
+   "count": 1,
+   "id": 202,
+   "num": 20,
+   "pic": "task_pic_202",
+   "reward_id": 200000,
+   "title": "祈愿旅行~棒棒的",
+   "type": 3
+  },
+  "203": {
+   "count": 10,
+   "id": 203,
+   "num": 1,
+   "pic": "task_pic_203",
+   "reward_id": 8000,
+   "title": "祈愿物雕刻老手",
+   "type": 3
+  },
+  "204": {
+   "count": 1,
+   "id": 204,
+   "num": 20,
+   "pic": "task_pic_204",
+   "reward_id": 200000,
+   "title": "瞧~手工印章",
+   "type": 3
+  },
+  "205": {
+   "count": 10,
+   "id": 205,
+   "num": 1,
+   "pic": "task_pic_205",
+   "reward_id": 8000,
+   "title": "盖了好多个章",
+   "type": 3
+  },
+  "3": {
+   "count": 1,
+   "id": 3,
+   "num": 10,
+   "pic": "task_pic_3",
+   "reward_id": 200000,
+   "title": "回家还带吃的",
+   "type": 1
+  },
+  "301": {
+   "count": 1,
+   "id": 301,
+   "num": 10,
+   "pic": "task_pic_301",
+   "reward_id": 200000,
+   "title": "蛙~做什么工作呀",
+   "type": 4
+  },
+  "302": {
+   "count": 5,
+   "id": 302,
+   "num": 20,
+   "pic": "task_pic_302",
+   "reward_id": 200000,
+   "title": "买了肯定有用",
+   "type": 4
+  },
+  "303": {
+   "count": 1,
+   "id": 303,
+   "num": 10,
+   "pic": "task_pic_303",
+   "reward_id": 200000,
+   "title": "开始装饰小屋",
+   "type": 4
+  },
+  "304": {
+   "count": 1,
+   "id": 304,
+   "num": 1,
+   "pic": "task_pic_304",
+   "reward_id": 9000,
+   "title": "整套风格真好看",
+   "type": 4
+  },
+  "4": {
+   "count": 10,
+   "id": 4,
+   "num": 1,
+   "pic": "task_pic_4",
+   "reward_id": 18,
+   "title": "吃不完就是囤",
+   "type": 1
+  },
+  "401": {
+   "count": 1,
+   "id": 401,
+   "num": 10,
+   "pic": "task_pic_401",
+   "reward_id": 200000,
+   "title": "门口的小卡片",
+   "type": 5
+  },
+  "402": {
+   "count": 1,
+   "id": 402,
+   "num": 20,
+   "pic": "task_pic_402",
+   "reward_id": 200000,
+   "title": "揭秘~小伙伴身份",
+   "type": 5
+  },
+  "403": {
+   "count": 1,
+   "id": 403,
+   "num": 20,
+   "pic": "task_pic_403",
+   "reward_id": 200000,
+   "title": "等一个聚会惊喜",
+   "type": 5
+  },
+  "5": {
+   "count": 1,
+   "id": 5,
+   "num": 1,
+   "pic": "task_pic_5",
+   "reward_id": 1000,
+   "title": "途中淘了个纪念品",
+   "type": 1
+  },
+  "6": {
+   "count": 6,
+   "id": 6,
+   "num": 30,
+   "pic": "task_pic_6",
+   "reward_id": 200000,
+   "title": "一屋子的纪念品",
+   "type": 1
+  },
+  "7": {
+   "count": 1,
+   "id": 7,
+   "num": 1,
+   "pic": "task_pic_7",
+   "reward_id": 1000,
+   "title": "照片里有蛙",
+   "type": 1
+  },
+  "8": {
+   "count": 20,
+   "id": 8,
+   "num": 1,
+   "pic": "task_pic_8",
+   "reward_id": 9000,
+   "title": "这些照片都有蛙",
+   "type": 1
+  },
+  "9": {
+   "count": 1,
+   "id": 9,
+   "num": 1,
+   "pic": "task_pic_9",
+   "reward_id": 1012,
+   "title": "蛙蛙联合做大事",
+   "type": 1
+  },
+  "901": {
+   "count": 200,
+   "id": 901,
+   "num": 1,
+   "pic": "task_pic_901",
+   "reward_id": 1,
+   "title": "屯点家底",
+   "type": 9
+  },
+  "902": {
+   "count": 25,
+   "id": 902,
+   "num": 1,
+   "pic": "task_pic_902",
+   "reward_id": 1000,
+   "title": "攒点运气",
+   "type": 9
+  },
+  "903": {
+   "count": 1,
+   "id": 903,
+   "num": 1,
+   "pic": "task_pic_903",
+   "reward_id": 1000,
+   "title": "日历里的时光美食",
+   "type": 9
+  },
+  "904": {
+   "count": 1,
+   "id": 904,
+   "num": 10,
+   "pic": "task_pic_904",
+   "reward_id": 200000,
+   "title": "相册~急需扩容",
+   "type": 9
+  }
+ },
+ "task_type": {
+  "1": {
+   "desc": "为每一次旅行做点准备，然后期待青蛙回家后的分享吧",
+   "icon": [
+    "fuza_fw2"
+   ],
+   "limit": [
+    "找到属于你的蛙"
+   ],
+   "name": "旅行",
+   "type": 1,
+   "unlock": [
+    "快去准备旅行用的背包吧"
+   ]
+  },
+  "2": {
+   "desc": "青蛙在旅行时可能遇到有趣的事情，回家后会以笔记的形式记录下来",
+   "icon": [
+    "note_150_150",
+    "gift_150_150"
+   ],
+   "limit": [
+    "还未获得一篇笔记呢",
+    "还未获得一篇有关旅友的笔记呢"
+   ],
+   "name": "旅行笔记",
+   "type": 2,
+   "unlock": [
+    "可以到阁楼书桌查看喔",
+    "可以到阁楼礼品盒查看喔"
+   ]
+  },
+  "3": {
+   "desc": "心灵手巧的青蛙也需要一个称手的工具，来祈愿接下来的旅行顺顺利利",
+   "icon": [
+    "goods_42"
+   ],
+   "limit": [
+    "到商店找一个手工品工具吧"
+   ],
+   "name": "手工品",
+   "type": 3,
+   "unlock": [
+    "有材料后，记得留意桌上"
+   ]
+  },
+  "4": {
+   "desc": "见识过许多风景后，看着家里都有新想法了",
+   "icon": [
+    "furniture_150_150",
+    "icon_tuzhi",
+    "icon_tuzhi_401",
+    "icon_tuzhi_501"
+   ],
+   "limit": [
+    "多出去旅行寻找家具灵感",
+    "没图纸就做不了家具",
+    "聚会里跟邻居学习做不倒翁吧",
+    "聚会里跟邻居学习做堆肥箱吧"
+   ],
+   "name": "家具",
+   "type": 4,
+   "unlock": [
+    "工具、材料、图纸都不可少",
+    "缺什么，找嘟嘟就没错了",
+    "没有植物果实可开不了工",
+    "没有手工合页可开不了工"
+   ]
+  },
+  "5": {
+   "desc": "来自一份聚会的邀请，走进了邻居的世界",
+   "icon": [
+    "goods_60",
+    "invite_wugui"
+   ],
+   "limit": [
+    "到商店找一个友情绘本吧",
+    "等待邻居们的聚会邀请"
+   ],
+   "name": "友情绘本",
+   "type": 5,
+   "unlock": [
+    "等待邻居们的聚会邀请",
+    "为赴约做好准备"
+   ]
+  },
+  "9": {
+   "desc": "乱糟糟的东西，凑出了一个大问号",
+   "icon": [
+    "7_role"
+   ],
+   "limit": [
+    "找到属于你的蛙"
+   ],
+   "name": "杂七杂八",
+   "type": 9,
+   "unlock": [
+    "有疑问时就看看指南吧"
+   ]
+  }
+ }
+}

@@ -1,0 +1,94 @@
+===== 'checkGameplay\\('  hits=3 =====
+
+--- [832913] ---
+pe.totalCustomEvents=function(e){
+switch(e.getEventType()){
+case RoleEventType.loadRole:this.view&&this.view.reset();
+break;
+case UserEventType.updateClover:this.view&&this.view.updateCloverPanel();
+break;
+case UserEventType.updateCloverTween:this.view&&this.view.updateCloverTween();
+break;
+case TravelEventType.updateMial:this.view&&this.view.updateMail();
+break;
+case TravelEventType.updateEvents:Result.eventSystem(core.DisplayManage.getInstance().getPopupLayer(),!1,!1,e.getParam(0));
+break;
+case TravelEventType.eventsDisposeComplete:case TravelEventType.eventsDisposeComplete2:this.view.onSyncComplete();
+break;
+case UserEventType.updateAds:this.view.update_ads();
+break;
+case TravelEventType.updateRedpoint:this.view&&this.view.updateRedpoint();
+break;
+case VisitorEventType.updateVisitor:this.view&&this.view.checkGameplay();
+break;
+case MessageEventType.reward:this.onReward(e.getParam(0));
+break;
+case TravelEventType.receiveNewMail:var t=e.getParam(0);
+this.adsRewardNotify(t),this.view.receiveNewMail();
+break;
+case FurnitureEventType.UPDATE:this.view.updateFurniture();
+break;
+case MuseumDayEventType.LOAD:this.view.updateMuseumDay();
+break;
+case GreetCardEventType.LOAD:this.view.updateGreetCard();
+break;
+case SpringCardEventType.LOAD:this.view.updateSpringCard();
+break;
+case CapsuleEventType.LOAD:this.view.updateCapsule();
+break;
+case PartyCakeEventType.LOAD:this.view.updatePartyCake();
+break;
+case ItemEventType.updateHouseInfo:e.getParam(1)==Tabikaeru.DataType.ItemType.FURNITURE_ITEM&&this.getModel(FurnitureModel).updateRedot();
+break;
+case DrawingEventType.UPDATE:this.view.update_invite();
+break;
+case FurnitureEven
+
+--- [864647] ---
+).isOpen():this.btnCapsule.visible=this.btnCapsule.includeInLayout=!1}
+,t.prototype.updatePartyCake=function(){
+var e=this.userModel.getClientSettings().guideStep;
+e==GuideStep.Complete?this.btnPartyCake.visible=this.btnPartyCake.includeInLayout=this.getModel(PartyCakeModel).isOpen():this.btnPartyCake.visible=this.btnPartyCake.includeInLayout=!1}
+,t.prototype.checkGameplay=function(){
+this.clearFriend(),this.clearVisitor(),this.updateVisitorGift();
+var e=this.getModel(GameplayModel).getGameplayList(),t=e[0];
+if(t){
+if(e.length>1)for(var i=void 0,n=1;
+n<e.length;
+n++)if(i=e[n],0!=i.OverdueContinue)switch(i.Gameplay){
+case"邻居":var r=this.getModel(TravelModel).getGuestData();
+r&&r.expire_time<=core.Time.getServerTime()&&(BaseChannel.getInstance().jf_commit(!0,"js.error",{
+reason:"warning",info:t,message:"checkGameplay():set_guest_data_empty"}
+),r.id=-1,core.SocketManage.getInstance().send("guest_finish"))}
+switch(t.Gameplay){
+case"邻居":this.checkFriend(t);
+break;
+case"串门":this.updateVisitor(t)}
+}
+}
+,t.prototype.updateVisitorGift=function(){
+this.i_gift.visible=!1,this.i_gift.removeEventListener(egret.TouchEvent.TOUCH_BEGIN,this.visitorClick,this);
+var e=this.visitorModel.getVisitorData();
+e&&e.expire_time>0&&e.expire_time<=core.Time.getServerTime()&&(this.i_gift.visible=!0,this.i_gift.addEventListener(egret.TouchEvent.TOUCH_BEGIN,this.visitorClick,this))}
+,t.prototype.updateVisitor=function(e){
+var t=this;
+this.clearVisitor();
+var i=this.visitorModel.getVisitorData();
+if(i){
+if(!this.userModel.getClientSettings().guideVisitor){
+this.userModel.setClientSettings("guideVisitor",!0),this.delayEventSystem=!0;
+var 
+
+--- [872084] ---
+odel.isFrogSleep()&&!this.getModel(EasterEggModel).hasFrogEgg()?(this.imgHouseLight.source="mainout_season"+this.seasonKey+"_light_off_png",this.imgLightCover.visible=!1):(this.imgHouseLight.source="mainout_season"+this.seasonKey+"_light_on_png",this.imgLightCover.visible=!0)}
+,t.prototype.scroll=function(e){
+e||(this.scroller.viewport.scrollH=this.background.width-this.scroller.width-80),this.update_fg()}
+,t.prototype.updateAnnual=function(){
+GameConfig.channel==ChannelType.Test||"1"==GameConfig.getAdminConfig("showAnnualReview")?this.annualReviewBtnGroup.visible=!0:this.annualReviewBtnGroup.visible=!1}
+,t.prototype.reset=function(e){
+var t=this;
+void 0===e&&(e=!0),this.scroll(),this.c_friend&&(this.c_friend.visible=!0),this.updateRedpoint(),this.updateHouseLight(),this.updateCloverPanel(),this.checkGameplay(),e&&this.checkGuide(),this.updateFlogStatus(),this.updateAnnual(),this.update_ads(),this.checkEventSystem(),this.updateMail(),this.updateFurniture(),this.update_invite(),this.update_tumber(),this.update_compost(),this.update_pocket(),this.update_flowerpot(),this.updateMuseumDay(),this.updateGreetCard(),this.updateSpringCard(),this.updateCapsule(),this.updatePartyCake(),this.once(egret.Event.ENTER_FRAME,function(){
+t.checkGuide()||t.scroll()}
+,this)}
+,t.prototype.openMail=function(){
+this.mailView&&(this.mailView.parent&&this.mailView.parent.removeChild(this.mailView),this.mailView.destroy(),this.mailView=null),null==this.mailView&&(this.mailView=new MailView),this.mailView.parent&&this.mailView.parent.removeChild(this.mailView),this.addChild(this.mailView),this.mailView.setData(

@@ -1,0 +1,6 @@
+chars 146280..146420
+
+tteryExtraView)}
+),t.data.state=Tabikaeru.LotteryState.Select,t.data.extra_item=i.extra_item,e&&e.apply())}
+))}
+,t.prototype.req_select=functio

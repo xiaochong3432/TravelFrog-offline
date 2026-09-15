@@ -1,0 +1,213 @@
+ction(){
+this.addProtocolCallback("story_load")}
+,t.prototype.clearData=function(){
+}
+,t.prototype.readNewStory=function(){
+0!=this.newStoryID&&(this.newStoryID=0,core.SocketManage.getInstance().send("story_read_new_story"))}
+,t.prototype.getNewStoryID=function(){
+return this.newStoryID}
+,t.prototype.getStoryData=function(e){
+for(var t=0;
+t<this.storyList.length;
+t++)if(this.storyList[t].id==e)return this.storyList[t];
+return null}
+,t.prototype.getStoryList=function(){
+return this.storyList}
+,t.prototype.getStoryInfo=function(e){
+return Tabikaeru.DataManager.instance().StoryDB.getStory(e)}
+,t.prototype.sendGift=function(e,t){
+for(var i,n=0;
+n<this.storyList.length;
+n++)if(i=this.storyList[n],i.id==e)return-1==i.gift&&this.getModel(ItemModel).consumeHouseItem(t,1)?(i.gift=t,core.SocketManage.getInstance().send("story_send_gift",null,e,t),!0):!1;
+return!1}
+,t.prototype.story_load=function(e,t){
+this.storyList=Array.isArray(e.stories)?e.stories:[],this.newStoryID=e.new_story_id||0}
+,t}
+(core.Model);
+__reflect(StoryModel.prototype,"StoryModel");
+var GuestData=function(){
+function e(e){
+if(this.id=-1,this.confirmed=!1,this.served=!1,this.expire_time=0,this.pos=0,e)for(var t=0,i=Object.keys(e);
+t<i.length;
+t++){
+var n=i[t];
+null!=this[n]?this[n]=e[n]:(BaseChannel.getInstance().jf_commit(!0,"js.error",{
+reason:"warning",message:core.String.format("GuestData 数据合并错误，{
+0}
+ 属性不存在",n)}
+),core.Log.warning(core.String.format("GuestData 数据合并错误，{
+0}
+ 属性不存在",n)))}
+}
+return e}
+();
+__reflect(GuestData.prototype,"GuestData");
+var TravelEventInfo=function(){
+function e(){
+this.id=0,this.evt_type=0,this.evt_id=0,this.evt_value=[],this.evt_string=[],this.evt_pic=[]}
+return e}
+();
+__reflect(TravelEventInfo.prototype,"TravelEventInfo");
+var PictureInfo=function(){
+function e(){
+this.pic_id=0,this.id=0,this.layers=[],this.for_ads=!1,this.visit=!1,this.hash=""}
+return e}
+();
+__reflect(PictureInfo.prototype,"PictureInfo");
+var ResourceInfo=function(){
+function e(){
+this.ticket=0,this.clover_point=0,this.reward_gacha=0,this.ads_id=null,this.share_id=null}
+return e}
+();
+__reflect(ResourceInfo.prototype,"ResourceInfo");
+var ItemInfo=function(){
+function e(){
+this.item_id=0,this.count=0}
+return e}
+();
+__reflect(ItemInfo.prototype,"ItemInfo");
+var MailInfo=function(){
+function e(){
+this.id=0,this.type=0,this.sender=0,this.timestamp=0,this.title="",this.message="",this.expire=0,this.auto_open=!1,this.read=!1,this.opened=!1}
+return e}
+();
+__reflect(MailInfo.prototype,"MailInfo");
+var Redmsg=function(){
+function e(){
+this.type=0,this.position=0,this.display=0,this.number=0}
+return e}
+();
+__reflect(Redmsg.prototype,"Redmsg");
+var TravelModel=function(e){
+function t(){
+var t=e.call(this)||this;
+return t.pictureCount=0,t.redpointState=!1,t.hasAds=!1,t.isShare=!1,t.newPictureIDs=[],t.requestMailInterval=1e3,t.requestMailTimer=null,t.eventUpdateNewAlbum=new core.Action,t.travelEventList=[],t.pictureInfoList=[],t.mailInfoList=[],t.newPictureInfoList=[],t.newAdsPictureInfoList=[],t.deletePictureInfoList=[],t}
+return __extends(t,e),t.prototype.destroy=function(){
+e.prototype.destroy.call(this)}
+,t.prototype.initModel=function(){
+this.addProtocolCallback("client_load_events","guest_load","album_load","mail_load_mails","mail_ejoy_active_code","album_load_new","album_load_recover","album_load_all","album_load_by_id_list","notify_new_event","notify_redmsg","notify_new_mail","mail_load")}
+,t.prototype.clearData=function(){
+}
+,t.prototype.getTravelEventList=function(){
+return this.travelEventList}
+,t.prototype.getFirstTravelEvent=function(){
+return this.travelEventList.length>0?this.travelEventList[0]:null}
+,t.prototype.createTravelEvent=function(e){
+this.travelEventList.unshift(e)}
+,t.prototype.pushTravelEvent=function(e){
+this.travelEventList.push(e)}
+,t.prototype.pushNewPictureIDs=function(e){
+this.newPictureIDs=this.newPictureIDs.concat(e)
+}
+,t.prototype.readTraveEvents=function(e,t){
+for(var i=0;
+i<this.travelEventList.length;
+i++)if(this.travelEventList[i].id==e.id){
+this.travelEventList.splice(i,1),e.client||core.SocketManage.getInstance().send("client_confirm_event",t,e.id);
+break}
+}
+,t.prototype.getGuestData=function(){
+return this.guestData}
+,t.prototype.sendGuestConfirmed=function(){
+this.guestData&&!this.guestData.confirmed&&(this.guestData.confirmed=!0,core.SocketManage.getInstance().send("guest_confirm",null,this.guestData.id))}
+,t.prototype.sendGuestServed=function(e){
+this.guestData&&!this.guestData.served&&this.getModel(ItemModel).consumeHouseItem(e,1)&&(this.guestData.served=!0,core.SocketManage.getInstance().send("guest_serve",null,this.guestData.id,e))}
+,t.prototype.requestAlbum=function(e){
+core.SocketManage.getInstance().send("album_load_all",e)}
+,t.prototype.getPictureCount=function(){
+return this.pictureCount}
+,t.prototype.setPictureCount=function(e){
+this.pictureCount=e}
+,t.prototype.getPictureInfoList=function(){
+return this.pictureInfoList}
+,t.prototype.getDeletePictureInfoList=function(){
+return this.deletePictureInfoList}
+,t.prototype.getPictureByPicId=function(e){
+for(var t=0,i=this.pictureInfoList;
+t<i.length;
+t++){
+var n=i[t];
+if(n.pic_id==e)return n}
+}
+,t.prototype.getPictureById=function(e){
+for(var t=0,i=this.pictureInfoList;
+t<i.length;
+t++){
+var n=i[t];
+if(n.id==e)return n}
+}
+,t.prototype.getFullPictures=function(e,i){
+for(var n=[],r=0,o=e;
+r<o.length;
+r++){
+var a=o[r];
+null==a.layers&&n.push(a)}
+n.length?this.getModel(t).checkPictureByIds(n,new core.Action(function(){
+i.apply(e)}
+)):i.apply(e)}
+,t.prototype.checkPictureByIds=function(e,t){
+for(var i=!1,n=[],r=0,o=e;
+r<o.length;
+r++){
+var a=o[r];
+n.push(a.id)}
+for(var s=0,c=this.pictureInfoList;
+s<c.length;
+s++){
+var a=c[s];
+if(n.indexOf(a.id)>=0&&null==a.layers){
+i=!0;
+break}
+}
+i?core.SocketManage.getInstance().send("album_load_by_id_list",new core.Action2(function(e,i){
+t&&t.apply()}
+),n):t&&t.apply()}
+,t.prototype.checkPictureLastes=function(e){
+}
+,t.prototype.checkPictureInfoPage=function(e,t){
+if(e>t)return core.Log.warning("检测相册页面失败，start 不能小于 end"),!1;
+var i=!0;
+if(this.pictureCount>=e)if(this.pictureInfoList.length>=t){
+for(var n=e-1;
+t>n;
+n++)if(null==this.pictureInfoList[n]||null==this.pictureInfoList[n].layers){
+i=!1;
+break}
+}
+else i=!1;
+else i=!1;
+return i||core.SocketManage.getInstance().send("album_load",null,e,t-e+1),i}
+,t.prototype.deletePictureInfo=function(e,t){
+for(var i,n=this,r=this.pictureInfoList.length-1;
+r>=0;
+r--)if(i=this.pictureInfoList[r]){
+if(i.id==e)return void core.SocketManage.getInstance().send("album_delete",new core.Action2(function(e,r){
+var o=n.getModel(MessageModel).getErrorInfo(e.code);
+if(o&&0==o.code){
+var a=n.pictureInfoList.indexOf(i);
+a>=0?n.pictureInfoList.splice(a,1):core.Log.warning("删除照片出错"),n.pictureCount--,n.dispatchEvent(new core.Event(TravelEventType.deletePicture))}
+t(o)}
+,this),e)}
+else this.pictureInfoList.splice(r,1)}
+,t.prototype.putPicturesToGiftBox=function(e,t){
+for(var i=this,n={
+}
+,r=0,o=e;
+r<o.length;
+r++){
+var a=o[r];
+n[a]=!0}
+for(var s=0,c=function(e){
+var r=l.pictureInfoList[e];
+r?n[r.id]&&(delete n[r.id],s++,core.SocketManage.getInstance().send("travel_album_to_gift",new core.Action2(function(e,n){
+var o=i.getModel(MessageModel).getErrorInfo(e.code);
+if(o&&0==o.code){
+var a=i.pictureInfoList.indexOf(r);
+a>=0?(i.pictureInfoList.splice(a,1),i.getModel(GiftBoxModel).onMovePicture(r)):core.Log.warning("移动照片出错"),i.pictureCount--,s--,i.dispatchEvent(new core.Event(TravelEventType.deletePicture))}
+t(o)}
+),r.id)):l.pictureInfoList.splice(e,1)}
+,l=this,a=this.pictureInfoList.length-1;
+a>=0;
+a--)c(a)}
+,t.prototype.handleAdsPicture=function(){
+return this.hasAds?(this.hasAds=

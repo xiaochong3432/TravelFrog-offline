@@ -1,0 +1,11 @@
+chars 188450..188700
+
+__reflect(SpringCardModel.prototype,"SpringCardModel");
+var StoryData=function(){
+function e(){
+this.id=0,this.partner=0,this.name="",this.gift=-1,this.feedback=-1}
+return e}
+();
+__reflect(StoryData.prototype,"StoryData");
+var StoryModel=function(e){
+functio

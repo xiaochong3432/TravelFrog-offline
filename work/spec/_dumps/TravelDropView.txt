@@ -1,0 +1,15 @@
+var TravelDropView=function(e){
+  function t(){
+    return e.call(this,core.PathManage.getInstance().getSkinsPath("TravelDrop/TravelDropSkin.exml"),TravelDropController,core.ViewLayerType.NoticeLayer)||this
+  }return __extends(t,e),t.prototype.childrenCreated=function(){
+    e.prototype.childrenCreated.call(this),this.list.itemRenderer=DropItemRender,this.cover.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this),this.btnConfirm.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this)
+  },t.prototype.setData=function(e){
+    this.data=e||{
+      data:null,onClose:null
+    },this.data.data.length=10,this.list.dataProvider=new eui.ArrayCollection(this.data.data)
+
+  },t.prototype.onClose=function(){
+    this.data.onClose&&this.data.onClose()
+  },t
+}(WindowView);
+__reflect(TravelDropView.prototype

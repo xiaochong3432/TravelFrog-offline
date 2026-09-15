@@ -1,0 +1,47 @@
+his,!1,e.SocketEventType.ConnectionSucceed,e.SocketEventType.ConnectionFailure,e.SocketEventType.Disconnect,e.SocketEventType.ReceiveData),this._socket.destroy(),this._socket=null)}
+,t.prototype.send=function(t,i){
+void 0===i&&(i=null);
+for(var n=[],r=2;
+r<arguments.length;
+r++)n[r-2]=arguments[r];
+if(null==this._socket)return void e.Log.warning("socket 未创建，发送协议前请先创建 socket");
+if(this._socket.getState()!=e.SocketState.ConnectionSucceed)return e.Log.print(t),void e.Log.warning("socket 还未与服务器建立连接，请稍后");
+if(null==ProtocolList.protocolList[t])return void e.Log.warning(e.String.format("发送的协议 {
+0}
+ 不存在",t));
+var o=ProtocolList.protocolList[t],a=o[0],s=o[1];
+if(null==a)return void e.Log.warning(e.String.format("发送的协议 {
+0}
+ 无效，该协议未定义有效值",t));
+if(a.length!=n.length)return void e.Log.error("发送的协议："+t+" 参数与定义参数不匹配，请检查调用处是否错误。定义参数："+a.length+" 传入参数："+n.length);
+var c=t,l=c.indexOf("_");
+if(l>=0){
+var h=c.split("");
+h.splice(l,1,"."),c=h.join("")}
+var u={
+}
+;
+if(s&&(this.sessionID++,u.session=this.sessionID),u.timestamp=Math.floor(e.Time.getServerTime()),u.cmd=c,a.length>0){
+u.data={
+}
+;
+for(var p=0;
+p<a.length;
+p++)u.data[a[p]]=n[p]}
+var d=JSON.stringify(u);
+e.Log.print("发送协议："+d),s&&(i&&(u.callbackFun=i),this.activateProtocol[u.session]=u),this._socket.send(d)}
+,t.prototype.socketLongCallback=function(t){
+switch(t.getEventType()){
+case e.SocketEventType.ConnectionSucceed:e.Log.print("连接成功"),this.sessionID=0,this.activateProtocol={
+}
+,this.DispatchEventToControl(t);
+break;
+case e.SocketEventType.ConnectionFailure:e.Log.print("连接失败"),this.DispatchEventToControl(t);
+break;
+case e.SocketEventType.Disconnect:e.Log.print("断开连接"),this.DispatchEventToControl(t);
+break;
+case e.SocketEventType.ReceiveData:this.AnalysisProtocol(t.getParam(0),t.getParam(1))}
+}
+,t.prototype.AnalysisProtocol=function(t,i){
+var n;
+if(t==egret.WebSocket.TYPE

@@ -1,0 +1,20 @@
+var o=core.PageManage.getInstance().getControl(CapsuleViewControl,core.ViewLayerType.WindowLayer);
+if(o)return void o.view.setGiftItems(t);
+core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.ViewLayerType.NoticeLayer,null,t)}
+}
+,t.prototype.item_load_select_gift=function(e){
+var t=this.selectGiftList;
+this.selectGiftList=Utils.convertArray(e.list),t.length<=0&&core.PageManage.getInstance().getControl(MainOutController,core.ViewLayerType.SceneLayer)&&this.check_select_gift()}
+,t.prototype.check_select_gift=function(){
+if(this.selectGiftList.length>0){
+var e=this.selectGiftList[0];
+core.DisplayManage.getInstance().popup(new GiftSelectView(e.num,e.items))}
+}
+,t.prototype.req_select_gift=function(e,t){
+var i=this;
+this.selectGiftList.shift(),core.SocketManage.getInstance().send("item_select_gift",new core.Action2(function(e){
+if(e.items&&e.items.length>0){
+for(var n=[],r=0,o=e.items;
+r<o.length;
+r++){
+var

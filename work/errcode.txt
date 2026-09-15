@@ -1,0 +1,8 @@
+﻿=== errcode in default.res.json? ===
+errcode occurrences: 2
+et1_1_png,wet1_png,wet2_1_png,wet2_png,wet3_1_png,wet3_png,wet_back_png,wet_fw_png,wet_yhc_png,wheat01_1_png,wheat01_2_png,wheat02_1_png,wheat02_2_png,wheat03_png,wood_png"},{"name":"preload","keys":"errcode_json,frame_small_png,gameConfig_json,hplogo_png,launch_png,lingxi_png,loading_dorai_png,loading_off_png,loading_on_png,loading_png,maintain_bg_png,maintain_info_1_png,new_title_png,no_png,user
+
+=== errcode files on disk ===
+[]
+
+tables containing errcode: []

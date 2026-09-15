@@ -1,0 +1,19 @@
+S=200002]="COMPASS"}
+(t=e.ItemID||(e.ItemID={
+}
+));
+var i;
+!function(e){
+e[e.NONE=-1]="NONE",e[e.Clover=0]="Clover",e[e.FourClover=1]="FourClover",e[e.Ticket=2]="Ticket",e[e.MAX=3]="MAX"}
+(i=e.Gift||(e.Gift={
+}
+));
+var n;
+!function(e){
+e[e.NONE=-1]="NONE",e[e.LunchBox=0]="LunchBox",e[e.Amulet=1]="Amulet",e[e.Tool_1=2]="Tool_1",e[e.Tool_2=3]="Tool_2",e[e.MAX=4]="MAX"}
+(n=e.BagItem||(e.BagItem={
+}
+));
+var r;
+!function(e){
+e[e.NONE=-1]="

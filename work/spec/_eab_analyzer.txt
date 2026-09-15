@@ -1,0 +1,6 @@
+e),t}
+(egret.HttpRequest);
+RES.processor.map("epng",new EncryptPNGAnalyzer),RES.processor.map("eab",new EjoyAssetBundleAnalyzer),RES.processor.map("eab_asset",new EjoyAssetBundleAssetAnalyzer),RES.setMaxRetryTimes(2),egret.HttpRequest=i,t.once(egret.Event.ADDED_TO_STAGE,t.onShow,t),t.registerErrorCallback();
+window.onerror;
+if(window.onerror=function(){
+Utils.FpsManager.instance().boost(),core.PageManage.getInstance().removeControlAll(core.ViewLayerType.WindowLayer),core.PageManage.getInstance().removeControlAll(core.ViewLayerType.LoaderLayer),core.PageManage.getInstance().removeControlAll(core.Vie

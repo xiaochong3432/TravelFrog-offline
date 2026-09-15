@@ -1,0 +1,24 @@
+ItemType={
+}
+));
+var n;
+!function(e){
+e[e.FLOWER=1]="FLOWER"}
+(n=e.ItemAmuletType||(e.ItemAmuletType={
+}
+));
+var r;
+!function(e){
+e[e.CLOVER=1]="CLOVER",e[e.TICKET=2]="TICKET",e[e.COMPASS=3]="COMPASS",e[e.WATER=4]="WATER",e[e.CHANGE=5]="CHANGE"}
+(r=e.ItemResourceType||(e.ItemResourceType={
+}
+));
+var o;
+!function(e){
+e[e.NONE=-1]="NONE",e[e.ITEM=1]="ITEM",e[e.PICTURE=2]="PICTURE",e[e.NOTE=3]="NOTE",e[e.BOX=4]="BOX",e[e.RESOURCE=5]="RESOURCE",e[e.CARDTAGS=100]="CARDTAGS",e[e.SPRINGCARDTAGS=101]="SPRINGCARDTAGS"}
+(o=e.DropType||(e.DropType={
+}
+));
+var a;
+!function(e){
+e[e.None=-1]="None",e[e

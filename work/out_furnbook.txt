@@ -1,0 +1,218 @@
+tNoticeLayer());
+var n=e.itemIndex,r=this.getModel(FurnitureModel).getBenchTools(),o=r[n];
+Tabikaeru.DataManager.instance().ItemDB;
+core.PageManage.getInstance().addViewControl(ToolBagViewController,core.ViewLayerType.NoticeLayer,core.RemoveViewType.Retain,{
+selected:o,tabIndex:0,isSelection:!0,itemsGetter:function(e){
+var i=t.getModel(ItemModel).getHouseItemsByType(Tabikaeru.DataType.ItemType.FURNITURE_TOOL);
+return i=i.filter(function(e){
+return e.item_id!=o&&-1==r.indexOf(e.item_id)}
+),i.sort(function(e,t){
+return e.item_id-t.item_id}
+),-1!=o&&i.unshift({
+item_id:o,count:t.getModel(ItemModel).getHouseItemCount(o)}
+),i}
+,tabFilter:function(e){
+return 0==e}
+,onSelected:function(e){
+e.item_id==o?t.getModel(FurnitureModel).setBenchTool(n,-1):t.getModel(FurnitureModel).setBenchTool(n,e.item_id)}
+}
+)}
+,t.prototype.onItemListTap=function(e){
+var t=this,i=this.getModel(FurnitureModel).isLockBench();
+if(i)return void GuideHelpView.getInstance().show(_("呱~不许动"),null,core.DisplayManage.getInstance().getNoticeLayer());
+var n=e.itemIndex,r=this.getModel(FurnitureModel).getBenchItems(),o=r[n];
+Tabikaeru.DataManager.instance().ItemDB;
+core.PageManage.getInstance().addViewControl(ToolBagViewController,core.ViewLayerType.NoticeLayer,core.RemoveViewType.Retain,{
+selected:o,tabIndex:1,isSelection:!0,itemsGetter:function(e){
+var i=t.getModel(ItemModel).getHouseItemsByType(Tabikaeru.DataType.ItemType.FURNITURE_ITEM);
+i.sort(function(e,t){
+return e.item_id-t.item_id}
+);
+for(var n=!1,r=i.length-1;
+r>=0;
+r--)if(i[r].item_id==o){
+n=!0,i.splice(r,1);
+break}
+return-1!=o&&i.unshift({
+item_id:o,count:t.getModel(ItemModel).getHouseItemCount(o)}
+),i}
+,tabFilter:function(e){
+return 1==e}
+,onSelected:function(e){
+e.item_id==o?t.getModel(FurnitureModel).setBenchItem(n,-1):t.getModel(FurnitureModel).setBenchItem(n,e.item_id)}
+}
+)}
+,t.prototype.onListResourceTap=function(e){
+var t=TooltipsManager.instance().getTooltips();
+if(e.item&&e.item.itemID)if(t&&t instanceof FurnitureResourceTips&&t.data&&t.data.itemID==e.item.itemID);
+else{
+t=new FurnitureResourceTips,t.setData(e.item);
+var i=e.itemRenderer;
+TooltipsManager.instance().show({
+target:t,position:i.localToGlobal(0,-t.height)}
+)}
+}
+,t.prototype.update=function(){
+for(var e={
+}
+,t=this.getModel(FurnitureModel).getMateList(),i=0,n=t;
+i<n.length;
+i++){
+var r=n[i];
+e[r]=e[r]||0,e[r]++}
+for(var o=[],a=Tabikaeru.DataManager.instance().ItemDB,s=0,c=this.resourceTypes;
+s<c.length;
+s++){
+var r=c[s],l=a.get(r);
+o.push({
+itemID:r,icon:Tabikaeru.path.formatPathImage(l.img),count:Math.max(0,this.getModel(ItemModel).getHouseItemCount(r)-(e[r]||0))}
+)}
+this.listResourceData=new eui.ArrayCollection(o),this.listResource.dataProvider=this.listResourceData,this.updateBench(),this.checkGuide()}
+,t.prototype.updateBench=function(){
+var e=this.getModel(FurnitureModel).getBenchTools(),t=this.getModel(FurnitureModel).getBenchItems(),i=this.getModel(FurnitureModel).isLockBench();
+this.listTool.dataProvider=new eui.ArrayCollection(e.map(function(e){
+return{
+type:Tabikaeru.DataType.DropType.ITEM,isLock:i,item_id:e,count:-1}
+}
+)),this.listItem.dataProvider=new eui.ArrayCollection(t.map(function(e){
+return{
+type:Tabikaeru.DataType.DropType.ITEM,isLock:i,item_id:e,count:-1}
+}
+))}
+,t.prototype.checkGuide=function(){
+if(4==this.getModel(UserModel).getClientSettings().guideFurniture){
+this.getModel(UserModel).setClientSettings("guideFurniture",5);
+var e=new GuideFurnitureBenchToolView;
+core.DisplayManage.getInstance().getPopupLayer().addChild(e)}
+}
+,t}
+(WindowView);
+__reflect(FurnitureBenchView.prototype,"FurnitureBenchView");
+var FurnitureBenchViewController=function(e){
+function t(){
+return e.call(this,FurnitureBenchView)||this}
+return __extends(t,e),t.prototype.open=function(){
+e.prototype.open.call(this),this.addEventListeners(this.onEvent,this,FurnitureEventType.UPDATE_BENCH,ItemEventType.updateHouseInfo),this.view&&this.view.update()}
+,t.prototype.close=function(){
+e.prototype.close.call(this),this.removeEventListeners(this.onEvent,this,!1,FurnitureEventType.UPDATE_BENCH,ItemEventType.updateHouseInfo)}
+,t.prototype.onEvent=function(e){
+switch(e.getEventType()){
+case FurnitureEventType.UPDATE_BENCH:case ItemEventType.updateHouseInfo:this.view.updateBench()}
+}
+,t}
+(WindowController);
+__reflect(FurnitureBenchViewController.prototype,"FurnitureBenchViewController");
+var FurnitureBookPage=function(e){
+function t(){
+var t=e.call(this,core.PathManage.getInstance().getSkinsPath("Furniture/FurnitureBookPageSkin.exml"))||this;
+return t.replaceSelection={
+}
+,t}
+return __extends(t,e),t.prototype.onHide=function(){
+e.prototype.onHide.call(this),this.data.replaceMode&&(this.getModel(FurnitureModel).replaceData.fur=this.replaceSelection)}
+,t.prototype.childrenCreated=function(){
+e.prototype.childrenCreated.call(this),this.list.itemRenderer=FurnitureBookListItem,this.selectGroup.addEventListener(egret.Event.CHANGE,this.onSelectGroupChange,this),this.selectGroup.selectedIndex=1,this.update()}
+,t.prototype.onSelectGroupChange=function(){
+this.update()}
+,t.prototype.update=function(){
+var e=this;
+this.replaceSelection=this.data.replaceMode?this.getModel(FurnitureModel).replaceData.fur:{
+}
+;
+for(var t=this.getModel(FurnitureModel).getReplaced(),i=0,n=t;
+i<n.length;
+i++){
+var r=n[i];
+this.replaceSelection[r]=r}
+for(var o=this.selectGroup.selectedIndex,a=Tabikaeru.DataManager.instance().FurnitureDB,s=this.getModel(FurnitureModel).getOwnedFurnitures(),c={
+}
+,l=0,h=s;
+l<h.length;
+l++){
+var r=h[l],u=a.get(r);
+u&&(1==o?(null==c[u.style]&&(c[u.style]=[]),c[u.style].push(u)):(null==c[u.type]&&(c[u.type]=[]),c[u.type].push(u)))}
+for(var p=function(t){
+e.data.replaceMode?e.selectReplace(t.id,!1):core.PageManage.getInstance().addViewControl(FurnitureItemTipsController,core.ViewLayerType.NoticeLayer,core.RemoveViewType.Retain,{
+img:t.icon,title:t.name,area:t.name,info:t.info,shareCallback:function(){
+}
+}
+)}
+,d=this.getModel(FurnitureModel).getHomeFurnitures().map(function(e){
+return e.id}
+),g=0,f=d;
+g<f.length;
+g++){
+var r=f[g];
+this.replaceSelection[r]=1}
+for(var v=this.getModel(FurnitureModel).getReplaced(),_=0,y=v;
+_<y.length;
+_++){
+var r=y[_];
+this.selectReplace(r,!0)}
+var m=[],w=Tabikaeru.DataManager.instance().FurnitureCommonDB,T=function(e){
+var t=0==o?Number(e):1e3+Number(e),i=w.get(t),n=a.list().filter(function(t){
+return t.style==e}
+).length;
+m.push({
+items:c[e],tols:n,modelType:o,replaceSelection:C.replaceSelection,modelValue:i?i.value:"",onTap:p,selectMode:C.data.replaceMode}
+)}
+,C=this;
+for(var r in c)T(r);
+this.scrollList.stopAnimation(),this.scrollList.viewport.scrollV=0,this.list.dataProvider=new eui.ArrayCollection(m)}
+,t.prototype.on_btnShare_tap=function(e){
+this.shareSelector||(this.shareSelector=new ShareView),this.shareSelector.open_item(e,Prize.Rank.NONE),this.shareSelector.show(350,ShareAnim.TopDown),this.addChild(this.shareSelector)}
+,t.prototype.selectReplace=function(e,t){
+var i=Tabikaeru.DataManager.instance().FurnitureDB,n=i.get(e).type;
+if(this.replaceSelection[e])if(2==this.replaceSelection[e]){
+delete this.replaceSelection[e];
+var r=this.getModel(FurnitureModel).getHomeFurniture(n);
+this.replaceSelection[r]=1}
+else t&&(this.replaceSelection[e]=3);
+else{
+for(var o in this.replaceSelection)i.get(Number(o)).type==n&&delete this.replaceSelection[o];
+var r=this.getModel(FurnitureModel).getHomeFurniture(n);
+r==e?this.replaceSelection[e]=3:this.replaceSelection[e]=2}
+for(var a=0,s=this.list.$children;
+a<s.length;
+a++){
+var c=s[a];
+c.dataChanged()}
+this.getModel(FurnitureModel).replaceData.fur=this.replaceSelection}
+,t}
+(WindowPageView);
+__reflect(FurnitureBookPage.prototype,"FurnitureBookPage");
+var FurnitureBookListItem=function(e){
+function t(){
+return null!==e&&e.apply(this,arguments)||this}
+return __extends(t,e),t.prototype.childrenCreated=function(){
+e.prototype.childrenCreated.call(this),this.btnFold.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onBtnFold,this),this.list.addEventListener(eui.ItemTapEvent.ITEM_TAP,this.onItemTap,this)}
+,t.prototype.onItemTap=function(e){
+this.data&&this.data.onTap&&this.data.onTap(e.item.data)}
+,t.prototype.onBtnFold=function(){
+this.btnFold.selected?(this.list.height=0/0,this.data.folded=!0):(this.list.height=75,this.data.folded=!1)}
+,t.prototype.dataChanged=function(){
+e.prototype.dataChanged.call(this);
+var t=[];
+if(this.data){
+this.btnFold.selected=this.data.folded,this.onBtnFold(),0==this.data.modelType?(this.currentState="type",this.lblName.text=_("{
+0}
+",this.data.modelValue,this.data.items.length,this.data.tols)):(this.currentState="style",this.lblName.text=_("{
+0}
+({
+1}
+/{
+2}
+)",this.data.modelValue,this.data.items.length,this.data.tols));
+for(var i=0,n=this.data.items;
+i<n.length;
+i++){
+var r=n[i];
+t.push({
+using:1==this.data.replaceSelection[r.id],replacing:2==this.data.replaceSelection[r.id]||3==this.data.replaceSelection[r.id],data:r,icon:Tabikaeru.path.formatPathImage(r.icon)}
+)}
+}
+t.sort(function(e,t){
+return e.data.id-t.data.id}
+),this.list.dataProvider=new eui.ArrayCollection(t)}
+,t}
+(eui.ItemRendere

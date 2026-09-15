@@ -1,0 +1,24 @@
+f(e);
+return __assign({
+}
+,n.ItemDB.get(e),{
+stock:-1==t?0:a[t]}
+)}
+)}
+,Object.defineProperty(t.prototype,"collectionList",{
+get:function(){
+for(var t,i=e.DataManager.instance(),n=this.itemModel.getCollectionsList(),r=[],o=0;
+o<i.CollectDB.count();
+o++)t=i.CollectDB.index(o),n.indexOf(t.id)>=0?r.push({
+cfg:t,count:1}
+):r.push({
+cfg:t,count:0}
+);
+return r.sort(function(e,t){
+return t.cfg.type-e.cfg.type||e.cfg.id-t.cfg.id}
+),r}
+,enumerable:!0,configurable:!0}
+),Object.defineProperty(t.prototype,"specialtyList",{
+get:function(){
+for(var t,i=e.DataManager.instance(),n=this.itemModel.getSpecialtysList(),r=[],o=0;
+o<i.Sp

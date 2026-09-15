@@ -1,0 +1,162 @@
+stemInit=e,this.delayEventSystem?this.delayEventSystem=!1:(Result.eventSystem(core.DisplayManage.getInstance().getPopupLayer(),this.eventSystemInit),this.eventSystemInit=!1)}
+,t.prototype.update_ads=function(){
+var e=this.getModel(AdsModel);
+if(BaseChannel.getInstance().supportAds()){
+var t=e.getAdsPlace("daily_pay");
+this.adsNoticeBtn.visible=!1,t&&e.isValidAds(t)&&(this.adsNoticeBtn.visible=!0)}
+else this.adsNoticeBtn.visible=e.data.day_left>0}
+,t.prototype.update_invite=function(){
+this.getModel(DrawingModel).data.state==DrawingState.invite?(this.inviteBtn.icon=["out_invite_wugui_png","out_invite_maotouying_png","out_invite_songshu_png"][this.getModel(DrawingModel).data.guest],this.inviteBtn.visible=!0,this.inviteBtnMask.visible=!0):(this.inviteBtn.visible=!1,this.inviteBtnMask.visible=!1),this.checkDrawingGuide()}
+,t.prototype.update_tumber=function(){
+this.groupTumber.removeChildren();
+var e=this.getModel(FurnitureModel).tumblerData;
+if(e.show_index>0){
+var t=e.tumbler_list[e.show_index-1];
+if(t){
+var i=new TumblerToy;
+i.setData(t),this.groupTumber.addChild(i)}
+}
+}
+,t.prototype.update_compost=function(){
+var e=this.getModel(FurnitureModel).compostData;
+if(e.show_index>0){
+var t=e.compost_list[e.show_index-1];
+if(t){
+var i=Tabikaeru.DataManager.instance().CompostData.get(t);
+i&&(this.compost.source=Tabikaeru.path.formatPathImage(i.res))}
+e.state>=3?this.land.source="mainout_season"+this.seasonKey+"_td_fw_png":1==e.state?this.land.source="mainout_season"+this.seasonKey+"_td_pj_png":this.land.source="mainout_season"+this.seasonKey+"_td_zc_png"}
+else this.land.source="mainout_season"+this.seasonKey+"_td_zc_png"}
+,t.prototype.update_pocket=function(){
+var e=this.getModel(FurnitureModel).pocketData,t="";
+if(e&&e.show_index>0){
+var i=e.list[e.show_index-1],n=Tabikaeru.DataManager.instance().pocketCommonData.get("base_info")||50;
+if(i){
+var r=Tabikaeru.DataManager.instance().pocketData.get(i);
+r&&(t=e.clover>=n?Tabikaeru.path.formatPathImage(r.full_pic):e.clover>=1?Tabikaeru.path.formatPathImage(r.have_pic):Tabikaeru.path.formatPathImage(r.none_pic))}
+}
+this.imgPocket.source=t}
+,t.prototype.update_flowerpot=function(){
+for(var e=this.getModel(FurnitureModel).flowerpotData,t=Tabikaeru.DataManager.instance().flowerpotData.get("flowerpot"),i=0,n=e.show_list;
+i<n.length;
+i++){
+var r=n[i];
+
+this.flowerpotList[r.type].source=t[r.id].pic+"_png";
+for(var o=1;
+o<=t[r.id].pos_list.length;
+o++){
+var a=10*r.type+o;
+this.plantList[a].horizontalCenter=t[r.id].pos_list[o-1][0],this.plantList[a].verticalCenter=t[r.id].pos_list[o-1][1]}
+}
+this.btnPot1.visible=!0;
+for(var s=Tabikaeru.DataManager.instance().flowerpotData.get("plant"),c=0,l=e.plant_list;
+c<l.length;
+c++){
+var r=l[c],a=10*r.type+r.index,h=new CloverInfo;
+h.element=4,s[r.id]&&(h.clover_id=r.id,h.sprite=r.stage),this.plantList[a].setInfo(h),3==h.sprite&&(this.btnPot1.visible=!1)}
+}
+,t.prototype.flowerpotTouchEvents=function(e){
+var t=this,i=function(i){
+if(n.plantList[i].info.sprite<3)return"continue";
+if(!n.plantList[i].hitTestPoint(e.stageX,e.stageY))return"continue";
+var r=Number(i);
+return n.getModel(FurnitureModel).req_flowerpot_harvest(Math.floor(r/10),r%10,function(){
+t.plantList[i].harvest(),t.plantList[i].info.clover_id=0,t.plantList[i].info.sprite=0;
+for(var e=t.getModel(FurnitureModel).flowerpotData,n=0,r=e.plant_list;
+n<r.length;
+n++){
+var o=r[n];
+if(3==o.stage)return void(t.btnPot1.visible=!1)}
+t.btnPot1.visible=!0}
+),"break"}
+,n=this;
+for(var r in this.plantList){
+var o=i(r);
+if("break"===o)break}
+}
+,t.prototype.checkDrawingGuide=function(){
+var e=this;
+if(this.getModel(DrawingModel).data.state==DrawingState.invite){
+var t=this.userModel.getClientSettings();
+if(t.guideStep==GuideStep.Complete)if(t.guideDrawing>1==0){
+this.disabledOrEnableUI(!1),this.c_friend&&(this.c_friend.visible=!1);
+var i=new GuideDrawView(function(t){
+e.guideFurnitureView=null,e.disabledOrEnableUI(!0),e.getModel(UserModel).setClientSettings("guideDrawing",1),t&&core.PageManage.getInstance().addViewControl(InviteViewControl,core.ViewLayerType.WindowLayer,core.RemoveViewType.HideBefore,{
+guest:e.getModel(DrawingModel).data.guest,callback:function(){
+e.checkDrawingGuide()}
+}
+)}
+);
+this.c_guide.addChild(i)}
+else 2==t.guideDrawing&&(this.disabledOrEnableUI(!1,!0,this.houseBtn),GuideFingerView.getInstance().show(this.houseBtn,FingerOrientation.Right,!0))}
+}
+,t.prototype.on_adsNoticeBtn_tap=function(){
+var e=this;
+if(GameConfig.channel==ChannelType.Test)return void core.DisplayManage.getInstance().getNoticeLayer().addChild(new AdsVideoView);
+if(egret.Capabilities.runtimeType!=egret.RuntimeType.WXGAME){
+var t=this.getModel(ActivityModel).getActivity("video_x36");
+if(t&&t.params){
+var i=Math.floor(100*Math.random())+1;
+if("iOS"==egret.Capabilities.os){
+if(t.params.ios_rate&&i<=t.params.ios_rate)return void core.DisplayManage.getInstance().getNoticeLayer().addChild(new AdsVideoView)}
+else if(t.params.android_rate&&i<=t.params.android_rate)return void core.DisplayManage.getInstance().getNoticeLayer().addChild(new AdsVideoView)}
+}
+if(BaseChannel.getInstance().supportAds()){
+this.update_ads();
+var n=this.getModel(AdsModel),r=n.getAdsPlace("daily_pay");
+r&&n.isValidAds(r)&&n.playAds(r,function(t){
+e.update_ads()}
+)}
+else core.PageManage.getInstance().addViewControl(AdsPopViewControl,core.ViewLayerType.WindowLayer)}
+,t.prototype.on_btnMuseumDay_tap=function(){
+var e=this.getModel(MuseumDayModel).data,t=this.getModel(MuseumDayModel).getActivityTime();
+this.getModel(MuseumDayModel).isOpen()?core.String.getCookie("museumDay_popup")!=String(t[1])?core.PageManage.getInstance().addViewControl(MuseumDayPopupViewControl,core.ViewLayerType.WindowLayer):0==e.cur_museum?core.PageManage.getInstance().addViewControl(MuseumDayHistoryViewControl,core.ViewLayerType.WindowLayer):core.PageManage.getInstance().addViewControl(MuseumDayExploreViewControl,core.ViewLayerType.WindowLayer):(GuideHelpView.getInstance().show(_("春游活动已结束")),this.updateMuseumDay())}
+,t.prototype.on_btnGreetCard_tap=function(){
+this.getModel(GreetCardModel).isOpen()?core.PageManage.getInstance().addViewControl(GreetCardViewControl,core.ViewLayerType.WindowLayer):(GuideHelpView.getInstance().show(_("中秋节贺卡活动已结束")),this.updateGreetCard())}
+,t.prototype.on_btnSpringCard_tap=function(){
+this.getModel(SpringCardModel).isOpen()?core.PageManage.getInstance().addViewControl(SpringCardViewControl,core.ViewLayerType.WindowLayer):(GuideHelpView.getInstance().show(_("春节贺卡活动已结束")),this.updateSpringCard())}
+,t.prototype.on_btnCapsule_tap=function(){
+this.getModel(CapsuleModel).isOpen()?core.PageManage.getInstance().addViewControl(CapsuleViewControl,core.ViewLayerType.WindowLayer):(GuideHelpView.getInstance().show(_("扭蛋机活动已结束")),this.updateCapsule())}
+,t.prototype.on_btnPartyCake_tap=function(){
+this.getModel(PartyCakeModel).isOpen()?core.PageManage.getInstance().addViewControl(PartyCakeViewControl,core.ViewLayerType.WindowLayer):(GuideHelpView.getInstance().show(_("聚会蛋糕活动已结束")),this.updatePartyCake())}
+,t.prototype.on_player_mc_tap=function(){
+Music.play("SE_Popup"),null==this.attributeView&&(this.attributeView=new AttributeView),this.attributeView.open(),this.addChild(this.attributeView);
+var e=core.ModelManage.getInstance().getModel(UserModel);
+if(!e.getClientSettings().hasOpenAttributeView){
+e.setClientSettings("hasOpenAttributeView",!0);
+var t=new GuideChangeName;
+this.addChild(t)}
+}
+,t.prototype.on_inviteBtn_tap=function(){
+var e=this;
+core.PageManage.getInstance().addViewControl(InviteViewControl,core.ViewLayerType.WindowLayer,core.RemoveViewType.Retain,{
+guest:this.getModel(DrawingModel).data.guest,callback:function(){
+e.checkDrawingGuide()}
+}
+)}
+,t.prototype.on_compost_tap=function(){
+this.scroller.stopAnimation(),this.scroller.viewport.scrollH=0,this.scroller.viewport.validateNow(),core.PageManage.getInstance().addViewControl(CompostViewControl,core.ViewLayerType.WindowLayer,core.RemoveViewType.Retain,{
+position:this.compost.localToGlobal()}
+)}
+,t.prototype.on_pocket_tap=function(){
+var e=this,t=this.getModel(FurnitureModel);
+0==t.pocketData.clover?this.addChild(new ModalAlert(_("呱~里面空空的"))):this.getModel(FurnitureModel).request_pocket_get(function(t,i){
+core.PageManage.getInstance().addViewControl(ItemRewardViewControl,core.ViewLayerType.WindowLayer,null,[{
+item_id:Tabikaeru.ItemID.CLOVER,count:i}
+]),e.update_pocket()}
+)}
+,t.prototype.onHandleCamera=function(e){
+for(var t=[this.groupTop,this.groupActivity,this.i_activityRedDot,this.houseBtn,this.shopBtn,this.groupTips],i=0;
+i<t.length;
+i++)e?t[i].visible=this.cameraVisibleRecord[i]:(this.cameraVisibleRecord[i]=t[i].visible,t[i].visible=!1);
+this.groupScene.touchChildren=e}
+,t.prototype.getCameraTexture=function(e,t){
+var i;
+if(t)i=t,i.x+=this.scroller.viewport.scrollH,i.y+=(this.groupScene.height-Main.stageHeight)/2,this.checkCameraMoment(i);
+else if(e)i=new egret.Rectangle(0,0,1152,1420);
+else{
+var n=(1420-this.height)/2;
+i=new egret.Rectangle(this.scroller.viewport.scrollH,n,this.width,this.height)}
+return Utils.Capture.instance().captureTexture(this.groupScene,i)}
+,t.prototype.checkCameraMoment=function(e){
+var t=this.getModel(MomentModel).data.has_map,i=Tabikaeru.DataMana

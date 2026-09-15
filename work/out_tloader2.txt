@@ -1,0 +1,34 @@
+cache=new TumblerCreator,this.cache.visible=!1);
+var n=[];
+if(e&&e.layers){
+var r=Tabikaeru.DataManager.instance().TumblerData.get(e.id);
+if(r){
+n.push(Tabikaeru.path.formatPathImage(r.bg)),n.push(Tabikaeru.path.formatPathImage(r.mask));
+for(var o=Tabikaeru.DataManager.instance().TumblerPathData,a=0,s=e.layers.length;
+s>a;
+a++){
+var c=o.get(e.layers[a].layer[0]);
+c&&c.res&&n.push(Tabikaeru.path.formatPathImage(c.res))}
+core.LoadingManage.getInstance().loadResource(n,null,function(){
+Utils.FpsManager.instance().boost(),egret.callLater(function(){
+var n=Tabikaeru.DataManager.instance().TumblerData.get(e.id);
+if(n){
+var r=Tabikaeru.DataManager.instance().TumblerPathData;
+i.cache.pathmask.texture=RES.getRes(Tabikaeru.path.formatPathImage(n.mask)),i.cache.bg.texture=RES.getRes(Tabikaeru.path.formatPathImage(n.bg)),i.cache.bg.x=-(i.cache.bg.width-120)/2,i.cache.bg.y=-(i.cache.bg.height-120)/2,i.cache.pathmask.x=-(i.cache.pathmask.width-120)/2,i.cache.pathmask.y=-(i.cache.pathmask.height-120)/2,i.cache.paths.removeChildren(),i.cache.adorn.removeChildren(),i.cache.adornBack.removeChildren();
+for(var o=0,a=e.layers.length;
+a>o;
+o++){
+var s=new egret.Bitmap,c=e.layers[o].layer[0],l=r.get(c);
+l&&(s.texture=RES.getRes(Tabikaeru.path.formatPathImage(l.res)),s.x=e.layers[o].layer[1]||0,s.y=e.layers[o].layer[2]||0,s.anchorOffsetX=.5*s.width,s.anchorOffsetY=.5*s.height,s.x=s.x+s.anchorOffsetX,s.y=s.y+s.anchorOffsetY,s.rotation=e.layers[o].layer[3]||0,s.scaleX=1==e.layers[o].layer[4]?-1:1,l.adorn?1==l.adorn?i.cache.adorn.addChild(s):2==l.adorn&&i.cache.adornBack.addChild(s):i.cache.paths.addChild(s))}
+}
+i.cache.paths.addChild(i.cache.pathmask),i.cache.paths.mask=i.cache.pathmask,egret.MainContext.instance.stage.addChild(i.cache);
+var h=(i.cache.getBounds(),new egret.RenderTexture),u=new egret.Rectangle(-40,-40,200,200);
+h.drawToTexture(i.cache,u),i.cache&&i.cache.stage&&egret.MainContext.instance.stage.removeChild(i.cache),t(h),Utils.FpsManager.instance().resume()}
+,i)}
+)}
+}
+}
+,t}
+(eui.Component);
+__reflect(TumblerLoader.prototype,"TumblerLoader");
+var T

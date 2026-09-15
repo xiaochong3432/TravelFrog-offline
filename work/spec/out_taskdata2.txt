@@ -1,0 +1,515 @@
+=== task_type ===
+{
+ "1": {
+  "desc": "为每一次旅行做点准备，然后期待青蛙回家后的分享吧",
+  "icon": [
+   "fuza_fw2"
+  ],
+  "limit": [
+   "找到属于你的蛙"
+  ],
+  "name": "旅行",
+  "type": 1,
+  "unlock": [
+   "快去准备旅行用的背包吧"
+  ]
+ },
+ "2": {
+  "desc": "青蛙在旅行时可能遇到有趣的事情，回家后会以笔记的形式记录下来",
+  "icon": [
+   "note_150_150",
+   "gift_150_150"
+  ],
+  "limit": [
+   "还未获得一篇笔记呢",
+   "还未获得一篇有关旅友的笔记呢"
+  ],
+  "name": "旅行笔记",
+  "type": 2,
+  "unlock": [
+   "可以到阁楼书桌查看喔",
+   "可以到阁楼礼品盒查看喔"
+  ]
+ },
+ "3": {
+  "desc": "心灵手巧的青蛙也需要一个称手的工具，来祈愿接下来的旅行顺顺利利",
+  "icon": [
+   "goods_42"
+  ],
+  "limit": [
+   "到商店找一个手工品工具吧"
+  ],
+  "name": "手工品",
+  "type": 3,
+  "unlock": [
+   "有材料后，记得留意桌上"
+  ]
+ },
+ "4": {
+  "desc": "见识过许多风景后，看着家里都有新想法了",
+  "icon": [
+   "furniture_150_150",
+   "icon_tuzhi",
+   "icon_tuzhi_401",
+   "icon_tuzhi_501"
+  ],
+  "limit": [
+   "多出去旅行寻找家具灵感",
+   "没图纸就做不了家具",
+   "聚会里跟邻居学习做不倒翁吧",
+   "聚会里跟邻居学习做堆肥箱吧"
+  ],
+  "name": "家具",
+  "type": 4,
+  "unlock": [
+   "工具、材料、图纸都不可少",
+   "缺什么，找嘟嘟就没错了",
+   "没有植物果实可开不了工",
+   "没有手工合页可开不了工"
+  ]
+ },
+ "5": {
+  "desc": "来自一份聚会的邀请，走进了邻居的世界",
+  "icon": [
+   "goods_60",
+   "invite_wugui"
+  ],
+  "limit": [
+   "到商店找一个友情绘本吧",
+   "等待邻居们的聚会邀请"
+  ],
+  "name": "友情绘本",
+  "type": 5,
+  "unlock": [
+   "等待邻居们的聚会邀请",
+   "为赴约做好准备"
+  ]
+ },
+ "9": {
+  "desc": "乱糟糟的东西，凑出了一个大问号",
+  "icon": [
+   "7_role"
+  ],
+  "limit": [
+   "找到属于你的蛙"
+  ],
+  "name": "杂七杂八",
+  "type": 9,
+  "unlock": [
+   "有疑问时就看看指南吧"
+  ]
+ }
+}
+=== list_type ===
+{
+ "1": {
+  "name": "是日清单",
+  "reward": [
+   1
+  ],
+  "target": [
+   3
+  ]
+ },
+ "2": {
+  "name": "当周计划",
+  "reward": [
+   202103,
+   2
+  ],
+  "target": [
+   2,
+   5
+  ]
+ },
+ "3": {
+  "name": "半月计划",
+  "reward": [
+   3,
+   4
+  ],
+  "target": [
+   3,
+   6
+  ]
+ },
+ "4": {
+  "name": "月度计划",
+  "reward": [
+   5,
+   15,
+   16,
+   33,
+   1104
+  ],
+  "target": [
+   2,
+   4,
+   6,
+   8,
+   12
+  ]
+ },
+ "5": {
+  "name": "当季计划",
+  "reward": [
+   8000,
+   8000,
+   1103
+  ],
+  "target": [
+   3,
+   7,
+   11
+  ]
+ },
+ "6": {
+  "name": "年度计划",
+  "reward": [
+   10103,
+   10104,
+   10106,
+   10102,
+   10105
+  ],
+  "target": [
+   4,
+   9,
+   14,
+   21,
+   30
+  ]
+ }
+}
+=== task_list ===
+{
+ "1": {
+  "count": 1,
+  "id": 1,
+  "num": 10,
+  "pic": "task_pic_1",
+  "reward_id": 200000,
+  "title": "等蛙旅行回来",
+  "type": 1
+ },
+ "101": {
+  "count": 1,
+  "id": 101,
+  "num": 1,
+  "pic": "task_pic_101",
+  "reward_id": 1000,
+  "title": "旅行有感",
+  "type": 2
+ },
+ "102": {
+  "count": 20,
+  "id": 102,
+  "num": 50,
+  "pic": "task_pic_102",
+  "reward_id": 200000,
+  "title": "一连串的见闻叙事",
+  "type": 2
+ },
+ "103": {
+  "count": 1,
+  "id": 103,
+  "num": 1,
+  "pic": "task_pic_103",
+  "reward_id": 14,
+  "title": "蛙友的结伴记录",
+  "type": 2
+ },
+ "104": {
+  "count": 1,
+  "id": 104,
+  "num": 10,
+  "pic": "task_pic_104",
+  "reward_id": 200000,
+  "title": "蛙友待续的故事",
+  "type": 2
+ },
+ "105": {
+  "count": 1,
+  "id": 105,
+  "num": 1,
+  "pic": "task_pic_105",
+  "reward_id": 17,
+  "title": "见一见旅行的朋友",
+  "type": 2
+ },
+ "2": {
+  "count": 10,
+  "id": 2,
+  "num": 1,
+  "pic": "task_pic_2",
+  "reward_id": 14,
+  "title": "旅行成了常态",
+  "type": 1
+ },
+ "201": {
+  "count": 1,
+  "id": 201,
+  "num": 1,
+  "pic": "task_pic_201",
+  "reward_id": 8000,
+  "title": "材料不可缺",
+  "type": 3
+ },
+ "202": {
+  "count": 1,
+  "id": 202,
+  "num": 20,
+  "pic": "task_pic_202",
+  "reward_id": 200000,
+  "title": "祈愿旅行~棒棒的",
+  "type": 3
+ },
+ "203": {
+  "count": 10,
+  "id": 203,
+  "num": 1,
+  "pic": "task_pic_203",
+  "reward_id": 8000,
+  "title": "祈愿物雕刻老手",
+  "type": 3
+ },
+ "204": {
+  "count": 1,
+  "id": 204,
+  "num": 20,
+  "pic": "task_pic_204",
+  "reward_id": 200000,
+  "title": "瞧~手工印章",
+  "type": 3
+ },
+ "205": {
+  "count": 10,
+  "id": 205,
+  "num": 1,
+  "pic": "task_pic_205",
+  "reward_id": 8000,
+  "title": "盖了好多个章",
+  "type": 3
+ },
+ "3": {
+  "count": 1,
+  "id": 3,
+  "num": 10,
+  "pic": "task_pic_3",
+  "reward_id": 200000,
+  "title": "回家还带吃的",
+  "type": 1
+ },
+ "301": {
+  "count": 1,
+  "id": 301,
+  "num": 10,
+  "pic": "task_pic_301",
+  "reward_id": 200000,
+  "title": "蛙~做什么工作呀",
+  "type": 4
+ },
+ "302": {
+  "count": 5,
+  "id": 302,
+  "num": 20,
+  "pic": "task_pic_302",
+  "reward_id": 200000,
+  "title": "买了肯定有用",
+  "type": 4
+ },
+ "303": {
+  "count": 1,
+  "id": 303,
+  "num": 10,
+  "pic": "task_pic_303",
+  "reward_id": 200000,
+  "title": "开始装饰小屋",
+  "type": 4
+ },
+ "304": {
+  "count": 1,
+  "id": 304,
+  "num": 1,
+  "pic": "task_pic_304",
+  "reward_id": 9000,
+  "title": "整套风格真好看",
+  "type": 4
+ },
+ "4": {
+  "count": 10,
+  "id": 4,
+  "num": 1,
+  "pic": "task_pic_4",
+  "reward_id": 18,
+  "title": "吃不完就是囤",
+  "type": 1
+ },
+ "401": {
+  "count": 1,
+  "id": 401,
+  "num": 10,
+  "pic": "task_pic_401",
+  "reward_id": 200000,
+  "title": "门口的小卡片",
+  "type": 5
+ },
+ "402": {
+  "count": 1,
+  "id": 402,
+  "num": 20,
+  "pic": "task_pic_402",
+  "reward_id": 200000,
+  "title": "揭秘~小伙伴身份",
+  "type": 5
+ },
+ "403": {
+  "count": 1,
+  "id": 403,
+  "num": 20,
+  "pic": "task_pic_403",
+  "reward_id": 200000,
+  "title": "等一个聚会惊喜",
+  "type": 5
+ },
+ "5": {
+  "count": 1,
+  "id": 5,
+  "num": 1,
+  "pic": "task_pic_5",
+  "reward_id": 1000,
+  "title": "途中淘了个纪念品",
+  "type": 1
+ },
+ "6": {
+  "count": 6,
+  "id": 6,
+  "num": 30,
+  "pic": "task_pic_6",
+  "reward_id": 200000,
+  "title": "一屋子的纪念品",
+  "type": 1
+ },
+ "7": {
+  "count": 1,
+  "id": 7,
+  "num": 1,
+  "pic": "task_pic_7",
+  "reward_id": 1000,
+  "title": "照片里有蛙",
+  "type": 1
+ },
+ "8": {
+  "count": 20,
+  "id": 8,
+  "num": 1,
+  "pic": "task_pic_8",
+  "reward_id": 9000,
+  "title": "这些照片都有蛙",
+  "type": 1
+ },
+ "9": {
+  "count": 1,
+  "id": 9,
+  "num": 1,
+  "pic": "task_pic_9",
+  "reward_id": 1012,
+  "title": "蛙蛙联合做大事",
+  "type": 1
+ },
+ "901": {
+  "count": 200,
+  "id": 901,
+  "num": 1,
+  "pic": "task_pic_901",
+  "reward_id": 1,
+  "title": "屯点家底",
+  "type": 9
+ },
+ "902": {
+  "count": 25,
+  "id": 902,
+  "num": 1,
+  "pic": "task_pic_902",
+  "reward_id": 1000,
+  "title": "攒点运气",
+  "type": 9
+ },
+ "903": {
+  "count": 1,
+  "id": 903,
+  "num": 1,
+  "pic": "task_pic_903",
+  "reward_id": 1000,
+  "title": "日历里的时光美食",
+  "type": 9
+ },
+ "904": {
+  "count": 1,
+  "id": 904,
+  "num": 10,
+  "pic": "task_pic_904",
+  "reward_id": 200000,
+  "title": "相册~急需扩容",
+  "type": 9
+ }
+}
+=== list_map (first 8) ===
+{
+ "101": {
+  "count": 1,
+  "desc": "<font color=0x545d4c><font size=18>不想走太远，就吃个<font color=0x5b93be>【华夫饼】</font>\n华夫饼虽然便宜，但是不耐饿哦！</font></font>",
+  "id": 101,
+  "title": "出门随便逛逛",
+  "type": 1
+ },
+ "102": {
+  "count": 1,
+  "desc": "<font color=0x545d4c><font size=18>走过相似的风景，<font color=0x5b93be>【目的地】</font>也终将达到\n旅途中，有过路照、特殊照、目的地照，你在期待怎样的风景呢？</font></font>",
+  "id": 102,
+  "title": "有目标一定能到达",
+  "type": 1
+ },
+ "103": {
+  "count": 1,
+  "desc": "<font color=0x545d4c><font size=18>打开相册里的<font color=0x5b93be>【地图】</font>看看吧\n我们的目标是——走遍大好河山！</font></font>",
+  "id": 103,
+  "title": "去看更大的世界",
+  "type": 1
+ },
+ "201": {
+  "count": 1,
+  "desc": "<font color=0x545d4c><font size=18>把旅行带回的<font color=0x5b93be>【特产】</font>和邻居分享\n每个邻居性格不同，口味喜好也不同</font></font>",
+  "id": 201,
+  "title": "跟邻居打个招呼",
+  "type": 2
+ },
+ "202": {
+  "count": 100,
+  "desc": "<font color=0x545d4c><font size=18>收<font color=0x5b93be>【100株】</font>三叶草\n最多4个小时草就能长满了，勤快的人会收获更多</font></font>",
+  "id": 202,
+  "title": "等一片草原",
+  "type": 2
+ },
+ "203": {
+  "count": 1,
+  "desc": "<font color=0x545d4c><font size=18>插到<font color=0x5b93be>【花瓶】</font>里的不是花，而是浪漫\n门前的田地会长出<font color=0x5b93be>野草</font>\n旅行也会带回好看的<font color=0x5b93be>鲜花</font></font></font>",
+  "id": 203,
+  "title": "学着浪漫一点",
+  "type": 2
+ },
+ "204": {
+  "count": 1,
+  "desc": "<font color=0x545d4c><font size=18>在<font color=0x5b93be>【邮箱-兑换码】</font>中输入<font color=0x5b93be>【给自己的信】</font>\n试着给过去、现在或未来的自己写一封信\n更多福利兑换，可关注社交平台官方号</font></font>",
+  "id": 204,
+  "title": "给自己寄一封信",
+  "type": 2
+ },
+ "205": {
+  "count": 1,
+  "desc": "<font color=0x545d4c><font size=18>试试带上<font color=0x5b93be>【草莓可丽饼】</font>出门\n准备好一点，会走得更远一些\n虽然不一定能达到\n那就多试几次</font></font>",
+  "id": 205,
+  "title": "这次决定走远一点",
+  "type": 2
+ }
+}

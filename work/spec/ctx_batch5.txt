@@ -1,0 +1,49 @@
+===== 'guestData.pos|\\.pos='  hits=1 =====
+
+--- [190020] ---
+ouseItem(t,1)?(i.gift=t,core.SocketManage.getInstance().send("story_send_gift",null,e,t),!0):!1;
+return!1}
+,t.prototype.story_load=function(e,t){
+this.storyList=Array.isArray(e.stories)?e.stories:[],this.newStoryID=e.new_story_id||0}
+,t}
+(core.Model);
+__reflect(StoryModel.prototype,"StoryModel");
+var GuestData=function(){
+function e(e){
+if(this.id=-1,this.confirmed=!1,this.served=!1,this.expire_time=0,this.pos=0,e)for(var t=0,i=Object.keys(e);
+t<i.length;
+t++){
+var n=i[t];
+null!=this[n]?this[n]=e[n]:(BaseChannel.getInstance().jf_commit(!0,"js.error",{
+reason:"warning",message:core.String.format("GuestData 数据合并错误，{
+0}
+ 属性不存在",n)}
+),core.Log.warning(core.String.format("GuestData 数据合并错误，{
+0}
+ 属性不存在",n)))}
+}
+return 
+
+##########################################################################################
+### literal "notify_new_mail"  hits=1
+##########################################################################################
+
+--- [192164] ---
+newAdsPictureInfoList=[],t.deletePictureInfoList=[],t}
+return __extends(t,e),t.prototype.destroy=function(){
+e.prototype.destroy.call(this)}
+,t.prototype.initModel=function(){
+this.addProtocolCallback("client_load_events","guest_load","album_load","mail_load_mails","mail_ejoy_active_code","album_load_new","album_load_recover","album_load_all","album_load_by_id_list","notify_new_event","notify_redmsg","notify_new_mail","mail_load")}
+,t.prototype.clearData=function(){
+}
+,t.prototype.getTravelEventList=function(){
+return this.travelEventList}
+,t.prototype.getFirstTravelEvent=function(){
+return this.travelEventList.length>0?this.travelEventList[0]:null}
+,t.prototype.createTravelEvent=function(e){
+this.trave
+
+
+##########################################################################################
+### literal "partner"  hits=0
+##########################################################################################

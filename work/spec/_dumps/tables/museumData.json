@@ -1,0 +1,152 @@
+{
+    "1": {
+             "collection_id": "34,35,36,37",
+                      "desc": "江西省博物馆筹建于1953年，是全省最大的综合性博物馆，首批国家一级博物馆，全省爱国主义教育基地。",
+                        "id": 1,
+               "info_ticket": {
+                                  "index": "info_jiangxi",
+                                    "src": "Scene/Museum/Place_pic"
+                              },
+                      "name": "江西省博物馆",
+                    "pic_id": [ 2109, 2110, 3063 ],
+                   "pic_res": [ {
+                                  "index": "g_bwg_jiangxi1",
+                                    "src": "Picture/Goal"
+                              }, {
+                                  "index": "g_bwg_jiangxi2",
+                                    "src": "Picture/Goal"
+                              }, {
+                                  "index": "u_bwg_jiangxi",
+                                    "src": "Picture/Unique"
+                              } ],
+                "share_logo": {
+                                  "index": "logo_jiangxi",
+                                    "src": "Scene/Museum/Place_pic"
+                              },
+                    "switch": 1,
+                    "ticket": {
+                                  "index": "list_jiangxi",
+                                    "src": "Scene/Museum/Place_pic"
+                              }
+         },
+    "2": {
+             "collection_id": "38,39,40,41",
+                      "desc": "山东博物馆成立于1954年，为国家一级博物馆，也是目前国内面积最大、设施最先进的省级博物馆之一。",
+                        "id": 2,
+               "info_ticket": {
+                                  "index": "info_shandong",
+                                    "src": "Scene/Museum/Place_pic"
+                              },
+                      "name": "山东博物馆",
+                    "pic_id": [ 2111, 2112, 3064 ],
+                   "pic_res": [ {
+                                  "index": "g_bwg_shandong1",
+                                    "src": "Picture/Goal"
+                              }, {
+                                  "index": "g_bwg_shandong2",
+                                    "src": "Picture/Goal"
+                              }, {
+                                  "index": "u_bwg_shandong",
+                                    "src": "Picture/Unique"
+                              } ],
+                "share_logo": {
+                                  "index": "logo_shandong",
+                                    "src": "Scene/Museum/Place_pic"
+                              },
+                    "switch": 1,
+                    "ticket": {
+                                  "index": "list_shandong",
+                                    "src": "Scene/Museum/Place_pic"
+                              }
+         },
+    "3": {
+             "collection_id": "42,43,44,45",
+                      "desc": "南越王博物院是以南越国重要考古遗存为依托的大型遗址类博物院，2021年由西汉南越王博物馆、南越王宫博物馆合并成立。",
+                        "id": 3,
+               "info_ticket": {
+                                  "index": "info_nanyuewang",
+                                    "src": "Scene/Museum/Place_pic"
+                              },
+                      "name": "南越王博物院",
+                    "pic_id": [ 2113, 2114, 3065 ],
+                   "pic_res": [ {
+                                  "index": "g_bwg_nanyuewang1",
+                                    "src": "Picture/Goal"
+                              }, {
+                                  "index": "g_bwg_nanyuewang2",
+                                    "src": "Picture/Goal"
+                              }, {
+                                  "index": "u_bwg_nanyuewang",
+                                    "src": "Picture/Unique"
+                              } ],
+                "share_logo": {
+                                  "index": "logo_nanyuewang",
+                                    "src": "Scene/Museum/Place_pic"
+                              },
+                    "switch": 1,
+                    "ticket": {
+                                  "index": "list_nanyuewang",
+                                    "src": "Scene/Museum/Place_pic"
+                              }
+         },
+    "4": {
+             "collection_id": "46,47,48,49",
+                      "desc": "吴文化博物馆于2020年6月28日正式开馆，是全国第一座全面展示吴地文化的地方综合性博物馆。",
+                        "id": 4,
+               "info_ticket": {
+                                  "index": "info_wuwenhua",
+                                    "src": "Scene/Museum/Place_pic"
+                              },
+                      "name": "吴文化博物馆",
+                    "pic_id": [ 2115, 2116, 3066 ],
+                   "pic_res": [ {
+                                  "index": "g_bwg_wuwenhua1",
+                                    "src": "Picture/Goal"
+                              }, {
+                                  "index": "g_bwg_wuwenhua2",
+                                    "src": "Picture/Goal"
+                              }, {
+                                  "index": "u_bwg_wuwenhua",
+                                    "src": "Picture/Unique"
+                              } ],
+                "share_logo": {
+                                  "index": "logo_wuwenhua",
+                                    "src": "Scene/Museum/Place_pic"
+                              },
+                    "switch": 1,
+                    "ticket": {
+                                  "index": "list_wuwenhua",
+                                    "src": "Scene/Museum/Place_pic"
+                              }
+         },
+    "5": {
+             "collection_id": "50,51,52,53",
+                      "desc": "山西博物院的前身为1919年创建的山西教育图书博物馆，新馆2005年对外开放，是全省最大的文物征集、收藏、保护、研究和展示中心。",
+                        "id": 5,
+               "info_ticket": {
+                                  "index": "info_shanxi",
+                                    "src": "Scene/Museum/Place_pic"
+                              },
+                      "name": "山西博物院",
+                    "pic_id": [ 2119, 2120, 3067 ],
+                   "pic_res": [ {
+                                  "index": "g_bwg_shanxi1",
+                                    "src": "Picture/Goal"
+                              }, {
+                                  "index": "g_bwg_shanxi2",
+                                    "src": "Picture/Goal"
+                              }, {
+                                  "index": "u_bwg_shanxi",
+                                    "src": "Picture/Unique"
+                              } ],
+                "share_logo": {
+                                  "index": "logo_shanxi",
+                                    "src": "Scene/Museum/Place_pic"
+                              },
+                    "switch": 0,
+                    "ticket": {
+                                  "index": "list_shanxi",
+                                    "src": "Scene/Museum/Place_pic"
+                              }
+         }
+}

@@ -1,0 +1,32 @@
+(),this.SetclearBtnState()}
+,t.prototype.checkConflict=function(){
+this.groupTips.visible=this.itemModel.deskConflict}
+,t.prototype.renderItem=function(){
+var e=this;
+this.items=[{
+type:Tabikaeru.DataType.ItemType.LunchBox,image:this.item0}
+,{
+type:Tabikaeru.DataType.ItemType.LunchBox,image:this.item1}
+,{
+type:Tabikaeru.DataType.ItemType.Amulet,image:this.item2}
+,{
+type:Tabikaeru.DataType.ItemType.Amulet,image:this.item3}
+,{
+type:Tabikaeru.DataType.ItemType.Tools,image:this.item4}
+,{
+type:Tabikaeru.DataType.ItemType.Tools,image:this.item5}
+,{
+type:Tabikaeru.DataType.ItemType.Tools,image:this.item6}
+,{
+type:Tabikaeru.DataType.ItemType.Tools,image:this.item7}
+],this.items.forEach(function(t,i){
+t.image.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+e.tapItem(t,i)}
+,e)}
+),this.itemModel.getDeskDataList().forEach(function(t,i){
+if(-1!==t){
+var n=Tabikaeru.DataManager.instance().ItemDB.get(t);
+if(!n)return;
+if(n.type==Tabikaeru.DataType.ItemType.Amulet&&n.sub_type==Tabikaeru.DataType.ItemAmuletType.FLOWER){
+var r=Tabikaeru.DataManager.instance().FlowerData.get(n.id);
+r?e.items[i].image.source=new PromiseTextur

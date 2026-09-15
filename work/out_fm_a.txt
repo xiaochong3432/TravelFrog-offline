@@ -1,0 +1,119 @@
+ore.ModelManage.getInstance().getModel(UserModel).getUID(),t.roleName=core.ModelManage.getInstance().getModel(RoleModel).getName(),this.jssdk.openKefu(t).then(function(){
+e&&e(!0)}
+,function(t){
+core.Log.warning(t),e&&e(!1)}
+)}
+,t.prototype.openPush=function(){
+core.Log.print("请求 jssdk.openPush()"),this.jssdk.openPush().then(function(){
+}
+,function(e){
+core.Log.warning(e)}
+)}
+,t.prototype.gameOffLine=function(){
+core.Log.print("请求 jssdk.gameOffLine()"),this.jssdk.gameOffLine()}
+,t}
+(BaseChannel);
+__reflect(AlipayChannel.prototype,"AlipayChannel");
+var EncyModel=function(e){
+function t(){
+var t=null!==e&&e.apply(this,arguments)||this;
+return t.data={
+unlock_list:[],unlock_desc:{
+}
+,show_sub:{
+}
+}
+,t}
+return __extends(t,e),t.prototype.initModel=function(){
+this.addProtocolCallback("encyclopedia_load")}
+,t.prototype.encyclopedia_load=function(e){
+e=Utils.convertArrayAll(e),this.data.unlock_list=e.unlock_list;
+for(var t=0,i=e.unlock_desc;
+t<i.length;
+t++){
+var n=i[t];
+this.data.unlock_desc[n.id]=Utils.convertArray(n.list)}
+for(var r=0,o=e.show_sub;
+r<o.length;
+r++){
+var n=o[r];
+this.data.show_sub[n.id]=n.sub_id}
+this.data.unlock_list.sort(function(e,t){
+return e-t}
+)}
+,t.prototype.req_set_show_sub=function(e){
+var t=Tabikaeru.DataManager.instance().encyData.get("list")[e];
+this.data.show_sub[t.id]=e,core.SocketManage.getInstance().send("encyclopedia_set_show_sub",null,e)}
+,t.prototype.isOpen=function(){
+return this.data.unlock_list.length>0}
+,t.prototype.isDescUnlock=function(e,t){
+var i=this.data.unlock_desc[e];
+if(!i)return!1;
+for(var n=0,r=i;
+n<r.length;
+n++){
+var o=r[n];
+if(o==t)return!0}
+return!1}
+,t}
+(core.Model);
+__reflect(EncyModel.prototype,"EncyModel");
+var FurnitureModel=function(e){
+function t(){
+var t=null!==e&&e.apply(this,arguments)||this;
+return t.flagloadFurnitureRes=!0,t}
+return __extends(t,e),t.prototype.initModel=function(){
+this.addProtocolCallback("furniture_load_furniture","furniture_buy_shop","furniture_putin_bench","furniture_takeout_bench","furniture_load_tumbler","furniture_load_pocket","furniture_load_compost","furniture_load_flowerpot"),this.serverData={
+shop:{
+start_time:0,leave_time:0,shop_list:[]}
+,mood:0,bench_lock:!1,bench:[],put_fur:[],has_fur:[],mate_list:[],replace_fur:[]}
+,this.tumblerData={
+show_index:0,replace_index:0,tumbler_list:[]}
+,this.compostData={
+show_index:0,replace_index:0,compost_list:[],state:0,box_index:0,box_list:[]}
+,this.pocketData={
+show_index:0,replace_index:0,list:[],clover:0}
+,this.flowerpotData={
+show_list:[],list:[],plant_list:[]}
+,this.replaceData={
+fur:{
+}
+,other:{
+tumbler:-1,compost:-1,pocket:-1}
+}
+}
+,t.prototype.requestBuy=function(e,t){
+var i=this,n=Tabikaeru.DataManager.instance().FurnitureShopDB.get(e);
+n&&core.ModelManage.getInstance().getModel(RoleModel).syncHarvestClover(!1,new core.Action(function(){
+core.SocketManage.getInstance().send("furniture_buy_shop",new core.Action2(function(r){
+if(r&&0==r.code){
+for(var o=0,a=i.serverData.shop.shop_list;
+o<a.length;
+o++){
+var s=a[o];
+if(s.shop_id==e){
+s.num--;
+break}
+}
+var c=Tabikaeru.DataManager.instance().ItemDB.get(n.item_id);
+c.type==Tabikaeru.DataType.ItemType.Gift||i.getModel(ItemModel).addHouseItem(n.item_id,1,!0),c.type==Tabikaeru.DataType.ItemType.FURNITURE_PAPER&&core.PageManage.getInstance().addViewControl(FurnitureItemTipsController,core.ViewLayerType.NoticeLayer,core.RemoveViewType.Retain,{
+img:c.img,title:c.name,area:c.name,info:c.info}
+),i.getModel(UserModel).consumeClover(n.price),t.apply(r)}
+}
+),e)}
+))}
+,t.prototype.furniture_load_tumbler=function(e){
+e&&(this.tumblerData=e,this.tumblerData.tumbler_list=Utils.convertArray(e.tumbler_list),this.dispatchEvent(new core.Event(FurnitureEventType.UPDATE_TUMBER)))}
+,t.prototype.furniture_load_compost=function(e){
+e&&(this.compostData=e,this.compostData.box_list=Utils.convertArray(e.box_list),this.compostData.compost_list=Utils.convertArray(e.compost_list),this.dispatchEvent(new core.Event(FurnitureEventType.UPDATE_TUMBER)))}
+,t.prototype.furniture_load_pocket=function(e){
+e&&(this.pocketData=e,this.pocketData.list=Utils.convertArray(e.list),this.updatePocketRedot(),this.dispatchEvent(new core.Event(FurnitureEventType.UPDATE_POCKET)))}
+,t.prototype.furniture_load_flowerpot=function(e){
+e&&(this.flowerpotData=Utils.convertArrayAll(e))}
+,t.prototype.furniture_load_furniture=function(e,t){
+var i=this;
+if(e){
+this.serverData=e,this.serverData.shop.shop_list=Utils.convertArray(e.shop.shop_list),this.serverData.replace_fur=Utils.convertArray(e.replace_fur);
+var n=core.Time.getServerTime();
+this.serverData.shop.start_time<n&&this.serverData.shop.leave_time>n&&(egret.clearTimeout(this.timerShopClose),this.timerShopClose=egret.setTimeout(function(){
+core.PageManage.getInstance().getControl(FurnitureShopController,core.ViewLayerType.WindowLayer)&&(core.PageManage.getInstance().removeControl(FurnitureShopController,core.ViewLayerType.WindowLayer),core.DisplayMan

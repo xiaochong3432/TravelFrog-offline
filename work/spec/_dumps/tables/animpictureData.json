@@ -1,0 +1,121 @@
+{
+    "base_info": {
+                      "album_id": 9002,
+                     "album_num": 4,
+                       "page_id": 9001
+                 },
+         "list": {
+                     "1": {
+                                      "id": 1,
+                              "phase_list": [ {
+                                                "layer": 1,
+                                                "phase": 1,
+                                                "spine": ""
+                                            }, {
+                                                "layer": 2,
+                                                "phase": 2,
+                                                "spine": "gif_1_bg1"
+                                            }, {
+                                                "layer": 3,
+                                                "phase": 3,
+                                                "spine": "gif_1_bg2"
+                                            }, {
+                                                "layer": 4,
+                                                "phase": 4,
+                                                "spine": "gif_1_role_qw"
+                                            }, {
+                                                "layer": 5,
+                                                "phase": 5,
+                                                "spine": "gif_1_role_bh"
+                                            }, {
+                                                "layer": 6,
+                                                "phase": 6,
+                                                "spine": "gif_1_role_yhc"
+                                            }, {
+                                                "layer": 7,
+                                                "phase": 7,
+                                                "spine": "gif_1_role_cw"
+                                            } ],
+                                "pic_list": [ 100 ]
+                          },
+                     "2": {
+                                      "id": 2,
+                              "phase_list": [ {
+                                                "layer": 1,
+                                                "phase": 1,
+                                                "spine": ""
+                                            }, {
+                                                "layer": 2,
+                                                "phase": 2,
+                                                "spine": "gif_2_bg1"
+                                            }, {
+                                                "layer": 7,
+                                                "phase": 3,
+                                                "spine": "gif_2_bg2"
+                                            }, {
+                                                "layer": 8,
+                                                "phase": 4,
+                                                "spine": "gif_2_fg1"
+                                            }, {
+                                                "layer": 3,
+                                                "phase": 5,
+                                                "spine": "gif_2_role_bh"
+                                            }, {
+                                                "layer": 4,
+                                                "phase": 6,
+                                                "spine": "gif_2_role_qw"
+                                            }, {
+                                                "layer": 5,
+                                                "phase": 7,
+                                                "spine": "gif_2_role_yhc"
+                                            }, {
+                                                "layer": 6,
+                                                "phase": 8,
+                                                "spine": "gif_2_role_cw"
+                                            } ],
+                                "pic_list": [ 104 ]
+                          },
+                     "3": {
+                                      "id": 3,
+                              "phase_list": [ {
+                                                "layer": 1,
+                                                "phase": 1,
+                                                "spine": ""
+                                            }, {
+                                                "layer": 2,
+                                                "phase": 2,
+                                                "spine": "gif_3_bg1"
+                                            }, {
+                                                "layer": 4,
+                                                "phase": 3,
+                                                "spine": "gif_3_tree"
+                                            }, {
+                                                "layer": 3,
+                                                "phase": 4,
+                                                "spine": "gif_3_shidun"
+                                            }, {
+                                                "layer": 5,
+                                                "phase": 5,
+                                                "spine": "gif_3_role_qw"
+                                            }, {
+                                                "layer": 6,
+                                                "phase": 6,
+                                                "spine": "gif_3_role_yhc"
+                                            }, {
+                                                "layer": 7,
+                                                "phase": 7,
+                                                "spine": "gif_3_role_bh"
+                                            }, {
+                                                "layer": 8,
+                                                "phase": 8,
+                                                "spine": "gif_3_role_cw"
+                                            } ],
+                                "pic_list": [ 2000 ]
+                          }
+                 },
+      "pic_map": {
+                      "100": 1,
+                      "104": 2,
+                     "2000": 3
+                 }
+}

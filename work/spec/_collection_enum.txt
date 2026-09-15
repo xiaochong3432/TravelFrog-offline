@@ -1,0 +1,29 @@
+E=0]="NONE",e[e.Mountain=1]="Mountain",e[e.Sea=2]="Sea",e[e.Cave=3]="Cave",e[e._WayTypeMax=4]="_WayTypeMax"}
+(r=e.WayType||(e.WayType={
+}
+))}
+(TravelNode||(TravelNode={
+}
+));
+var Collection;
+!function(e){
+var t;
+!function(e){
+e[e.NONE=-1]="NONE",e[e.C=0]="C",e[e.B=1]="B",e[e.A=2]="A",e[e.S=3]="S"}
+(t=e.Rare||(e.Rare={
+}
+));
+var i;
+!function(e){
+e[e.NONE=-1]="NONE",e[e.Collect=0]="Collect",e[e.Specialty=1]="Specialty"}
+(i=e.ShowType||(e.ShowType={
+}
+))}
+(Collection||(Collection={
+}
+));
+var Item;
+!function(e){
+var t;
+!function(e){
+e[e.NONE=-1]="NONE",e[e.LunchBox=0]="LunchBox",e[e.Amulet=1]="Amulet",e[e.Tool=2]="Tool",e[e.

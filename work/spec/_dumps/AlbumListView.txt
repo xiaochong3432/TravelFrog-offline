@@ -1,0 +1,6 @@
+var AlbumListView=function(e){
+  function t(){
+    return null!==e&&e.apply(this,arguments)||this
+  }return __extends(t,e),t
+}(core.UIView);
+__reflect(AlbumListView.prototype

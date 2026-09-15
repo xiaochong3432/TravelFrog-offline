@@ -1,0 +1,63 @@
+pe.on_item_tap=function(e){
+var t=this,i=e.currentTarget,n=i.data;
+n&&core.PageManage.getInstance().addViewControl(ItemSelectorViewControl,core.ViewLayerType.WindowLayer,null,{
+itemsGetter:function(){
+var e=(t.getModel(FurnitureModel).compostData.box_list,n.item_id),i=t.getModel(ItemModel),r=[];
+r=r.concat(i.getHouseItemsByType(Tabikaeru.DataType.ItemType.Courtyard,1));
+var o=i.getHouseItemsByType(Tabikaeru.DataType.ItemType.Specialty).concat();
+return o.sort(function(e,t){
+return(Number(t.item_id)/1e3>>0)-(Number(e.item_id)/1e3>>0)||e.item_id-t.item_id}
+),r=r.concat(o),r.sort(function(e,t){
+var i=Tabikaeru.DataManager.instance().ItemDB.get(e.item_id),n=Tabikaeru.DataManager.instance().ItemDB.get(t.item_id);
+return i.type!=n.type?n.type-i.type:e.item_id-t.item_id}
+),e>0&&(r=r.filter(function(t){
+return t.item_id!=e}
+),r.unshift({
+item_id:e,count:t.getModel(ItemModel).getHouseItemCount(e)}
+)),r}
+,selected:n.item_id,onSelected:function(e){
+var r=t.itemGrids.indexOf(i);
+r>=0&&(core.PageManage.getInstance().removeControl(ItemSelectorViewControl,core.ViewLayerType.WindowLayer),e?t.getModel(FurnitureModel).setCompostItem(r+1,e.item_id==n.item_id?0:e.item_id):t.getModel(FurnitureModel).setCompostItem(r+1,0))}
+}
+)}
+,t.prototype.onShow=function(){
+this.update()}
+,t.prototype.update=function(){
+var e=this.getModel(FurnitureModel).compostData,t=e.compost_list[e.show_index-1];
+if(t){
+for(var i=0,n=this.itemGrids.length;
+n>i;
+i++){
+var r=e.box_list[i]||-1,o=i+1!=e.box_index,a=this.itemGrids[i];
+a.data={
+item_id:r,count:-1,state:o?"enabled":"disabled"}
+,r?o?a.image.filters=[]:a.image.filters=[].concat(Utils.getDisableFilter()):a.image.filters=null,a.touchEnabled=a.touchChildren=o}
+var s=Tabikaeru.DataManager.instance().CompostData.get(t);
+s&&(this.bg.source=Tabikaeru.path.formatPathImage(s.bg),this.compost.source=Tabikaeru.path.formatPathImage(s.res))}
+this.pgb.value=e.state;
+var c=this.data.position.clone();
+this.globalToLocal(c.x,c.y,c),this.group.x=c.x-this.compost.x,this.group.y=c.y-this.compost.y}
+,t}
+(WindowView);
+__reflect(CompostView.prototype,"CompostView");
+var CookingPopupView=function(e){
+function t(){
+return e.call(this,core.PathManage.getInstance().getSkinsPath("Cooking/CookingPopupViewSkin.exml"),CookingPopupViewController,core.ViewLayerType.WindowLayer)||this}
+return __extends(t,e),t.prototype.childrenCreated=function(){
+e.prototype.childrenCreated.call(this),this.cover.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this),this.btnLook.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_tap,this),this.update()}
+,t.prototype.update=function(){
+var e=this.getModel(CookingModel).getSelectMonth();
+if(e>0){
+var t=Tabikaeru.DataManager.instance().CookingDB.get(e);
+t?(this.lblTitle.text=t.show_desc,this.imgPhoto.source=Tabikaeru.path.formatPathImage(t.show_pic)):this.close()}
+else this.close()}
+,t.prototype.on_tap=function(){
+core.PageManage.getInstance().addViewControl(CookingViewController,core.ViewLayerType.WindowLayer),this.close()}
+,t}
+(WindowView);
+__reflect(CookingPopupView.prototype,"CookingPopupView");
+var CookingPopupViewController=function(e){
+function t(){
+return null!==e&&e.apply(this,arguments)||this}
+return __extends(t,e),t.prototype.open=function(){
+core.String.setCookie("last_cooking_

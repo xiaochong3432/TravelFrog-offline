@@ -1,0 +1,80 @@
+"......................AntiAddition:"+JSON.stringify(g));
+var wt=g.evt_string[0],Tt=g.evt_string[1];
+"notify"==wt?BaseChannel.getInstance().toast(Tt):"punishment"==wt&&BaseChannel.getInstance().popup(Tt),p();
+break;
+case TimerEvent.Type.NewNote:core.ModelManage.getInstance().getModel(TravelNoteModel).loadNote(function(){
+core.ModelManage.getInstance().getModel(TravelNoteModel).updateRedot()}
+);
+break;
+case TimerEvent.Type.VisitFriend:var Ct=g.evt_value[0],Mt=Utils.convertArray(g.evt_value).slice(1),Et=g.evt_pic;
+Music.play("SE_Popup");
+var bt=new VisitReturnGiftView;
+bt.data={
+friendId:Ct,rewardArr:Mt,pictures:Et,onConfirm:function(){
+if(Et.length>0){
+var e,t=function(){
+var i=core.ModelManage.getInstance().getModel(TravelModel).getFirstVisitPictureInfo();
+i&&(core.ModelManage.getInstance().getModel(TravelModel).eventUpdateNewAlbum.remove(t,d),egret.clearTimeout(e),p())}
+;
+core.ModelManage.getInstance().getModel(TravelModel).eventUpdateNewAlbum.add(t,d),e=egret.setTimeout(function(){
+core.ModelManage.getInstance().getModel(TravelModel).eventUpdateNewAlbum.remove(t,d),p()}
+,d,5e3),T.readTraveEvents(g)}
+else p()}
+}
+,c.addChild(bt);
+break;
+case TimerEvent.Type.PartyGo:Music.play("SE_Popup");
+var V=g.evt_value[0]&&g.evt_value[0]>0?"{
+0}
+精力充沛地出去聚会了":"{
+0}
+出去聚会了",It=_(V,y),St=new r;
+St.notify(c,n.Yellow_Friend,It,function(){
+p()}
+);
+break;
+case TimerEvent.Type.PartyResult:var kt=_("{
+0}
+回来了。",y),Pt=new r;
+Pt.notify(c,n.Yellow_Friend,kt,function(){
+var e=g.evt_id,t=Utils.convertArray(g.evt_value);
+core.PageManage.getInstance().addViewControl(PartyResultViewControl,core.ViewLayerType.NoticeLayer,core.RemoveViewType.Retain,{
+guest:e,page:t[0],coll:t[1],clover:t[2],ticket:t[3],items:t.splice(4),onClose:function(){
+v.AddCloverTween(t[2]),p()}
+}
+)}
+);
+break;
+case TimerEvent.Type.CardNew:Music.play("SE_Popup");
+var Lt=_("好像有故事发生"),xt=new r;
+xt.notify(c,n.Yellow_Friend,Lt,p);
+break;
+case TimerEvent.Type.CardGift:Music.play("SE_Popup");
+var Dt=_("{
+0}
+\n送来了礼物",g.evt_string[0]),At=new r;
+At.notify(c,n.Yellow_Friend,Dt,p);
+break;
+case TimerEvent.Type.CardFeedback:Music.play("SE_Popup");
+var Rt=_("{
+0}
+\n收到了你的赠礼",g.evt_string[0]),Vt=new r;
+Vt.notify(c,n.Yellow_Friend,Rt,p);
+break;
+default:core.Log.print("未知事件 "+g.evt_type),p()}
+else{
+var Gt=T.getFirstNewPictureInfo();
+if(Gt){
+Music.play("SE_Popup");
+var k=_("{
+0}
+送来了照片。",y),F=function(){
+Music.play("SE_Popup");
+var e=new i(Gt);
+e.addEventListener(egret.Event.REMOVED_FROM_STAGE,p,null),c.addChild(e)}
+,P=new r;
+P.notify(c,n.Green_Picture,k,F)}
+else T.handleAdsPicture()&&BaseChannel.getInstance().supportAds()?core.ModelManage.getInstance().getModel(AdsModel).promptNewAds("frog_back",null,function(e){
+e||T.deleteAllAdsPicture(),D(l),s=!1}
+):T.handleSharePicture()?core.DisplayManage.getInstance().getNoticeLayer().addChild(new ModalConfirm(_("打扰一下，我这里拍到青蛙旅行时的照片。作为交换，可以帮忙到微信做个分享吗？"),function(){
+if(D(l)

@@ -1,0 +1,116 @@
+===== 'getStoryList\\(\\)'  hits=2 =====
+
+--- [1028141] ---
+his.view)}
+,t}
+(core.ViewController);
+__reflect(RelationshipController.prototype,"RelationshipController");
+var RelationshipView=function(e){
+function t(){
+return e.call(this,core.PathManage.getInstance().getSkinsPath("Story/Relationship.exml"))||this}
+return __extends(t,e),t.prototype.onComplete=function(){
+var e=this;
+this.storyModel=this.getModel(StoryModel),this.backBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+Music.play("SE_Cancel"),core.PageManage.getInstance().removeControl(RelationshipController,core.ViewLayerType.WindowLayer)}
+,this),this.once(egret.Event.ENTER_FRAME,function(){
+e.renderItem()}
+,this)}
+,t.prototype.renderItem=function(){
+for(var e,t=this,i=[].concat(this.storyModel.getStoryList()),n={
+}
+,r=i.length-1;
+r>=0;
+r--)e=i[r],n[e.partner]?(n[e.partner]++,i.splice(r,1)):n[e.partner]=1;
+for(var o=170,a=190,s=20,c=3,l=4,h=c*l,u=768,p=l*a,d=(u-c*o-(c-1)*s)/2,g=Math.ceil(i.length/h),f=new eui.Group,v=0;
+g>v;
+v++){
+var _=new eui.Group;
+_.x=v*u,_.width=u;
+for(var r=0;
+h>r;
+r++){
+var y=r+v*h;
+if(y>=i.length)break;
+e=i[y];
+var m=r%c,w=Math.floor(r/c),T=new RelationshipItem(e,n);
+T.x=m*(o+s)+d,T.y=w*a,_.addChild(T)}
+f.addChild(_)}
+this.maxPage.text=g.toString(),this.currentPage.text=0===g?"0":"1";
+var C=new PageScroller(f,768,g,(u-this.width)/2,p);
+C.scroller&&(C.scroller.height=p),C.onPageChange.add(function(e){
+Music.play("SE_PageNext"),t.currentPage.text=e.toString()}
+,this),this.addChild(
+
+--- [1104929] ---
+ceil(t.length/r),s=null==this.cardData?1:Math.ceil((t.indexOf(this.cardData)+1)/r);
+this.t_maxPage.text=a.toString(),this.t_currentPage.text=0==a?"0":s.toString(),null==this.cardList&&(this.cardList=[]);
+var c=new eui.Group;
+c.height=840;
+for(var l,h,u,p=0;
+p<t.length;
+p++)h=Math.ceil((p+1)/r),u=p-(h-1)*r,l=this.createCardView(),l.setInfo(p,t[p]),l.x=(o-i)/2+(h-1)*o,l.y=u*n,c.addChild(l),this.cardList.push(l);
+this.scroller1.update({
+viewport:c,pageWidth:o,maxPage:a,offset:(o-this.width)/2,page:s}
+),this.scroller1.onPageChange.add(function(t){
+Music.play("SE_PageNext"),e.t_currentPage.text=t.toString()}
+,this)}
+,t.prototype.renderItem=function(){
+var e=this;
+this.removeItemViewAll();
+var t=this.storyModel.getStoryList(),i=640,n=277,r=3,o=768,a=Math.ceil(t.length/r),s=null==this.targetData?1:Math.ceil((t.indexOf(this.targetData)+1)/r);
+this.t_maxPage.text=a.toString(),this.t_currentPage.text=0==a?"0":s.toString(),null==this.viewList&&(this.viewList=[]);
+for(var c,l,h,u,p=new eui.Group,d=Math.ceil((0==t.length?1:t.length)/r)*r,g=0;
+d>g;
+g++)l=Math.ceil((g+1)/r),h=g-(l-1)*r,u=h%2+1,c=this.createItemView(u),c.setInfo(u,t[g]),c.x=(o-i)/2+(l-1)*o,c.y=h*n,p.addChild(c),this.viewList.push(c);
+this.scroller.update({
+viewport:p,pageWidth:o,maxPage:a,offset:(o-this.width)/2,page:s}
+),this.scroller.onPageChange.add(function(t){
+Music.play("SE_PageNext"),e.t_currentPage.text=t.toString()}
+,this)}
+,t.prototype.creat
+
+##########################################################################################
+### literal "item_use_gift_code"  hits=1
+##########################################################################################
+
+--- [544289] ---
+ext.slice(0,this.t_context.maxChars))}
+,t.prototype.totalTouchEvent=function(e){
+var t=this;
+switch(e.currentTarget){
+case this.canvas:core.PageManage.getInstance().removeControl(CdkeyViewController,this.control.getViewLayerType());
+break;
+case this.btn_yes:var i=this.t_context.text;
+if(i&&i.length>14)return void GuideHelpView.getInstance().show(_("不能超过14个字符哦"),null,core.DisplayManage.getInstance().getNoticeLayer());
+if(this.data)return void(i?this.data.onConfirm(i):GuideHelpView.getInstance().show(this.data.desc,null,core.DisplayManage.getInstance().getNoticeLayer()));
+if(i){
+if(this.getModel(CalendarModel).checkBeginnerCode(i))return;
+this.btn_yes.touchEnabled=!1,core.SocketManage.getInstance().send("item_use_gift_code",new core.Action2(function(e,i){
+t.btn_yes.touchEnabled=!0;
+var n;
+if(200==e.code)core.PageManage.getInstance().removeControl(CdkeyViewController,t.control.getViewLayerType()),n=_("礼包码兑换成功");
+else{
+var r=t.getModel(MessageModel).getErrorInfo(e.code);
+n=r?r.desc:_("礼包码无效")}
+GuideHelpView.getInstance().show(n,null,core.DisplayManage.getInstance().getNoticeLayer())}
+,this),i)}
+else GuideHelpView.getInstance().show(_("请输入礼包码"),null,core.DisplayManage.getInstance().getNoticeLayer())}
+}
+,t}
+(core.UIView);
+__reflect(CdkeyView.prototype,"CdkeyView");
+var CdkeyViewController=function(e){
+function t(){
+return e.call(this)||this}
+return __extends(t,e),t.prototype.destroy=function(){
+this.close(),this
+
+
+##########################################################################################
+### literal "sendGift\("  hits=0
+##########################################################################################
+
+
+##########################################################################################
+### literal "feedback"  hits=0
+##########################################################################################

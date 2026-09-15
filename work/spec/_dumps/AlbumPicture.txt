@@ -1,0 +1,17 @@
+var AlbumPicture=function(e){
+  function t(){
+    var t=e.call(this)||this;
+    return t.index=0,t.active=!1,t.skinName=core.PathManage.getInstance().getSkinsPath("Album/Picture.exml"),t
+  }return __extends(t,e),t.prototype.init=function(e,t,i,n){
+    void 0===t&&(t=0),void 0===i&&(i=!1),void 0===n&&(n=!0),this.pic=e,this.index=t,this.active=i,this.image.source="picture_loader_png",this.activeMark.visible=this.active,this.i_checkbox.visible=this.i_masking.visible=!1,this.image.data=e
+  },t.prototype.updateData=function(e){
+    this.pic=e,this.pic&&this.pic.id==e.id&&(this.image.data=e)
+  },t.prototype.changeCheckbox=function(e){
+    this.i_checkbox.visible=this.i_masking.visible=e,this.unselect()
+  },t.prototype.select=function(){
+    this.active=!0,this.activeMark.visible=!0
+  },t.prototype.unselect=function(){
+    this.active=!1,this.activeMark.visible=!1
+  },t
+}(eui.Component);
+__reflect(AlbumPicture.prototype

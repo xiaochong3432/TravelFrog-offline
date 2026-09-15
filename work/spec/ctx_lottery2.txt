@@ -1,0 +1,62 @@
+===== 'req_open\\('  hits=1 =====
+
+--- [774209] ---
+drenCreated.call(this),this.data=this.getModel(LotteryModel).data;
+var i=(this.data.phase-1)%4+1;
+this.imageBg.source="anm_weekend_"+i+"_png",this.imageBg.mask=this.imageMask,core.TweenExtend.playLoop(this.bgAnm,!0),core.TweenExtend.playLoop(this.extraAnm,!0),this.cover.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this),this.btnClose.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this),this.imageOpen.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+t.getModel(LotteryModel).req_open(new core.Action(function(){
+t.updateState()}
+))}
+,this),this.groupExtra.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+core.DisplayManage.getInstance().popup(new LotteryExtraView)}
+,this),this.btnComplete.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+if(t.data.state==Tabikaeru.LotteryState.Select&&!(t.selectList.length<5)){
+var e=new ModalConfirm(_("已经帮小伙伴做好决定了吗？"),function(){
+t.getModel(LotteryModel).req_select(t.selectList,new core.Action(function(){
+t.updateState()}
+))}
+);
+cor
+
+##########################################################################################
+### literal "LotteryViewController"  hits=0
+##########################################################################################
+
+
+##########################################################################################
+### literal "LotteryEventType"  hits=1
+##########################################################################################
+
+--- [145251] ---
+tType.ads_id,e.ads_id)):e.share_id&&e.share_id.length>0&&this.dispatchEvent(new core.Event(ItemEventType.share_id,e.share_id))}
+,t.prototype.decodeDropArr=function(e,t){
+void 0===t&&(t=-1);
+for(var i=[],n=0,r=e.length;
+r>n;
+n+=3){
+var o=e[n];
+(-1==t||t==o)&&i.push({
+type:o,item_id:e[n+1],count:e[n+2]}
+)}
+return i}
+,t}
+(core.Model);
+__reflect(ItemModel.prototype,"ItemModel");
+var LotteryEventType=function(){
+function e(){
+}
+return e.EXTRA_GET="LotteryEventType_extra_get",e}
+();
+__reflect(LotteryEventType.prototype,"LotteryEventType");
+var LotteryModel=function(e){
+function t(){
+var t=null!==e&&e.apply(this,arguments)||this;
+return t.data={
+last_phase:0,phase:0,state:0,select_list:[],answer:[],extra_item:{
+item_id:0,count:0}
+,right_flag:[],egg_num:0,reward:[]}
+,t}
+return __extends(t,e),t.prototype.initModel=function(){
+this.addProtocolCallback("lottery_load")}
+,t.prototype.lottery_load=function(e){
+e.phase&&(this.data=e,this.data.select_list=Utils.convertArray(this.data.select_list),this.data.answer=Utils.convertArray

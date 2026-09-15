@@ -1,0 +1,32 @@
+ion(){
+var e=this.taobaoData;
+return this.taobaoData=null,e}
+,t.prototype.getDecorationInfo=function(e){
+return Tabikaeru.DataManager.instance().decorationDB[e.toString()]}
+,t.prototype.getCreateDay=function(){
+var e=Math.floor(core.getOffsetDay(core.Time.getServerTime(),this.getModel(t).createTime));
+return e+1}
+,t.prototype.client_load_role=function(e,t){
+var i=e.frog;
+if(null!=i){
+this.name=i.name,this.useAchieveID=i.cur_achieve,this.achieveList=Array.isArray(i.achieves)?i.achieves:[];
+for(var n=Utils.convertArray(i.achieves_time),r=0,o=n;
+r<o.length;
+r++){
+var a=o[r];
+this.achieveTime[a.id]=a.time}
+this.frogStatus=i.status,this.frogMotion=i.motion,this.iconID=i.icon,this.pictureInfo=i.pic_show,this.todayStep=i.today_step,this.decorationList=Array.isArray(i.decoration)?i.decoration:[],this.taobaoData=i.taobao_data,this.dispatchEvent(new core.Event(RoleEventType.loadRole))}
+else core.Log.warning("返回的协议 client_load_role 中的 frog 属性不存在，请检查协议参数是否已修改")}
+,t.prototype.client_load_decorate=function(e){
+var t=Utils.convertArray(e.has_list);
+this.decorationList=t,this.decorationPutID=e.put_id,this.decorationStatus=e.status,this.dispatchEvent(new core.Event(RoleEventType.updateDecoration))}
+,t.prototype.clover_load_clovers=function(e,t){
+null!=e?(this.cloverGrowList=e,this.dispatchEvent(new core.Event(RoleEventType.updateCloverGrow))):core.Log.warning("返回的协议 clover_load_clovers 没有获取到有效数据，请检查协议参数是否已修改")}
+,t.prototype.changeDecoration=function(e){
+var t=this;
+core.SocketManage.getInstance().send("client_change_decorate",new core.Action2(function(i){
+if(0==i.code){
+for(var n=0;
+n<t.decorationList.length;
+n++){
+var r

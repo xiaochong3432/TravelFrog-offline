@@ -1,0 +1,80 @@
+===== 'egg_num'  hits=2 =====
+
+--- [145473] ---
+id))}
+,t.prototype.decodeDropArr=function(e,t){
+void 0===t&&(t=-1);
+for(var i=[],n=0,r=e.length;
+r>n;
+n+=3){
+var o=e[n];
+(-1==t||t==o)&&i.push({
+type:o,item_id:e[n+1],count:e[n+2]}
+)}
+return i}
+,t}
+(core.Model);
+__reflect(ItemModel.prototype,"ItemModel");
+var LotteryEventType=function(){
+function e(){
+}
+return e.EXTRA_GET="LotteryEventType_extra_get",e}
+();
+__reflect(LotteryEventType.prototype,"LotteryEventType");
+var LotteryModel=function(e){
+function t(){
+var t=null!==e&&e.apply(this,arguments)||this;
+return t.data={
+last_phase:0,phase:0,state:0,select_list:[],answer:[],extra_item:{
+item_id:0,count:0}
+,right_flag:[],egg_num:0,reward:[]}
+,t}
+return __extends(t,e),t.prototype.initModel=function(){
+this.addProtocolCallback("lottery_load")}
+,t.prototype.lottery_load=function(e){
+e.phase&&(this.data=e,this.data.select_list=Utils.convertArray(this.data.select_list),this.data.answer=Utils.convertArray(this.data.answer),this.data.right_flag=Utils.convertArray(this.data.right_flag),this.data.reward=Utils.convertArray(this.data.reward))}
+,t.prototype.req_open=function(e){
+var t=this;
+core.SocketManage.getInstance().send("lot
+
+--- [771706] ---
+),t.getModel(LotteryModel).req_confirm_reward(new core.Action(function(){
+core.PageManage.getInstance().addViewControl(LotteryViewControl,core.ViewLayerType.WindowLayer)}
+))}
+,this);
+var i=this.getModel(LotteryModel).data,n=(i.last_phase-1)%4+1;
+this.imageBg.source="anm_weekend_"+n+"_png",this.imageBg.mask=this.imageMask,core.TweenExtend.playLoop(this.bgAnm,!0);
+for(var r=Tabikaeru.DataManager.instance().lotteryData,o=0,a=0;
+a<i.right_flag.length;
+a++)1==i.right_flag[a]&&o++;
+var s=r.get("select_list")[n];
+this.imageGuest.source=s.pic+"_png";
+var c=core.String.format(r.get("settle_desc")[o],s.name);
+5==i.egg_num&&(c+=r.get("extra_desc")[n][o]),this.lbAsk.text=c;
+for(var a=0;
+a<i.answer.length;
+a++){
+var l=new eui.Group,h=new eui.Image;
+h.source="item_size_80x80_png",h.horizontalCenter=h.verticalCenter=0;
+var u=new eui.Image,p=Tabikaeru.DataManager.instance().ItemDB.get(i.answer[a]);
+u.width=u.height=70,u.source=Tabikaeru.path.formatPathImage(p.img),u.horizontalCenter=u.verticalCenter=0,l.addChild(h),l.addChild(u),0==i.right_flag[a]&&(l.filters=Utils.getBlackFilter()),this.groupItem.addChild(l)}
+for(var 
+
+##########################################################################################
+### literal "GoalNumberDB"  hits=0
+##########################################################################################
+
+
+##########################################################################################
+### literal "getTicket"  hits=0
+##########################################################################################
+
+
+##########################################################################################
+### literal "consumeTicket"  hits=0
+##########################################################################################
+
+
+##########################################################################################
+### literal "mail_ejoy"  hits=0
+##########################################################################################

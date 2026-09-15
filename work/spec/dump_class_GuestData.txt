@@ -1,0 +1,17 @@
+var GuestData=function(){
+  function e(e){
+    if(this.id=-1,this.confirmed=!1,this.served=!1,this.expire_time=0,this.pos=0,e)for(var t=0,i=Object.keys(e);
+    t<i.length;
+    t++){
+      var n=i[t];
+      null!=this[n]?this[n]=e[n]:(BaseChannel.getInstance().jf_commit(!0,"js.error",{
+        reason:"warning",message:core.String.format("GuestData 数据合并错误，{
+          0
+        } 属性不存在",n)
+      }),core.Log.warning(core.String.format("GuestData 数据合并错误，{
+        0
+      } 属性不存在",n)))
+    }
+  }return e
+}();
+__reflect(GuestData.prototype

@@ -1,0 +1,48 @@
+===== 'e\\[e\\.wait='  hits=1 =====
+
+--- [579635] ---
+);
+this.info0.text=t[0]||"",this.info1.text=t[1]||"",this.image.source=Tabikaeru.path.formatPathImage(e.pic)}
+}
+,t.prototype.on_btnConfirm_tap=function(){
+this.close()}
+,t.prototype.on_btnShare_tap=function(){
+this.shareSelector||(this.shareSelector=new ShareView);
+var e=Tabikaeru.DataManager.instance().DrawingCollect.get(this.data);
+if(e){
+var t=e.pic;
+this.shareSelector.show(400,ShareAnim.TopDown),this.shareSelector.open_item(t,Prize.Rank.NONE),this.addChild(this.shareSelector)}
+}
+,t}
+(WindowView);
+__reflect(DrawCollectTipsView.prototype,"DrawCollectTipsView");
+var DrawCollectTipsViewControl=function(e){
+function t(){
+return e.call(this,DrawCollectTipsView)||this}
+return __extends(t,e),t.prototype.open=function(){
+e.prototype.open.call(this),this.view.setData(this.getParam(0))}
+,t}
+(WindowController);
+__reflect(DrawCollectTipsViewControl.prototype,"DrawCollectTipsViewControl");
+var DrawingState;
+!function(e){
+e[e.wait=0]="wait",e[e.invite=1]="invite",e[e.accept=2]="accept",e[e.lock=3]="lock",e[e.visit=4]="visit"}
+(DrawingState||(DrawingState={
+}
+));
+var DrawNewPaperViewControl=function(e){
+function t(){
+return e.call(this,DrawNewPaperView)||this}
+return __extends(t,e),t.prototype.open=function(){
+e.prototype.open.call(this),this.view.data=this.getParam(0)}
+,t}
+(WindowController);
+__reflect(DrawNewPaperViewControl.prototype,"DrawNewPaperViewControl");
+var DrawNewPaperView=function(e){
+function t(){
+return e.call(this,core.PathManage.getInstance().getSkinsPath("Draw/DrawNewPaperViewSkin.exml"),DrawNewPaperViewControl,core.ViewLayerType.WindowLayer)||this}
+return __extends(t,e),t.prototype.childrenCreated=function
+
+##########################################################################################
+### literal "e\[e\.Select="  hits=0
+##########################################################################################

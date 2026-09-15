@@ -1,0 +1,24 @@
+unction(){
+for(var e=0,t=this.travelNodeList;
+e<t.length;
+e++){
+var i=t[e];
+if(!i.config.attach)return!0}
+return!1}
+,t.prototype.travel_load_note=function(e,t){
+var i=[];
+if(Array.isArray(e.note_list))for(var n=Tabikaeru.DataManager.instance().TravelNoteDB,r=0,o=e.note_list;
+r<o.length;
+r++){
+var a=o[r],s=n.get(a.id);
+if(s){
+var c=new TravelNoteData;
+c.id=a.id,c.read=a.read,c.timestamp=a.timestamp,c.config=n.get(a.id),i.push(c)}
+}
+this.travelNodeList=i,this.updateRedot()}
+,t}
+(core.Model);
+__reflect(TravelNoteModel.prototype,"TravelNoteModel");
+var GuideStep;
+!function(e){
+e.New="New",e.Named="Named",e.PrepareGatherClover="PrepareGatherClover",e.StartGatherClover="StartGatherClover",e.EnterRoom="EnterRoom",e.Introduce="Introduce",e.OpenShop="OpenShop",e.BuyGoods="BuyGoods",e.EnterRoom2="EnterRoom2",e.OpenBag="Op

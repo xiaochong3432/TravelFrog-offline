@@ -1,0 +1,73 @@
+e().addViewControl(RechargeViewController,core.ViewLayerType.WindowLayer,core.RemoveViewType.HideBefore)}
+,this),this.shopList.itemRenderer=FurnitureShopItem,this.update()}
+,t.prototype.onItemTap=function(e){
+var t=e.itemIndex,i=this.curSelectedIndex;
+this.curSelectedIndex=this.shopList.selectedIndex,this.curSelectedItem=e.item,i==t?this.openBuyTips(e.item):this.updateSelect()}
+,t.prototype.on_buyBtn_tap=function(){
+this.openBuyTips(this.curSelectedItem)}
+,t.prototype.updateSelect=function(){
+if(this.curSelectedItem){
+var e=Tabikaeru.DataManager.instance().FurnitureShopDB.get(this.curSelectedItem.shop_id),t=Tabikaeru.DataManager.instance().ItemDB.get(this.curSelectedItem.item_id),i=(e.info||t.info).split(" ");
+this.info1.text=e.name||t.name,this.info2.text=i[0],this.info3.text=i[1],this.curSelectedItem.num>0?this.buyBtn.enable():this.buyBtn.disable()}
+else this.buyBtn.disable();
+this.checkGuide()}
+,t.prototype.openBuyTips=function(e){
+var t=this;
+if(core.Time.getServerTime()>=this.getModel(FurnitureModel).serverData.shop.leave_time)core.DisplayManage.getInstance().popup(new ModalAlert(_("嘟嘟已经收拾回家了"))),this.close();
+else if(e&&e.num>0){
+this.buyModal&&this.buyModal.parent&&this.buyModal.removeChild(this.buyModal);
+var i=Tabikaeru.DataManager.instance().FurnitureShopDB.get(e.shop_id);
+if(998==i.type){
+var n=function(i){
+i&&t.getModel(FurnitureModel).requestBuy(e.shop_id,new core.Action1(function(){
+t.update()}
+))}
+,r=function(){
+return __awaiter(t,void 0,void 0,function(){
+var e,t,r,o=this;
+return __generator(this,function(a){
+switch(a.label){
+case 0:return GameConfig.channel==ChannelType.Test?(n(!0),this.getModel(AdsModel).req_share(4),[2]):(this.shareSelector||(this.shareSelector=new ShareView),e=Tabikaeru.DataManager.instance().ItemDB.get(i.item_id),GameConfig.quickShare?(r=new WXShareView(WXShareType.Collection,Tabikaeru.path.formatPathImage(e.img)),this.parent.addChild(r),[4,r.ShareTexture()]):[3,2]);
+case 1:t=a.sent(),r.parent&&r.parent.removeChild(r),a.label=2;
+case 2:return this.shareSelector.show(400,ShareAnim.TopDown,ShareScene.item,null,t,"呱，免费领个嘟嘟福利"),this.shareSelector.open_callback(null,function(e){
+n(!0),o.getModel(AdsModel).req_share(4),core.ModelManage.getInstance().getModel(ShareModel).reportBlog("share.dudu_commodity")}
+),this.shareSelector.open_item(e.img,Prize.Rank.NONE),this.addChild(this.shareSelector),[2]}
+}
+)}
+)}
+;
+core.DisplayManage.getInstance().popup(new FurnitureAdsView(n,r))}
+else{
+var o=this.getModel(UserModel).getClover();
+if(i.price>o){
+Music.play("SE_Cancel");
+var a=_("三叶草不足");
+return void this.addChild(new ModalAlert(a))}
+var s=new FurnitureShopTips(e),c=new ModalConfirm(s,function(){
+t.getModel(FurnitureModel).requestBuy(e.shop_id,new core.Action1(function(){
+c.parent&&c.parent.removeChild(c),t.update()}
+))}
+,function(){
+c.parent&&c.parent.removeChild(c)}
+);
+c.addEventListener(egret.Event.REMOVED_FROM_STAGE,function(){
+t.buyModal=null,t.checkGuide()}
+,this),this.buyModal=c,this.addChild(c),this.checkGuide()}
+}
+}
+,t.prototype.update=function(){
+this.shopItems=this.getModel(FurnitureModel).getShopData().shop_list.concat(),this.updateClover();
+for(var e={
+}
+,t=Tabikaeru.DataManager.instance().FurnitureShopDB,i=0,n=this.shopItems;
+i<n.length;
+i++){
+var r=n[i],o=t.get(r.shop_id);
+e[r.shop_id]=o}
+this.shopItems.sort(function(t,i){
+return(e[i.shop_id].order||0)-(e[t.shop_id].order||0)||t.shop_id-i.shop_id}
+),Utils.setArrayCollection(this.shopList,this.shopItems),this.once(egret.Event.ENTER_FRAME,this.checkGuide,this),this.updateSelect()}
+,t.prototype.checkGuide=function(){
+var e=this,t=this.getModel(UserModel).getClientSettings().guideFurniture;
+if(1==t){
+this.getModel(UserModel

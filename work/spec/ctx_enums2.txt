@@ -1,0 +1,54 @@
+chars 198700..200700
+
+0;
+o--)n(o)}
+,t.prototype.requestMail=function(){
+core.SocketManage.getInstance().send("mail_load")}
+,t.prototype.getMailInfoList=function(){
+return this.mailInfoList}
+,t.prototype.getMailStage=function(){
+var e,t=!1;
+if(this.mailInfoList&&this.mailInfoList.length>0)for(var i=0;
+i<this.mailInfoList.length;
+i++)if(e=this.mailInfoList[i],!e.read){
+t=!0;
+break}
+return t}
+,t.prototype.openMailInfo=function(e){
+for(var t,i=0;
+i<this.mailInfoList.length;
+i++)if(t=this.mailInfoList[i],t.id==e){
+if(this.mailInfoList.splice(i,1),t.resource&&(this.getModel(UserModel).addClover(t.resource.clover_point),this.getModel(UserModel).addTicket(t.resource.ticket)),t.items)for(var n=0,r=t.items;
+n<r.length;
+n++){
+var o=r[n];
+this.getModel(ItemModel).addHouseItem(o.item_id,o.count)}
+return t.opened=!0,core.SocketManage.getInstance().send("mail_open",null,e),void this.dispatchEvent(new core.Event(TravelEventType.updateMial))}
+}
+,t.prototype.readMailInfo=function(e){
+for(var t,i=0;
+i<this.mailInfoList.length;
+i++)if(t=this.mailInfoList[i],t.id==e)return BaseChannel.getInstance().jf_commit(!0,"js.warning",{
+reason:"read_mail",info:t}
+),t.read=!0,core.SocketManage.getInstance().send("mail_read",null,e),void this.dispatchEvent(new core.Event(TravelEventType.updateMial))}
+,t.prototype.checkMailItemType=function(e){
+function t(e){
+var t=0;
+return null!=e&&(t=Array.isArray(e)?e.length:Object.keys(e).length),t>0}
+function i(e){
+return null!=e&&(e.clover_point>0||e.ticket>0||e.reward_gacha>0||e.ads_id.length>0||e.share_id.length>0)?!0:!1}
+return e.type==Mail.EvtId.Drift?!0:e.type==Mail.EvtId.Captcha?!0:t(e.items)||i(e.resource)||e.pictures.length>0}
+,t.prototype.getRedpointState=function(){
+return this.redpointState}
+,t.prototype.openActivityShop=function(){
+}
+,t.prototype.filtrateEvent=function(){
+if(this.travelEventList){
+var e=this.getModel(GameplayModel).getGameplayList(),t=e?e[0]:null;
+if(t){
+var i=[];
+switch(t.Gameplay){
+case"邻居":i.push(TimerEvent.Type.Visitor)}
+for(var n=void 0,r=this.travelEventList.length-1;
+r>=0;
+r--)n=this.travelEventL

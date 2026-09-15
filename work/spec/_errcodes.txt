@@ -1,0 +1,48 @@
+<class 'list'> 47
+{'name': 'EJ_OK', 'code': 0, 'ok': True, 'desc': '成功'}
+{'name': 'EJ_SERVER_ERROR', 'code': 1, 'tid': 'TID_SERVER_ERROR', 'clog': True, 'desc': '服务器通用错误码'}
+{'name': 'EJ_NETWORK_ERROR', 'code': 2, 'tid': 'TID_NETWORK_ERROR', 'clog': True, 'desc': '连接第三方平台网络错误'}
+{'name': 'EJ_UNKNOWN_UID', 'code': 3, 'tid': 'TID_UNKNOWN_UID', 'clog': True, 'desc': ''}
+{'name': 'EJ_VERSION_INCOMPATIBLE', 'code': 4, 'tid': 'TID_VERSION_INCOMPATIBLE', 'clog': True, 'desc': '版本不兼容'}
+{'name': 'EJ_ILLEGAL_PARAMETER', 'code': 5, 'tid': 'TID_ILLEGAL_PARAMETER', 'desc': '参数非法'}
+{'name': 'EJ_ILLEGAL_OPERATION', 'code': 6, 'tid': 'TID_ILLEGAL_OPERATION', 'desc': '非法操作'}
+{'name': 'EJ_DATA_MISMATCH', 'code': 7, 'tid': 'TID_DATA_MISMATCH', 'desc': '客户端数据与服务器不一致'}
+{'name': 'EJ_ILLEGAL_TIMESTAMP', 'code': 8, 'tid': 'TID_ILLEGAL_TIMESTAMP', 'desc': '时间戳校验失败'}
+{'name': 'EJ_INVALID_USERNAME', 'code': 10, 'tid': 'TID_INVALID_USERNAME', 'desc': '无效的用户名'}
+{'name': 'EJ_INVALID_TOKEN', 'code': 11, 'tid': 'TID_INVALID_TOKEN', 'desc': '无效的token, (密码不正确)'}
+{'name': 'EJ_INVALID_SESSION', 'code': 12, 'tid': 'TID_INVALID_SESSION', 'desc': '无效的session, （操作和上下文状态冲突)'}
+{'name': 'EJ_LOGIN_CONFLICT', 'code': 13, 'tid': 'TID_LOGIN_CONFLICT', 'desc': '多人同时登录'}
+{'name': 'EJ_ACCOUNT_BANNED', 'code': 14, 'tid': 'TID_ACCOUNT_BANNED', 'desc': '帐号禁止登录'}
+{'name': 'EJ_SERVER_INVALID', 'code': 15, 'tid': 'TID_SERVER_INVALID', 'desc': '服务器无效(选择的服务器不存在或未启动)'}
+{'name': 'EJ_ROLE_BANNED', 'code': 16, 'tid': 'TID_ROLE_BANNED', 'desc': '角色禁止登录'}
+{'name': 'EJ_REPLAY_NOT_FOUND', 'code': 20, 'tid': 'TID_REPLAY_NOT_FOUND', 'desc': '战斗录像未找到'}
+{'name': 'EJ_STR_TOO_SHORT', 'code': 31, 'tid': 'TID_STR_TOO_SHORT', 'desc': '太短'}
+{'name': 'EJ_STR_TOO_LONG', 'code': 32, 'tid': 'TID_STR_TOO_LONG', 'desc': '太长'}
+{'name': 'EJ_STR_ILLEGAL', 'code': 33, 'tid': 'TID_ILLEGAL_STR', 'desc': '名字不能含有非法字符哦'}
+{'name': 'EJ_NAME_REPEATED', 'code': 34, 'tid': 'TID_NAME_REPEATED', 'desc': '角色名字已存在'}
+{'name': 'EJ_NAME_GEN_FAILED', 'code': 35, 'tid': 'TID_NAME_GEN_FAILED', 'desc': '生成名字失败(找不到不重复名字了)'}
+{'name': 'EJ_STR_NOT_NUMBERIC', 'code': 36, 'tid': 'TID_STR_NOT_NUMBERIC', 'desc': '不是合法的数字'}
+{'name': 'EJ_STR_HAS_SPACE_OR_TAB', 'code': 37, 'tid': 'TID_STR_HAS_SPACE_OR_TAB', 'desc': '名字不能包含空格哦'}
+{'name': 'EJ_STR_INVALID_FORMAT', 'code': 38, 'tid': 'TID_STR_INVALID_FORMAT', 'desc': '字符串格式非法'}
+{'name': 'EJ_BAG_FULL', 'code': 41, 'tid': 'TID_ERRORCODE_BAG_FULL', 'desc': '空间不足'}
+{'name': 'EJ_BAG_ITEM_NOT_ENOUGH', 'code': 42, 'tid': 'TID_BAG_ITEM_NOT_ENOUGH', 'desc': '物品不足'}
+{'name': 'EJ_RESOURCE_NOT_ENOUGH', 'code': 61, 'tid': 'TID_RESOURCE_NOT_ENOUGH', 'desc': '资源不足'}
+{'name': 'EJ_PIC_INSERT_FAIL', 'code': 71, 'tid': 'TID_PIC_INSERT_FAIL', 'desc': '照片插入失败'}
+{'name': 'EJ_PIC_DELETE_FAIL', 'code': 72, 'tid': 'TID_PIC_DELETE_FAIL', 'desc': '照片删除失败'}
+{'name': 'EJ_PIC_FULL', 'code': 73, 'tid': 'TID_PIC_FULL', 'desc': '照片到达上限'}
+{'name': 'EJ_PIC_DELETE_NO_ID', 'code': 74, 'tid': 'TID_PIC_DELETE_NO_ID', 'desc': '删除错误的照片id'}
+{'name': 'EJ_PIC_SAVE_NO_NEW_ID', 'code': 75, 'tid': 'TID_PIC_SAVE_NO_NEW_ID', 'desc': '保存错误的新照片id'}
+{'name': 'EJ_PIC_DELETE_NO_NEW_ID', 'code': 76, 'tid': 'TID_PIC_DELETE_NO_NEW_ID', 'desc': '删除错误的新照片id'}
+{'name': 'EJ_GIFT_ACTIVE_CODE_UNUSABLE', 'code': 419, 'tid': 'TID_ACTIVE_CODE_UNUSABLE', 'desc': '礼包码不可用'}
+{'name': 'EJ_GIFT_ALWAYS_ACTIVED', 'code': 10604, 'tid': 'TID_ALWAYS_ACTIVED', 'desc': '礼包码已使用'}
+{'name': 'EJ_GIFT_REWARD_UNUSABLE', 'code': 430, 'tid': 'TID_REWARD_UNUSABLE', 'desc': '奖励类型不存在'}
+{'name': 'EJ_GIFT_ALWAYS_REWARDED', 'code': 10026, 'tid': 'TID_ALWAYS_REWARDED', 'desc': '礼包码奖励已领取'}
+{'name': 'EJ_GIFT_ACTIVE_CODE_NOT_EXIST', 'code': 84, 'tid': 'TID_ACTIVE_CODE_NOT_EXIST', 'desc': '已兑换过该类奖励'}
+{'name': 'EJ_GIFT_REWARD_CONFIRM_ERROR', 'code': 85, 'tid': 'TID_REWARD_CONFIRM_ERROR', 'desc': '发奖失败'}
+{'name': 'EJ_TICKET_TYPE_NOT_FOUND', 'code': 86, 'tid': 'TID_TICKET_TYPE_NOT_FOUND', 'desc': '礼包码类型不存在'}
+{'name': 'EJ_TICKET_TOO_MORE_USE_TIMES', 'code': 87, 'tid': 'TID_TICKET_TOO_MORE_USE_TIMES', 'desc': '礼包码使用频率过高'}
+{'name': 'EJ_GIFT_INVALID_TICKET', 'code': 88, 'tid': 'TID_GIFT_INVALID_TICKET', 'desc': '礼包码无效'}
+{'name': 'EJ_GIFT_ACTIVITY_END', 'code': 89, 'tid': 'TID_GIFT_ACTIVITY_END', 'desc': '该礼包码活动已结束'}
+{'name': 'EJ_GIFT_BOX_ALBUM_TO_BOX_FULL', 'code': 100, 'tid': 'TID_GIFT_BOX_ALBUM_TO_BOX_FULL', 'desc': '礼品盒相册已满'}
+{'name': 'EJ_GIFT_BOX_BOX_TO_ALBUM_FULL', 'code': 101, 'tid': 'TID_GIFT_BOX_BOX_TO_ALBUM_FULL', 'desc': '相册已满'}
+{'name': 'EJ_GIFT_BOX_SPECIALTY_FULL', 'code': 102, 'tid': 'TID_GIFT_BOX_SPECIALTY_FULL', 'desc': '礼品盒特产满'}

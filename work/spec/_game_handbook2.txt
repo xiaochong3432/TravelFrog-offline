@@ -1,0 +1,33 @@
+this.itemModel.getSpecialtysList(),r=[],o=0;
+o<i.SpecialtyDB.count();
+o++)t=i.SpecialtyDB.index(o),n.indexOf(t.itemId)>=0?r.push(t):r.push(-1);
+return r}
+,enumerable:!0,configurable:!0}
+),t.prototype.raffle=function(){
+var e=[Prize.Rank.Gold,Prize.Rank.Red,Prize.Rank.Green,Prize.Rank.Blue,Prize.Rank.White],t=Math.floor(Math.random()*e.length),i=e[t];
+return new Promise(function(e,t){
+setTimeout(function(){
+e(i)}
+,200)}
+)}
+,Object.defineProperty(t.prototype,"prizelist",{
+get:function(){
+for(var t=e.DataManager.instance().PrizeDB,i=[],n=0;
+n<t.count();
+n++)i.push(t.index(n));
+return i}
+,enumerable:!0,configurable:!0}
+),t.prototype.getFriendTaste=function(t,i){
+for(var n=e.DataManager.instance().CharaDB,r=e.DataManager.instance().SpecialtyDB,o=n.src.data.find(function(e){
+return e.id===t}
+),a=-1,s=r.list(),c=0;
+c<s.length;
+c++)if(s[c].itemId===i){
+a=c;
+break}
+return{
+friend:o,feeling:o.taste[a]}
+}
+,t._instance=null,t}
+();
+e.Game=t,__reflect(t.prototype,"Tabikaeru.Game")}

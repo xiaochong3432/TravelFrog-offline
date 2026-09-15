@@ -1,0 +1,1154 @@
+
+##########################################################################################
+### CalendarViewControl  raw-hits=7
+##########################################################################################
+
+===== [529617] owner CalendarViewControl (start 529613, len 394) =====
+var CalendarViewControl=function(e){
+function t(){
+return e.call(this,CalendarView)||this}
+return __extends(t,e),t.prototype.open=function(){
+e.prototype.open.call(this)}
+,t.prototype.close=function(){
+e.prototype.close.call(this),this.view=null}
+,t}
+(WindowController);
+__reflect(CalendarViewControl.prototype,"CalendarViewControl");
+var CalendarView=function(e){
+function t(){
+return e.call(t
+[529885] (class CalendarViewControl already dumped)
+[529916] (class CalendarViewControl already dumped)
+
+===== [530072] owner CalendarView (start 529938, len 2649) =====
+var CalendarView=function(e){
+function t(){
+return e.call(this,core.PathManage.getInstance().getSkinsPath("Calendar/CalendarSkin.exml"),CalendarViewControl,core.ViewLayerType.WindowLayer)||this}
+return __extends(t,e),t.prototype.childrenCreated=function(){
+var t=this;
+e.prototype.childrenCreated.call(this),this.cover.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this),this.data=this.getModel(CalendarModel).data;
+var i=Tabikaeru.DataManager.instance().calendarData,n=i.get("beginner"),r=this.getModel(RoleModel).getCreateDay(),o=new Date(1e3*core.Time.getServerTime()),a=i.get("month")[o.getMonth()+1];
+this.imagePic.source=a.pic+"_png";
+var s=o.getDate(),c=this.getModel(CalendarModel).getMonthFirstWeek()-1,l=this.getModel(CalendarModel).getMonthMaxDay();
+this.imageList=[];
+for(var h=function(e){
+var i=u.groupDay.getChildAt(e);
+if(e>=c&&c+l>e){
+u.imageList.push(i);
+var o=u.imageList.length;
+o>s&&r++;
+var a=void 0,h=void 0;
+o>=s&&n[r]?(a=n[r].item_id,s==o&&u.getModel(CalendarModel).canGetBeginnerReward()&&(h=!0)):u.data.st_days[o]?(a=u.data.st_days[o],a&&u.getModel(CalendarModel).canGetStReward()&&(h=!0)):u.data.lucky_days[o]&&(a=u.data.lucky_days[o],s==o&&u.getModel(CalendarModel).canGetLuckyReward()&&(h=!0),o>s&&(a=-1));
+var p;
+if(a){
+var d=new eui.Image;
+if(-1==a)d.source="calendar_icon_lucky_png";
+else{
+var g=Tabikaeru.DataManager.instance().ItemDB.get(a);
+d.source=Tabikaeru.path.formatPathImage(g.img)}
+d.width=d.height=60,d.x=6+e%7*73,d.y=2+65*Math.floor(e/7),u.groupReward.addChildAt(d,0),h&&egret.Tween.get(d,{
+loop:!0}
+).to({
+scaleX:1.1,scaleY:1.1}
+,1500).to({
+scaleX:1,scaleY:1}
+,1500);
+var f=new eui.Image;
+f.source="calendar_panel_item_png",f.x=e%7*73,f.y=65*Math.floor(e/7),u.groupReward.addChildAt(f,0),p=function(){
+d.visible=f.visible=!1}
+}
+o==s&&(u.imageToday.x=e%7*73,u.imageToday.y=65*Math.floor(e/7)),u.imageList.length<=s&&(i.alpha=0,i.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+return s==o&&t.getModel(CalendarModel).canGetBeginnerReward()?void t.getModel(CalendarModel).req_beginer_reward():t.data.st_days[o]&&t.getModel(CalendarModel).canGetStReward()?void t.getModel(CalendarModel).req_st_reward(o,p):s==o&&t.getModel(CalendarModel).canGetLuckyReward()?void t.getModel(CalendarModel).req_luck_reward(o,p):void(t.data.note_list[o-1]&&core.DisplayManage.getInstance().popup(new CalendarNoteView(o)))}
+,u))}
+else i.visible=!1}
+,u=this,p=0;
+42>p;
+p++)h(p);
+this.data.note_list.length<=0&&core.SocketManage.getInstance().send("calendar_load_note")}
+,t}
+(WindowView);
+__reflect(CalendarView.prototype,"CalendarView");
+var CapsuleHistoryViewControl=function(e){
+function t(){
+return e.call(th
+
+===== [783439] owner Lumberroom (start 777411, len 6764) =====
+var Lumberroom=function(e){
+function t(){
+return e.call(this,core.PathManage.getInstance().getSkinsPath("Menu/Lumberroom.exml"))||this}
+return __extends(t,e),t.getInstance=function(){
+return null==t._instance&&(t._instance=new t),t._instance}
+,t.prototype.createChildren=function(){
+e.prototype.createChildren.call(this),this.update()}
+,t.prototype.onComplete=function(){
+this.cover.addEventListener(egret.TouchEvent.TOUCH_TAP,this.click_close,this),this.closeBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.click_close,this),this.albumBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.openAlbum,this),this.presentBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.openPresent,this),this.storyBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.openStory,this),this.rankingBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.openRanking,this),this.travelNoteBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.openTravelNote,this),this.giftBoxBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.openGiftBox,this),this.handCraftBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.openHandCraft,this),this.museumBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_museumBtn_tap,this),this.furnitureBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_furnitureBtn_tap,this),this.drawBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_drawBtn_tap,this),this.encyBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_encyBtn_tap,this),this.calendarBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_calendarBtn_tap,this),this.animPicBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_animPicBtn_tap,this)
+}
+,t.prototype.update=function(){
+var e=this;
+this.handCraftBtn.visible=this.handCraftBtn.includeInLayout=this.getModel(ItemModel).getHaveItem(EnumItemID.HAND_CRAFT_TOOL)>0,this.rankingBtn.visible=this.rankingBtn.includeInLayout=!1;
+var t=this.getModel(TravelNoteModel).isOpen();
+this.travelNoteBtn.visible=this.travelNoteBtn.includeInLayout=t;
+var i=this.getModel(GiftBoxModel).isOpen();
+this.giftBoxBtn.visible=this.giftBoxBtn.includeInLayout=i,this.furnitureBtn.visible=this.furnitureBtn.includeInLayout=this.getModel(FurnitureModel).isOpen(),this.drawBtn.visible=this.drawBtn.includeInLayout=this.getModel(DrawingModel).isOpen(),this.encyBtn.visible=this.encyBtn.includeInLayout=this.getModel(EncyModel).isOpen();
+for(var n=0,r=0,o=this.group.numChildren;
+o>r;
+r++)1==this.group.getChildAt(r).visible&&n++;
+n>=9?this.currentState="big":this.currentState="default",this.animPicBtn.visible=this.animPicBtn.includeInLayout=this.getModel(AnimPictureModel).data.guide>1,this.once(egret.Event.ENTER_FRAME,function(){
+if(2==e.getModel(AnimPictureModel).data.guide){
+e.disabledOrEnableUI(!1,e.animPicBtn);
+var t=e.animPicBtn.localToGlobal(),i=e.groupRoot.globalToLocal(t.x,t.y,t);
+e.groupGuide.x=i.x,e.groupGuide.y=i.y,e.groupGuide.width=e.groupGuide.height="big"==e.currentState?120:100,GuideFingerView.getInstance().show(e.groupGuide,FingerOrientation.Top)}
+}
+,this)}
+,t.prototype.click_close=function(){
+Music.play("SE_Cancel"),this.close()}
+,t.prototype.close=function(){
+core.PageManage.getInstance().removeControl(LumberroomViewControl,core.ViewLayerType.WindowLayer)}
+,t.prototype.disabledOrEnableUI=function(e){
+void 0===e&&(e=!0);
+for(var t=[],i=1;
+i<arguments.length;
+i++)t[i-1]=arguments[i];
+for(var n=[this.closeBtn,this.cover],r=0;
+r<this.group.numChildren;
+r++)n.push(this.group.getChildAt(r));
+for(var o,r=0;
+r<n.length;
+r++)o=n[r],o&&(-1==t.indexOf(o)?(o.touchEnabled=e,null!=o.touchChildren&&(o.touchChildren=e),e?o.enable&&o.enable():o.disable&&o.disable()):(o.touchEnabled=!0,null!=o.touchChildren&&(o.touchChildren=!0),o.enable&&o.enable()))}
+,t.prototype.openAlbum=function(e){
+this.close(),Music.play("SE_PageNext"),core.PageManage.getInstance().addViewControl(AlbumController,core.ViewLayerType.WindowLayer,core.RemoveViewType.HideBeforeAll)}
+,t.prototype.openPresent=function(e){
+this.close(),Music.play("SE_PageNext"),core.PageManage.getInstance().addViewControl(CollectionController,core.ViewLayerType.WindowLayer,core.RemoveViewType.HideBeforeAll)}
+,t.prototype.openStory=function(e){
+this.close(),Music.play("SE_PageNext"),core.PageManage.getInstance().addViewControl(StoryController,core.ViewLayerType.WindowLayer,core.RemoveViewType.HideBeforeAll)}
+,t.prototype.openRanking=function(e){
+this.close(),Music.play("SE_PageNext"),core.PageManage.getInstance().addViewControl(RankingViewController,core.ViewLayerType.WindowLayer,core.RemoveViewType.HideBefore)}
+,t.prototype.openTravelNote=function(e){
+this.close(),Music.play("SE_PageNext"),core.PageManage.getInstance().addViewControl(TravelNoteController,core.ViewLayerType.WindowLayer,core.RemoveViewType.HideBeforeAll)}
+,t.prototype.openGiftBox=function(e){
+this.close(),Music.play("SE_PageNext"),core.PageManage.getInstance().addViewControl(GiftBoxController,core.ViewLayerType.WindowLayer,core.RemoveViewType.HideBefore)}
+,t.prototype.openHandCraft=function(e){
+this.close(),Music.play("SE_PageNext"),core.PageManage.getInstance().addViewControl(HandCraftViewController,core.ViewLayerType.WindowLayer,core.RemoveViewType.HideBefore)}
+,t.prototype.on_museumBtn_tap=function(e){
+this.close(),core.PageManage.getInstance().addViewControl(MuseumListViewControl,core.ViewLayerType.WindowLayer,core.RemoveViewType.HideBefore)}
+,t.prototype.on_furnitureBtn_tap=function(){
+this.close(),Music.play("SE_PageNext"),core.PageManage.getInstance().addViewControl(FurnitureViewController,core.ViewLayerType.WindowLayer,core.RemoveViewType.HideBefore)}
+,t.prototype.on_drawBtn_tap=function(){
+this.close(),Music.play("SE_PageNext"),core.PageManage.getInstance().addViewControl(DrawViewControl,core.ViewLayerType.WindowLayer,core.RemoveViewType.HideBefore)}
+,t.prototype.on_encyBtn_tap=function(){
+this.close(),Music.play("SE_PageNext"),core.PageManage.getInstance().addViewControl(EncyViewControl,core.ViewLayerType.WindowLayer,core.RemoveViewType.HideBefore)}
+,t.prototype.on_calendarBtn_tap=function(){
+this.close(),Music.play("SE_PageNext"),core.PageManage.getInstance().addViewControl(CalendarViewControl,core.ViewLayerType.WindowLayer)}
+,t.prototype.on_animPicBtn_tap=function(){
+var e=this;
+this.close(),Music.play("SE_PageNext"),2==this.getModel(AnimPictureModel).data.guide?this.getModel(AnimPictureModel).req_guide(new core.Action(function(){
+e.disabledOrEnableUI(!0),GuideFingerView.getInstance().hide(),core.PageManage.getInstance().addViewControl(AnimPictureViewControl,core.ViewLayerType.WindowLayer)}
+)):core.PageManage.getInstance().addViewControl(AnimPictureViewControl,core.ViewLayerType.WindowLayer)}
+,t}
+(core.UIView);
+__reflect(Lumberroom.prototype,"Lumberroom");
+var LumberroomViewControl=function(e){
+function t(){
+return e.call(this)||thi
+
+===== [804958] owner MainInView (start 801635, len 28954) =====
+var MainInView=function(e){
+function t(){
+var t=e.call(this,core.PathManage.getInstance().getSkinsPath("MainIn/MainIn.exml"))||this;
+return t.curAnimName="",t.guideTimeout=0,t.cameraVisibleRecord=[],t.roleModel=t.getModel(RoleModel),t.userModel=t.getModel(UserModel),t.travelModel=t.getModel(TravelModel),t.storyModel=t.getModel(StoryModel),t.hoursType=t.getModel(WeatherModel).data.hours_type,t.addEventListener(egret.Event.RESIZE,t.on_resize,t),t}
+return __extends(t,e),t.prototype.childrenCreated=function(){
+e.prototype.childrenCreated.call(this),this.updateFurniture(),this.fs_25_3.addEventListener(egret.TouchEvent.TOUCH_BEGIN,this.onWindmillTouch,this)}
+,t.prototype.$onRemoveFromStage=function(){
+e.prototype.$onRemoveFromStage.call(this),this.stage.removeEventListener(egret.TouchEvent.TOUCH_END,this.onWindmillTouchEnd,this)}
+,t.prototype.center_scroller=function(){
+this.scroller.viewport.scrollH=.5*(854-this.width),this.guideGroup.scrollH=.5*(854-this.width)}
+,t.prototype.on_resize=function(){
+this.center_scroller()}
+,t.prototype.updateSafeTop=function(){
+e.prototype.updateSafeTop.call(this),this.menu&&(this.menu.top=this.safe_top)}
+,t.prototype.onComplete=function(){
+var e=this;
+this.payBtn.visible=this.getModel(UserModel).getShowPay(),this.center_scroller(),this.c_player_desk_mc.visible=!1,this.updateClover(),this.outBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+Music.play("SE_Move"),core.PageManage.getInstance().addViewControl(MainOutController,core.ViewLayerType.SceneLayer,core.RemoveViewType.HideBefore)}
+,this),this.shopBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+Music.play("SE_Move"),e.guideRoomIntroduceView&&e.guideRoomIntroduceView.parent&&(e.guideRoomIntroduceView.parent.removeChild(e.guideRoomIntroduceView),e.guideRoomIntroduceView=null),core.PageManage.getInstance().addViewControl(ShopController,core.ViewLayerType.WindowLayer,core.RemoveViewType.Retain)}
+,this),this.bagBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onTapBag,this),this.payBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+core.PageManage.getInstance().addViewControl(RechargeViewController,core.ViewLayerType.WindowLayer,core.RemoveViewType.HideBefore)}
+,this),this.lumberroom.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onTapLumberroom,this),this.btnCooking.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_cooking_tap,this),this.enterNoteBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onEnterNoteBtn,this),this.enterGiftBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onEnterGiftBtn,this),this.i_stampcraf.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_i_stampcraf_tap,this),this.i_stampcraft_redot.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_i_stampcraf_tap,this),this.i_praycraft.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_i_praycraft_tap,this),this.i_praying.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_i_praycraft_tap,this),this.i_praycraft_redot.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_i_praycraft_tap,this),this.enterTravelMap.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_enterTravelMap_tap,this),this.enterFlower.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_enterFlowerMap_tap,this),this.enterCalendarBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+core.PageManage.getInstance().addViewControl(CalendarViewControl,core.ViewLayerType.WindowLayer)}
+,this),this.updateRedpoint(),this.c_newStory.touchEnabled=!0,this.c_newStory.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+e.guideStoryView&&(e.guideStoryView.parent&&e.guideStoryView.parent.removeChild(e.guideStoryView),e.guideStoryView=null);
+var t=new StoryAlertView;
+t.setInfo(e.storyModel.getStoryData(e.storyModel.getNewStoryID()),e.getModel(GreetCardModel).getNewCard(),function(e){
+e.parent.removeChild(e)}
+),core.DisplayManage.getInstance().getPopupLayer().addChild(t),e.storyModel.readNewStory(),e.getModel(GreetCardModel).req_read_new(),e.getModel(HandCraftModel).updateRedot(),e.checkStory()}
+,this),this.updateFlogStatus(),this.updateBagState(),this.updatePrayState(),this.checkNewAchieve(),this.checkStory(),this.checkCookingPopup(),this.updateDecoration(),this.updateCollects(),this.updateNoteRedot(),this.updateDrawingCollect(),this.updateParty(),this.updateSeason(),this.menu=new Menu,this.menu.top=this.safe_top,this.addChild(this.menu),this.once(egret.Event.ENTER_FRAME,function(){
+e.checkGuide(),e.checkBoxCraft()}
+,this)}
+,t.prototype.updateSeason=function(){
+if(1==this.hoursType||2==this.hoursType)this.fs_5_1_bg.source="mainin_ch_bt1_png",this.fs_5_2_bg.source="mainin_ch_bt2_png";
+else{
+this.fs_5_1_bg.source="mainin_ch_hy1_png",this.fs_5_2_bg.source="mainin_ch_hy2_png";
+var e=new SpineView;
+this.group_5_1.addChild(e),e.touchEnabled=e.touchChildren=!1,e.verticalCenter=e.horizontalCenter=0,e.load("lizi","lizi","lizi"),e.play("1");
+for(var t=["25_1","25_2"],i=0,n=t;
+i<n.length;
+i++){
+var r=n[i],o=this.getFurnitureSlot("ani_"+r);
+o.$children.length>0&&(this["cover_"+r].visible=!0,this.cover_light.visible=!0)}
+var a=this.cover_light.visible?"light":"default",s=[this.bgGroup,this.c_player_bed,this.c_player_out,this.frogCap],c=Tabikaeru.DefineExtra.SeasonInColorMatrix[a];
+if(c)for(var l=new egret.ColorMatrixFilter(c),h=0,u=s;
+h<u.length;
+h++){
+var r=u[h];
+r&&(r.filters=[l])}
+}
+}
+,t.prototype.updateCollects=function(){
+var e=this.getModel(DrawingModel).data.show_coll,t=this.getModel(UserModel).getClientSettings();
+if(0==this.getModel(DrawingModel).data.show_coll?this.getModel(UserModel).setClientSettings("noticeDrawing",-1):0!=t.noticeDrawing&&t.noticeDrawing!=this.getModel(DrawingModel).data.show_coll&&this.getModel(UserModel).setClientSettings("noticeDrawing",0),0==t.noticeDrawing){
+this.getModel(UserModel).setClientSettings("noticeDrawing",e),Music.play("SE_Popup");
+var i=_("屋内似乎多了些东西"),n=new Result.MainOutNotification;
+n.notify(core.DisplayManage.getInstance().popupLayer,Result.NotificationType.Green_Picture,i)}
+}
+,t.prototype.onWindmillTouch=function(){
+""!=this.fs_25_3.source&&(egret.Tween.removeTweens(this.fs_25_3),this.fs_25_3.rotation=Math.floor(this.fs_25_3.rotation%360),this.windTouchTime=egret.getTimer(),this.stage&&this.stage.once(egret.TouchEvent.TOUCH_END,this.onWindmillTouchEnd,this))}
+,t.prototype.onWindmillTouchEnd=function(){
+var e=(egret.getTimer()-this.windTouchTime)/1e3;
+e=Math.min(e,5);
+var t=Math.pow(e+.5,2)/3.1,i=Math.floor(360*t+this.fs_25_3.rotation),n=Math.floor(1e3*Math.sqrt(t*e))+500;
+egret.Tween.get(this.fs_25_3).to({
+rotation:i}
+,n,egret.Ease.sineOut)}
+,t.prototype.updateFurniture=function(){
+for(var e=this.getModel(FurnitureModel).getHomeFurnitures(),t=0,i=e;
+t<i.length;
+t++){
+var n=i[t],r=Tabikaeru.DataManager.instance().FurnitureDB.get(n.id);
+if(r)for(var o=Furniture.getFurnitureSlot(r.type),a=0;
+a<o.length;
+a++){
+var s=this.getFurnitureSlot(o[a]);
+s&&(r.res[a]?s.source=r.res[a]+"_png":s.source="")}
+}
+this.updateGroupSceneZIndex(),this.updateFurnitureAni()}
+,t.prototype.updateFurnitureAni=function(){
+for(var e=this.getModel(FurnitureModel).getHomeFurnitures(),t=Tabikaeru.Game.instance().isHome,i=this.curAnimName.indexOf("sleep")>=0,n=0,r=e;
+n<r.length;
+n++){
+var o=r[n],a=Tabikaeru.DataManager.instance().FurnitureDB.get(o.id);
+if(a){
+var s=Furniture.getFurnitureAniSlot(a.type);
+if(s)for(var c=0;
+c<s.names.length;
+c++){
+var l=this.getFurnitureSlot(s.names[c]);
+if(l&&l instanceof eui.Group)if(0==s.isHome||s.isHome&&t&&s.isSleep==i){
+l.removeChildren();
+var h=a.animation?a.animation[c]:"";
+if(h)if(RES.hasRes(h+"_tex_json")){
+var u=new core.DragonbonesView(h);
+u.play(""),l.addChild(u)}
+else if(RES.hasRes(h+".anm_bytes")){
+var u=new AnmAnimation;
+u.loadAnm(h),u.setPlay(!0),l.addChild(u)}
+}
+else l.removeChildren()}
+}
+}
+}
+,t.prototype.getFurnitureSlot=function(e){
+var t=this.groupScene.getChildByName(e)||this[e];
+return t?t:null}
+,t.prototype.updateRedpoint=function(){
+var e=this.getModel(CookingModel).getCookingActivity();
+if(this.i_activityRedDot){
+var t=this.userModel.getClientSettings().guideStep;
+t==GuideStep.Complete?(this.i_activityRedDot.visible=this.travelModel.getRedpointState(),this.i_praycraft_redot.enabled=!0,this.i_stampcraft_redot.enabled=!0,this.i_cooking_redot.enabled=null==e||e.params&&1==e.params.isOpen):(this.i_activityRedDot.visible=!1,this.i_praycraft_redot.enabled=!1,this.i_stampcraft_redot.enabled=!1,this.i_cooking_redot.enabled=!1)}
+}
+,t.prototype.checkGuide=function(){
+var e=this;
+GuideExitViewControl.changeShop(!1);
+var t=this.userModel.getClientSettings(),i=t.guideStep;
+switch(i){
+case GuideStep.EnterRoom:case GuideStep.EnterRoom2:this.disabledOrEnableUI(!1),this.userModel.setClientSettings("guideStep",this.userModel.getNextGuideStep(i)),this.checkGuide();
+break;
+case GuideStep.Introduce:this.disabledOrEnableUI(!1),0!=this.guideTimeout&&clearTimeout(this.guideTimeout),this.guideTimeout=setTimeout(function(){
+e.guideTimeout=0,e.guideRoomIntroduceView=new GuideRoomIntroduceView(function(){
+e.userModel.setClientSettings("guideStep",e.userModel.getNextGuideStep(i)),e.checkGuide()}
+),e.addChild(e.guideRoomIntroduceView),e.guideRoomIntroduceView.gotoStep(1)}
+,1e3);
+break;
+case GuideStep.OpenShop:this.userModel.setClientSettings("guideStep",this.userModel.getNextGuideStep(i)),this.checkGuide();
+break;
+case GuideStep.BuyGoods:this.disabledOrEnableUI(!1,!1,this.shopBtn);
+this.guideRoomIntroduceView||(this.guideRoomIntroduceView=new GuideRoomIntroduceView),this.guideRoomIntroduceView.parent&&this.guideRoomIntroduceView.parent.removeChild(this.guideRoomIntroduceView),this.shopBtn.parent.addChildAt(this.guideRoomIntroduceView,this.shopBtn.parent.getChildIndex(this.shopBtn)),this.guideRoomIntroduceView.gotoStep(2);
+
+break;
+case GuideStep.OpenBag:this.disabledOrEnableUI(!1,!1),this.i_guideFood.visible=!0;
+var n=new GuidePacksackView(function(){
+n.parent.removeChild(n),n=null,e.disabledOrEnableUI(!1,!1,e.bagBtn),GuideFingerView.getInstance().show(e.bagBtn,FingerOrientation.Down,!0)}
+);
+this.addChild(n);
+break;
+case GuideStep.CloseBag:this.player&&(this.player.removeEventListener(egret.TouchEvent.TOUCH_TAP,this.playerTouchEvents,this),this.player.visible=!1,this.player.destroy(),this.player.parent&&this.player.parent.removeChild(this.player),this.player=null),this.frogCap.visible=!1,this.i_guideFood.visible=!1,this.candle_1&&(this.candle_1.setPlay(!1),this.candle_1.visible=!1),this.candle_2&&(this.candle_2.setPlay(!1),this.candle_2.visible=!1);
+var r=new GuideTravelView(function(){
+e.disabledOrEnableUI(!0),e.userModel.setClientSettings("guideStep",e.userModel.getNextGuideStep(i)),core.PageManage.getInstance().addViewControl(MainOutController,core.ViewLayerType.SceneLayer,core.RemoveViewType.HideBefore)}
+);
+this.addChild(r)}
+if(!this.getModel(UserModel).getClientSettings().guideHandCraft&&this.getModel(ItemModel).getHaveItem(EnumItemID.HAND_CRAFT_TOOL)){
+this.getModel(UserModel).setClientSettings("guideHandCraft",!0);
+var o=new GuidePrayView(function(){
+o.parent&&o.parent.removeChild(o),o=null,e.guidePrayView=null}
+);
+this.guidePrayView=o,core.DisplayManage.getInstance().getPopupLayer().addChild(o)}
+i==GuideStep.Complete&&(3==t.guideDrawing?(this.disabledOrEnableUI(!1,!1,this.bagBtn),GuideFingerView.getInstance().show(this.bagBtn,FingerOrientation.Down,!0)):1==this.getModel(AnimPictureModel).data.guide&&core.DisplayManage.getInstance().popup(new AnimPictureGuideView)),this.checkNoteGuide()}
+,t.prototype.checkNoteGuide=function(){
+var e=this;
+if(!this.getModel(UserModel).getClientSettings().guideNote&&this.getModel(GiftBoxModel).isOpen()){
+this.getModel(UserModel).setClientSettings("guideNote",!0),this.center_scroller(),this.disabledOrEnableUI(!1);
+var t=new GuideNoteView(function(){
+e.disabledOrEnableUI(!0),t.parent&&t.parent.removeChild(t),t=null}
+);
+this.guideGroup.addChild(t)}
+}
+,t.prototype.checkBoxCraft=function(){
+var e=[],t=this.getModel(HandCraftModel).getMakingStampCraft();
+t&&core.Time.getServerTime()>=t.time&&core.String.getCookie("show_stamp_new")!=String(t.u_id)&&(e.push(8e3),core.String.setCookie("show_stamp_new",String(t.u_id)));
+var i=this.getModel(HandCraftModel).getMakingPrayCraft();
+1==this.getModel(RoleModel).getFrogStatus()&&i&&core.Time.getServerTime()>=i.make_time&&core.String.getCookie("show_pray_new")!=String(i.u_id)&&(e.push(8e3),core.String.setCookie("show_pray_new",String(i.u_id)));
+for(var n=this.getModel(HandCraftModel).getBoxCraft(),r=0;
+r<n.length;
+r++)e.push(8001);
+e.length>0&&core.DisplayManage.getInstance().popup(new BoxCraftShowView(e))}
+,t.prototype.disabledOrEnableUI=function(e,t){
+void 0===e&&(e=!0),void 0===t&&(t=!1);
+for(var i=[],n=2;
+n<arguments.length;
+n++)i[n-2]=arguments[n];
+for(var r,o=[this.outBtn,this.shopBtn,this.bagBtn,this.payBtn,this.lumberroom,this.player,this.menu,this.menu.menuBtn,this.menu.taskBtn,this.menu.compBtn],a=0;
+a<o.length;
+a++)r=o[a],r&&(-1==i.indexOf(r)?t?r.visible=e:(r.touchEnabled=e,null!=r.touchChildren&&(r.touchChildren=e),e?r.enable&&r.enable():r.disable&&r.disable()):(r.visible=!0,r.touchEnabled=!0,null!=r.touchChildren&&(r.touchChildren=!0),r.enable&&r.enable()));
+this.center_scroller(),this.updateRedpoint()}
+,t.prototype.updatePrayState=function(){
+}
+,t.prototype.updateBagState=function(){
+var e=this.userModel.getClientSettings().guideStep,t=!1;
+if(e==GuideStep.Complete){
+var i=this.roleModel.getFrogStatus();
+if(0==i||2==i){
+var n=this.getModel(ItemModel);
+-1==n.getDeskDataList()[Tabikaeru.DeskItem.LunchBox_1]&&-1==n.getDeskDataList()[Tabikaeru.DeskItem.LunchBox_2]&&(t=!0),t&&-1!=n.getBagDataList()[Tabikaeru.BagItem.LunchBox]&&(t=!1)}
+var r=this.getModel(DrawingModel);
+r.isOpen()&&r.data.state==DrawingState.accept&&r.data.bag[0]>0==0&&(t=!0)}
+t?(this.i_bag.visible=!0,core.TweenExtend.playLoop(this.bagHelp_Tween,!0)):(this.i_bag.visible=!1,this.bagHelp_Tween.stop())}
+,t.prototype.isAnmAnimation=function(e){
+return!!e.setPlay}
+,t.prototype.updateFlogStatus=function(){
+var e=Tabikaeru.Game.instance().isHome;
+if(this.player&&(this.player.removeEventListener(egret.TouchEvent.TOUCH_TAP,this.playerTouchEvents,this),this.player.visible=!1,this.player.destroy(),this.player.parent&&this.player.parent.removeChild(this.player),this.player=null),this.c_player_desk_mc.visible&&(this.playerDeskMC_Tween.stop(),this.c_player_desk_mc.removeEventListener(egret.TouchEvent.TOUCH_TAP,this.playerTouchEvents,this),this.c_player_desk_mc.visible=!1),this.i_guideFood.visible=!1,e){
+this.frogCap.visible=!0;
+var t=this.roleModel.getFrogMotion(),i=Tabikaeru.Define.FrogMotionName[t],n=this.userModel.getClientSettings().guideStep;
+n!=GuideStep.Complete&&(i="sitaku_ie");
+var r=this.c_player_bed,o=null,a=null,s=null,c=null,l=null,h=[0,0];
+switch(i){
+case"dokusyo_ie":case"inemuri_ie":r=this.c_player_bed;
+break;
+case"hikki_ie":r=this.c_player_desk,o="LW_writing",s=this.getModel(DrawingModel).data.pen_motion||"write",a=s,this.updateNoteRedot();
+break;
+case"sagyou_ie":case"syokuzi_ie":r=this.c_player_chair;
+break;
+case"sitaku_ie":r=this.c_player_out;
+break;
+case"sleep_1":case"sleep_2":case"sleep_3":case"sleep_4":if(r=this.c_player_bed,c=i,l="default","sleep_1"!=c){
+r=this.c_player_sleep;
+var u=this.getModel(FurnitureModel).getHomeFurniture(Furniture.FurnitureType.ID_9);
+l=String(u)}
+break;
+default:return}
+var p=Tabikaeru.Define.FrogMotionPos[t]||[0,0];
+this.curAnimName=i;
+for(var d=this.getModel(EasterEggModel).data.egg_list,g=0,f=d;
+g<f.length;
+g++){
+var u=f[g];
+switch(u){
+case Tabikaeru.EasterEgg.Grooming:r=this.c_player_egg,c="egg_1_dress",this.frogCap.visible=!1;
+break;
+case Tabikaeru.EasterEgg.Drowsy:r=this.c_player_chair,c="egg_2_eat";
+break;
+case Tabikaeru.EasterEgg.Cook:r=this.c_player_egg,c="egg_3_cook";
+break;
+case Tabikaeru.EasterEgg.Zongzi:r=this.c_player_chair,o="zongzi",a="Sprite",s="newAnimation",c=null;
+break;
+case Tabikaeru.EasterEgg.Watermelon:r=this.c_player_chair,o="egg_5_chixigua",a="Sprite",s="Sprite",c=null}
+l="default",p=Tabikaeru.EasterEggPos[u]||[0,0]}
+if(o||c)if(c){
+this.player||(this.player=new SpineView);
+var v=new SpineView;
+v.load(c,c,c,l),this.player=v,this.player.x=h[0],this.player.y=h[1],r.addChild(this.player),this.player.addEventListener(egret.TouchEvent.TOUCH_TAP,this.playerTouchEvents,this),this.curAnimName=c}
+else"webgl"==egret.Capabilities.renderMode?(this.player||(this.player=new core.DragonbonesView(o,a)),this.isAnmAnimation(this.player)||this.player.play(s),this.player.addEventListener(egret.TouchEvent.TOUCH_TAP,this.playerTouchEvents,this),this.player.touchEnabled=!0,this.player.visible=!0,r.addChild(this.player)):(this.c_player_desk_mc.visible=!0,core.TweenExtend.playLoop(this.playerDeskMC_Tween,!0),this.c_player_desk_mc.touchEnabled=!0,this.c_player_desk_mc.addEventListener(egret.TouchEvent.TOUCH_TAP,this.playerTouchEvents,this)),this.curAnimName=o;
+else this.player||(this.player=new AnmAnimation),this.isAnmAnimation(this.player)&&(this.player.loadAnm(i),this.player.setPlay(!0)),this.player.addEventListener(egret.TouchEvent.TOUCH_TAP,this.playerTouchEvents,this),this.player.touchEnabled=!0,this.player.visible=!0,r.addChild(this.player),this.curAnimName=i;
+this.player.x=p[0],this.player.y=p[1],this.fs_9_1.visible=!0,("sleep_2"==this.curAnimName||"sleep_3"==this.curAnimName||"sleep_4"==this.curAnimName)&&(this.fs_9_1.visible=!1)}
+}
+,t.prototype.playerTouchEvents=function(e){
+Music.play("SE_Popup");
+var t=this.roleModel.getFrogMotion();
+Tabikaeru.Define.FrogMotionName[t];
+return"LW_writing"==this.curAnimName&&this.getModel(TravelNoteModel).hasUnreadNote()?(Music.play("SE_PageNext"),void core.PageManage.getInstance().addViewControl(TravelNoteController,core.ViewLayerType.WindowLayer,core.RemoveViewType.HideBeforeAll)):void this.openRoleAttr()}
+,t.prototype.openRoleAttr=function(){
+if(Tabikaeru.Game.instance().isHome){
+null==this.attributeView&&(this.attributeView=new AttributeView),this.attributeView.open(),this.addChild(this.attributeView);
+var e=core.ModelManage.getInstance().getModel(UserModel);
+if(!e.getClientSettings().hasOpenAttributeView){
+e.setClientSettings("hasOpenAttributeView",!0);
+var t=new GuideChangeName;
+this.addChild(t)}
+}
+}
+,t.prototype.updateClover=function(){
+this.cloverPoint.text=this.getModel(UserModel).getClover().toString()}
+,t.prototype.onTapBag=function(){
+var e=this;
+this.bag||(3==this.getModel(UserModel).getClientSettings().guideDrawing&&(this.disabledOrEnableUI(!0),GuideFingerView.getInstance().hide(),this.getModel(UserModel).setClientSettings("guideDrawing",4)),Music.play("SE_Popup"),this.bag=new BagTable(function(){
+e.checkGuide()}
+),this.addChild(this.bag),this.bag.addEventListener(egret.Event.REMOVED_FROM_STAGE,function(){
+e.bag=null}
+,this))}
+,t.prototype.onTapLumberroom=function(e){
+this.menu.onTapLumberroom(e)}
+,t.prototype.on_cooking_tap=function(){
+var e=this.checkCookingPopup();
+if(1!=e){
+var t=this.getModel(CookingModel).getCookingActivity();
+(null==t||t.params&&1==t.params.isOpen)&&core.PageManage.getInstance().addViewControl(CookingViewController,core.ViewLayerType.WindowLayer)}
+}
+,t.prototype.onEnterNoteBtn=function(){
+core.ModelManage.getInstance().getModel(TravelNoteModel).isOpen()?"LW_writing"==this.curAnimName?this.getModel(TravelNoteModel).hasUnreadNote()?(Music.play("SE_PageNext"),core.PageManage.getInstance().addViewControl(TravelNoteController,core.ViewLayerType.WindowLayer,core.RemoveViewType.HideBeforeAll)):this.openRoleAttr():core.PageManage.getInstance().addViewControl(TravelNoteController,core.ViewLayerType.WindowLayer,core.RemoveViewType.HideBeforeAll):this.openRoleAttr()}
+,t.prototype.onEnterGiftBtn=function(){
+core.ModelManage.getInstance().getModel(GiftBoxModel).isOpen()&&(Music.play("SE_PageNext"),core.PageManage.getInstance().addViewControl(GiftBoxController,core.ViewLayerType.WindowLayer,core.RemoveViewType.HideBeforeAll))}
+,t.prototype.checkStory=function(){
+var e=this.storyModel.getStoryData(this.storyModel.getNewStoryID()),t=this.getModel(GreetCardModel).getNewCard();
+this.c_newStory.visible=null!=e||null!=t,this.c_newStory.visible?(core.TweenExtend.playLoop(this.newStory_Tween,!0,0),this.getModel(UserModel).getClientSettings().guideStory?this.c_newStory.parent!=this.itemGroup&&this.itemGroup.addChild(this.c_newStory):(this.getModel(UserModel).setClientSettings("guideStory",!0),this.guideStoryView=new GuideStoryView,this.guideGroup.addChildAt(this.guideStoryView,0),this.guideShadow.addChild(this.c_newStory))):this.newStory_Tween.stop(),this.checkHandCraft()}
+,t.prototype.checkHandCraft=function(){
+var e=this.getModel(HandCraftModel).getMakingStampCraft();
+if(e&&core.Time.getServerTime()>e.time){
+var t=Tabikaeru.DataManager.instance().StampCraftDB.get(e.id);
+t&&(this.i_stampcraf.icon=Tabikaeru.path.formatPathImage(t.desk_pic)),this.i_stampcraf.visible=!0}
+else this.i_stampcraf.visible=!1;
+var i=this.getModel(HandCraftModel).getMakingPrayCraft();
+if(1==this.getModel(RoleModel).getFrogStatus()&&i&&core.Time.getServerTime()>i.make_time){
+var n=Tabikaeru.DataManager.instance().PrayCraftDB.get(i.id);
+n&&(this.i_praycraft.icon=Tabikaeru.path.formatPathImage(n.desk_pic),this.i_praying.icon=Tabikaeru.path.formatPathImage(n.desk_pic)),this.i_praycraft.visible=!0,this.i_praying.visible=this.i_praying.includeInLayout=!0}
+else this.i_praying.visible=this.i_praying.includeInLayout=!1,this.i_praycraft.visible=!1}
+,t.prototype.updateParty=function(){
+3==this.getModel(RoleModel).getFrogStatus()?(this.i_party.visible=this.i_party.includeInLayout=!0,this.i_party.icon=["party_wugui_png","party_maotouying_png","party_songshu_png"][this.getModel(DrawingModel).data.guest]):this.i_party.visible=this.i_party.includeInLayout=!1}
+,t.prototype.reset=function(){
+this.updateRedpoint(),this.updateClover(),this.updateFlogStatus(),this.updateFurnitureAni(),this.updateBagState(),this.checkNewAchieve(),this.checkGuide(),this.checkStory(),this.updateDecoration(),this.updateNoteRedot(),this.checkCookingPopup(),this.updateCollects(),this.updateDrawingCollect(),this.updateParty()}
+,t.prototype.checkCookingPopup=function(){
+var e=this,t=this.getModel(CookingModel).getCookingActivity();
+if(null==t||t.params&&1==t.params.isOpen){
+var i=this.userModel.getClientSettings().guideStep;
+if(i==GuideStep.Complete){
+var n=this.getModel(CookingModel);
+if(n.getMonthTheme()<=0)return core.PageManage.getInstance().addViewControl(CookingThemeViewControler,core.ViewLayerType.WindowLayer,null,{
+onClose:function(){
+egret.callLater(function(){
+return e.checkCookingPopup()}
+,e)}
+}
+),!0;
+if(null==this.guidePrayView){
+var r=Number(core.String.getCookie("last_cooking_time"));
+if(!r)return core.String.setCookie("last_cooking_time",n.getSelectMonth(),99999),core.PageManage.getInstance().addViewControl(CookingPopupViewController,core.ViewLayerType.WindowLayer),!0;
+var o=r,a=n.getSelectMonth();
+if(a!=o)return core.String.setCookie("last_cooking_time",n.getSelectMonth(),99999),core.PageManage.getInstance().addViewControl(CookingPopupViewController,core.ViewLayerType.WindowLayer),!0}
+}
+}
+}
+,t.prototype.checkIsFristTimeGetAchieve=function(e){
+var t=core.ModelManage.getInstance().getModel(UserModel);
+if(t.getClientSettings().hasAchieve)e();
+else{
+var i=core.ModelManage.getInstance().getModel(RoleModel);
+GuideHelpView.getInstance().show(_("{
+0}
+首次获得称号",i.getNameEncode()),function(){
+t.setClientSettings("hasAchieve",!0),e()}
+)}
+}
+,t.prototype.checkNewAchieve=function(){
+var e=Tabikaeru.Game.instance().isHome,t=this.userModel.getClientSettings().guideStep;
+if(e&&t==GuideStep.Complete){
+var i=core.ModelManage.getInstance().getModel(RoleModel).getAchieveList();
+if(i.length>0){
+var n=core.ModelManage.getInstance().getModel(UserModel),r=n.getClientSettings().achieveList.concat();
+if(i.length>r.length)for(var o=void 0,a=0,s=i.length;
+s>a;
+a++)if(o=i[a],-1==r.indexOf(o)){
+r.push(o),n.setClientSettings("achieveList",r,!1),this.tipsNewAchieve(o,a>=s-1);
+break}
+}
+}
+}
+,t.prototype.tipsNewAchieve=function(e,t){
+var i=this,n=core.ModelManage.getInstance().getModel(RoleModel),r=n.getAchieveInfo(e);
+if(r){
+var o=new ModalAlert(_("恭喜获得称号：{
+0}
+\n{
+1}
+",r.name,r.description),function(){
+Music.play("SE_Enter"),t?i.checkIsFristTimeGetAchieve(function(){
+i.checkNewAchieve()}
+):i.checkNewAchieve()}
+);
+core.DisplayManage.getInstance().getPopupLayer().addChild(o)}
+else this.checkNewAchieve()}
+,t.prototype.updateDecoration=function(){
+var e=this.getModel(RoleModel),t=e.decorationList;
+if(t.length)for(var i=e.decorationPutID,n=0,r=e.decorationList;
+n<r.length;
+n++){
+var o=r[n];
+if(o.id==i){
+var a=Tabikaeru.DataManager.instance().decorationDB[o.id];
+a&&(this.flower.source=Tabikaeru.path.formatPathImage(a.pic[Math.max(e.decorationStatus-1,0)]));
+break}
+}
+}
+,t.prototype.updateNoteRedot=function(){
+var e=this.getModel(TravelNoteModel).hasUnreadNote();
+this.i_noteRedot.visible=e,e?core.TweenExtend.playLoop(this.noteRedot_Tween,!0):this.noteRedot_Tween.stop()}
+,t.prototype.updateDrawingCollect=function(){
+var e=this.getModel(DrawingModel).data.show_coll,t="DrawingCollect",i=this.groupScene.getChildByName(t);
+if(i&&i.parent.removeChild(i),e>=0){
+var n=Tabikaeru.DataManager.instance().DrawingCollect.get(e);
+if(n){
+var r=new eui.Image;
+r.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onDrawingCollectTap,this),r.name=t,r.source=Tabikaeru.path.formatPathImage(n.scene);
+var o=n.position.split(",").map(function(e){
+return Number(e)}
+);
+r.data=e,r.horizontalCenter=o[0],r.verticalCenter=o[1],r.zIndex=o[2],this.groupScene.addChild(r),this.updateGroupSceneZIndex()}
+}
+}
+,t.prototype.updateGroupSceneZIndex=function(){
+var e=this.groupScene.$children,t=e.concat();
+t.sort(function(e,t){
+return e.zIndex-t.zIndex}
+);
+for(var i=!1,n=0,r=e.length;
+r>n;
+n++)if(e[n]!=t[n]){
+i=!0;
+break}
+if(i)for(var n=0,r=t.length;
+r>n;
+n++)this.groupScene.addChild(t[n])}
+,t.prototype.onDrawingCollectTap=function(e){
+var t=e.target.data;
+t>=0&&core.PageManage.getInstance().addViewControl(DrawCollectTipsViewControl,core.ViewLayerType.WindowLayer,core.RemoveViewType.Retain,t)}
+,t.prototype.on_i_stampcraf_tap=function(){
+var e=this.getModel(HandCraftModel).getMakingStampCraft();
+e&&(this.getModel(HandCraftModel).comfrimNewStampCraft(),core.PageManage.getInstance().addViewControl(StampCraftDetailViewController,core.ViewLayerType.NoticeLayer,core.RemoveViewType.Retain,{
+data:[e],onConfirm:function(){
+}
+}
+))}
+,t.prototype.on_i_praycraft_tap=function(){
+var e=this.getModel(HandCraftModel).getMakingPrayCraft();
+e&&(this.getModel(HandCraftModel).comfrimNewPrayCraft(),core.PageManage.getInstance().addViewControl(PrayCraftDetailViewController,core.ViewLayerType.NoticeLayer,core.RemoveViewType.Retain,{
+data:[e],onConfirm:function(){
+}
+}
+))}
+,t.prototype.on_enterTravelMap_tap=function(){
+var e=this.getModel(ActivityModel).getActivity("travelmap");
+null!=e&&e.params&&e.params.isOpen&&core.PageManage.getInstance().addViewControl(TravelMapController,core.ViewLayerType.WindowLayer,null,e.params.url)}
+,t.prototype.on_enterFlowerMap_tap=function(){
+this.center_scroller(),this.scroller.viewport.validateNow();
+var e=Utils.Capture.instance().captureTexture(this.flowerPot);
+core.PageManage.getInstance().addViewControl(FlowerPotViewControl,core.ViewLayerType.WindowLayer,core.RemoveViewType.Retain,{
+texture:e,bottom:new egret.Point(this.flower.horizontalCenter,this.flower.verticalCenter),position:this.flowerPot.localToGlobal(),enable:!Tabikaeru.Game.instance().isHome}
+)}
+,t.prototype.onHandleCamera=function(e){
+for(var t=[this.groupTop,this.i_bag,this.outBtn,this.groupPray,this.bagBtn,this.shopBtn,this.i_activityRedDot,this.i_noteRedot,this.c_newStory,this.i_praycraft_redot,this.i_stampcraft_redot,this.i_cooking_redot,this.menu],i=0;
+i<t.length;
+i++)e?t[i].visible=this.cameraVisibleRecord[i]:(this.cameraVisibleRecord[i]=t[i].visible,t[i].visible=!1);
+this.groupFull.touchChildren=e}
+,t.prototype.getCameraTexture=function(e,t){
+var i;
+if(t)i=t,i.x+=this.scroller.viewport.scrollH,i.y+=(this.groupScene.height-Main.stageHeight)/2,this.checkCameraMoment(i);
+else if(e)i=new egret.Rectangle(0,0,854,1420);
+else{
+var n=(1420-this.height)/2;
+i=new egret.Rectangle(this.scroller.viewport.scrollH,n,this.width,this.height)}
+return Utils.Capture.instance().captureTexture(this.groupFull,i)}
+,t.prototype.checkCameraMoment=function(e){
+if(this.player){
+var t=this.player.parent.localToGlobal(this.player.x,this.player.y),i=this.groupFull.globalToLocal(t.x,t.y),n=new egret.Rectangle(i.x-40,i.y-70,80,80),r=e.intersection(n);
+if(!r.isEmpty()){
+var o=this.getModel(MomentModel).data.has_map,a=Tabikaeru.DataManager.instance().momentData.get("list"),s=function(e){
+var t=a[e];
+return o[t.id]?"continue":t.type!=Tabikaeru.Define.MomentType.frog_motion&&t.type!=Tabikaeru.Define.MomentType.egg_motion?"continue":void(t.param==c.curAnimName&&c.getModel(MomentModel).req_unlock(t.id,new core.Action(function(){
+var e=new MomentPopView;
+e.setData(t.id),core.DisplayManage.getInstance().popup(e)}
+)))}
+,c=this;
+for(var l in a)s(l)}
+}
+}
+,t}
+(core.UIView);
+__reflect(MainInView.prototype,"MainInView");
+var MainOutController=function(e){
+function t(){
+var t=e.call(this)||this;
+ret
+
+##########################################################################################
+### req_client_pro  raw-hits=1
+##########################################################################################
+
+===== [128362] owner GuideTaskModel (start 126703, len 3049) =====
+var GuideTaskModel=function(e){
+function t(){
+var t=null!==e&&e.apply(this,arguments)||this;
+return t.data=[],t.dataList={
+}
+,t.dataReward={
+}
+,t}
+return __extends(t,e),t.prototype.initModel=function(){
+e.prototype.initModel.call(this),this.addProtocolCallback("task_load","task_load_list")}
+,t.prototype.getNextListReward=function(e){
+return this.dataReward[e]?this.dataReward[e]:0}
+,t.prototype.getCompleteListNum=function(e){
+var t=Tabikaeru.DataManager.instance().TaskDB.get("list_map"),i=0;
+for(var n in this.dataList){
+var r=t[n];
+r.type==e&&this.dataList[n]>=r.count&&i++}
+return i}
+,t.prototype.request_reward=function(e){
+var t=this;
+core.SocketManage.getInstance().send("task_get_reward",new core.Action1(function(i){
+if(0==i.code)for(var n=0,r=t.data;
+n<r.length;
+n++){
+var o=r[n];
+if(o.id==e){
+o.is_reward=!0;
+var a=Tabikaeru.DataManager.instance().TaskDB.get("task_list")[e];
+a&&t.getModel(ItemModel).addHouseItem(a.reward_id,a.num),t.updateRedot(),t.dispatchEvent(new core.Event(GuideTaskEventType.UPDATE,!0,o.id));
+break}
+}
+}
+),e)}
+,t.prototype.task_load=function(e){
+this.data=Utils.convertArray(e.tasks);
+for(var t=Utils.convertArray(e.list),i=0,n=t;
+i<n.length;
+i++){
+var r=n[i];
+this.dataList[r.id]=r.pro}
+this.updateRedot(),this.dispatchEvent(new core.Event(GuideTaskEventType.UPDATE))}
+,t.prototype.task_load_list=function(e){
+for(var t=Utils.convertArray(e.reward),i=0,n=t;
+i<n.length;
+i++){
+var r=n[i];
+this.dataReward[r.id]=r.pro}
+this.updateRedot()}
+,t.prototype.req_list_reward=function(e,t,i){
+var n=this;
+t++;
+var r=100*e+t;
+core.SocketManage.getInstance().send("task_get_list_reward",new core.Action1(function(r){
+0==r.code&&(n.dataReward[e]=t,i&&i.apply(),n.updateRedot())
+}
+),r)}
+,t.prototype.req_client_pro=function(e){
+core.SocketManage.getInstance().send("task_client_pro",null,e)}
+,t.prototype.updateRedot=function(){
+var e=Tabikaeru.DataManager.instance().TaskDB.get("task_list"),t={
+}
+;
+if(null==this.redotMap){
+this.redotMap={
+}
+;
+var i=[];
+for(var n in e){
+var r=e[n];
+if(null==this.redotMap[r.type]){
+this.redotMap[r.type]="GUIDE_TASK_"+r.type;
+var o=new ValueBroadCastNode;
+i.push(o),Tabikaeru.RedotManager.instance().addRedot("GUIDE_TASK_"+r.type,o)}
+}
+var a=new ValueBroadCastNode;
+i.push(a),this.redotMap[100]="GUIDE_TASK_LIST",Tabikaeru.RedotManager.instance().addRedot("GUIDE_TASK_LIST",a),Tabikaeru.RedotManager.instance().addRedot("GUIDE_TASK",new ValueBroadCastNodeContainer(i))}
+for(var s=0,c=this.data;
+s<c.length;
+s++){
+var r=c[s],l=e[r.id];
+l&&0==r.is_reward&&r.pro>=l.count&&(t[l.type]=t[l.type]?t[l.type]+1:1)}
+var h=Tabikaeru.DataManager.instance().TaskDB.get("list_type");
+for(var r in h){
+for(var u=this.getCompleteListNum(Number(r)),p=0,d=0,g=h[r].target;
+d<g.length;
+d++){
+var f=g[d];
+u>=f&&p++}
+if(p>(this.dataReward[r]||0)){
+t[100]=1;
+break}
+}
+for(var r in this.redotMap)Tabikaeru.RedotManager.instance().setRedotValue(this.redotMap[r],t[r]||0)}
+,t}
+(core.Model);
+__reflect(GuideTaskModel.prototype,"GuideTaskModel");
+var HandCraftModel=function(e){
+function t(){
+var t=e.call(this)||thi
+
+##########################################################################################
+### mail_ejoy_active_code  raw-hits=1
+##########################################################################################
+
+===== [204042] owner TravelModel (start 191437, len 15538) =====
+var TravelModel=function(e){
+function t(){
+var t=e.call(this)||this;
+return t.pictureCount=0,t.redpointState=!1,t.hasAds=!1,t.isShare=!1,t.newPictureIDs=[],t.requestMailInterval=1e3,t.requestMailTimer=null,t.eventUpdateNewAlbum=new core.Action,t.travelEventList=[],t.pictureInfoList=[],t.mailInfoList=[],t.newPictureInfoList=[],t.newAdsPictureInfoList=[],t.deletePictureInfoList=[],t}
+return __extends(t,e),t.prototype.destroy=function(){
+e.prototype.destroy.call(this)}
+,t.prototype.initModel=function(){
+this.addProtocolCallback("client_load_events","guest_load","album_load","mail_load_mails","mail_ejoy_active_code","album_load_new","album_load_recover","album_load_all","album_load_by_id_list","notify_new_event","notify_redmsg","notify_new_mail","mail_load")}
+,t.prototype.clearData=function(){
+}
+,t.prototype.getTravelEventList=function(){
+return this.travelEventList}
+,t.prototype.getFirstTravelEvent=function(){
+return this.travelEventList.length>0?this.travelEventList[0]:null}
+,t.prototype.createTravelEvent=function(e){
+this.travelEventList.unshift(e)}
+,t.prototype.pushTravelEvent=function(e){
+this.travelEventList.push(e)}
+,t.prototype.pushNewPictureIDs=function(e){
+this.newPictureIDs=this.newPictureIDs.concat(e)
+}
+,t.prototype.readTraveEvents=function(e,t){
+for(var i=0;
+i<this.travelEventList.length;
+i++)if(this.travelEventList[i].id==e.id){
+this.travelEventList.splice(i,1),e.client||core.SocketManage.getInstance().send("client_confirm_event",t,e.id);
+break}
+}
+,t.prototype.getGuestData=function(){
+return this.guestData}
+,t.prototype.sendGuestConfirmed=function(){
+this.guestData&&!this.guestData.confirmed&&(this.guestData.confirmed=!0,core.SocketManage.getInstance().send("guest_confirm",null,this.guestData.id))}
+,t.prototype.sendGuestServed=function(e){
+this.guestData&&!this.guestData.served&&this.getModel(ItemModel).consumeHouseItem(e,1)&&(this.guestData.served=!0,core.SocketManage.getInstance().send("guest_serve",null,this.guestData.id,e))}
+,t.prototype.requestAlbum=function(e){
+core.SocketManage.getInstance().send("album_load_all",e)}
+,t.prototype.getPictureCount=function(){
+return this.pictureCount}
+,t.prototype.setPictureCount=function(e){
+this.pictureCount=e}
+,t.prototype.getPictureInfoList=function(){
+return this.pictureInfoList}
+,t.prototype.getDeletePictureInfoList=function(){
+return this.deletePictureInfoList}
+,t.prototype.getPictureByPicId=function(e){
+for(var t=0,i=this.pictureInfoList;
+t<i.length;
+t++){
+var n=i[t];
+if(n.pic_id==e)return n}
+}
+,t.prototype.getPictureById=function(e){
+for(var t=0,i=this.pictureInfoList;
+t<i.length;
+t++){
+var n=i[t];
+if(n.id==e)return n}
+}
+,t.prototype.getFullPictures=function(e,i){
+for(var n=[],r=0,o=e;
+r<o.length;
+r++){
+var a=o[r];
+null==a.layers&&n.push(a)}
+n.length?this.getModel(t).checkPictureByIds(n,new core.Action(function(){
+i.apply(e)}
+)):i.apply(e)}
+,t.prototype.checkPictureByIds=function(e,t){
+for(var i=!1,n=[],r=0,o=e;
+r<o.length;
+r++){
+var a=o[r];
+n.push(a.id)}
+for(var s=0,c=this.pictureInfoList;
+s<c.length;
+s++){
+var a=c[s];
+if(n.indexOf(a.id)>=0&&null==a.layers){
+i=!0;
+break}
+}
+i?core.SocketManage.getInstance().send("album_load_by_id_list",new core.Action2(function(e,i){
+t&&t.apply()}
+),n):t&&t.apply()}
+,t.prototype.checkPictureLastes=function(e){
+}
+,t.prototype.checkPictureInfoPage=function(e,t){
+if(e>t)return core.Log.warning("检测相册页面失败，start 不能小于 end"),!1;
+var i=!0;
+if(this.pictureCount>=e)if(this.pictureInfoList.length>=t){
+for(var n=e-1;
+t>n;
+n++)if(null==this.pictureInfoList[n]||null==this.pictureInfoList[n].layers){
+i=!1;
+break}
+}
+else i=!1;
+else i=!1;
+return i||core.SocketManage.getInstance().send("album_load",null,e,t-e+1),i}
+,t.prototype.deletePictureInfo=function(e,t){
+for(var i,n=this,r=this.pictureInfoList.length-1;
+r>=0;
+r--)if(i=this.pictureInfoList[r]){
+if(i.id==e)return void core.SocketManage.getInstance().send("album_delete",new core.Action2(function(e,r){
+var o=n.getModel(MessageModel).getErrorInfo(e.code);
+if(o&&0==o.code){
+var a=n.pictureInfoList.indexOf(i);
+a>=0?n.pictureInfoList.splice(a,1):core.Log.warning("删除照片出错"),n.pictureCount--,n.dispatchEvent(new core.Event(TravelEventType.deletePicture))}
+t(o)}
+,this),e)}
+else this.pictureInfoList.splice(r,1)}
+,t.prototype.putPicturesToGiftBox=function(e,t){
+for(var i=this,n={
+}
+,r=0,o=e;
+r<o.length;
+r++){
+var a=o[r];
+n[a]=!0}
+for(var s=0,c=function(e){
+var r=l.pictureInfoList[e];
+r?n[r.id]&&(delete n[r.id],s++,core.SocketManage.getInstance().send("travel_album_to_gift",new core.Action2(function(e,n){
+var o=i.getModel(MessageModel).getErrorInfo(e.code);
+if(o&&0==o.code){
+var a=i.pictureInfoList.indexOf(r);
+a>=0?(i.pictureInfoList.splice(a,1),i.getModel(GiftBoxModel).onMovePicture(r)):core.Log.warning("移动照片出错"),i.pictureCount--,s--,i.dispatchEvent(new core.Event(TravelEventType.deletePicture))}
+t(o)}
+),r.id)):l.pictureInfoList.splice(e,1)}
+,l=this,a=this.pictureInfoList.length-1;
+a>=0;
+a--)c(a)}
+,t.prototype.handleAdsPicture=function(){
+return this.hasAds?(this.hasAds=!1,!0):!1}
+,t.prototype.handleSharePicture=function(){
+return this.isShare?(this.isShare=!1,!0):!1}
+,t.prototype.getFirstNewPictureInfo=function(){
+for(var e={
+}
+,t=this.newPictureInfoList.length-1;
+t>=0;
+t--){
+var i=this.newPictureInfoList[t];
+null==e[i.id]?e[i.id]=i.id:this.newPictureInfoList.splice(t,1)}
+return this.newPictureInfoList.length>0?this.newPictureInfoList[0]:null}
+,t.prototype.getFirstVisitPictureInfo=function(){
+for(var e=0,t=this.newPictureInfoList;
+e<t.length;
+e++){
+var i=t[e];
+if(i.visit)return i}
+return null}
+,t.prototype.getFirstNewAdsPictureInfo=function(){
+return this.newAdsPictureInfoList.length>0?this.newAdsPictureInfoList[0]:null}
+,t.prototype.deleteAllAdsPicture=function(){
+for(var e,t=0;
+t<this.newAdsPictureInfoList.length;
+t++)e=this.newAdsPictureInfoList[t],core.SocketManage.getInstance().send("album_delete_new",null,e.id);
+this.newAdsPictureInfoList=[]}
+,t.prototype.getAllAdsPicture=function(e){
+for(var t=this.newAdsPictureInfoList.length-1;
+t>=0;
+t--){
+var i=this.newAdsPictureInfoList[t];
+-1!=e.indexOf(i.id)&&(this.newAdsPictureInfoList.splice(t,1),this.newPictureInfoList.push(i))}
+}
+,t.prototype.saveNewPictureInfo=function(e,t){
+for(var i,n=this,r=this.newPictureInfoList,o=0;
+o<r.length;
+o++)if(i=r[o],i.id==e)return void core.SocketManage.getInstance().send("album_save_new",new core.Action2(function(e,o){
+var a=n.getModel(MessageModel).getErrorInfo(e.code);
+if(a&&0==a.code){
+for(var s=!1,c=r.length-1;
+c>=0;
+c--)r[c].id==i.id&&(r.splice(c,1),s=!0);
+s&&(n.pictureCount++,n.pictureInfoList.push(i))}
+else if(a&&75==a.code)for(var c=r.length-1;
+c>=0;
+c--)r[c].id==i.id&&r.splice(c,1);
+t(a)}
+,this),e)}
+,t.prototype.deleteNewPictureInfo=function(e,t){
+for(var i,n=this,r=this.newPictureInfoList.length-1;
+r>=0;
+r--)i=this.newPictureInfoList[r],i.id==e&&(this.newPictureInfoList.splice(r,1),core.SocketManage.getInstance().send("album_delete_new",new core.Action2(function(e,i){
+var r=n.getModel(MessageModel).getErrorInfo(e.code);
+t(r)}
+,this),e))}
+,t.prototype.recoverPictureInfo=function(e,t){
+for(var i=this,n=function(n){
+var o=r.deletePictureInfoList[n];
+o.id==e&&(r.deletePictureInfoList.splice(n,1),core.SocketManage.getInstance().send("album_recover",new core.Action2(function(e,n){
+var r=i.getModel(MessageModel).getErrorInfo(e.code);
+r&&0==r.code&&(i.pictureCount++,i.pictureInfoList.push(o),i.dispatchEvent(new core.Event(TravelEventType.updateAlbum))),t(r)}
+,r),e))}
+,r=this,o=this.deletePictureInfoList.length-1;
+o>=0;
+o--)n(o)}
+,t.prototype.requestMail=function(){
+core.SocketManage.getInstance().send("mail_load")}
+,t.prototype.getMailInfoList=function(){
+return this.mailInfoList}
+,t.prototype.getMailStage=function(){
+var e,t=!1;
+if(this.mailInfoList&&this.mailInfoList.length>0)for(var i=0;
+i<this.mailInfoList.length;
+i++)if(e=this.mailInfoList[i],!e.read){
+t=!0;
+break}
+return t}
+,t.prototype.openMailInfo=function(e){
+for(var t,i=0;
+i<this.mailInfoList.length;
+i++)if(t=this.mailInfoList[i],t.id==e){
+if(this.mailInfoList.splice(i,1),t.resource&&(this.getModel(UserModel).addClover(t.resource.clover_point),this.getModel(UserModel).addTicket(t.resource.ticket)),t.items)for(var n=0,r=t.items;
+n<r.length;
+n++){
+var o=r[n];
+this.getModel(ItemModel).addHouseItem(o.item_id,o.count)}
+return t.opened=!0,core.SocketManage.getInstance().send("mail_open",null,e),void this.dispatchEvent(new core.Event(TravelEventType.updateMial))}
+}
+,t.prototype.readMailInfo=function(e){
+for(var t,i=0;
+i<this.mailInfoList.length;
+i++)if(t=this.mailInfoList[i],t.id==e)return BaseChannel.getInstance().jf_commit(!0,"js.warning",{
+reason:"read_mail",info:t}
+),t.read=!0,core.SocketManage.getInstance().send("mail_read",null,e),void this.dispatchEvent(new core.Event(TravelEventType.updateMial))}
+,t.prototype.checkMailItemType=function(e){
+function t(e){
+var t=0;
+return null!=e&&(t=Array.isArray(e)?e.length:Object.keys(e).length),t>0}
+function i(e){
+return null!=e&&(e.clover_point>0||e.ticket>0||e.reward_gacha>0||e.ads_id.length>0||e.share_id.length>0)?!0:!1}
+return e.type==Mail.EvtId.Drift?!0:e.type==Mail.EvtId.Captcha?!0:t(e.items)||i(e.resource)||e.pictures.length>0}
+,t.prototype.getRedpointState=function(){
+return this.redpointState}
+,t.prototype.openActivityShop=function(){
+}
+,t.prototype.filtrateEvent=function(){
+if(this.travelEventList){
+var e=this.getModel(GameplayModel).getGameplayList(),t=e?e[0]:null;
+if(t){
+var i=[];
+switch(t.Gameplay){
+case"邻居":i.push(TimerEvent.Type.Visitor)}
+for(var n=void 0,r=this.travelEventList.length-1;
+r>=0;
+r--)n=this.travelEventList[r],-1!=i.indexOf(n.evt_id)&&this.travelEventList.splice(r,1)}
+}
+}
+,t.prototype.client_load_events=function(e,t){
+this.travelEventList=Array.isArray(e)?e:[],this.travelEventList.sort(function(e,t){
+var i=e.evt_type==TimerEvent.Type.Picture,n=t.evt_type==TimerEvent.Type.Picture;
+return i==n?0:i?1:-1}
+);
+for(var i=0,n=0;
+n<this.travelEventList.length;
+n++){
+var r=this.travelEventList[n];
+switch(r.evt_type){
+case TimerEvent.Type.BackHome:i+=r.evt_value[2];
+break;
+case TimerEvent.Type.PartyResult:i+=r.evt_value[2]}
+}
+i>0&&this.getModel(UserModel).subClover(i),this.filtrateEvent(),this.dispatchEvent(new core.Event(TravelEventType.updateEvents,!1))}
+,t.prototype.guest_load=function(e,t){
+this.guestData=new GuestData(e)}
+,t.prototype.album_load=function(e,t){
+for(var i=Array.isArray(e.pictures)?e.pictures:[],n=0;
+n<i.length;
+n++)i[n]&&(this.pictureInfoList[e.start+n-1]=i[n]);
+this.pictureCount=e.total,this.dispatchEvent(new core.Event(TravelEventType.updateAlbum))}
+,t.prototype.album_load_all=function(e,t){
+if(e&&e.id_list){
+for(var i=Array.isArray(e.id_list)?e.id_list:[],n=0,r=i.length;
+r>n;
+n++)i[n].hash=i[n].id+"_"+n;
+for(var o={
+}
+,a=0,s=this.pictureInfoList;
+a<s.length;
+a++){
+var n=s[a];
+o[n.id]=n}
+this.pictureInfoList=i;
+for(var n=0,r=this.pictureInfoList.length;
+r>n;
+n++)o[this.pictureInfoList[n].id]&&(this.pictureInfoList[n]=o[this.pictureInfoList[n].id]);
+this.pictureCount=i.length,this.dispatchEvent(new core.Event(TravelEventType.updateAlbum))}
+}
+,t.prototype.album_load_by_id_list=function(e,t){
+if(e&&e.pic_list){
+for(var i=e.pic_list,n={
+}
+,r=0,o=i;
+r<o.length;
+r++){
+var a=o[r];
+null==n[a.id]?n[a.id]=[a]:n[a.id].push(a)}
+for(var s=0,c=this.pictureInfoList;
+s<c.length;
+s++){
+var a=c[s];
+n[a.id]&&n[a.id].length>0&&(a.layers=n[a.id].shift().layers)}
+this.dispatchEvent(new core.Event(TravelEventType.updateAlbumContent))}
+}
+,t.prototype.revice_mails=function(e){
+"1"==GameConfig.getAdminConfig("hideCouponMail")&&(e=e.filter(function(e){
+return e.title.indexOf("周边优惠券")<0}
+)),this.mailInfoList=e;
+for(var t,i=this.mailInfoList.length-1;
+i>=0;
+i--)if(t=this.mailInfoList[i]){
+t.message&&(t.message=core.String.chengeNewline(t.message,!0)),t.auto_open?this.openMailInfo(t.id):!this.checkMailItemType(t)&&t.expire>0&&t.expire<=core.Time.getServerTime()&&this.openMailInfo(t.id),t.type==Mail.EvtId.Drift&&t.read&&this.openMailInfo(t.id),t.type==Mail.EvtId.Captcha&&t.read&&this.openMailInfo(t.id),t.type==Mail.EvtId.Explor&&1!=t.opened&&this.getModel(MuseumDayModel).setEmail(!0);
+var n=t.resource.ads_id;
+if(n&&n.length>0){
+var r=this.getModel(AdsModel).getAdsPlace(n);
+r&&this.getModel(AdsModel).isValidAds(r)||(t.resource.ads_id="",t.resource.share_id=n)}
+}
+this.mailInfoList.sort(function(e,t){
+return e.type==Mail.EvtId.Explor&&t.type!=Mail.EvtId.Explor?1:e.type!=Mail.EvtId.Explor&&t.type==Mail.EvtId.Explor?-1:0}
+),this.mailInfoList.reverse(),this.dispatchEvent(new core.Event(TravelEventType.updateMial))}
+,t.prototype.mail_load=function(e,t){
+this.revice_mails(Utils.convertArray(e))}
+,t.prototype.mail_load_mails=function(e,t){
+for(var i=Array.isArray(e.mails)?e.mails:[],n=0;
+n<i.length;
+n++)this.mailInfoList[n+e.start-1]=i[n];
+var r=BaseChannel.getInstance().isClearAds();
+t.start+t.count<=e.total?core.SocketManage.getInstance().send("mail_load_mails",null,t.start+t.count,5,r):(this.mailInfoList.length=e.mails.length,this.revice_mails(Utils.convertArray(this.mailInfoList)))}
+,t.prototype.mail_ejoy_active_code=function(e){
+}
+,t.prototype.album_load_new=function(e){
+this.newAdsPictureInfoList=[],this.newPictureInfoList=[];
+for(var t=Array.isArray(e.pictures)?e.pictures:[],i=0;
+i<t.length;
+i++){
+var n=t[i];
+n.for_ads?this.newAdsPictureInfoList.push(n):this.newPictureInfoList.push(n)}
+if(this.hasAds=e.has_ads,this.isShare=e.is_share,this.hasAds){
+var r=this.getModel(AdsModel).getAdsPlace("frog_back");
+r&&this.getModel(AdsModel).isValidAds(r)||(this.hasAds=!1,this.isShare=!0)}
+for(var o=Array.isArray(e.visted_pic)?e.visted_pic:[],a=0,s=o;
+a<s.length;
+a++){
+var i=s[a];
+i.visit=!0,this.newPictureInfoList.push(i)}
+this.dispatchEvent(new core.Event(TravelEventType.updateNewAlbum)),this.eventUpdateNewAlbum.apply();
+for(var c=[],l=0,h=t;
+l<h.length;
+l++){
+var u=h[l];
+this.newPictureIDs.length>0&&0==u.for_ads&&c.push(u)}
+this.newPictureIDs.length=0,this.saveNewPictureNow(c),core.Log.print("...................new picture:",JSON.stringify(this.newPictureInfoList)),core.Log.print("...................new ads picture:",this.hasAds,JSON.stringify(this.newAdsPictureInfoList))}
+,t.prototype.album_load_recover=function(e){
+this.deletePictureInfoList=Array.isArray(e.pictures)?e.pictures:[],this.dispatchEvent(new core.Event(TravelEventType.updateRecover))}
+,t.prototype.saveNewPictureNow=function(e){
+var t=function(){
+var i=e.shift();
+if(i){
+var n=new Result.ReceivePostcard(i);
+n.addEventListener(egret.Event.REMOVED_FROM_STAGE,t,null),core.DisplayManage.getInstance().popupLayer.addChild(n)}
+}
+;
+t()}
+,t.prototype.notify_new_event=function(e){
+e.event?(this.travelEventList.push(e.event),this.filtrateEvent(),this.dispatchEvent(new core.Event(TravelEventType.updateEvents,!0))):core.Log.warning("协议 notify.new_event 返回的数据中没有 event 属性")}
+,t.prototype.notify_redmsg=function(e){
+var t=e.redmsg;
+t?(this.redpointState=1==t.display,this.dispatchEvent(new core.Event(TravelEventType.updateRedpoint))):core.Log.warning("协议 notify.redmsg 返回的数据中没有 redmsg 属性")}
+,t.prototype.notify_new_mail=function(e){
+var t=e.mail;
+t?(t.message&&(t.message=core.String.chengeNewline(t.message,!0)),this.mailInfoList.splice(0,0,t),t.auto_open?this.openMailInfo(t.id):!this.checkMailItemType(t)&&t.expire>0&&t.expire<=core.Time.getServerTime()&&this.openMailInfo(t.id),this.dispatchEvent(new core.Event(TravelEventType.updateMial)),this.dispatchEvent(new core.Event(TravelEventType.receiveNewMail,t))):core.Log.warning("协议 notify.new_mail 返回的数据中没有 mail 属性")}
+,t}
+(core.Model);
+__reflect(TravelModel.prototype,"TravelModel");
+var TravelNoteData=function(){
+function e(){
+}
+return e}
+();
+__reflect(TravelN
+
+##########################################################################################
+### req_open  raw-hits=1
+##########################################################################################
+
+===== [145890] owner LotteryModel (start 145271, len 2281) =====
+var LotteryModel=function(e){
+function t(){
+var t=null!==e&&e.apply(this,arguments)||this;
+return t.data={
+last_phase:0,phase:0,state:0,select_list:[],answer:[],extra_item:{
+item_id:0,count:0}
+,right_flag:[],egg_num:0,reward:[]}
+,t}
+return __extends(t,e),t.prototype.initModel=function(){
+this.addProtocolCallback("lottery_load")}
+,t.prototype.lottery_load=function(e){
+e.phase&&(this.data=e,this.data.select_list=Utils.convertArray(this.data.select_list),this.data.answer=Utils.convertArray(this.data.answer),this.data.right_flag=Utils.convertArray(this.data.right_flag),this.data.reward=Utils.convertArray(this.data.reward))}
+,t.prototype.req_open=function(e){
+var t=this;
+core.SocketManage.getInstance().send("lottery_open",new core.Action2(function(i){
+i.open_item&&i.extra_item&&(core.PageManage.getInstance().addViewControl(ItemRewardViewControl,core.ViewLayerType.WindowLayer,null,[{
+item_id:i.open_item.item_id,count:i.open_item.count}
+],function(){
+i.extra_item.item_id>0&&core.DisplayManage.getInstance().popup(new LotteryExtraView)}
+),t.data.state=Tabikaeru.LotteryState.Select,t.data.extra_item=i.extra_item,e&&e.apply())}
+))}
+,t.prototype.req_select=function(e,t){
+var i=this;
+core.SocketManage.getInstance().send("lottery_select",new core.Action2(function(n){
+0==n.code&&(i.data.answer=e,i.data.state=Tabikaeru.LotteryState.Complete,t&&t.apply())}
+),e)}
+,t.prototype.req_confirm_reward=function(e){
+var t=this;
+core.SocketManage.getInstance().send("lottery_confirm_reward",new core.Action2(function(i){
+0==i.code&&(t.data.state=Tabikaeru.LotteryState.Open,t.data.answer=[],e&&e.apply())}
+))}
+,t.prototype.isRewardState=function(){
+return this.data.state==Tabikaeru.LotteryState.Reward}
+,t.prototype.onGetExtraItem=function(){
+this.data.extra_item.item_id=0,this.data.extra_item.count=0,this.dispatchEvent(new core.Event(LotteryEventType.EXTRA_GET))}
+,t.prototype.getLeftTime=function(){
+if(0==this.data.phase||this.data.select_list.length<=0)return 0;
+var e=core.Time.getServerTime(),t=new Date(1e3*e);
+t.setHours(0,0,0,0);
+var i=t.getDay(),n=0;
+return 0==i&&(n=t.getTime()/1e3+86400-e),6==i&&(n=t.getTime()/1e3+172800-e),n}
+,t}
+(core.Model);
+__reflect(LotteryModel.prototype,"LotteryModel");
+var MessageInfo=function(){
+function e(){
+this.content="",this.count=0}
+re

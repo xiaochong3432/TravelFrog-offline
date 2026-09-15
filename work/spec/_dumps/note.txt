@@ -1,0 +1,92 @@
+st[n+e.start-1]=i[n];
+var r=BaseChannel.getInstance().isClearAds();
+t.start+t.count<=e.total?core.SocketManage.getInstance().send("mail_load_mails",null,t.start+t.count,5,r):(this.mailInfoList.length=e.mails.length,this.revice_mails(Utils.convertArray(this.mailInfoList)))}
+,t.prototype.mail_ejoy_active_code=function(e){
+}
+,t.prototype.album_load_new=function(e){
+this.newAdsPictureInfoList=[],this.newPictureInfoList=[];
+for(var t=Array.isArray(e.pictures)?e.pictures:[],i=0;
+i<t.length;
+i++){
+var n=t[i];
+n.for_ads?this.newAdsPictureInfoList.push(n):this.newPictureInfoList.push(n)}
+if(this.hasAds=e.has_ads,this.isShare=e.is_share,this.hasAds){
+var r=this.getModel(AdsModel).getAdsPlace("frog_back");
+r&&this.getModel(AdsModel).isValidAds(r)||(this.hasAds=!1,this.isShare=!0)}
+for(var o=Array.isArray(e.visted_pic)?e.visted_pic:[],a=0,s=o;
+a<s.length;
+a++){
+var i=s[a];
+i.visit=!0,this.newPictureInfoList.push(i)}
+this.dispatchEvent(new core.Event(TravelEventType.updateNewAlbum)),this.eventUpdateNewAlbum.apply();
+for(var c=[],l=0,h=t;
+l<h.length;
+l++){
+var u=h[l];
+this.newPictureIDs.length>0&&0==u.for_ads&&c.push(u)}
+this.newPictureIDs.length=0,this.saveNewPictureNow(c),core.Log.print("...................new picture:",JSON.stringify(this.newPictureInfoList)),core.Log.print("...................new ads picture:",this.hasAds,JSON.stringify(this.newAdsPictureInfoList))}
+,t.prototype.album_load_recover=function(e){
+this.deletePictureInfoList=Array.isArray(e.pictures)?e.pictures:[],this.dispatchEvent(new core.Event(TravelEventType.updateRecover))}
+,t.prototype.saveNewPictureNow=function(e){
+var t=function(){
+var i=e.shift();
+if(i){
+var n=new Result.ReceivePostcard(i);
+n.addEventListener(egret.Event.REMOVED_FROM_STAGE,t,null),core.DisplayManage.getInstance().popupLayer.addChild(n)}
+}
+;
+t()}
+,t.prototype.notify_new_event=function(e){
+e.event?(this.travelEventList.push(e.event),this.filtrateEvent(),this.dispatchEvent(new core.Event(TravelEventType.updateEvents,!0))):core.Log.warning("协议 notify.new_event 返回的数据中没有 event 属性")}
+,t.prototype.notify_redmsg=function(e){
+var t=e.redmsg;
+t?(this.redpointState=1==t.display,this.dispatchEvent(new core.Event(TravelEventType.updateRedpoint))):core.Log.warning("协议 notify.redmsg 返回的数据中没有 redmsg 属性")}
+,t.prototype.notify_new_mail=function(e){
+var t=e.mail;
+t?(t.message&&(t.message=core.String.chengeNewline(t.message,!0)),this.mailInfoList.splice(0,0,t),t.auto_open?this.openMailInfo(t.id):!this.checkMailItemType(t)&&t.expire>0&&t.expire<=core.Time.getServerTime()&&this.openMailInfo(t.id),this.dispatchEvent(new core.Event(TravelEventType.updateMial)),this.dispatchEvent(new core.Event(TravelEventType.receiveNewMail,t))):core.Log.warning("协议 notify.new_mail 返回的数据中没有 mail 属性")}
+,t}
+(core.Model);
+__reflect(TravelModel.prototype,"TravelModel");
+var TravelNoteData=function(){
+function e(){
+}
+return e}
+();
+__reflect(TravelNoteData.prototype,"TravelNoteData");
+var TravelNoteModel=function(e){
+function t(){
+var t=null!==e&&e.apply(this,arguments)||this;
+return t.travelNodeList=[],t.noteCountMax={
+1:0,2:0}
+,t}
+return __extends(t,e),t.prototype.destroy=function(){
+e.prototype.destroy.call(this)}
+,t.prototype.initModel=function(){
+this.addProtocolCallback("travel_load_note")}
+,t.prototype.loadNote=function(e){
+core.SocketManage.getInstance().send("travel_load_note",new core.Action2(function(t){
+e&&e()}
+))}
+,t.prototype.getNoteList=function(){
+return this.travelNodeList}
+,t.prototype.getNoteListByType=function(e){
+return this.travelNodeList.filter(function(t){
+return t.config.type==e}
+)}
+,t.prototype.getNoteMaxByType=function(e){
+if(this.noteCountMax[e])return this.noteCountMax[e];
+for(var t=Tabikaeru.DataManager.instance().TravelNoteDB.list(),i=0,n=0,r=t;
+n<r.length;
+n++){
+var o=r[n];
+o.type==e&&i++}
+return this.noteCountMax[e]=i,i}
+,t.prototype.getNoteNumsByType=function(e){
+for(var t=0,i=0,n=this.travelNodeList;
+i<n.length;
+i++){
+var r=n[i];
+r.config.type==e&&t++}
+return t}
+,t.prototype.getAttachNote=function(e){
+for(var t=0,i=this.travelNod

@@ -1,0 +1,64 @@
+tra_get",e}
+();
+__reflect(LotteryEventType.prototype,"LotteryEventType");
+var LotteryModel=function(e){
+function t(){
+var t=null!==e&&e.apply(this,arguments)||this;
+return t.data={
+last_phase:0,phase:0,state:0,select_list:[],answer:[],extra_item:{
+item_id:0,count:0}
+,right_flag:[],egg_num:0,reward:[]}
+,t}
+return __extends(t,e),t.prototype.initModel=function(){
+this.addProtocolCallback("lottery_load")}
+,t.prototype.lottery_load=function(e){
+e.phase&&(this.data=e,this.data.select_list=Utils.convertArray(this.data.select_list),this.data.answer=Utils.convertArray(this.data.answer),this.data.right_flag=Utils.convertArray(this.data.right_flag),this.data.reward=Utils.convertArray(this.data.reward))}
+,t.prototype.req_open=function(e){
+var t=this;
+core.SocketManage.getInstance().send("lottery_open",new core.Action2(function(i){
+i.open_item&&i.extra_item&&(core.PageManage.getInstance().addViewControl(ItemRewardViewControl,core.ViewLayerType.WindowLayer,null,[{
+item_id:i.open_item.item_id,count:i.open_item.count}
+],function(){
+i.extra_item.item_id>0&&core.DisplayManage.getInstance().popup(new LotteryExtraView)}
+),t.data.state=Tabikaeru.LotteryState.Select,t.data.extra_item=i.extra_item,e&&e.apply())}
+))}
+,t.prototype.req_select=function(e,t){
+var i=this;
+core.SocketManage.getInstance().send("lottery_select",new core.Action2(function(n){
+0==n.code&&(i.data.answer=e,i.data.state=Tabikaeru.LotteryState.Complete,t&&t.apply())}
+),e)}
+,t.prototype.req_confirm_reward=function(e){
+var t=this;
+core.SocketManage.getInstance().send("lottery_confirm_reward",new core.Action2(function(i){
+0==i.code&&(t.data.state=Tabikaeru.LotteryState.Open,t.data.answer=[],e&&e.apply())}
+))}
+,t.prototype.isRewardState=function(){
+return this.data.state==Tabikaeru.LotteryState.Reward}
+,t.prototype.onGetExtraItem=function(){
+this.data.extra_item.item_id=0,this.data.extra_item.count=0,this.dispatchEvent(new core.Event(LotteryEventType.EXTRA_GET))}
+,t.prototype.getLeftTime=function(){
+if(0==this.data.phase||this.data.select_list.length<=0)return 0;
+var e=core.Time.getServerTime(),t=new Date(1e3*e);
+t.setHours(0,0,0,0);
+var i=t.getDay(),n=0;
+return 0==i&&(n=t.getTime()/1e3+86400-e),6==i&&(n=t.getTime()/1e3+172800-e),n}
+,t}
+(core.Model);
+__reflect(LotteryModel.prototype,"LotteryModel");
+var MessageInfo=function(){
+function e(){
+this.content="",this.count=0}
+return e}
+();
+__reflect(MessageInfo.prototype,"MessageInfo");
+var ErrorInfo=function(){
+function e(){
+this.code=0,this.ok=!1,this.desc=""}
+return e}
+();
+__reflect(ErrorInfo.prototype,"ErrorInfo");
+var MessageModel=function(e){
+function t(){
+var t=e.call(this)||this;
+return t.massegeList=[],t.addProtocolCallback("notify_marquee","notify_kick","client_gm","notify_reward"),t}
+return __extends(t,e),t.prototype.

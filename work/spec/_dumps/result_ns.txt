@@ -1,0 +1,45 @@
+.prototype,"MainOutView");
+var Result;
+!function(e){
+function t(c,l,h,u){
+function p(){
+g&&T.readTraveEvents(g),t(c,l,!0,u)}
+var d=this;
+if(void 0===l&&(l=!1),void 0===h&&(h=!1),void 0===u&&(u=!1),!h){
+if(s)return void core.Log.warning("eventSystem() 函数正在执行，无需重复调用");
+s=!0}
+var g=null,f=core.ModelManage.getInstance().getModel(RoleModel),v=core.ModelManage.getInstance().getModel(UserModel),y=f.getName();
+if(v.getClientSettings().guideStep==GuideStep.Complete){
+var m=f.drawTaobaoData();
+if(m){
+var w=new TaobaoImportView;
+return c.addChild(w),void w.open(m.collections,m.pictures,function(){
+p()}
+)}
+}
+var T=core.ModelManage.getInstance().getModel(TravelModel),C=core.ModelManage.getInstance().getModel(GameplayModel).getGameplayList(),M=C?C[0]:null;
+if(M){
+var E=[TimerEvent.Type.Guest,TimerEvent.Type.Visitor];
+switch(M.Gameplay){
+case"邻居":E.splice(E.indexOf(TimerEvent.Type.Guest),1);
+break;
+case"串门":E.splice(E.indexOf(TimerEvent.Type.Visitor),1)}
+var b=T.getTravelEventList();
+if(b&&b.length>0)for(var I=b.length-1;
+I>=0;
+I--)E.indexOf(b[I].evt_type)>=0&&b.splice(I,1)}
+var S=T.getGuestData();
+if(S&&S.id>=0&&!S.confirmed&&M&&"邻居"==M.Gameplay){
+Music.play("SE_Popup");
+var k=_("朋友来访"),P=new r;
+return void P.notify(c,n.Yellow_Friend,k,function(){
+T.sendGuestConfirmed();
+var e=core.ModelManage.getInstance().getModel(UserModel),t=core.ModelManage.getInstance().getModel(RoleModel);
+e.getClientSettings().hasFriendVisit?p():GuideHelpView.getInstance().show(_("{
+0}
+首次朋友来访",t.getNameEncode()),function(){
+e.setClientSettings("hasFriendVisit",!0),p()}
+,core.DisplayManage.getInstance().getNoticeLayer())}
+)}
+g=T.getFirstTravelEvent();
+var L

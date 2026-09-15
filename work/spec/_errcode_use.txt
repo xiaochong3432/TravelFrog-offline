@@ -1,0 +1,18 @@
+segeList.shift(),e=this.getFirstMessageInfo())),e}
+,t.prototype.getErrorInfo=function(e){
+if(null==this.errorInfoList){
+this.errorInfoList=new core.Dictionary;
+var t=RES.getRes("errcode_json");
+if(t)for(var i=0,n=t;
+i<n.length;
+i++){
+var r=n[i];
+this.errorInfoList.Add(r.code,r)}
+else core.Log.warning("配置表 errcode_json 获取失败")}
+return this.errorInfoList.GetValue(e)}
+,t.prototype.notify_marquee=function(e){
+var t=new MessageInfo;
+t.count=3,t.content=e.msg,this.massegeList.push(t),core.PageManage.getInstance().addViewControl(SystemNoticeViewController,core.ViewLayerType.NoticeLayer)}
+,t.prototype.notify_kick=function(e){
+this.dispatchEvent(new core.Event(MessageEventType.kick,e.reason))}
+,t.prototype.client_gm=f

@@ -1,0 +1,25 @@
+TumblerToy=function(e){
+function t(){
+var t=e.call(this)||this;
+return t.bounce_speed=.051,t.bounce_force=0,t.bounce_duration=1e4,t.bounce_start_time=0,t.touch_begin_time=0,t.touch_max_duration=5e3,t.touch_min_duration=1e3,t.addEventListener(egret.TouchEvent.TOUCH_BEGIN,t.on_touch_begin,t),t.loader=new TumblerLoader,t.loader.anchorOffsetX=100,t.loader.anchorOffsetY=200,t.addChild(t.loader),t}
+return __extends(t,e),t.prototype.$onRemoveFromStage=function(){
+e.prototype.$onRemoveFromStage.call(this),this.stage.removeEventListener(egret.TouchEvent.TOUCH_END,this.on_touch_end,this)}
+,t.prototype.setData=function(e){
+this.loader.load(e)}
+,t.prototype.on_touch_begin=function(){
+this.bounce_force=0,this.touch_begin_time=egret.getTimer(),this.stopAnimation(),this.stage&&this.stage.once(egret.TouchEvent.TOUCH_END,this.on_touch_end,this)}
+,t.prototype.on_touch_end=function(){
+var e=egret.getTimer()-this.touch_begin_time;
+this.bounce_force=Math.min(1,Math.max(0,this.touch_min_duration/this.touch_max_duration,e/this.touch_max_duration)),this.startAnimation()}
+,t.prototype.stopAnimation=function(){
+this.removeEventListener(egret.Event.ENTER_FRAME,this.onFrame,this)}
+,t.prototype.startAnimation=function(){
+this.stopAnimation(),this.bounce_start_time=egret.getTimer(),this.addEventListener(egret.Event.ENTER_FRAME,this.onFrame,this),Utils.FpsManager.instance().boost()}
+,t.prototype.onFrame=function(){
+var e=egret.getTimer(),t=Math.min(1,Math.max(0,(e-this.bounce_start_time)/this.bounce_duration))-1;
+this.loader.rotation=this.bounce_force*Math.cos(2*Math.PI*t/this.bounce_speed)*t*60;
+var i=this.loader.rotation/60;
+this.loader.y=50*-(.5*Math.pow(i,2)/.5),t>=0&&(Utils.FpsManager.instance().resume(),this.stopAnimation())}
+,t}
+(eui.Component);
+__reflect(TumblerToy.prototype,"T

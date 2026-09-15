@@ -1,0 +1,12 @@
+end",e[e.DropReward=17]="DropReward",e[e.Consume=18]="Consume",e[e.DriftBottle=19]="DriftBottle",e[e.MuseumMiss=20]="MuseumMiss",e[e.FurnitureFinish=21]="FurnitureFinish",e[e.FurniturePut=22]="FurniturePut",e[e.PartyGo=23]="PartyGo",e[e.PartyResult=24]="PartyResult",e[e.CardGift=25]="CardGift",e[e.CardFeedback=26]="CardFeedback",e[e.CardNew=27]="CardNew",e[e.FurnitureVersion=1022]="FurnitureVersion",e[e.AunnalReview=1023]="AunnalReview"}
+(t=e.Type||(e.Type={
+}
+))}
+(TimerEvent||(TimerEvent={
+}
+));
+var Tabikaeru;
+!function(e){
+var t;
+!function(e){
+e[e.DRAWING_BOOK=7001]="DRAWING_BOOK",e[e.WATAR=7002]="WATAR",e[e.FERTILIZER=7003]="FERTILIZER",e[e.CLOVER=2e

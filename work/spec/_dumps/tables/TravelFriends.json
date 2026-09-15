@@ -1,0 +1,20 @@
+{
+     "1": {
+          "visitOpen": 2001, 
+          "name": "刺猬", 
+          "img_src": "Scene/Note/Friends/cw", 
+          "id": 1
+     }, 
+     "0": {
+          "visitOpen": 2000, 
+          "name": "壁虎", 
+          "img_src": "Scene/Note/Friends/bh", 
+          "id": 0
+     }, 
+     "2": {
+          "visitOpen": 2002, 
+          "name": "萤火虫", 
+          "img_src": "Scene/Note/Friends/yhc", 
+          "id": 2
+     }
+}

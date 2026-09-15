@@ -1,0 +1,64 @@
+
+
+====================================================================================================
+### calendar_load   (len=362)
+====================================================================================================
+prototype.calendar_load=function(e){
+  this.data.new_flag=Utils.convertArray(e.new_flag),this.data.task_list=Utils.convertArray(e.task_list);
+  for(var t=Utils.convertArray(e.lucky_days),i=0;
+  i<t.length;
+  i++)this.data.lucky_days[t[i].day]=t[i].item_id;
+  t=Utils.convertArray(e.st_days);
+  for(var i=0;
+  i<t.length;
+  i++)this.data.st_days[t[i].day]=t[i].item_id;
+  this.checkRedot()
+}
+
+====================================================================================================
+### calendar_load_note   (len=88)
+====================================================================================================
+prototype.calendar_load_note=function(e){
+  this.data.note_list=Utils.convertArray(e.list)
+}
+
+====================================================================================================
+### calendar_task_update   (len=114)
+====================================================================================================
+prototype.calendar_task_update=function(e){
+  e&&e.task&&(this.data.task_list[e.task.id-1]=e.task,this.checkRedot())
+}
+
+====================================================================================================
+### story_load   (len=122)
+====================================================================================================
+prototype.story_load=function(e,t){
+  this.storyList=Array.isArray(e.stories)?e.stories:[],this.newStoryID=e.new_story_id||0
+}
+
+====================================================================================================
+### lottery_load   (len=292)
+====================================================================================================
+prototype.lottery_load=function(e){
+  e.phase&&(this.data=e,this.data.select_list=Utils.convertArray(this.data.select_list),this.data.answer=Utils.convertArray(this.data.answer),this.data.right_flag=Utils.convertArray(this.data.right_flag),this.data.reward=Utils.convertArray(this.data.reward))
+}
+
+====================================================================================================
+### encyclopedia_load   (len=353)
+====================================================================================================
+prototype.encyclopedia_load=function(e){
+  e=Utils.convertArrayAll(e),this.data.unlock_list=e.unlock_list;
+  for(var t=0,i=e.unlock_desc;
+  t<i.length;
+  t++){
+    var n=i[t];
+    this.data.unlock_desc[n.id]=Utils.convertArray(n.list)
+  }for(var r=0,o=e.show_sub;
+  r<o.length;
+  r++){
+    var n=o[r];
+    this.data.show_sub[n.id]=n.sub_id
+  }this.data.unlock_list.sort(function(e,t){
+    return e-t
+  })
+}

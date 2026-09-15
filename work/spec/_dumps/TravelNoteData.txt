@@ -1,0 +1,6 @@
+var TravelNoteData=function(){
+  function e(){
+    
+  }return e
+}();
+__reflect(TravelNoteData.prototype

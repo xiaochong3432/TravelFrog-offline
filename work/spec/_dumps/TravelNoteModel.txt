@@ -1,0 +1,93 @@
+var TravelNoteModel=function(e){
+  function t(){
+    var t=null!==e&&e.apply(this,arguments)||this;
+    return t.travelNodeList=[],t.noteCountMax={
+      1:0,2:0
+    },t
+  }return __extends(t,e),t.prototype.destroy=function(){
+    e.prototype.destroy.call(this)
+  },t.prototype.initModel=function(){
+    this.addProtocolCallback("travel_load_note")
+  },t.prototype.loadNote=function(e){
+    core.SocketManage.getInstance().send("travel_load_note",new core.Action2(function(t){
+      e&&e()
+    }))
+  },t.prototype.getNoteList=function(){
+    return this.travelNodeList
+  },t.prototype.getNoteListByType=function(e){
+    return this.travelNodeList.filter(function(t){
+      return t.config.type==e
+    })
+  },t.prototype.getNoteMaxByType=function(e){
+    if(this.noteCountMax[e])return this.noteCountMax[e];
+    for(var t=Tabikaeru.DataManager.instance().TravelNoteDB.list(),i=0,n=0,r=t;
+    n<r.length;
+    n++){
+      var o=r[n];
+      o.type==e&&i++
+    }return this.noteCountMax[e]=i,i
+  },t.prototype.getNoteNumsByType=function(e){
+    for(var t=0,i=0,n=this.travelNodeList;
+    i<n.length;
+    i++){
+      var r=n[i];
+      r.config.type==e&&t++
+    }return t
+  },t.prototype.getAttachNote=function(e){
+    for(var t=0,i=this.travelNodeList;
+    t<i.length;
+    t++){
+      var n=i[t];
+      if(n.config.attach==e)return n
+    }
+  },t.prototype.getNoteById=function(e){
+    for(var t=0,i=this.travelNodeList;
+    t<i.length;
+    t++){
+      var n=i[t];
+      if(n.id==e)return n
+    }
+  },t.prototype.getNoteConfig=function(e){
+    return Tabikaeru.DataManager.instance().TravelNoteDB.get(e)
+  },t.prototype.sendReadNote=function(e){
+    for(var t=0,i=e;
+    t<i.length;
+    t++){
+      var n=i[t],r=this.getNoteById(n);
+      r&&(r.read=!0)
+    }core.SocketManage.getInstance().send("travel_read_note",null,e),this.dispatchEvent(new core.Event(ItemEventType.updateTravelNoteInfo,e)),this.updateRedot()
+  },t.prototype.hasUnreadNote=function(){
+    for(var e=0,t=this.travelNodeList;
+    e<t.length;
+    e++){
+      var i=t[e];
+      if(0==i.read)return!0
+    }return!1
+  },t.prototype.updateRedot=function(){
+    for(var e=0,t=0,i=this.travelNodeList;
+    t<i.length;
+    t++){
+      var n=i[t];
+      0==n.read&&e++
+    }Tabikaeru.RedotManager.instance().setRedotValue(Tabikaeru.RedotType.NEW_NOTE,e)
+  },t.prototype.isOpen=function(){
+    for(var e=0,t=this.travelNodeList;
+    e<t.length;
+    e++){
+      var i=t[e];
+      if(!i.config.attach)return!0
+    }return!1
+  },t.prototype.travel_load_note=function(e,t){
+    var i=[];
+    if(Array.isArray(e.note_list))for(var n=Tabikaeru.DataManager.instance().TravelNoteDB,r=0,o=e.note_list;
+    r<o.length;
+    r++){
+      var a=o[r],s=n.get(a.id);
+      if(s){
+        var c=new TravelNoteData;
+        c.id=a.id,c.read=a.read,c.timestamp=a.timestamp,c.config=n.get(a.id),i.push(c)
+      }
+    }this.travelNodeList=i,this.updateRedot()
+  },t
+}(core.Model);
+__reflect(TravelNoteModel.prototype

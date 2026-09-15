@@ -1,0 +1,478 @@
+{
+      "actionList": {
+                         "0": {
+                                   "FoodID": 0,
+                                  "RoleRes": "huafubing"
+                              },
+                         "1": {
+                                   "FoodID": 1,
+                                  "RoleRes": "kelibing"
+                              },
+                        "10": {
+                                   "FoodID": 10,
+                                  "RoleRes": "doufu_zhuzhen"
+                              },
+                        "11": {
+                                   "FoodID": 11,
+                                  "RoleRes": "danbaofan"
+                              },
+                        "12": {
+                                   "FoodID": 12,
+                                  "RoleRes": "danbaofan"
+                              },
+                        "13": {
+                                   "FoodID": 13,
+                                  "RoleRes": "danbaofan"
+                              },
+                        "14": {
+                                   "FoodID": 14,
+                                  "RoleRes": "danbaofan"
+                              },
+                        "15": {
+                                   "FoodID": 15,
+                                  "RoleRes": "guihuagao"
+                              },
+                        "16": {
+                                   "FoodID": 16,
+                                  "RoleRes": "xianbing"
+                              },
+                        "17": {
+                                   "FoodID": 17,
+                                  "RoleRes": "kelibing"
+                              },
+                        "18": {
+                                   "FoodID": 18,
+                                  "RoleRes": "kelibing"
+                              },
+                         "2": {
+                                   "FoodID": 2,
+                                  "RoleRes": "pitabing"
+                              },
+                         "3": {
+                                   "FoodID": 3,
+                                  "RoleRes": "danbaofan"
+                              },
+                         "4": {
+                                   "FoodID": 4,
+                                  "RoleRes": "rebaozi_zhuzhen"
+                              },
+                         "5": {
+                                   "FoodID": 5,
+                                  "RoleRes": "doufu_zhuzhen"
+                              },
+                         "6": {
+                                   "FoodID": 6,
+                                  "RoleRes": "doufu_zhuzhen"
+                              },
+                         "7": {
+                                   "FoodID": 7,
+                                  "RoleRes": "doufu_zhuzhen"
+                              },
+                         "8": {
+                                   "FoodID": 8,
+                                  "RoleRes": "doufu_zhuzhen"
+                              },
+                         "9": {
+                                   "FoodID": 9,
+                                  "RoleRes": "doufu_zhuzhen"
+                              }
+                    },
+    "provinceList": {
+                           "上海": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "上海市",
+                                         "FlowerDescribe": "清丽高雅的白色花朵 仿佛用无瑕的美玉雕琢而成",
+                                             "FlowerIcon": "visitor_flower_1",
+                                             "FlowerName": "白玉兰",
+                                                     "ID": 3,
+                                                   "Icon": "visitor_sign_3",
+                                            "OtherGiftID": 100001,
+                                               "Province": "上海"
+                                     },
+                           "云南": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "云南省",
+                                         "FlowerDescribe": "不惧风霜雪雨的传统名花 将春的气息早早带往人间",
+                                             "FlowerIcon": "visitor_flower_33",
+                                             "FlowerName": "山茶花",
+                                                     "ID": 32,
+                                                   "Icon": "visitor_sign_9",
+                                            "OtherGiftID": 100001,
+                                               "Province": "云南"
+                                     },
+                        "内蒙古": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "内蒙古自治区",
+                                         "FlowerDescribe": "传说中可以实现愿望的神秘花朵 默默守护着草原上的人们",
+                                             "FlowerIcon": "visitor_flower_13",
+                                             "FlowerName": "马兰花",
+                                                     "ID": 7,
+                                                   "Icon": "visitor_sign_7",
+                                            "OtherGiftID": 100001,
+                                               "Province": "内蒙古"
+                                     },
+                           "北京": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "北京市",
+                                         "FlowerDescribe": "一年四季开满枝头的花朵 洋溢着青春美丽的气息",
+                                             "FlowerIcon": "visitor_flower_27",
+                                             "FlowerName": "月季",
+                                                     "ID": 1,
+                                                   "Icon": "visitor_sign_1",
+                                            "OtherGiftID": 100001,
+                                               "Province": "北京"
+                                     },
+                           "台湾": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "台湾省",
+                                         "FlowerDescribe": "优雅别致的名贵兰花 看上去仿佛蝴蝶在翩翩起舞",
+                                             "FlowerIcon": "visitor_flower_7",
+                                             "FlowerName": "蝴蝶兰",
+                                                     "ID": 17,
+                                                   "Icon": "visitor_sign_5",
+                                            "OtherGiftID": 100001,
+                                               "Province": "台湾"
+                                     },
+                           "吉林": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "吉林省",
+                                         "FlowerDescribe": "气质端庄文雅的传统名花 深受文人墨客的喜欢",
+                                             "FlowerIcon": "visitor_flower_8",
+                                             "FlowerName": "君子兰",
+                                                     "ID": 9,
+                                                   "Icon": "visitor_sign_9",
+                                            "OtherGiftID": 100001,
+                                               "Province": "吉林"
+                                     },
+                           "四川": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "四川省",
+                                         "FlowerDescribe": "花色一日三变的奇妙花朵 常常用来比作美人",
+                                             "FlowerIcon": "visitor_flower_17",
+                                             "FlowerName": "木芙蓉",
+                                                     "ID": 25,
+                                                   "Icon": "visitor_sign_1",
+                                            "OtherGiftID": 100001,
+                                               "Province": "四川"
+                                     },
+                           "天津": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "天津市",
+                                         "FlowerDescribe": "一年四季开满枝头的花朵 洋溢着青春美丽的气息",
+                                             "FlowerIcon": "visitor_flower_35",
+                                             "FlowerName": "月季",
+                                                     "ID": 2,
+                                                   "Icon": "visitor_sign_2",
+                                            "OtherGiftID": 100001,
+                                               "Province": "天津"
+                                     },
+                           "安徽": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "安徽省",
+                                         "FlowerDescribe": "传说中紫薇星下凡化作的花朵 象征着吉祥与幸福",
+                                             "FlowerIcon": "visitor_flower_29",
+                                             "FlowerName": "紫薇",
+                                                     "ID": 13,
+                                                   "Icon": "visitor_sign_1",
+                                            "OtherGiftID": 100001,
+                                               "Province": "安徽"
+                                     },
+                           "山东": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "山东省",
+                                         "FlowerDescribe": "雍容华贵的传统名花 自古就被誉为花中之王",
+                                             "FlowerIcon": "visitor_flower_16",
+                                             "FlowerName": "牡丹",
+                                                     "ID": 11,
+                                                   "Icon": "visitor_sign_11",
+                                            "OtherGiftID": 100001,
+                                               "Province": "山东"
+                                     },
+                           "山西": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "山西省",
+                                         "FlowerDescribe": "在春风中开得绚烂的粉色小花 娇艳的花朵缀满枝头",
+                                             "FlowerIcon": "visitor_flower_25",
+                                             "FlowerName": "榆叶梅",
+                                                     "ID": 6,
+                                                   "Icon": "visitor_sign_6",
+                                            "OtherGiftID": 100001,
+                                               "Province": "山西"
+                                     },
+                           "广东": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "广东省",
+                                         "FlowerDescribe": "像火焰一样热烈绽放的花朵 耀眼的红色犹如英雄的风骨",
+                                             "FlowerIcon": "visitor_flower_18",
+                                             "FlowerName": "木棉",
+                                                     "ID": 21,
+                                                   "Icon": "visitor_sign_9",
+                                            "OtherGiftID": 100001,
+                                               "Province": "广东"
+                                     },
+                           "广西": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "广西壮族自治区",
+                                         "FlowerDescribe": "传说中开在月亮上的花朵 清雅的香气仿佛从天外飘来",
+                                             "FlowerIcon": "visitor_flower_6",
+                                             "FlowerName": "桂花",
+                                                     "ID": 22,
+                                                   "Icon": "visitor_sign_10",
+                                            "OtherGiftID": 100001,
+                                               "Province": "广西"
+                                     },
+                           "新疆": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "新疆维吾尔自治区",
+                                         "FlowerDescribe": "生长在高山之上的圣洁之花 在冰天雪地中独自绽放",
+                                             "FlowerIcon": "visitor_flower_24",
+                                             "FlowerName": "雪莲花",
+                                                     "ID": 30,
+                                                   "Icon": "visitor_sign_7",
+                                            "OtherGiftID": 100001,
+                                               "Province": "新疆"
+                                     },
+                           "江苏": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "江苏省",
+                                         "FlowerDescribe": "清新淡雅的白色花朵 透露出返朴归真的美",
+                                             "FlowerIcon": "visitor_flower_15",
+                                             "FlowerName": "茉莉",
+                                                     "ID": 12,
+                                                   "Icon": "visitor_sign_12",
+                                            "OtherGiftID": 100001,
+                                               "Province": "江苏"
+                                     },
+                           "江西": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "江西省",
+                                         "FlowerDescribe": "生长在山野之间的绚丽花朵 盛开时犹如天边的灿烂云霞",
+                                             "FlowerIcon": "visitor_flower_4",
+                                             "FlowerName": "杜鹃",
+                                                     "ID": 15,
+                                                   "Icon": "visitor_sign_3",
+                                            "OtherGiftID": 100001,
+                                               "Province": "江西"
+                                     },
+                           "河北": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "河北省",
+                                         "FlowerDescribe": "拥有悠久历史的祥瑞之花 是太平盛世的象征",
+                                             "FlowerIcon": "visitor_flower_22",
+                                             "FlowerName": "太平花",
+                                                     "ID": 5,
+                                                   "Icon": "visitor_sign_5",
+                                            "OtherGiftID": 100001,
+                                               "Province": "河北"
+                                     },
+                           "河南": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "河南省",
+                                         "FlowerDescribe": "花色金黄好像蜜蜡一样的小花 为寂寥的寒冬增添了一抹色彩",
+                                             "FlowerIcon": "visitor_flower_9",
+                                             "FlowerName": "蜡梅",
+                                                     "ID": 18,
+                                                   "Icon": "visitor_sign_6",
+                                            "OtherGiftID": 100001,
+                                               "Province": "河南"
+                                     },
+                           "浙江": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "浙江省",
+                                         "FlowerDescribe": "清雅出尘的传统名花 有花中君子的美誉",
+                                             "FlowerIcon": "visitor_flower_10",
+                                             "FlowerName": "兰花",
+                                                     "ID": 14,
+                                                   "Icon": "visitor_sign_2",
+                                            "OtherGiftID": 100001,
+                                               "Province": "浙江"
+                                     },
+                           "海南": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "海南省",
+                                         "FlowerDescribe": "在石头缝里也能扎根的花朵 只要有阳光就能热烈生长",
+                                             "FlowerIcon": "visitor_flower_19",
+                                             "FlowerName": "三角梅",
+                                                     "ID": 28,
+                                                   "Icon": "visitor_sign_4",
+                                            "OtherGiftID": 100001,
+                                               "Province": "海南"
+                                     },
+                           "海外": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "其他",
+                                         "FlowerDescribe": "开在草丛中的白色球状小花 带着希望随风飘向远方",
+                                             "FlowerIcon": "visitor_flower_32",
+                                             "FlowerName": "蒲公英",
+                                                     "ID": 33,
+                                                   "Icon": "visitor_flower_32",
+                                            "OtherGiftID": 100001,
+                                               "Province": "海外"
+                                     },
+                           "湖北": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "湖北省",
+                                         "FlowerDescribe": "傲然盛放于冰雪之中的小花 在寒风中散发着淡淡的幽香",
+                                             "FlowerIcon": "visitor_flower_14",
+                                             "FlowerName": "梅花",
+                                                     "ID": 19,
+                                                   "Icon": "visitor_sign_7",
+                                            "OtherGiftID": 100001,
+                                               "Province": "湖北"
+                                     },
+                           "湖南": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "湖南省",
+                                         "FlowerDescribe": "深秋时绽放的嫣红花朵 仿佛凝聚在枝头的红霞",
+                                             "FlowerIcon": "visitor_flower_5",
+                                             "FlowerName": "芙蓉",
+                                                     "ID": 20,
+                                                   "Icon": "visitor_sign_8",
+                                            "OtherGiftID": 100001,
+                                               "Province": "湖南"
+                                     },
+                           "澳门": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "澳门特别行政区",
+                                         "FlowerDescribe": "开在水上的传统名花 生长在淤泥中却纤尘不染",
+                                             "FlowerIcon": "visitor_flower_11",
+                                             "FlowerName": "莲花",
+                                                     "ID": 27,
+                                                   "Icon": "visitor_sign_3",
+                                            "OtherGiftID": 100001,
+                                               "Province": "澳门"
+                                     },
+                           "甘肃": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "甘肃省",
+                                         "FlowerDescribe": "形态端庄典雅的花朵 华美的颜色很有高贵之感",
+                                             "FlowerIcon": "visitor_flower_26",
+                                             "FlowerName": "郁金香",
+                                                     "ID": 29,
+                                                   "Icon": "visitor_sign_5",
+                                            "OtherGiftID": 100001,
+                                               "Province": "甘肃"
+                                     },
+                           "福建": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "福建省",
+                                         "FlowerDescribe": "亭亭玉立于水中的白色小花 宛如天外仙子踏水而来",
+                                             "FlowerIcon": "visitor_flower_21",
+                                             "FlowerName": "水仙",
+                                                     "ID": 16,
+                                                   "Icon": "visitor_sign_4",
+                                            "OtherGiftID": 100001,
+                                               "Province": "福建"
+                                     },
+                           "西藏": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "西藏自治区",
+                                         "FlowerDescribe": "在山崖上独自开放的小花 幽深的蓝色蕴藏着一丝忧伤",
+                                             "FlowerIcon": "visitor_flower_12",
+                                             "FlowerName": "龙胆",
+                                                     "ID": 31,
+                                                   "Icon": "visitor_sign_8",
+                                            "OtherGiftID": 100001,
+                                               "Province": "西藏"
+                                     },
+                           "辽宁": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "辽宁省",
+                                         "FlowerDescribe": "传说中仙女留下来的花朵 为勤劳的人们带来幸福",
+                                             "FlowerIcon": "visitor_flower_23",
+                                             "FlowerName": "天女花",
+                                                     "ID": 8,
+                                                   "Icon": "visitor_sign_8",
+                                            "OtherGiftID": 100001,
+                                               "Province": "辽宁"
+                                     },
+                           "重庆": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "重庆市",
+                                         "FlowerDescribe": "不惧风霜雪雨的传统名花 将春的气息早早带往人间",
+                                             "FlowerIcon": "visitor_flower_20",
+                                             "FlowerName": "山茶花",
+                                                     "ID": 4,
+                                                   "Icon": "visitor_sign_4",
+                                            "OtherGiftID": 100001,
+                                               "Province": "重庆"
+                                     },
+                           "陕西": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "陕西省",
+                                         "FlowerDescribe": "纯白无一丝杂质的花朵 象征着天真无邪的心灵",
+                                             "FlowerIcon": "visitor_flower_2",
+                                             "FlowerName": "百合",
+                                                     "ID": 23,
+                                                   "Icon": "visitor_sign_11",
+                                            "OtherGiftID": 100001,
+                                               "Province": "陕西"
+                                     },
+                           "青海": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "青海省",
+                                         "FlowerDescribe": "形态端庄典雅的花朵 华美的颜色很有高贵之感",
+                                             "FlowerIcon": "visitor_flower_34",
+                                             "FlowerName": "郁金香",
+                                                     "ID": 24,
+                                                   "Icon": "visitor_sign_12",
+                                            "OtherGiftID": 100001,
+                                               "Province": "青海"
+                                     },
+                           "香港": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "香港特别行政区",
+                                         "FlowerDescribe": "形状像手掌一样的紫红色花朵 自古就是家庭和美的象征",
+                                             "FlowerIcon": "visitor_flower_28",
+                                             "FlowerName": "紫荆花",
+                                                     "ID": 26,
+                                                   "Icon": "visitor_sign_2",
+                                            "OtherGiftID": 100001,
+                                               "Province": "香港"
+                                     },
+                        "黑龙江": {
+                                             "CountFloor": 1,
+                                             "CountUpper": 2,
+                                            "DisplayName": "黑龙江省",
+                                         "FlowerDescribe": "簇拥在一起的纤细小花 在朦胧细雨中流露出丝丝哀愁",
+                                             "FlowerIcon": "visitor_flower_3",
+                                             "FlowerName": "丁香",
+                                                     "ID": 10,
+                                                   "Icon": "visitor_sign_10",
+                                            "OtherGiftID": 100001,
+                                               "Province": "黑龙江"
+                                     }
+                    }
+}

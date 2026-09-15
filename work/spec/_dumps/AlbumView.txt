@@ -1,0 +1,330 @@
+var AlbumView=function(e){
+  function t(t,i){
+    var n=e.call(this,core.PathManage.getInstance().getSkinsPath("Album/Album.exml"))||this;
+    return n.viewControl=t,n.viewLayer=i,n.onTapBack=new Utils.Trigger,n.onTapShare=new Utils.Trigger,n.onTapDelete=new Utils.Trigger,n.shelve=new eui.Group,n.pageWidth=768,n.viewCacheList=[],n.pageViewList=[],n.pageViewCacheList=[],n.currentPageIndex=0,n.itemPerPage=6,n.pictureList=[],n.lastPageIndex=-1,n.lastPage2Index=-1,n.checkbox=!1,n.checkboxIndex=0,n.checkboxTime=1e3,n.checkboxList=[],n.checkboxValidDist=99,n.cachePage=0,n
+  }return __extends(t,e),t.prototype.onComplete=function(){
+    var e=this;
+    this.travelModel=this.getModel(TravelModel),this.putBtn.visible=this.putBtn.includeInLayout=this.getModel(GiftBoxModel).isOpen(),this.sortTypeList.selectedIndex=Number(core.String.getCookie("album_sort_type1")||0),this.sortType2List.selected=1==Number(core.String.getCookie("album_sort_type2")||0),this.sortTypeList.addEventListener(egret.Event.CHANGE,this.onSortTypeChanged,this),this.sortType2List.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onSortType2Changed,this),this.shareBtn.visible||(this.putBtn.left=this.deleteBtn.left=this.shareBtn.left),this.backBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onBackBtn,this),this.shareBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onShareBtn,this),this.deleteBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onDeleteBtn,this),this.travelMapBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_travelMapBtn,this),this.btnRecover.addEventListener(egret.TouchEvent.TOUCH_TAP,this.on_RecoverBtn,this),this.putBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onPutBtn,this),this.extendBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.onExtendBtn,this),this.scroller=new PageScroller(this.shelve,this.pageWidth,0,(this.pageWidth-this.width)/2),this.scroller.scroller.height=626,this.scroller.horizontalCenter=0,this.scroller.onPageChange.add(this.onScrollChange,this),this.scroller.onPageChanged.add(this.updateScroller,this),this.addChild(this.scroller),this.travelMapBtn.visible=this.travelMapBtn.includeInLayout=!1;
+    var t=this.getModel(ActivityModel).getActivity("travelmap");
+    null==t?BaseChannel.getInstance().getAnnInfo({
+      type:"activity",tags:["travelmap"],search_type:"group",channel:BaseChannel.getInstance().getChannelId()
+    }).then(function(t){
+      if(t&&t.anns[0]){
+        var i=t.anns[0].url,n=t.anns[0].isOpen;
+        n?(e.getModel(ActivityModel).addActivity({
+          id:"travelmap",params:{
+            url:i,isOpen:n
+          }
+        }),e.travelMapURL=i,e.travelMapBtn.visible=e.travelMapBtn.includeInLayout=!0):e.getModel(ActivityModel).addActivity({
+          id:"travelmap",params:{
+            
+          }
+        })
+      }
+    }):t.params&&t.params.isOpen&&(this.travelMapURL=t.params.url,this.travelMapBtn.visible=this.travelMapBtn.includeInLayout=!0),this.updateExtend()
+  },t.prototype.updateAnimPic=function(){
+    var e=this;
+    if(this.option&&this.option.animPage){
+      switch(this.ignoreCheckBox=!0,this.groupAnim.visible=!0,this.travelMapBtn.visible=!1,this.imageLine.visible=!1,this.sortTypeList.visible=!1,this.sortType2List.visible=!1,this.btnRecover.visible=!1,this.putBtn.visible=!1,this.deleteBtn.visible=!1,this.imageRed.visible=this.lbTips.visible=!1,this.option.animPage){
+        case"empty":this.btnMake.source="btn_decide_png",this.imageTips.source="tips_choose_base_png";
+        break;
+        case"make":this.btnMake.source="btn_put_to_gif_png",this.imageTips.source="tips_choose_help_make_png",this.imageRed.visible=this.lbTips.visible=!0,this.ignoreCheckBox=!1,this.lbTips.text="可选"+this.option.maxSelect+"张",this.enterCheckbox();
+        break;
+        case"show":this.btnMake.source="btn_decide_png",this.imageTips.source="tips_save_to_gif_png"
+      }this.btnMake.disable(),this.btnMake.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+        var t=[];
+        if(e.checkbox)for(var i=0;
+        i<e.checkboxList.length;
+        i++)t.push(e.checkboxList[i].pic);
+        else e.lastSelectItem&&t.push(e.lastSelectItem.pic);
+        if("empty"==e.option.animPage){
+          var n=new ModalConfirm(_("是否确定就选这一张了？"),function(){
+            e.option.okFunc(t),core.PageManage.getInstance().removeControl(AlbumController,e.viewControl.getViewLayerType())
+          });
+          core.DisplayManage.getInstance().popup(n)
+        }else e.option.okFunc(t),core.PageManage.getInstance().removeControl(AlbumController,e.viewControl.getViewLayerType())
+      },this)
+    }
+  },t.prototype.updateExtend=function(){
+    this.extendBtn.visible=this.getModel(ItemModel).getHouseItemCount(9e3)>0
+  },t.prototype.onBackBtn=function(){
+    Music.play("SE_Cancel"),this.closeCheckbox(),core.PageManage.getInstance().removeControl(AlbumController,this.viewControl.getViewLayerType())
+  },t.prototype.onShareBtn=function(){
+    this.lastSelectItem&&(this.shareSelector||(this.shareSelector=new ShareView),this.shareSelector.show(400,ShareAnim.DownTop,ShareScene.photo),this.shareSelector.open_pic(this.lastSelectItem.pic),this.addChild(this.shareSelector))
+  },t.prototype.on_travelMapBtn=function(){
+    core.PageManage.getInstance().addViewControl(TravelMapController,this.viewControl.getViewLayerType(),null,this.travelMapURL)
+  },t.prototype.on_RecoverBtn=function(){
+    var e=this;
+    if(null==this.recoverView){
+      var t=new PictureRecover;
+      t.addEventListener(egret.Event.REMOVED_FROM_STAGE,function(){
+        e.recoverView=null
+      },this),this.recoverView=t
+    }this.addChild(this.recoverView),core.SocketManage.getInstance().send("album_load_recover",null)
+  },t.prototype.onDeleteBtn=function(){
+    var e=this;
+    if(this.checkbox)if(this.checkboxList.length>0){
+      Music.play("SE_Popup");
+      var t=new ModalConfirm(_("确认删除图片吗?"),function(){
+        Music.play("SE_Enter");
+        for(var t=0;
+        t<e.checkboxList.length;
+        t++)e.deletePicture(e.checkboxList[t].pic);
+        e.clearCheckboxList()
+      });
+      this.addChild(t)
+    }else this.closeCheckbox();
+    else if(this.lastSelectItem){
+      Music.play("SE_Popup");
+      var i=new ModalConfirm(_("确认删除图片吗?"),function(){
+        e.lastSelectItem&&e.lastSelectItem.pic&&e.deletePicture(e.lastSelectItem.pic),Music.play("SE_Enter")
+      });
+      this.addChild(i)
+    }
+  },t.prototype.onPutBtn=function(){
+    var e=this,t=function(){
+      if(e.checkbox){
+        if(e.checkboxList.length>0)for(var t=0,i=e.checkboxList;
+        t<i.length;
+        t++){
+          var n=i[t];
+          e.putPictureToGiftBox(n.pic)
+        }
+      }else e.lastSelectItem&&e.putPictureToGiftBox(e.lastSelectItem.pic)
+    };
+    core.Time.dayCheck("album_to_gift")?core.DisplayManage.getInstance().getNoticeLayer().addChild(new ModalConfirm("确认放入礼品盒?",function(){
+      t()
+    },function(){
+      
+    },!1,"album_to_gift")):t()
+  },t.prototype.onExtendBtn=function(){
+    var e=this.getModel(ItemModel).getHouseItemCount(9e3),t=this.extendBtn.localToGlobal(-130,-105);
+    this.globalToLocal(t.x,t.y,t);
+    var i=new AlbumExpandTips("相册经过了扩容\n保留照片的页数+"+e,{
+      item_id:9e3,count:e
+    },t);
+    this.addChild(i)
+  },t.prototype.onScrollChange=function(e){
+    Music.play("SE_PageNext"),this.selectPage(e-1)
+  },t.prototype.updateDisplayList=function(t,i){
+    e.prototype.updateDisplayList.call(this,t,i),this.updateScroller()
+  },t.prototype.updateScroller=function(){
+    this.currentPage.text=String(this.currentPageIndex+1);
+    var e=Math.ceil(this.pictureList.length/this.itemPerPage);
+    this.maxPage.text=String(Math.max(e,1)),this.scroller.update({
+      maxPage:e,offset:(this.pageWidth-this.width)/2,page:Math.min(this.currentPageIndex+1,e)
+    })
+  },t.prototype.onPicturesUpdate=function(){
+    this.updatePagePictures(this.currentPageIndex)
+  },t.prototype.onRecoverUpdate=function(){
+    this.recoverView&&this.recoverView.updatePic()
+  },t.prototype.onSortType2Changed=function(e){
+    core.String.setCookie("album_sort_type2",this.sortType2List.selected?1:0,9999),this.updateAlbumSort()
+  },t.prototype.onSortTypeChanged=function(e){
+    core.String.setCookie("album_sort_type1",this.sortTypeList.selectedIndex,9999),this.updateAlbumSort()
+  },t.prototype.requestPagePictures=function(e){
+    for(var t=[],i=e*this.itemPerPage,n=i+this.itemPerPage,r=i;
+    n>r;
+    r++)this.pictureList[r]&&t.push(this.pictureList[r]);
+    this.updatePagePictures(e),this.travelModel.checkPictureByIds(t)
+  },t.prototype.updateAlbum=function(){
+    var e=this;
+    this.pictureList=this.travelModel.getPictureInfoList().concat(),this.option&&this.option.filter&&(this.pictureList=this.pictureList.filter(function(t){
+      return e.option.filter(t)
+    }));
+    var t=this.sortTypeList.selectedIndex,i=this.sortType2List.selected?1:0;
+    switch(10*t+i){
+      case 10:this.pictureList.sort(function(e,t){
+        return e.pic_id-t.pic_id
+      });
+      break;
+      case 11:this.pictureList.sort(function(e,t){
+        return t.pic_id-e.pic_id
+      });
+      break;
+      case 1:this.pictureList=this.pictureList.reverse()
+    }var n=Math.max(1,Math.ceil(this.pictureList.length/this.itemPerPage)),r=this.currentPageIndex;
+    r>=n?this.scroller.scrollTo(n):0>r?this.scroller.scrollTo(1):(this.updateScroller(),this.updateCurrentPage())
+  },t.prototype.updatePagePictures=function(e){
+    var t=this.pictureList,i=e*this.itemPerPage,n=i+this.itemPerPage;
+    if(t.length>=i){
+      t.length<n&&(n=t.length);
+      var r=void 0,o=this.pageViewList[e];
+      if(o&&o.numChildren>0)for(var a=0;
+      a<Math.min(o.numChildren,this.itemPerPage);
+      a++)r=o.getChildAt(a),r&&(t[i+a]?(t[i+a].layers&&r.updateData(t[i+a]),r.visible=!0):r.visible=!1)
+    }
+  },t.prototype.clearPageView=function(e){
+    if(e){
+      for(var t=0,i=e.numChildren;
+      i>t;
+      t++){
+        var n=e.removeChildAt(0);
+        n.removeEventListener(egret.TouchEvent.TOUCH_BEGIN,this.pictureTouchEvents,this),n.removeEventListener(egret.TouchEvent.TOUCH_END,this.pictureTouchEvents,this),n.removeEventListener(egret.TouchEvent.TOUCH_MOVE,this.pictureTouchEvents,this),n.removeEventListener(egret.TouchEvent.TOUCH_TAP,this.onSelectPicture,this),this.viewCacheList.push(n)
+      }e.parent&&e.parent.removeChild(e),this.pageViewCacheList.push(e)
+    }
+  },t.prototype.createPage=function(e){
+    for(var t=this,i=this.pageViewList.length-1;
+    i>=0;
+    i--)this.pageViewList[i]&&-1==e.indexOf(i)&&(this.clearPageView(this.pageViewList[i]),delete this.pageViewList[i]);
+    for(var n=function(e){
+      var i=t.pageViewList[e];
+      if(null==i||0==i.numChildren){
+        i=i||t.getPageView(),i.x=e*t.pageWidth,i.width=t.pageWidth;
+        for(var n=0;
+        n<t.itemPerPage;
+        n++){
+          var r=n+e*t.itemPerPage,o=t.getItemView();
+          o.visible=!0,o.x=n%2===0?124:404,o.y=200*Math.floor(n/2),o.addEventListener(egret.TouchEvent.TOUCH_BEGIN,t.pictureTouchEvents,t),o.addEventListener(egret.TouchEvent.TOUCH_END,t.pictureTouchEvents,t),o.addEventListener(egret.TouchEvent.TOUCH_MOVE,t.pictureTouchEvents,t),o.addEventListener(egret.TouchEvent.TOUCH_TAP,t.onSelectPicture,t),i.addChild(o),o.init(t.pictureList[r]&&t.pictureList[r].layers?t.pictureList[r]:null,r,!1,e+1==e)
+        }t.shelve.addChild(i),t.pageViewList[e]=i
+      }
+    },r=0,o=e;
+    r<o.length;
+    r++){
+      var i=o[r];
+      n(i)
+    }
+  },t.prototype.updateCurrentPage=function(e){
+    e=e||this.currentPageIndex;
+    var t=Math.ceil(this.pictureList.length/this.itemPerPage),i=[e];
+    e>0&&i.push(e-1),t-1>e&&i.push(e+1),this.createPage(i),this.requestPagePictures(e)
+  },t.prototype.updateView=function(){
+    this.updateAlbum()
+  },t.prototype.getItemView=function(){
+    var e;
+    return e=this.viewCacheList.length>0?this.viewCacheList.shift():new AlbumPicture
+  },t.prototype.getPageView=function(){
+    var e;
+    return e=this.pageViewCacheList.length>0?this.pageViewCacheList.shift():new eui.Group
+  },t.prototype.pictureTouchEvents=function(e){
+    var t=this;
+    if(!this.checkbox&&!this.ignoreCheckBox)switch(e.type){
+      case egret.TouchEvent.TOUCH_MOVE:0!=this.checkboxIndex&&egret.Point.distance(this.touchPoint,egret.Point.create(e.stageX,e.stageY))>=this.checkboxValidDist&&(egret.clearTimeout(this.checkboxIndex),this.checkboxIndex=0);
+      break;
+      case egret.TouchEvent.TOUCH_BEGIN:if(!this.externalSelect){
+        var i=e.currentTarget,n=i.parent.localToGlobal(i.x,i.y);
+        this.touchPoint=n,0!=this.checkboxIndex&&egret.clearTimeout(this.checkboxIndex),this.checkboxIndex=egret.setTimeout(function(){
+          if(i.parent&&t.touchPoint){
+            var e=i.parent.localToGlobal(i.x,i.y),n=e.x-t.touchPoint.x,r=e.y-t.touchPoint.y,o=Math.sqrt(n*n+r*r);
+            o<=t.checkboxValidDist&&(t.enterCheckbox(),i.changeCheckbox(!0),t.checkboxList.push(i))
+          }t.checkboxIndex=0,t.touchPoint=null
+        },this,this.checkboxTime)
+      }break;
+      case egret.TouchEvent.TOUCH_END:0!=this.checkboxIndex&&(egret.clearTimeout(this.checkboxIndex),this.checkboxIndex=0)
+    }
+  },t.prototype.enterCheckbox=function(){
+    this.checkbox=!0,this.resetSelected(),this.deleteBtn.enable(),this.putBtn.enable(),this.btnMake.enable()
+  },t.prototype.closeCheckbox=function(){
+    this.checkbox&&(this.clearCheckboxList(),this.checkbox=!1,this.resetSelected())
+  },t.prototype.clearCheckboxList=function(){
+    if(this.checkboxList.length>0){
+      for(var e=0;
+      e<this.checkboxList.length;
+      e++)this.checkboxList[e].changeCheckbox(!1);
+      this.checkboxList.splice(0)
+    }
+  },t.prototype.onSelectPicture=function(e){
+    var t=e.currentTarget;
+    this.selectPicture(t)
+  },t.prototype.prevSelectPictureByInfo=function(e){
+    var t=this.pictureList.indexOf(e),i=t/this.itemPerPage>>0;
+    this.currentPageIndex!=i&&(this.selectPage(i),this.updateScroller());
+    var n=this.pageViewList[i];
+    if(n&&n.numChildren>0)for(var r=0;
+    r<Math.min(n.numChildren,this.itemPerPage);
+    r++){
+      var o=n.getChildAt(r);
+      if(o&&o.pic&&o.pic.id==e.id){
+        this.selectPicture(o);
+        break
+      }
+    }
+  },t.prototype.selectPicture=function(e){
+    var t=this;
+    if(this.externalSelect){
+      var i=new ModalConfirm(_("是否替换该明信片为封面背景图?"),function(){
+        Music.play("SE_Enter"),t.externalSelect(e.pic),t.externalSelect=null,core.PageManage.getInstance().removeControl(AlbumController,t.viewControl.getViewLayerType())
+      });
+      this.addChild(i)
+    }else if(this.checkbox){
+      var n=this.checkboxList.indexOf(e);
+      if(-1==n){
+        if(this.option&&this.option.maxSelect&&this.checkboxList.length>=this.option.maxSelect)return;
+        e.changeCheckbox(!0),this.checkboxList.push(e)
+      }else e.changeCheckbox(!1),this.checkboxList.splice(n,1);
+      this.checkboxList.length>0?(this.deleteBtn.enable(),this.putBtn.enable(),this.btnMake.enable()):(this.deleteBtn.disable(),this.putBtn.disable(),this.btnMake.disable())
+    }else{
+      if(!e.active)return Music.play("SE_Cursor"),this.lastSelectItem&&this.lastSelectItem.unselect(),e.select(),this.lastSelectItem=e,this.deleteBtn.enable(),this.shareBtn.enable(),this.putBtn.enable(),void this.btnMake.enable();
+      if(this.groupAnim.visible)return;
+      if(this.pictureListModal)return;
+      Music.play("SE_Popup");
+      var r=new PostcardListView("album");
+      this.addChild(r),r.addEventListener(egret.Event.REMOVED_FROM_STAGE,function(){
+        t.pictureListModal=null
+      },this),r.setData(this.pictureList,this.pictureList.indexOf(e.pic),function(e){
+        t.prevSelectPictureByInfo(t.pictureList[e])
+      },function(e,i){
+        return __awaiter(t,void 0,void 0,function(){
+          var t,n,r;
+          return __generator(this,function(o){
+            switch(o.label){
+              case 0:return this.shareSelector||(this.shareSelector=new ShareView),GameConfig.quickShare&&i?(r=new WXShareView(WXShareType.Picture,i),this.parent.addChild(r),[4,r.ShareTexture()]):[3,2];
+              case 1:t=o.sent(),r.parent&&r.parent.removeChild(r),n="目标是，打卡全国美景！",o.label=2;
+              case 2:return this.shareSelector.open_pic(e),this.shareSelector.show(350,ShareAnim.TopDown,ShareScene.photo,null,t,n),this.addChild(this.shareSelector),[2]
+            }
+          })
+        })
+      },function(e){
+        Music.play("SE_Enter"),t.deletePicture(e.pic)
+      },null,core.ModelManage.getInstance().getModel(GiftBoxModel).isOpen()?function(e){
+        core.Time.dayCheck("album_to_gift")?core.DisplayManage.getInstance().getNoticeLayer().addChild(new ModalConfirm("确认放入礼品盒?",function(){
+          t.putPictureToGiftBox(e.pic)
+        },function(){
+          
+        },!1,"album_to_gift")):t.putPictureToGiftBox(e.pic)
+      }:null),this.pictureListModal=r
+    }
+  },t.prototype.resetSelected=function(){
+    this.lastSelectItem&&(this.lastSelectItem.unselect(),this.lastSelectItem=void 0),this.deleteBtn.disable(),this.shareBtn.disable(),this.putBtn.disable(),this.btnMake.disable()
+  },t.prototype.deletePicture=function(e){
+    var t=this;
+    e&&this.getModel(TravelModel).deletePictureInfo(e.id,function(e){
+      e?0==e.code?egret.setTimeout(function(){
+        t.reset()
+      },t,66):GuideHelpView.getInstance().show(e.desc):GuideHelpView.getInstance().show(_("删除明信片失败！"))
+    })
+  },t.prototype.putPictureToGiftBox=function(e){
+    var t=this;
+    e&&this.getModel(TravelModel).putPicturesToGiftBox([e.id],function(e){
+      if(e)if(0==e.code)egret.setTimeout(function(){
+        t.reset()
+      },t,66);
+      else if(100==e.code){
+        if(null!=t.option&&t.option.disableGiftBox)GuideHelpView.getInstance().show(_("礼品盒满了"),function(){
+          Music.play("SE_Enter")
+        },core.DisplayManage.getInstance().getNoticeLayer());
+        else if(null==t.getChildByName("ModalConfirm")){
+          Music.play("SE_Popup");
+          var i=new ModalConfirm(_("礼品盒满了，要删除一张照片继续保存吗?"),function(){
+            Music.play("SE_PageNext"),core.PageManage.getInstance().addViewControl(GiftBoxController,t.viewLayer,core.RemoveViewType.Retain,{
+              disableAlbum:!1
+            })
+          });
+          i.name="ModalConfirm",t.addChild(i)
+        }
+      }else GuideHelpView.getInstance().show(e.desc);
+      else GuideHelpView.getInstance().show(_("移动明信片失败！"))
+    })
+  },t.prototype.reset=function(e,t){
+    this.externalSelect=t,this.updateAlbumSort(),e&&this.selectPage(0),this.updateScroller()
+  },t.prototype.updateAlbumSort=function(){
+    this.checkbox&&this.clearCheckboxList(),this.resetSelected(),this.updateAlbum()
+  },t.prototype.selectPage=function(e){
+    if(this.currentPageIndex!=e){
+      this.cachePage=e,this.lastPage2Index=this.lastPageIndex,this.lastPageIndex=this.currentPageIndex,this.currentPageIndex=e;
+      Math.ceil(this.pictureList.length/this.itemPerPage);
+      this.updateCurrentPage(this.currentPageIndex),this.lastPage2Index>=0&&this.lastPage2Index!=e,this.checkbox?this.clearCheckboxList():this.resetSelected()
+    }
+  },t
+}(core.UIView);
+__reflect(AlbumView.prototype

@@ -1,0 +1,40 @@
+var PostcardListView=function(e){
+  function t(t){
+    var i=e.call(this,core.PathManage.getInstance().getSkinsPath("MainOut/PostcardList.exml"))||this;
+    return i.source=t,i
+  }return __extends(t,e),t.prototype.childrenCreated=function(){
+    e.prototype.childrenCreated.call(this),this.list.itemRenderer="album"==this.source?PostcardListItem:PostcardListItemGiftBox,this.scroller.addEventListener(eui.PropertyEvent.PROPERTY_CHANGE,this.onScrollerChange,this),this.scroller.viewport.addEventListener(egret.TouchEvent.TOUCH_MOVE,this.onScrollTouch,this,!0,99999),this.scroller.addEventListener("out",this.onScrollerOut,this),this.groupMask.touchEnabled=!1,this.groupMask.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this),this.addEventListener(egret.Event.RESIZE,this.on_resize,this)
+  },t.prototype.onScrollTouch=function(e){
+    var t=this.scroller.globalToLocal(e.stageX,e.stageY);
+    t.y>this.height/2-175&&t.y<this.height/2+175-19||(e.preventDefault(),e.stopImmediatePropagation())
+  },t.prototype.on_resize=function(t,i){
+    e.prototype.onResize.call(this,t,i)
+  },t.prototype.onScrollerOut=function(e){
+    e.data<0?GuideHelpView.getInstance().show(_("前面没有更多照片了"),null,core.DisplayManage.getInstance().noticeLayer):GuideHelpView.getInstance().show(_("后面没有更多照片了"),null,core.DisplayManage.getInstance().noticeLayer)
+  },t.prototype.onScrollerChange=function(e){
+    "selectedIndex"==e.property&&this.curIndex!=this.scroller.selectedIndex&&(this.curIndex=this.scroller.selectedIndex,this.selectCallback&&this.selectCallback(this.curIndex))
+  },t.prototype.setData=function(e,t,i,n,r,o,a){
+    if(this.pictures=e,this.curIndex=t,this.shareCallback=n,this.onDelete=r,this.onPut=o,this.onOut=a,this.selectCallback=i,this.invalidateProperties(),this.pictures.length>1&&!this.getModel(UserModel).getClientSettings().guideSlidePicture){
+      this.getModel(UserModel).setClientSettings("guideSlidePicture",!0);
+      var s=new GuideSlideCardsView(function(){
+        s.parent&&s.parent.removeChild(s),s=null
+      });
+      this.parent.addChild(s)
+    }
+  },t.prototype.commitProperties=function(){
+    var t=this;
+    if(e.prototype.commitProperties.call(this),this.pictures){
+      var i=this.pictures.map(function(e){
+        return{
+          pic:e,shareCallback:t.shareCallback,onDelete:t.onDelete,onPut:t.onPut,onOut:t.onOut,onClose:t.onModalClose.bind(t)
+        }
+      });
+      this.list.dataProvider=new eui.ArrayCollection(i),this.scroller.selectedIndex=this.curIndex
+    }
+  },t.prototype.close=function(){
+    this.parent&&this.parent.removeChild(this)
+  },t.prototype.onModalClose=function(){
+    this.close()
+  },t
+}(core.UIView);
+__reflect(PostcardListView.prototype

@@ -1,0 +1,307 @@
+===== 'MailItem'  hits=8 =====
+
+--- [199953] ---
+ocketManage.getInstance().send("mail_load")}
+,t.prototype.getMailInfoList=function(){
+return this.mailInfoList}
+,t.prototype.getMailStage=function(){
+var e,t=!1;
+if(this.mailInfoList&&this.mailInfoList.length>0)for(var i=0;
+i<this.mailInfoList.length;
+i++)if(e=this.mailInfoList[i],!e.read){
+t=!0;
+break}
+return t}
+,t.prototype.openMailInfo=function(e){
+for(var t,i=0;
+i<this.mailInfoList.length;
+i++)if(t=this.mailInfoList[i],t.id==e){
+if(this.mailInfoList.splice(i,1),t.resource&&(this.getModel(UserModel).addClover(t.resource.clover_point),this.getModel(UserModel).addTicket(t.resource.ticket)),t.items)for(var n=0,r=t.items;
+n<r.length;
+n++){
+var o=r[n];
+this.getModel(ItemModel).addHouseItem(o.item_id,o.count)}
+return t.opened=!0,core.SocketManage.getInstance().send("mail_open",null,e),void this.dispatchEvent(new core.Event(TravelEventType.updateMial))}
+}
+,t.prototype.readMailInfo=function(e){
+for(var t,i=0;
+i<this.mailInfoList.length;
+i++)if(t=this.mailInfoList[i],t.id==e)return BaseChannel.getInstance().jf_commit(!0,"js.warning",{
+reason:"read_mail",info:t}
+),t.read=!0,core.SocketManage.getInstance().send("mail_read",null,e),void this.dispatchEvent(new core.Event(TravelEventType.updateMial))}
+,t.prototype.checkMailItemType=function(e){
+function t(e){
+var t=0;
+return null!=e&&(t=Array.isArray(e)?e.length:Object.keys(e).length),t>0}
+function i(e){
+return null!=e&&(e.clover_point>0||e.ticket>0||e.reward_gacha>0||e.ads_id.length>0||e.share_id.length>0)?!0:!1}
+return e.type==Mail.EvtId.Drift?!0:e.type==Mail.EvtId.Captcha?!0:t(e.items)||i(e.resource)||e.pictures.length>0}
+,t.prototype.getRedpointState=function(){
+return this.redpointState}
+,t.prototype.openActivityShop=function(){
+}
+,t.prototype.filtrateEvent=function(){
+if(this.travelEventList){
+var e=this.getModel(GameplayModel).getGameplayList(),t=e?e[0]:null;
+if(t){
+var i=[];
+switch(t.Gameplay){
+case"邻居":i.push(TimerEvent.Type.Visitor)}
+for(var n=void 0,r=this.travelEventList.length-1;
+r>=0;
+r--)n=this.travelEventList[r],-1!=i.indexOf(n.evt_id)&&this.travelEventList.splice(r,1)}
+}
+}
+,t.prototype.client_load_events=function(e,t){
+this.travelEventList=Array.isArray(e)?e:[],this.travelEventList.sort(function(e,t){
+var i=e.evt_type==TimerEvent.Type.Picture,n=t.evt_type==TimerEvent.Type.Picture;
+return i==n?0:i?1:-1}
+);
+for(var i=0,n=0;
+n<this.travelEventList.length;
+n++){
+var r=this.travelEventList[n];
+switch(r.evt_type){
+case TimerEvent.Type.BackHome:i+=r.evt_value[2];
+break;
+
+
+--- [202853] ---
+.prototype.album_load_all=function(e,t){
+if(e&&e.id_list){
+for(var i=Array.isArray(e.id_list)?e.id_list:[],n=0,r=i.length;
+r>n;
+n++)i[n].hash=i[n].id+"_"+n;
+for(var o={
+}
+,a=0,s=this.pictureInfoList;
+a<s.length;
+a++){
+var n=s[a];
+o[n.id]=n}
+this.pictureInfoList=i;
+for(var n=0,r=this.pictureInfoList.length;
+r>n;
+n++)o[this.pictureInfoList[n].id]&&(this.pictureInfoList[n]=o[this.pictureInfoList[n].id]);
+this.pictureCount=i.length,this.dispatchEvent(new core.Event(TravelEventType.updateAlbum))}
+}
+,t.prototype.album_load_by_id_list=function(e,t){
+if(e&&e.pic_list){
+for(var i=e.pic_list,n={
+}
+,r=0,o=i;
+r<o.length;
+r++){
+var a=o[r];
+null==n[a.id]?n[a.id]=[a]:n[a.id].push(a)}
+for(var s=0,c=this.pictureInfoList;
+s<c.length;
+s++){
+var a=c[s];
+n[a.id]&&n[a.id].length>0&&(a.layers=n[a.id].shift().layers)}
+this.dispatchEvent(new core.Event(TravelEventType.updateAlbumContent))}
+}
+,t.prototype.revice_mails=function(e){
+"1"==GameConfig.getAdminConfig("hideCouponMail")&&(e=e.filter(function(e){
+return e.title.indexOf("周边优惠券")<0}
+)),this.mailInfoList=e;
+for(var t,i=this.mailInfoList.length-1;
+i>=0;
+i--)if(t=this.mailInfoList[i]){
+t.message&&(t.message=core.String.chengeNewline(t.message,!0)),t.auto_open?this.openMailInfo(t.id):!this.checkMailItemType(t)&&t.expire>0&&t.expire<=core.Time.getServerTime()&&this.openMailInfo(t.id),t.type==Mail.EvtId.Drift&&t.read&&this.openMailInfo(t.id),t.type==Mail.EvtId.Captcha&&t.read&&this.openMailInfo(t.id),t.type==Mail.EvtId.Explor&&1!=t.opened&&this.getModel(MuseumDayModel).setEmail(!0);
+var n=t.resource.ads_id;
+if(n&&n.length>0){
+var r=this.getModel(AdsModel).getAdsPlace(n);
+r&&this.getModel(AdsModel).isValidAds(r)||(t.resource.ads_id="",t.resource.share_id=n)}
+}
+this.mailInfoList.sort(function(e,t){
+return e.type==Mail.EvtId.Explor&&t.type!=Mail.EvtId.Explor?1:e.type!=Mail.EvtId.Explor&&t.type==Mail.EvtId.Explor?-1:0}
+),this.mailInfoList.reverse(),this.dispatchEvent(new core.Event(TravelEventType.updateMial))}
+,t.prototype.mail_load=function(e,t){
+this.revice_mails(Utils.convertArray(e))}
+,t.prototype.mail_load_mails=function(e,t){
+for(var i=Array.isArray(e.mails)?e.mails:[],n=0;
+n<i.length;
+n++)this.mailInfoList[n+e.start-1]=i[n];
+var r=BaseChannel.getInstance().isClearAds();
+t.start+t.count<=e.total?core.SocketManage.getInstance().send("mail_load_mails",null,t.start+t.count,5,r):(this.mailInfoList.length=e.mails.length,this.revice_mails(Utils.convertArray(this.mailInfoList)))}
+,t.prototype.m
+
+--- [206181] ---
+ify(this.newPictureInfoList)),core.Log.print("...................new ads picture:",this.hasAds,JSON.stringify(this.newAdsPictureInfoList))}
+,t.prototype.album_load_recover=function(e){
+this.deletePictureInfoList=Array.isArray(e.pictures)?e.pictures:[],this.dispatchEvent(new core.Event(TravelEventType.updateRecover))}
+,t.prototype.saveNewPictureNow=function(e){
+var t=function(){
+var i=e.shift();
+if(i){
+var n=new Result.ReceivePostcard(i);
+n.addEventListener(egret.Event.REMOVED_FROM_STAGE,t,null),core.DisplayManage.getInstance().popupLayer.addChild(n)}
+}
+;
+t()}
+,t.prototype.notify_new_event=function(e){
+e.event?(this.travelEventList.push(e.event),this.filtrateEvent(),this.dispatchEvent(new core.Event(TravelEventType.updateEvents,!0))):core.Log.warning("协议 notify.new_event 返回的数据中没有 event 属性")}
+,t.prototype.notify_redmsg=function(e){
+var t=e.redmsg;
+t?(this.redpointState=1==t.display,this.dispatchEvent(new core.Event(TravelEventType.updateRedpoint))):core.Log.warning("协议 notify.redmsg 返回的数据中没有 redmsg 属性")}
+,t.prototype.notify_new_mail=function(e){
+var t=e.mail;
+t?(t.message&&(t.message=core.String.chengeNewline(t.message,!0)),this.mailInfoList.splice(0,0,t),t.auto_open?this.openMailInfo(t.id):!this.checkMailItemType(t)&&t.expire>0&&t.expire<=core.Time.getServerTime()&&this.openMailInfo(t.id),this.dispatchEvent(new core.Event(TravelEventType.updateMial)),this.dispatchEvent(new core.Event(TravelEventType.receiveNewMail,t))):core.Log.warning("协议 notify.new_mail 返回的数据中没有 mail 属性")}
+,t}
+(core.Model);
+__reflect(TravelModel.prototype,"TravelModel");
+var TravelNoteData=function(){
+function e(){
+}
+return e}
+();
+__reflect(TravelNoteData.prototype,"TravelNoteData");
+var TravelNoteModel=function(e){
+function t(){
+var t=null!==e&&e.apply(this,arguments)||this;
+return t.travelNodeList=[],t.noteCountMax={
+1:0,2:0}
+,t}
+return __extends(t,e),t.prototype.destroy=function(){
+e.prototype.destroy.call(this)}
+,t.prototype.initModel=function(){
+this.addProtocolCallback("travel_load_note")}
+,t.prototype.loadNote=function(e){
+core.SocketManage.getInstance().send("travel_load_note",new core.Action2(function(t){
+e&&e()}
+))}
+,t.prototype.getNoteList=function(){
+return this.travelNodeList}
+,t.prototype.getNoteListByType=function(e){
+return this.travelNodeList.filter(function(t){
+return t.config.type==e}
+)}
+,t.prototype.getNoteMaxByType=function(e){
+if(this.noteCountMax[e])return this.noteCountMax[e];
+for(var t=Tabikaeru.DataManager.instance
+
+--- [786117] ---
+(egret.TouchEvent.TOUCH_TAP,this.close,this),this.cover.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this),this.lbMsg.addEventListener(egret.TextEvent.LINK,this.onLink,this)}
+,t.prototype.setInfo=function(e,t){
+this.mailInfo=e,this.deleteCallback=t,this.lbTitle.text=this.mailInfo.title;
+var i="<font color=0x545D4C size=24>"+this.mailInfo.message+"</font>";
+this.lbMsg.textFlow=Utils.parseHTML(i),this.lbMsg.lineSpacing=8,e.read||(e.read=!0,core.ModelManage.getInstance().getModel(TravelModel).readMailInfo(e.id))}
+,t.prototype.deleteTouchEvents=function(e){
+this.deleteCallback&&this.deleteCallback.apply(null,this.mailInfo),this.close()}
+,t.prototype.onLink=function(e){
+var t=e.text.substr(0,e.text.indexOf(":")),i=e.text.substr(t.length+1);
+egret.Capabilities.runtimeType!=egret.RuntimeType.WXGAME?"open"==t?core.PageManage.getInstance().addViewControl(WebViewController,core.ViewLayerType.WindowLayer,null,i):"open_url"==t&&BaseChannel.getInstance().open_url(i):wx.setClipboardData({
+data:decodeURIComponent(e.text.replace(t+":",""))}
+)}
+,t.prototype.close=function(){
+Music.play("SE_Cancel"),this.parent.removeChild(this)}
+,t}
+(core.UIView);
+__reflect(MailDetailView.prototype,"MailDetailView");
+var MailItemView=function(e){
+function t(){
+var t=e.call(this)||this;
+return t.travelModel=core.ModelManage.getInstance().getModel(TravelModel),t.skinName=core.PathManage.getInstance().getSkinsPath("MainOut/Mail.exml"),t.btn_accept.addEventListener(egret.TouchEvent.TOUCH_TAP,t.acceptTouchEvents,t),t}
+return __extends(t,e),t.prototype.destroy=function(){
+this.clean(),this.btn_accept.removeEventListener(egret.TouchEvent.TOUCH_TAP,this.acceptTouchEvents,this)}
+,t.prototype.clean=function(){
+this.acceptCallback=null}
+,t.prototype.setInfo=function(e,t,i){
+this.mailView=e,this.mailInfo=t,this.acceptCallback=i;
+var n=t.title;
+this.t_title.text=n,this.i_mailSender.visible=!0;
+var r=!0,o=!0;
+switch(this.currentState="type1",t.type){
+case Mail.EvtId.System:this.i_mailSender.source="mail_system_png",r=!1;
+break;
+case Mail.EvtId.Notice:this.i_mailSender.source="mail_system_png",this.currentState="type3";
+break;
+case Mail.EvtId.Gift:switch(t.sender){
+case 0:this.i_mailSender.source="mail_wugui_png";
+break;
+case 1:this.i_mailSender.source="mail_maotouying_png";
+break;
+case 2:this.i_mailSender.source="mail_songshu_png";
+break;
+default:this.i_mailSender.visible=!1}
+break;
+case Mail.EvtId.StoryGift:this.i_mailSender.source="mail
+
+--- [788091] ---
+em_png",r=!1;
+break;
+case Mail.EvtId.Notice:this.i_mailSender.source="mail_system_png",this.currentState="type3";
+break;
+case Mail.EvtId.Gift:switch(t.sender){
+case 0:this.i_mailSender.source="mail_wugui_png";
+break;
+case 1:this.i_mailSender.source="mail_maotouying_png";
+break;
+case 2:this.i_mailSender.source="mail_songshu_png";
+break;
+default:this.i_mailSender.visible=!1}
+break;
+case Mail.EvtId.StoryGift:this.i_mailSender.source="mail_friendGiftIcon_png";
+break;
+case Mail.EvtId.Taobao:this.i_mailSender.source="mail_taobao_png";
+break;
+case Mail.EvtId.Leaflet:break;
+case Mail.EvtId.Drift:this.i_mailSender.source="mail_system_png",this.fillItems(),r=!1,this.currentState="type2";
+break;
+case Mail.EvtId.Captcha:this.i_mailSender.source="mail_system_png",this.fillItems(),r=!1,o=!1;
+break;
+case Mail.EvtId.ShareURL:this.i_mailSender.source="mail_system_png",this.fillItems(),r=!1,o=!1,this.currentState="type2";
+break;
+case Mail.EvtId.NewPicture:case Mail.EvtId.SpecPicture:this.i_mailSender.source="mail_system_png",this.fillItems(),r=!1,o=!1,this.currentState="type1";
+break;
+case Mail.EvtId.Explor:this.i_mailSender.source="mail_explore_png",this.fillItems(),r=!1,o=!1,this.currentState="type2"}
+this.travelModel.checkMailItemType(t)?this.fillItems():o&&(r&&!t.read&&this.travelModel.readMailInfo(t.id),this.fillContext(),(t.type==Mail.EvtId.Gift||t.type==Mail.EvtId.Notice)&&(this.btn_accept.visible=!0))}
+,t.prototype.fillContext=function(){
+this.c_items.visible=!1,this.btn_accept.visible=!0,this.currentState="type4",this.t_context.visible=!0;
+var e=this.mailInfo.message.replace(/<[^<]*>/g,"");
+this.t_context.text=e.slice(0,6)+"..."}
+,t.prototype.hasAds=function(){
+return this.mailInfo&&this.mailInfo.resource&&this.mailInfo.resource.ads_id&&this.mailInfo.resource.ads_id.length>0?!0:!1}
+,t.prototype.getMailID=function(){
+return this.mailInfo.id}
+,t.prototype.fillItems=function(){
+this.c_items.visible=!0,this.btn_accept.visible=!0,this.t_context.visible=!1;
+var e=[];
+if(this.mailInfo.type==Mail.EvtId.Drift&&e.push(["mail_bottle_png","1"]),this.mailInfo.type==Mail.EvtId.Captcha&&e.push(["mail_code_png","1"]),this.mailInfo.type==Mail.EvtId.ShareURL&&e.push(["mail_team_png","1"]),this.mailInfo.resource.clover_point>0&&e.push(["mail_mituba_png",this.mailInfo.resource.clover_point.toString()]),this.mailInfo.resource.ticket>0&&e.push(["mail_hukubiki_png",this.mailInfo.resource.ticket.toString()]),this.mailInfo.resour
+
+--- [796410] ---
+mailInfo.pictures),Result.eventSystem(core.DisplayManage.getInstance().getPopupLayer(),!1,!1,!1),this.acceptCallback&&this.acceptCallback.apply(this,this.mailInfo),this.mailView.hideBanner();
+else if(this.mailInfo.type==Mail.EvtId.Explor){
+core.ModelManage.getInstance().getModel(MuseumDayModel).setEmail(!1);
+var s=core.ModelManage.getInstance().getModel(MuseumDayModel).getActivityTime();
+core.String.getCookie("museumDay_popup")!=String(s[1])?core.PageManage.getInstance().addViewControl(MuseumDayPopupViewControl,core.ViewLayerType.WindowLayer):0==core.ModelManage.getInstance().getModel(MuseumDayModel).data.cur_museum?core.PageManage.getInstance().addViewControl(MuseumDayHistoryViewControl,core.ViewLayerType.WindowLayer):core.PageManage.getInstance().addViewControl(MuseumDayExploreViewControl,core.ViewLayerType.WindowLayer),this.acceptCallback&&this.acceptCallback.apply(this,this.mailInfo),this.mailView.hideBanner()}
+else{
+if("type4"==this.currentState){
+var c=new MailDetailView;
+return c.setInfo(this.mailInfo,this.acceptCallback),void core.DisplayManage.getInstance().getPopupLayer().addChild(c)}
+this.acceptCallback&&this.acceptCallback.apply(this,this.mailInfo)}
+}
+,t}
+(eui.Component);
+__reflect(MailItemView.prototype,"MailItemView");
+var MailView=function(e){
+function t(){
+var t=e.call(this,core.PathManage.getInstance().getSkinsPath("MainOut/MailBox.exml"))||this;
+return t.travelModel=t.getModel(TravelModel),t}
+return __extends(t,e),t.prototype.destroy=function(){
+this.cover.removeEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this),this.close(),this.viewList=null,this.viewList_cache&&(this.viewList_cache.splice(0),this.viewList_cache=null),e.prototype.destroy.call(this)}
+,t.prototype.close=function(){
+Music.play("SE_Cancel"),this.removeItemViewAll(),this.parent&&(this.parent.removeChild(this),this.hideBanner())}
+,t.prototype.hideBanner=function(){
+if(BaseChannel.getInstance().supportAds()){
+var e=this.getModel(AdsModel).getAdsPlace("mail_banner");
+e&&BaseChannel.getInstance().hideBannerAds("mail_banner",function(){
+}
+)}
+}
+,t.prototype.onComplete=function(){
+var e=this;
+this.getModel(AdsModel).canBannerAds("mail_banner")&&BaseChannel.getInstance().showBannerAds("mail_banner",function(){
+}
+),this.closeBtn.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this),this.cover.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this),this.c_scroller.scrollPolicyH=eui.ScrollPolicy.OFF,t

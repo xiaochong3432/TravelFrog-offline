@@ -1,0 +1,261 @@
+{
+ "list": {
+  "1": {
+   "desc": "被窝除了躺\n还能悠哉游哉的看书",
+   "id": 1,
+   "is_show": 1,
+   "param": "dokusyo_ie",
+   "pic": "pic_egg_1",
+   "rect": [],
+   "type": 1
+  },
+  "10": {
+   "desc": "手工编织\n花样也很繁多",
+   "id": 10,
+   "is_show": 1,
+   "param": "knit",
+   "pic": "pic_egg_10",
+   "rect": [],
+   "type": 1
+  },
+  "101": {
+   "desc": "天天见的嘟嘟\n除了三叶草啥都能买到",
+   "id": 101,
+   "is_show": 1,
+   "param": "drummer",
+   "pic": "pic_egg_101",
+   "rect": [],
+   "type": 4
+  },
+  "102": {
+   "desc": "小青蛙的好邻居\n爱吃辣的困困",
+   "id": 102,
+   "is_show": 1,
+   "param": "wugui",
+   "pic": "pic_egg_102",
+   "rect": [],
+   "type": 3
+  },
+  "103": {
+   "desc": "小青蛙的好邻居\n爱吃甜食的胖胖",
+   "id": 103,
+   "is_show": 1,
+   "param": "maotouying3",
+   "pic": "pic_egg_103",
+   "rect": [],
+   "type": 3
+  },
+  "104": {
+   "desc": "小青蛙的好邻居\n爱吃水果的跳跳",
+   "id": 104,
+   "is_show": 1,
+   "param": "songshu",
+   "pic": "pic_egg_104",
+   "rect": [],
+   "type": 3
+  },
+  "105": {
+   "desc": "风雨无阻\n嘟嘟的服务精神",
+   "id": 105,
+   "is_show": 1,
+   "param": "egg_101_rain_dd",
+   "pic": "pic_egg_105",
+   "rect": [],
+   "type": 4
+  },
+  "106": {
+   "desc": "蓑衣披身\n颇有一股武侠风的困困",
+   "id": 106,
+   "is_show": 1,
+   "param": "egg_103_rain_kk",
+   "pic": "pic_egg_106",
+   "rect": [],
+   "type": 3
+  },
+  "107": {
+   "desc": "裹得严严实实\n就是不想羽毛沾水的胖胖",
+   "id": 107,
+   "is_show": 1,
+   "param": "egg_104_rain_pp",
+   "pic": "pic_egg_107",
+   "rect": [],
+   "type": 3
+  },
+  "108": {
+   "desc": "天气再差\n也要打扮得美美的跳跳",
+   "id": 108,
+   "is_show": 1,
+   "param": "egg_102_rain_tt",
+   "pic": "pic_egg_108",
+   "rect": [],
+   "type": 3
+  },
+  "11": {
+   "desc": "节省是美德\n一张裁成两张用",
+   "id": 11,
+   "is_show": 1,
+   "param": "cut",
+   "pic": "pic_egg_11",
+   "rect": [],
+   "type": 1
+  },
+  "12": {
+   "desc": "被窝舒适\n蛙也舒适",
+   "id": 12,
+   "is_show": 1,
+   "param": "sleep_2",
+   "pic": "pic_egg_12",
+   "rect": [],
+   "type": 1
+  },
+  "13": {
+   "desc": "看书打个盹\n到梦里巩固下知识",
+   "id": 13,
+   "is_show": 1,
+   "param": "sleep_1",
+   "pic": "pic_egg_13",
+   "rect": [],
+   "type": 1
+  },
+  "14": {
+   "desc": "在一片漆黑中\n开启被窝大冒险",
+   "id": 14,
+   "is_show": 1,
+   "param": "sleep_3",
+   "pic": "pic_egg_14",
+   "rect": [],
+   "type": 1
+  },
+  "15": {
+   "desc": "似盖非盖\n掌握冷热平衡不太容易",
+   "id": 15,
+   "is_show": 1,
+   "param": "sleep_4",
+   "pic": "pic_egg_15",
+   "rect": [],
+   "type": 1
+  },
+  "16": {
+   "desc": "照个镜子\n保证帽子没带歪",
+   "id": 16,
+   "is_show": 1,
+   "param": "egg_1_dress",
+   "pic": "pic_egg_16",
+   "rect": [],
+   "type": 2
+  },
+  "17": {
+   "desc": "好吃到埋进碗里\n才不是因为困得过头",
+   "id": 17,
+   "is_show": 1,
+   "param": "egg_2_eat",
+   "pic": "pic_egg_17",
+   "rect": [],
+   "type": 2
+  },
+  "18": {
+   "desc": "降温扇两下\n升温也扇两下",
+   "id": 18,
+   "is_show": 0,
+   "param": "egg_3_cook",
+   "pic": "pic_egg_18",
+   "rect": [],
+   "type": 2
+  },
+  "19": {
+   "desc": "夏天的消暑美食\n好吃又不能多吃",
+   "id": 19,
+   "is_show": 1,
+   "param": "egg_5_chixigua",
+   "pic": "pic_egg_19",
+   "rect": [],
+   "type": 2
+  },
+  "2": {
+   "desc": "看书容易犯困\n加上床更难以抵抗",
+   "id": 2,
+   "is_show": 1,
+   "param": "inemuri_ie",
+   "pic": "pic_egg_2",
+   "rect": [],
+   "type": 1
+  },
+  "3": {
+   "desc": "除了旅行的见闻\n还有什么能记在小本本上",
+   "id": 3,
+   "is_show": 1,
+   "param": "LW_writing",
+   "pic": "pic_egg_3",
+   "rect": [],
+   "type": 1
+  },
+  "4": {
+   "desc": "只要功夫深\n木棍也能削成针",
+   "id": 4,
+   "is_show": 1,
+   "param": "sagyou_ie",
+   "pic": "pic_egg_4",
+   "rect": [],
+   "type": 1
+  },
+  "5": {
+   "desc": "好好吃饭\n更想吃好吃的饭",
+   "id": 5,
+   "is_show": 1,
+   "param": "syokuzi_ie",
+   "pic": "pic_egg_5",
+   "rect": [],
+   "type": 1
+  },
+  "6": {
+   "desc": "香甜软糯的粽子\n一个不够两个太多",
+   "id": 6,
+   "is_show": 0,
+   "param": "zongzi",
+   "pic": "pic_egg_6",
+   "rect": [],
+   "type": 2
+  },
+  "7": {
+   "desc": "锯东西时\n就得做到胸有成竹才安全",
+   "id": 7,
+   "is_show": 1,
+   "param": "saw",
+   "pic": "pic_egg_7",
+   "rect": [],
+   "type": 1
+  },
+  "8": {
+   "desc": "刷漆是门艺术\n好看的木头也是画出来的",
+   "id": 8,
+   "is_show": 1,
+   "param": "brush",
+   "pic": "pic_egg_8",
+   "rect": [],
+   "type": 1
+  },
+  "9": {
+   "desc": "从凿石头开始\n就已踏入雕刻的一步",
+   "id": 9,
+   "is_show": 1,
+   "param": "knock",
+   "pic": "pic_egg_9",
+   "rect": [],
+   "type": 1
+  },
+  "901": {
+   "desc": "夏季夜晚里\n庭院里飞舞的小小伙伴",
+   "id": 901,
+   "is_show": 1,
+   "param": 201,
+   "pic": "pic_egg_901",
+   "rect": [
+    270,
+    800,
+    300,
+    300
+   ],
+   "type": 5
+  }
+ }
+}

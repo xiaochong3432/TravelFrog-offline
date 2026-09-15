@@ -1,0 +1,37 @@
+chars 867400..870000
+
+ore.ViewLayerType.WindowLayer);
+break;
+case this.i_gift:core.PageManage.getInstance().addViewControl(VisitorGiftViewController,core.ViewLayerType.WindowLayer)}
+}
+,t.prototype.checkFriend=function(e){
+this.clearFriend();
+var t=this.travelModel.getGuestData();
+if(t&&t.id>=0){
+0==t.expire_time&&(t.expire_time=core.Time.getServerTime()+60*core.MathExtend.Range(e.DurationFloor,e.DurationUpper),core.SocketManage.getInstance().send("guest_set_expire_time",null,t.expire_time));
+var i=void 0;
+switch(GameConfig.language){
+case"China":i=["wugui","maotouying3","songshu"];
+break;
+case"Japan":i=["katatsumuri_niwa","mitsubati_niwa","isigame_niwa","kaeru_niwa"]}
+var n=i[t.id];
+if(n)switch(GameConfig.language){
+case"China":var r=n,o=void 0;
+switch(n){
+case"maotouying3":o="idle",this.getModel(EasterEggModel).hasEgg(Tabikaeru.EasterEgg.PPShelter)&&(r="egg_104_rain_pp");
+break;
+case"wugui":o="idle",this.getModel(EasterEggModel).hasEgg(Tabikaeru.EasterEgg.KKShelter)&&(r="egg_103_rain_kk");
+break;
+case"songshu":o="newAnimation",this.getModel(EasterEggModel).hasEgg(Tabikaeru.EasterEgg.TTShelter)&&(r="egg_102_rain_tt")}
+this.guestAnimName=r,this.friendView_Dragonbones=new core.DragonbonesView(r,null,null,!0),this.friendView_Dragonbones.play(o),this.c_friend.addChild(this.friendView_Dragonbones),this.friendView_Dragonbones.touchEnabled=!0,this.friendView_Dragonbones.addEventListener(egret.TouchEvent.TOUCH_BEGIN,this.friendClick,this);
+break;
+case"Japan":this.friendView=new AnmAnimation,this.friendView.loadAnm(n),this.friendView.setPlay(!0),this.friendView.bottom=0,this.c_friend.addChild(this.friendView),this.friendView.addEventListener(egret.TouchEvent.TOUCH_BEGIN,this.friendClick,this)}
+else core.Log.warning("获取访客动画失败，访客ID："+t.id+" 没有找到对应动画")}
+}
+,t.prototype.clearFriend=function(){
+null!=this.friendView&&(this.friendView.removeEventListener(egret.TouchEvent.TOUCH_BEGIN,this.friendClick,this),this.friendView.destroy(),this.friendView.parent&&this.friendView.parent.removeChild(this.friendView),this.friendView=null),null!=this.friendView_Dragonbones&&(this.friendView_Dragonbones.removeEventListener(egret.TouchEvent.TOUCH_BEGIN,this.friendClick,this),this.friendView_Dragonbones.destroy(),this.friendView_Dragonbones.parent&&this.friendView_Dragonbones.parent.removeChild(this.friendView_Dragonbones),this.friendView_Dragonbones=null)}
+,t.prototype.friendClick=function(e){
+var t=this;
+if(this.travelModel.getGuestData().id>=0==0&&BaseChannel.getInstance().jf_commit(!0,"js.error",{
+reason:"warning",message:"friendClick():guest_data_empty:"+this.travelModel.getGuestData().id}
+),Music.play("SE_Popup"),this.travelModel.getG

@@ -1,0 +1,210 @@
+function(){
+var e=this.getSeasonKey(),t=Tabikaeru.DefineExtra.SeasonCover[e]||[];
+return(this.data.weather==Tabikaeru.Define.WeatherType.cloudy||this.data.weather==Tabikaeru.Define.WeatherType.light_rain||this.data.weather==Tabikaeru.Define.WeatherType.heavy_rain)&&t.push(Tabikaeru.DefineExtra.CloudyCover),t}
+,t.prototype.getSeasonPartical=function(){
+var e=this.getSeasonKey(),t=Tabikaeru.DefineExtra.SeasonPartical[e]||[];
+return this.getModel(UserModel).getClientSettings().guideStep!=GuideStep.Complete?t:(this.data.weather==Tabikaeru.Define.WeatherType.light_snow?t.push(Tabikaeru.DefineExtra.SnowParticalX):this.data.weather==Tabikaeru.Define.WeatherType.heavy_snow&&t.push(Tabikaeru.DefineExtra.SnowParticalD),t)}
+,t.prototype.getSeasonSpine=function(){
+var e=this.getSeasonKey(),t=Tabikaeru.DefineExtra.SeasonSpine[e]||[];
+return this.getModel(UserModel).getClientSettings().guideStep!=GuideStep.Complete?t:(this.data.weather==Tabikaeru.Define.WeatherType.light_rain?t.push(Tabikaeru.DefineExtra.RainSpineX):this.data.weather==Tabikaeru.Define.WeatherType.heavy_rain&&t.push(Tabikaeru.DefineExtra.RainSpineD),t)}
+,t}
+(core.Model);
+__reflect(WeatherModel.prototype,"WeatherModel");
+var WishingPoolModel=function(e){
+function t(){
+var t=null!==e&&e.apply(this,arguments)||this;
+return t.data={
+end_time:0,coin:0,items:[]}
+,t}
+return __extends(t,e),t.prototype.initModel=function(){
+this.addProtocolCallback("wishingpool_load")}
+,t.prototype.wishingpool_load=function(e){
+if(this.data=Utils.convertArrayAll(e),this.data.end_time>0){
+var t=core.PageManage.getInstance().getControl(MainOutController,core.ViewLayerType.SceneLayer),i=t&&t.getView();
+i&&i.checkWishingPool()}
+}
+,t.prototype.req_wish=function(e){
+var t=this;
+core.SocketManage.getInstance().send("wishingpool_wish",new core.Action2(function(i){
+if(i.id>0){
+t.data.coin--;
+for(var n=0,r=t.data.items;
+n<r.length;
+n++){
+var o=r[n];
+if(o.id==i.id){
+o.limit--;
+var a=[{
+item_id:o.id,count:o.num}
+];
+core.PageManage.getInstance().addViewControl(ItemRewardViewControl,core.ViewLayerType.WindowLayer,null,a);
+break}
+}
+e&&e.apply(i.id)}
+}
+))}
+,t.prototype.isOpen=function(){
+return core.Time.getServerTime()<this.data.end_time}
+,t.prototype.getLeftTime=function(){
+return this.data.end_time-core.Time.getServerTime()}
+,t}
+(core.Model);
+__reflect(WishingPoolModel.prototype,"WishingPoolModel");
+var GreetCardShareView=function(e){
+function t(t){
+var i=e.call(this,core.PathManage.getInstance().getSkinsPath("GreetCard/GreetCardShareSkin.exml"))||this;
+return i.cardInfo=t,i}
+return __extends(t,e),t.prototype.childrenCreated=function(){
+var t=this;
+e.prototype.childrenCreated.call(this),this.cover.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this),this.btnShare.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+t.showShare()}
+,this),GreetCardUtils.createGreetCard(this.groupCard,this.cardInfo)}
+,t.prototype.showShare=function(){
+var e=this;
+(null==this.shareSelector||null==this.shareSelector.parent)&&(this.shareSelector=new ShareView,this.shareSelector.show(300,ShareAnim.TopDown),this.shareSelector.open_callback(function(){
+return __awaiter(e,void 0,void 0,function(){
+var e,t;
+return __generator(this,function(i){
+switch(i.label){
+case 0:return e=new CardShareView,this.parent.addChild(e),[4,e.share(this.cardInfo)];
+case 1:return t=i.sent(),e.parent&&e.parent.removeChild(e),this.shareSelector=null,[2,t]}
+}
+)}
+)}
+,function(e){
+core.ModelManage.getInstance().getModel(ShareModel).reportBlog("share.greetcard")}
+),core.DisplayManage.getInstance().noticeLayer.addChild(this.shareSelector))}
+,t.prototype.close=function(){
+Music.play("SE_Cancel"),this.parent.removeChild(this),this.getModel(GreetCardModel).data.can_reward&&core.DisplayManage.getInstance().popup(new GreetCardRewardView)}
+,t}
+(core.UIView);
+__reflect(GreetCardShareView.prototype,"GreetCardShareView");
+
+var VerticalScroller=function(e){
+function t(){
+var t=e.call(this)||this;
+return t.skinName=core.PathManage.getInstance().getSkinsPath("Common/ScrollerBar.exml"),t.scrollPolicyH=eui.ScrollPolicy.OFF,t.addEventListener(eui.UIEvent.CHANGE_START,function(){
+Utils.FpsManager.instance().boost(),t.once(eui.UIEvent.CHANGE_END,function(){
+Utils.FpsManager.instance().resume()}
+,t)}
+,t),t}
+return __extends(t,e),t.prototype.updateDisplayList=function(t,i){
+var n=this;
+e.prototype.updateDisplayList.call(this,t,i),egret.callLater(function(){
+n.updateScrollerBar()}
+,this)}
+,Object.defineProperty(t.prototype,"content",{
+set:function(e){
+var t=this;
+this._content=e,this.stopAnimation();
+var i=new eui.Group;
+i.scrollV=0,i.addChild(e),this.viewport=i,this.once(egret.Event.ENTER_FRAME,function(){
+t._content.minHeight=t.height-e.y+1,t.updateScrollerBar()}
+,this)}
+,enumerable:!0,configurable:!0}
+),t.prototype.updateScrollerBar=function(){
+if(this.viewport){
+if(this.verticalScrollBar.autoVisibility=!1,this.viewport.measuredHeight<=this.height+1)return void(this.verticalScrollBar.visible=!1);
+this.verticalScrollBar.visible=!0,this.verticalScrollBar.thumb.height=this.viewport.height/this.viewport.measuredHeight*this.height}
+}
+,t}
+(eui.Scroller);
+__reflect(VerticalScroller.prototype,"VerticalScroller");
+var VideoEX=function(e){
+function t(){
+return null!==e&&e.apply(this,arguments)||this}
+return __extends(t,e),t.prototype.pause=function(){
+e.prototype.pause.call(this),console.log("sssssssssssssssssss pppppppppppp")}
+,t.prototype.close=function(){
+e.prototype.close.call(this),console.log("sssssssssssssssssss cccccccccccc")}
+,t.prototype.play=function(t,i){
+e.prototype.play.call(this,t,i),console.log("sssssssssssssssssss play play")}
+,t}
+(egret.Video);
+__reflect(VideoEX.prototype,"VideoEX");
+var VideoTest=function(e){
+function t(t){
+var i=e.call(this)||this,n=t?"http://ali-lxqw-hotfix.ejoy.com/c1_client/debug/dk1_plus/video/test.mp4":"resource/China/video/test.mp4";
+return i.video=new VideoEX,i.video.x=0,i.video.y=0,i.video.width=640,i.video.height=320,i.video.fullscreen=!1,i.video.poster="",i.video.load(n),i.addChild(i.video),i.video.once(egret.Event.COMPLETE,i.onLoad,i),i.video.once(egret.IOErrorEvent.IO_ERROR,i.onLoadErr,i),i.video.once(egret.Event.ENDED,function(){
+console.log("sssssssssssssssss eeeeeeeee")}
+,i),i}
+return __extends(t,e),t.prototype.onLoad=function(e){
+var t=this,i=new ImageButton;
+i.source="yes_png",i.x=this.video.x+20,i.y=this.video.y+this.video.height+20,this.addChild(i),i.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+t.video.play()}
+,this);
+var n=new ImageButton;
+n.source="yes_png",n.x=this.video.x+200,n.y=this.video.y+this.video.height+20,this.addChild(n),n.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+t.video.pause()}
+,this)}
+,t.prototype.onLoadErr=function(e){
+console.log("video load error happened")}
+,t}
+(egret.DisplayObjectContainer);
+__reflect(VideoTest.prototype,"VideoTest");
+var xxtea;
+!function(e){
+function t(e,t){
+var i=e.length,n=i<<2;
+if(t){
+var r=e[i-1];
+if(n-=4,n-3>r||r>n)return null;
+n=r}
+for(var o=new Uint8Array(n),a=0;
+n>a;
+++a)o[a]=e[a>>2]>>((3&a)<<3);
+return o}
+function i(e,t){
+var i=e.length,n=i>>2;
+0!==(3&i)&&++n;
+var r;
+t?(r=new Uint32Array(n+1),r[n]=i):r=new Uint32Array(n);
+for(var o=0;
+i>o;
+++o)r[o>>2]|=e[o]<<((3&o)<<3);
+return r}
+function n(e,t,i,n,r,o){
+return(i>>>5^t<<2)+(t>>>3^i<<4)^(e^t)+(o[3&n^r]^i)}
+function r(e){
+if(e.length<16){
+var t=new Uint8Array(16);
+t.set(e),e=t}
+return e}
+function o(e,t){
+var i,r,o,a,s,c,l=e.length,h=l-1;
+for(r=e[h],o=0,c=0|Math.floor(6+52/l);
+c>0;
+--c){
+for(o+=_,a=o>>>2&3,s=0;
+h>s;
+++s)i=e[s+1],r=e[s]+=n(o,i,r,s,a,t);
+i=e[0],r=e[h]+=n(o,i,r,s,a,t)}
+return e}
+function a(e,t){
+var i,r,o,a,s,c,l=e.length,h=l-1;
+for(i=e[0],c=Math.floor(6+52/l),o=c*_;
+0!==o;
+o-=_){
+for(a=o>>>2&3,s=h;
+s>0;
+--s)r=e[s-1],i=e[s]-=n(o,i,r,s,a,t);
+r=e[h],i=e[0]-=n(o,i,r,s,a,t)}
+return e}
+function s(e){
+for(var t=e.length,i=new Uint8Array(3*t),n=0,r=0;
+t>r;
+r++){
+var o=e.charCodeAt(r);
+if(128>o)i[n++]=o;
+else if(2048>o)i[n++]=192|o>>6,i[n++]=128|63&o;
+else{
+if(!(55296>o||o>57343)){
+if(t>r+1){
+var a=e.charCodeAt(r+1);
+if(56320>o&&a>=56320&&57343>=a){
+var s=((1023&o)<<10|1023&a)+65536;
+i[n++]=240|s>>18,i[n++]=128|s>>12&63,i[n++]=128|s>>6&63,i[n++]=128|63&s,r++;
+continue}
+}
+throw new Error("Malformed string")}
+i[n++]=224|o>>12,i[n++

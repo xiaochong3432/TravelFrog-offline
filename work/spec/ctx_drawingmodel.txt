@@ -1,0 +1,52 @@
+chars 95620..98150
+
+var DrawingModel=function(e){
+function t(){
+return null!==e&&e.apply(this,arguments)||this}
+return __extends(t,e),t.prototype.initModel=function(){
+this.addProtocolCallback("guest_load_drawing","guest_accept_invit","guest_putin_bag","guest_takeout_bag"),this.data={
+state:DrawingState.accept,guest:-1,bag:[],pages:[],colls:[],show_coll:0,pen_motion:"write"}
+}
+,t.prototype.request_accept_invit=function(){
+var e=this;
+core.SocketManage.getInstance().send("guest_accept_invit",new core.Action2(function(t){
+0==t.code&&(e.data.state=DrawingState.accept,e.dispatchEvent(new core.Event(DrawingEventType.UPDATE)))
+}
+),!0)}
+,t.prototype.request_reject_invit=function(){
+var e=this;
+core.SocketManage.getInstance().send("guest_accept_invit",new core.Action2(function(t){
+0==t.code&&(e.data.state=DrawingState.wait,e.dispatchEvent(new core.Event(DrawingEventType.UPDATE)))}
+),!1)}
+,t.prototype.guest_load_drawing=function(e){
+this.data=e,this.data.pages=Utils.convertArray(e.pages),this.data.colls=Utils.convertArray(e.colls);
+this.getModel(UserModel).getClientSettings();
+this.dispatchEvent(new core.Event(DrawingEventType.UPDATE))}
+,t.prototype.guest_accept_invit=function(e){
+0==e.code}
+,t.prototype.changeItem=function(e,t,i){
+var n=this;
+e>=0&&(this.data.bag[e]==t&&(t=-1),-1!=this.data.bag[e]&&core.SocketManage.getInstance().send("guest_takeout_bag",new core.Action1(function(r){
+0==r.code&&(n.getModel(ItemModel).addHouseItem(n.data.bag[e],1),n.data.bag[e]=t,n.dispatchEvent(new core.Event(DrawingEventType.ITEM_CHANGE)),i&&i.apply())}
+),e+1),-1!=t&&core.SocketManage.getInstance().send("guest_putin_bag",new core.Action1(function(r){
+0==r.code&&(n.data.bag[e]=t,n.getModel(ItemModel).consumeHouseItem(t,1),n.dispatchEvent(new core.Event(DrawingEventType.ITEM_CHANGE)),i&&i.apply())}
+),e+1,t))}
+,t.prototype.lockBag=function(e){
+var t=this;
+this.data.state==DrawingState.accept?core.SocketManage.getInstance().send("guest_lock_bag",new core.Action1(function(i){
+i&&0==i.code&&(t.data.state=DrawingState.lock,e&&e.apply())}
+)):e&&e.apply()}
+,t.prototype.unlockBag=function(e){
+var t=this;
+this.data.state==DrawingState.lock?core.SocketManage.getInstance().send("guest_lock_bag",new core.Action1(function(i){
+i&&0==i.code&&(t.data.state=DrawingState.accept,e&&e.apply())}
+)):e&&e.apply()}
+,t.prototype.isOpen=function(){
+return this.getModel(ItemModel).getHouseItemCount(Tabikaeru.ItemID.DRAWING_BOOK)>0}
+,t.prototype.guest_takeout_bag=function(e){
+0==e.code}
+,t.prototype.guest_putin_bag=function(e){
+0==e.code}
+,t}
+(core.Model);
+__reflect(DrawingModel.prototype,"DrawingModel");

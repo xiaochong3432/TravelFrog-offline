@@ -1,0 +1,14 @@
+.prototype.childrenCreated=function(){
+var t=this;
+e.prototype.childrenCreated.call(this),this.cover.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this);
+var i=this.getModel(LotteryModel).data,n=Tabikaeru.DataManager.instance().ItemDB.get(i.extra_item.item_id);
+this.imageItem.source=Tabikaeru.path.formatPathImage(n.img);
+var r=!1,o=core.ModelManage.getInstance().getModel(AdsModel),a=o.getAdsPlace("weekend_gift");
+a&&(a=o.getAdsPlace(a.id),a&&o.isValidAds(a)&&(r=!0)),this.lbTips.text=r?"有个珍贵的小礼物，藏在了广告后面":"有个珍贵的小礼物，藏在了分享后面",this.btnWatch.visible=r,this.btnShare.visible=!this.btnWatch.visible,this.btnWatch.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+t.close(),core.ModelManage.getInstance().getModel(AdsModel).playAds(a,function(e){
+e&&t.getModel(LotteryModel).onGetExtraItem()}
+)}
+,this),this.btnShare.addEventListener(egret.TouchEvent.TOUCH_TAP,this.showShare,this)}
+,t.prototype.showShare=function(){
+var e=this;
+return GameConfig.channel==ChannelType.Test?(this.close(),void this.get

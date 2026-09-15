@@ -1,0 +1,16 @@
+{
+    "串门": {
+                    "DurationFloor": 30,
+                    "DurationUpper": 30,
+                         "Gameplay": "串门",
+                  "OverdueContinue": 0,
+                             "Sort": 1
+              },
+    "邻居": {
+                    "DurationFloor": 30,
+                    "DurationUpper": 30,
+                         "Gameplay": "邻居",
+                  "OverdueContinue": 1,
+                             "Sort": 2
+              }
+}

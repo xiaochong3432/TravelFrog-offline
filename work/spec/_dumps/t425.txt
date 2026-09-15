@@ -1,0 +1,12 @@
+
+}
+(Tabikaeru||(Tabikaeru={
+}
+));
+var BagTable=function(e){
+function t(t){
+var i=e.call(this)||this;
+return i.guideCallback=t,i}
+return __extends(t,e),t.prototype.onComplete=function(){
+var e=this;
+this.once(eg

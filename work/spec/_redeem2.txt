@@ -1,0 +1,26 @@
+ideHelpView.getInstance().show(_("广告已经过期了呱呱~"),function(){
+Music.play("SE_Enter")}
+,core.DisplayManage.getInstance().getNoticeLayer())}
+,t.prototype.selectItem=function(){
+var e=this;
+Music.play("SE_Popup");
+var t=this.list.selectedItem.name+" \n 是否领取？",i=new ModalConfirm(t,function(){
+e.itemModel.cleanGachaColorBall();
+var t=e.list.selectedItem.info;
+e.itemModel.addHouseItem(t.itemId,t.stock),core.SocketManage.getInstance().send("item_redeem_prize",null,t.id),Music.play("SE_Buy");
+var i=new PrizeShare(t.itemId,t.rank,e.isReward);
+e.parent.addChild(i),e.close()}
+);
+this.addChild(i)}
+,t.prototype.close=function(){
+this.visible=!1,this.scroller.viewport.scrollV=0,this.parent.removeChild(this)}
+,t}
+(core.UIView);
+__reflect(PrizeSelector.prototype,"PrizeSelector");
+var PrizeShare=function(e){
+function t(t,i,n){
+var r=e.call(this,core.PathManage.getInstance().getSkinsPath("Raffle/PrizeShare.exml"))||this;
+return r.itemId=t,r.itemRank=i,r.isReward=n,r.shareSelector=null,r}
+return __extends(t,e),t.prototype.onComplete=function(){
+this.btn_share.visible=this.getModel(UserModel).getShowShareBtn(),this.cover.addEventListener(egret.TouchEvent.TOUCH_TAP,this.close,this),this.btn_share.addEventListener(egret.TouchEvent.TOUCH_TAP,this.showShare,this);
+var e=core.ModelManage.getInstance().getModel(ItemModel),t=e.getIte

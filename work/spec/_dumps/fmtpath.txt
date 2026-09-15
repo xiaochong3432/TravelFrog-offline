@@ -1,0 +1,8 @@
+,d.sequenceSize=e.readUnsignedByte(),d.ex1=e.readUnsignedByte(),d.ex2=e.readUnsignedByte(),this.actions[i]=d}
+var g=e.readShort();
+this.sequences=new Array(g);
+for(var f=0;
+g>f;
+)for(var v=e.readUnsignedByte(),_=e.readUnsignedByte(),i=0;
+_>i;
+i++)null==this.sequences[f]&&(this.sequences[f]=new AnmSequence)

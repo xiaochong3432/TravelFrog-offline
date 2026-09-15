@@ -1,0 +1,6 @@
+lConfirm(_("获得一次抽奖机会，希望现在就使用吗？"),function(){
+t.acceptCallback&&t.acceptCallback.apply(t,t.mailInfo),t.mailView.hideBanner(),core.PageManage.getInstance().addViewControl(RaffleController,core.ViewLayerType.WindowLayer,core.RemoveViewType.HideBefore,!0)}
+));
+else if(this.mailInfo.type==Mail.EvtId.NewPicture||this.mailInfo.type==Mail.EvtId.SpecPicture)core.ModelManage.getInstance().getModel(TravelModel).pushNewPictureIDs(this.mailInfo.pictures),this.acceptCallback&&this.acceptCallback.apply(this,this.mailInfo),this.mailView.hideBanner();
+else if(this.mailInfo.resource.ads_id)core.ModelManage.getInstance().getModel(AdsModel).promptNewAds(this.mailInfo.resource.ads_id),this.acceptCallback&&this.acceptCallback.apply(this,this.mailInfo),this.mailView.hideBanner();
+else if(this.mailInfo.resource.share_

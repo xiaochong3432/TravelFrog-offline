@@ -1,0 +1,41 @@
+ener(egret.Event.REMOVED_FROM_STAGE,function(){
+c.nextReward()}
+,null),this.addChild(r),o=0;
+o<i.length;
+o++)if(i[o].rank==t){
+this.itemModel.cleanGachaColorBall(),this.userModel.addTicket(i[o].stock),core.SocketManage.getInstance().send("item_redeem_prize",null,i[o].id);
+break}
+break;
+default:for(a=[],o=0;
+o<i.length;
+o++)i[o].rank==t&&a.push(i[o]);
+s=new PrizeSelector(a,this.isReward),s.addEventListener(egret.Event.REMOVED_FROM_STAGE,function(){
+c.nextReward()}
+,null),this.addChild(s)}
+return this.drawBtn.touchEnabled=!0,[2]}
+}
+)}
+)}
+,t.prototype.playRaffleAnm=function(e){
+return __awaiter(this,void 0,void 0,function(){
+var i=this;
+return __generator(this,function(n){
+return[2,new Promise(function(n,r){
+i.updateTicket(),i.raffleBox.visible=!0;
+var o=Math.floor(2*Math.random());
+i.raffleImage.source=t.PrizeDishImage[e][o],i.cover.visible=!0;
+var a=Math.floor(3*Math.random())+1;
+1==o&&(a+=3);
+var s=i["anm0"+a];
+s.play(0),i.tweenTimer&&egret.clearTimeout(i.tweenTimer),Utils.FpsManager.instance().boostIn(i.raffleResultTweenDuration),i.tweenTimer=egret.setTimeout(function(){
+i.tweenTimer=void 0,i.raffleBox.visible=!1,s.stop(),i.raffleImage.x=i.initRaffleImagePosX,i.raffleImage.y=i.initRaffleImagePosY,n()}
+,i,i.raffleResultTweenDuration)}
+)]}
+)}
+)}
+,t.prototype.showResult=function(e){
+return __awaiter(this,void 0,void 0,function(){
+var i=this;
+return __generator(this,function(n){
+return[2,new Promise(function(n,r){
+Music

@@ -1,0 +1,112 @@
+===== GoalNumber (list) 38
+  {"id": 1, "name": "北京", "tag": "g_beijing"}
+  {"id": 2, "name": "成都", "tag": "g_chengdu"}
+  {"id": 3, "name": "重庆", "tag": "g_chongqing"}
+  {"id": 4, "name": "广州", "tag": "g_guangzhou"}
+  {"id": 5, "name": "桂林", "tag": "g_guilin"}
+  {"id": 6, "name": "杭州", "tag": "g_hangzhou"}
+  {"id": 7, "name": "苏州", "tag": "g_suzhou"}
+  {"id": 8, "name": "天津", "tag": "g_tianjin"}
+  {"id": 9, "name": "台湾十分", "tag": "g_tw_shifen"}
+  {"id": 10, "name": "台湾垦丁", "tag": "g_tw_kending"}
+  {"id": 11, "name": "香港", "tag": "g_xianggang"}
+  {"id": 12, "name": "哈尔滨", "tag": "g_haerbin"}
+  {"id": 13, "name": "张家界", "tag": "g_zhangjiajie"}
+  {"id": 14, "name": "武汉", "tag": "g_wuhan"}
+  {"id": 15, "name": "洛阳", "tag": "g_luoyang"}
+  {"id": 16, "name": "西安", "tag": "g_xian"}
+  {"id": 17, "name": "酒泉", "tag": "g_jiuquan"}
+  {"id": 18, "name": "云南", "tag": "g_yunnan"}
+  {"id": 19, "name": "拉萨", "tag": "g_lasa"}
+  {"id": 20, "name": "上海", "tag": "g_shanghai"}
+  {"id": 21, "name": "海南", "tag": "g_hainan"}
+  {"id": 22, "name": "贵州", "tag": "g_guizhou"}
+  {"id": 23, "name": "宁夏", "tag": "g_ningxia"}
+  {"id": 24, "name": "福建", "tag": "g_fujian"}
+  {"id": 25, "name": "江西", "tag": "g_jiangxi"}
+  {"id": 26, "name": "安徽", "tag": "g_anhui"}
+  {"id": 27, "name": "辽宁", "tag": "g_liaoning"}
+  {"id": 28, "name": "青岛", "tag": "g_qingdao"}
+  {"id": 29, "name": "山西", "tag": "g_shanxi"}
+  {"id": 30, "name": "吉林", "tag": "g_jilin"}
+  {"id": 31, "name": "澳门", "tag": "g_aomen"}
+  {"id": 32, "name": "青海", "tag": "g_qinghai"}
+  {"id": 33, "name": "河北", "tag": "g_hebei"}
+  {"id": 100, "name": "江西省博物馆", "tag": "g_bwg_jiangxi"}
+  {"id": 101, "name": "山东博物馆", "tag": "g_bwg_shandong"}
+  {"id": 102, "name": "南越王博物院", "tag": "g_bwg_nanyuewang"}
+  {"id": 103, "name": "吴文化博物馆", "tag": "g_bwg_wuwenhua"}
+  {"id": 104, "name": "山西博物院", "tag": "g_bwg_shanxi"}
+===== Prize (list) 23
+  {"id": 0, "itemId": -1, "rank": 0, "stock": 1}
+  {"id": 1, "itemId": 1002, "rank": 1, "stock": 1}
+  {"id": 2, "itemId": 1003, "rank": 1, "stock": 1}
+  {"id": 3, "itemId": 1004, "rank": 1, "stock": 1}
+  {"id": 4, "itemId": 1005, "rank": 1, "stock": 1}
+  {"id": 5, "itemId": 1006, "rank": 1, "stock": 1}
+  {"id": 6, "itemId": 1013, "rank": 2, "stock": 1}
+  {"id": 7, "itemId": 1014, "rank": 2, "stock": 1}
+  {"id": 8, "itemId": 1015, "rank": 2, "stock": 1}
+  {"id": 9, "itemId": 1016, "rank": 2, "stock": 1}
+  {"id": 10, "itemId": 6, "rank": 3, "stock": 1}
+  {"id": 11, "itemId": 7, "rank": 3, "stock": 1}
+  {"id": 12, "itemId": 8, "rank": 3, "stock": 1}
+  {"id": 13, "itemId": 10, "rank": 3, "stock": 1}
+  {"id": 14, "itemId": 9, "rank": 3, "stock": 1}
+  {"id": 15, "itemId": 11, "rank": 4, "stock": 1}
+  {"id": 16, "itemId": 12, "rank": 4, "stock": 1}
+  {"id": 17, "itemId": 13, "rank": 4, "stock": 1}
+  {"id": 18, "itemId": 14, "rank": 4, "stock": 1}
+  {"id": 19, "itemId": 1007, "rank": 5, "stock": 1}
+  {"id": 20, "itemId": 1008, "rank": 5, "stock": 1}
+  {"id": 21, "itemId": 1009, "rank": 5, "stock": 1}
+  {"id": 22, "itemId": 1010, "rank": 5, "stock": 1}
+===== Specialty (list) 64
+  {"itemId": 3000, "place": "华南地区", "id": 0}
+  {"itemId": 3001, "place": "华南地区", "id": 1}
+  {"itemId": 3002, "place": "华东地区", "id": 2}
+  {"itemId": 3003, "place": "华东地区", "id": 3}
+  {"itemId": 3004, "place": "华北地区", "id": 4}
+  {"itemId": 3005, "place": "华北地区", "id": 5}
+  {"itemId": 3006, "place": "西南地区", "id": 6}
+  {"itemId": 3007, "place": "西南地区", "id": 7}
+  {"itemId": 3008, "place": "台湾地区", "id": 8}
+  {"itemId": 3009, "place": "台湾地区", "id": 9}
+  {"itemId": 3010, "place": "东北地区", "id": 10}
+  {"itemId": 3011, "place": "东北地区", "id": 11}
+  {"itemId": 3012, "place": "西南地区", "id": 12}
+  {"itemId": 3013, "place": "华南地区", "id": 13}
+  {"itemId": 3014, "place": "华中地区", "id": 14}
+  {"itemId": 3015, "place": "华中地区", "id": 15}
+  {"itemId": 3016, "place": "西北地区", "id": 16}
+  {"itemId": 3017, "place": "华中地区", "id": 17}
+  {"itemId": 3018, "place": "西北地区", "id": 18}
+  {"itemId": 3019, "place": "西南地区", "id": 19}
+  {"itemId": 3020, "place": "华东地区", "id": 20}
+  {"itemId": 3021, "place": "港澳地区", "id": 21}
+  {"itemId": 4000, "place": "谷物", "id": 22}
+  {"itemId": 4001, "place": "蔬菜", "id": 23}
+  {"itemId": 4002, "place": "蔬菜", "id": 24}
+  {"itemId": 4003, "place": "蔬菜", "id": 25}
+  {"itemId": 4004, "place": "蔬菜", "id": 26}
+  {"itemId": 4005, "place": "蔬菜", "id": 27}
+  {"itemId": 4006, "place": "水果", "id": 28}
+  {"itemId": 4007, "place": "水果", "id": 29}
+  {"itemId": 4008, "place": "水果", "id": 30}
+  {"itemId": 4009, "place": "水果", "id": 31}
+  {"itemId": 4010, "place": "水果", "id": 32}
+  {"itemId": 4011, "place": "水果", "id": 33}
+  {"itemId": 4012, "place": "水果", "id": 34}
+  {"itemId": 4013, "place": "水果", "id": 35}
+  {"itemId": 4014, "place": "牛乳", "id": 36}
+  {"itemId": 4015, "place": "乳制品", "id": 37}
+  {"itemId": 4016, "place": "饮料", "id": 38}
+  {"itemId": 4017, "place": "饮料", "id": 39}
+===== TravelFriends (dict) 3
+  1: {"visitOpen": 2001, "name": "刺猬", "img_src": "Scene/Note/Friends/cw", "id": 1}
+  0: {"visitOpen": 2000, "name": "壁虎", "img_src": "Scene/Note/Friends/bh", "id": 0}
+  2: {"visitOpen": 2002, "name": "萤火虫", "img_src": "Scene/Note/Friends/yhc", "id": 2}
+===== GiftData (dict) 3
+  5001: {"id": 5001, "item_id": [10201, 10202, 10203, 10204, 10205], "item_num": [1, 1, 1, 1, 1]}
+  5002: {"id": 5002, "item_id": [10001, 10002, 10003, 10004, 10005, 10006, 10007, 10101], "item_num": [1, 1, 1, 1, 1, 1, 1, 1]}
+  5003: {"id": 5003, "item_id": [20101, 20102, 20103], "item_num": [1, 1, 1]}

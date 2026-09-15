@@ -1,0 +1,310 @@
+===== 'st_days'  hits=11 =====
+
+--- [84204] ---
+ototype,"AnimPictureModel");
+var AnnualReviewModel=function(e){
+function t(){
+var t=null!==e&&e.apply(this,arguments)||this;
+return t.cacheData={
+}
+,t}
+return __extends(t,e),t.prototype.request=function(){
+var e=this;
+core.SocketManage.getInstance().send("annual_load",new core.Action2(function(t){
+e.cacheData=t,e.updateRedot()}
+))}
+,t.prototype.updateRedot=function(){
+var e=0;
+this.cacheData.is_share||(e=1),Tabikaeru.RedotManager.instance().setRedotValue(Tabikaeru.RedotType.ANNUAL_REVIEW,e)}
+,t}
+(core.Model);
+__reflect(AnnualReviewModel.prototype,"AnnualReviewModel");
+var CalendarModel=function(e){
+function t(){
+var t=null!==e&&e.apply(this,arguments)||this;
+return t.data={
+new_flag:[],note_list:[],lucky_days:{
+}
+,st_days:{
+}
+,task_list:[]}
+,t}
+return __extends(t,e),t.prototype.initModel=function(){
+this.addProtocolCallback("calendar_load","calendar_load_note","calendar_task_update")}
+,t.prototype.calendar_load=function(e){
+this.data.new_flag=Utils.convertArray(e.new_flag),this.data.task_list=Utils.convertArray(e.task_list);
+for(var t=Utils.convertArray(e.lucky_days),i=0;
+i<t.length;
+i++)this.data.lucky_days[t[i].day]=t[i].item_id;
+t=Utils.convertArray(e.st_days);
+for(var i=0;
+i<t.length;
+i++)this.data.st_days[t[i].day]=t[i].item_id;
+this.checkRedot()}
+,t.prototype.calendar_load_note=function(e){
+this.data.note_list=Utils.convertArray(e.list)}
+,t.prototype.calendar_task_update=function(e){
+e&&e.task&&(this.data.task_lis
+
+--- [84642] ---
+tValue(Tabikaeru.RedotType.ANNUAL_REVIEW,e)}
+,t}
+(core.Model);
+__reflect(AnnualReviewModel.prototype,"AnnualReviewModel");
+var CalendarModel=function(e){
+function t(){
+var t=null!==e&&e.apply(this,arguments)||this;
+return t.data={
+new_flag:[],note_list:[],lucky_days:{
+}
+,st_days:{
+}
+,task_list:[]}
+,t}
+return __extends(t,e),t.prototype.initModel=function(){
+this.addProtocolCallback("calendar_load","calendar_load_note","calendar_task_update")}
+,t.prototype.calendar_load=function(e){
+this.data.new_flag=Utils.convertArray(e.new_flag),this.data.task_list=Utils.convertArray(e.task_list);
+for(var t=Utils.convertArray(e.lucky_days),i=0;
+i<t.length;
+i++)this.data.lucky_days[t[i].day]=t[i].item_id;
+t=Utils.convertArray(e.st_days);
+for(var i=0;
+i<t.length;
+i++)this.data.st_days[t[i].day]=t[i].item_id;
+this.checkRedot()}
+,t.prototype.calendar_load_note=function(e){
+this.data.note_list=Utils.convertArray(e.list)}
+,t.prototype.calendar_task_update=function(e){
+e&&e.task&&(this.data.task_list[e.task.id-1]=e.task,this.checkRedot())}
+,t.prototype.req_beginer_reward=function(e){
+var t=this;
+core.SocketManage.getInstance().send("calendar_get_beginer_reward",new core.Action2(function(i){
+if(i.day>0){
+t.data.new_flag[i.day-1]=1;
+var n=Tabikaeru.DataManager.instance().calendarData.get("beginner"),r=[];
+r.push({
+item_id:n[i.day].item_id,count:n[i.day].num}
+),core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.View
+
+--- [84688] ---
+}
+(core.Model);
+__reflect(AnnualReviewModel.prototype,"AnnualReviewModel");
+var CalendarModel=function(e){
+function t(){
+var t=null!==e&&e.apply(this,arguments)||this;
+return t.data={
+new_flag:[],note_list:[],lucky_days:{
+}
+,st_days:{
+}
+,task_list:[]}
+,t}
+return __extends(t,e),t.prototype.initModel=function(){
+this.addProtocolCallback("calendar_load","calendar_load_note","calendar_task_update")}
+,t.prototype.calendar_load=function(e){
+this.data.new_flag=Utils.convertArray(e.new_flag),this.data.task_list=Utils.convertArray(e.task_list);
+for(var t=Utils.convertArray(e.lucky_days),i=0;
+i<t.length;
+i++)this.data.lucky_days[t[i].day]=t[i].item_id;
+t=Utils.convertArray(e.st_days);
+for(var i=0;
+i<t.length;
+i++)this.data.st_days[t[i].day]=t[i].item_id;
+this.checkRedot()}
+,t.prototype.calendar_load_note=function(e){
+this.data.note_list=Utils.convertArray(e.list)}
+,t.prototype.calendar_task_update=function(e){
+e&&e.task&&(this.data.task_list[e.task.id-1]=e.task,this.checkRedot())}
+,t.prototype.req_beginer_reward=function(e){
+var t=this;
+core.SocketManage.getInstance().send("calendar_get_beginer_reward",new core.Action2(function(i){
+if(i.day>0){
+t.data.new_flag[i.day-1]=1;
+var n=Tabikaeru.DataManager.instance().calendarData.get("beginner"),r=[];
+r.push({
+item_id:n[i.day].item_id,count:n[i.day].num}
+),core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.ViewLayerType.NoticeLayer,null,r),t.checkRedot(),e
+
+--- [85908] ---
+r.push({
+item_id:n[i.day].item_id,count:n[i.day].num}
+),core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.ViewLayerType.NoticeLayer,null,r),t.checkRedot(),e&&e.apply()}
+}
+))}
+,t.prototype.req_code_reward=function(e,t){
+var i=this;
+core.SocketManage.getInstance().send("calendar_get_code_reward",new core.Action2(function(e){
+if(e.day>0){
+i.data.new_flag[e.day-1]=1;
+var n=Tabikaeru.DataManager.instance().calendarData.get("beginner"),r=[];
+r.push({
+item_id:n[e.day].item_id,count:n[e.day].num}
+),core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.ViewLayerType.NoticeLayer,null,r),t&&t.apply()}
+}
+),e)}
+,t.prototype.req_st_reward=function(e,t){
+var i=this;
+this.data.st_days[e]&&core.SocketManage.getInstance().send("calendar_get_st_reward",new core.Action2(function(n){
+if(0==n.code){
+var r=[];
+r.push({
+item_id:i.data.st_days[e],count:1}
+),core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.ViewLayerType.NoticeLayer,null,r),i.data.st_days[e]=null,i.data.task_list[0].complete=!1,i.checkRedot(),t&&t.apply()}
+}
+))}
+,t.prototype.req_luck_reward=function(e,t){
+var i=this;
+this.data.lucky_days[e]&&core.SocketManage.getInstance().send("calendar_get_luck_reward",new core.Action2(function(n){
+if(0==n.code){
+var r=[];
+r.push({
+item_id:i.data.lucky_days[e],count:1}
+),core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.ViewLayerType.N
+
+--- [86057] ---
+eLayer,null,r),t.checkRedot(),e&&e.apply()}
+}
+))}
+,t.prototype.req_code_reward=function(e,t){
+var i=this;
+core.SocketManage.getInstance().send("calendar_get_code_reward",new core.Action2(function(e){
+if(e.day>0){
+i.data.new_flag[e.day-1]=1;
+var n=Tabikaeru.DataManager.instance().calendarData.get("beginner"),r=[];
+r.push({
+item_id:n[e.day].item_id,count:n[e.day].num}
+),core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.ViewLayerType.NoticeLayer,null,r),t&&t.apply()}
+}
+),e)}
+,t.prototype.req_st_reward=function(e,t){
+var i=this;
+this.data.st_days[e]&&core.SocketManage.getInstance().send("calendar_get_st_reward",new core.Action2(function(n){
+if(0==n.code){
+var r=[];
+r.push({
+item_id:i.data.st_days[e],count:1}
+),core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.ViewLayerType.NoticeLayer,null,r),i.data.st_days[e]=null,i.data.task_list[0].complete=!1,i.checkRedot(),t&&t.apply()}
+}
+))}
+,t.prototype.req_luck_reward=function(e,t){
+var i=this;
+this.data.lucky_days[e]&&core.SocketManage.getInstance().send("calendar_get_luck_reward",new core.Action2(function(n){
+if(0==n.code){
+var r=[];
+r.push({
+item_id:i.data.lucky_days[e],count:1}
+),core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.ViewLayerType.NoticeLayer,null,r),i.data.lucky_days[e]=null,i.checkRedot(),t&&t.apply()}
+}
+))}
+,t.prototype.checkRedot=function(){
+var e=0;
+this.canGetBeginnerReward()&&
+
+--- [86195] ---
+"calendar_get_code_reward",new core.Action2(function(e){
+if(e.day>0){
+i.data.new_flag[e.day-1]=1;
+var n=Tabikaeru.DataManager.instance().calendarData.get("beginner"),r=[];
+r.push({
+item_id:n[e.day].item_id,count:n[e.day].num}
+),core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.ViewLayerType.NoticeLayer,null,r),t&&t.apply()}
+}
+),e)}
+,t.prototype.req_st_reward=function(e,t){
+var i=this;
+this.data.st_days[e]&&core.SocketManage.getInstance().send("calendar_get_st_reward",new core.Action2(function(n){
+if(0==n.code){
+var r=[];
+r.push({
+item_id:i.data.st_days[e],count:1}
+),core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.ViewLayerType.NoticeLayer,null,r),i.data.st_days[e]=null,i.data.task_list[0].complete=!1,i.checkRedot(),t&&t.apply()}
+}
+))}
+,t.prototype.req_luck_reward=function(e,t){
+var i=this;
+this.data.lucky_days[e]&&core.SocketManage.getInstance().send("calendar_get_luck_reward",new core.Action2(function(n){
+if(0==n.code){
+var r=[];
+r.push({
+item_id:i.data.lucky_days[e],count:1}
+),core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.ViewLayerType.NoticeLayer,null,r),i.data.lucky_days[e]=null,i.checkRedot(),t&&t.apply()}
+}
+))}
+,t.prototype.checkRedot=function(){
+var e=0;
+this.canGetBeginnerReward()&&(e=1),this.canGetStReward()&&(e=1),this.canGetLuckyReward()&&(e=1),Tabikaeru.RedotManager.instance().setRedotValue(Tabikaeru.RedotType.RED
+
+--- [87126] ---
+.Action2(function(n){
+if(0==n.code){
+var r=[];
+r.push({
+item_id:i.data.lucky_days[e],count:1}
+),core.PageManage.getInstance().addViewControl(GiftPackageViewController,core.ViewLayerType.NoticeLayer,null,r),i.data.lucky_days[e]=null,i.checkRedot(),t&&t.apply()}
+}
+))}
+,t.prototype.checkRedot=function(){
+var e=0;
+this.canGetBeginnerReward()&&(e=1),this.canGetStReward()&&(e=1),this.canGetLuckyReward()&&(e=1),Tabikaeru.RedotManager.instance().setRedotValue(Tabikaeru.RedotType.REDOT_CALENDAR,e)}
+,t.prototype.canShowMainOutBtn=function(){
+if(this.getModel(RoleModel).getCreateDay()<=7)return!0;
+var e=new Date(1e3*core.Time.getServerTime()),t=e.getDate();
+if(this.data.lucky_days[t])return!0;
+for(var i in this.data.st_days)if(t>=parseInt(i))return!0;
+return!1}
+,t.prototype.canGetBeginnerReward=function(){
+var e=this.getModel(RoleModel).getCreateDay();
+return e>this.data.new_flag.length||this.data.new_flag[e-1]>0?!1:!0}
+,t.prototype.canGetStReward=function(){
+for(var e=0;
+e<this.data.task_list.length;
+e++)if(!this.data.task_list[e].complete)return!1;
+return!0}
+,t.prototype.canGetLuckyReward=function(){
+var e=new Date(1e3*core.Time.getServerTime());
+return null!=this.data.lucky_days[e.getDate()]}
+,t.prototype.getMonthFirstWeek=function(){
+var e=new Date(1e3*core.Time.getServerTime());
+e.setDate(1);
+var t=e.getDay();
+return 0==t&&(t=7),t}
+,t.prototype.getMonthMaxDay=function(){
+var e=new Date(1e3*core.Time.getServerTime()),
+
+--- [527442] ---
+())+"日";
+this.lbTime.text=r,this.lbYear.text=i.getFullYear()+"年",this.data=this.getModel(CalendarModel).data;
+var o=this.data.note_list[this.day-1];
+if(n==this.day){
+var a=Tabikaeru.DataManager.instance().calendarData.get("beginner"),s=this.getModel(RoleModel).getCreateDay();
+a[s]&&(o=a[s].note_id,this.codeText=a[s].code,this.imageTips.visible=!0)}
+for(var c=Tabikaeru.DataManager.instance().calendarData.get("note")[o],l=c.pic+"_png",h={
+left:egret.HorizontalAlign.LEFT,right:egret.HorizontalAlign.RIGHT,middle:egret.HorizontalAlign.CENTER}
+,u=0;
+u<c.desc_list.length;
+u++){
+var p=c.desc_list[u],d=this.groupText.getChildAt(u);
+d.text=p.desc,d.textAlign=h[p.align]}
+this.lbAuthor.text=c.author;
+var g=this.data.st_days[this.day];
+if(!this.imageTips.visible&&g){
+this.groupText.visible=!1,this.groupTask.visible=!0;
+for(var f=["观看广告或完成分享（{
+0}
+/1）","累计获得三叶草（{
+0}
+/30）","商店抽奖兑换奖品（{
+0}
+/1）"],u=0;
+3>u;
+u++){
+var v=this.data.task_list[u],d=this.groupTask.getChildAt(u);
+d.text=_(f[u],v.pro),d.textColor=v.complete?12046423:5528908;
+var y=this.groupTask.getChildAt(u+3);
+y.source=v.complete?"calendar_task_done_png":"calendar_task_list_png"}
+var m=Tabikaeru.DataManager.instance().ItemDB.get(g);
+l=Tabikaeru.path.formatPathImage(m.img)}
+Promise.all([RES.getResAsync(l)]).then(function(){
+t.imagePic.source=l,t.imagePic.width>260&&Math.abs(t.imagePic.width-t.imagePic.height)<10?t.imagePic.width=t.imagePic.height=280:(t.imagePic.width>4

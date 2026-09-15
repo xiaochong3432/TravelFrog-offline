@@ -1,0 +1,65 @@
+ototype.close.call(this)}
+,t}
+(WindowController);
+__reflect(GiftPackageViewController.prototype,"GiftPackageViewController");
+var GiftSelectView=function(e){
+function t(t,i){
+var n=e.call(this,core.PathManage.getInstance().getSkinsPath("Common/GiftSelectSkin.exml"))||this;
+return n.select_num=t,n.items=i,n.selectList=[],n}
+return __extends(t,e),t.prototype.childrenCreated=function(){
+var t=this;
+e.prototype.childrenCreated.call(this),this.list.addEventListener(eui.ItemTapEvent.ITEM_TAP,this.onItemTap,this),this.btnGet.addEventListener(egret.TouchEvent.TOUCH_TAP,function(){
+t.close(),t.getModel(ItemModel).req_select_gift(t.selectList)}
+,this),this.selectList=[];
+for(var i=[],n=0,r=this.items;
+n<r.length;
+n++){
+var o=r[n];
+i.push({
+item_id:o.item_id,count:o.count,is_selected:!1}
+)}
+this.list.itemRenderer=GiftSelectItem,Utils.setArrayCollection(this.list,i),this.vScroller.content=this.list,this.lbTips.text=_("请选择{
+0}
+个物品（{
+1}
+/{
+2}
+）",this.select_num,this.selectList.length,this.select_num)}
+,t.prototype.onItemTap=function(e){
+if(e.item.is_selected||!(this.selectList.length>=this.select_num)){
+e.item.is_selected=!e.item.is_selected;
+var t=this.list.dataProvider;
+if(t.replaceItemAt(e.item,e.itemIndex),e.item.is_selected)this.selectList.push(e.itemIndex+1);
+else for(var i=0;
+i<this.selectList.length;
+i++)if(this.selectList[i]==e.itemIndex+1){
+this.selectList.splice(i,1);
+break}
+this.lbTips.text=_("请选择{
+0}
+个物品（{
+1}
+/{
+2}
+）",this.select_num,this.selectList.length,this.select_num),this.groupSelect.visible=this.selectList.length!=this.select_num,this.btnGet.visible=this.selectList.length==this.select_num}
+}
+,t.prototype.close=function(){
+Music.play("SE_Cancel"),this.parent.removeChild(this)}
+,t}
+(core.UIView);
+__reflect(GiftSelectView.prototype,"GiftSelectView");
+var GiftSelectItem=function(e){
+function t(){
+return null!==e&&e.apply(this,arguments)||this}
+return __extends(t,e),t.prototype.dataChanged=function(){
+if(e.prototype.dataChanged.call(this),this.data){
+this.imageSelect.visible=this.data.is_selected;
+var t=Tabikaeru.DataManager.instance().ItemDB.get(this.data.item_id);
+this.imageGoods.source=Tabikaeru.path.formatPathImage(t.img),this.lbNum.text=String(this.data.count)}
+}
+,t}
+(eui.ItemRenderer);
+__reflect(GiftSelectItem.prototype,"GiftSelectItem");
+var GiftBoxAlbumView=function(e){
+function t(){
+var t=e.call(this,core.PathMan

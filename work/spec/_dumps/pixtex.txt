@@ -1,0 +1,61 @@
+e){
+function t(t){
+var i=e.DataManager.instance().ResourcesDB[t.toString()];
+return i||(core.Log.warning("照片资源配置表 resources_json 中未找到 ID："+t+" 的图片路径"),i=e.DataManager.instance().ResourcesDB[1]),i}
+function i(e){
+if(e){
+for(var i="",n=0,r=e.layers;
+n<r.length;
+n++){
+var o=r[n];
+i+=o.layer[0].toString()+o.layer[1].toString()+o.layer[2].toString()}
+var s=c[i]?c[i].texture:null;
+return s?new Promise(function(e,t){
+e()}
+):Promise.all(e.layers.map(function(e){
+return RES.getResAsync(a(t(e.layer[0])))}
+))}
+return core.Log.error("加载相片失败，相片数据不能为空"),new Promise(function(){
+}
+)}
+function n(e,t){
+}
+function r(e,i){
+void 0===i&&(i=1);
+for(var n="",r=0,o=e.layers;
+r<o.length;
+r++){
+var l=o[r];
+n+=l.layer[0].toString()+l.layer[1].toString()+l.layer[2].toString()}
+var h,u=c[n];
+if(u)h=u.texture,u.count++;
+else{
+Utils.FpsManager.instance().boost();
+var p=s;
+p.removeChildren();
+for(var d=0,g=e.layers;
+d<g.length;
+d++){
+var f=g[d],v=new egret.Bitmap,_=RES.getRes(a(t(f.layer[0])));
+if(null==_)return null;
+v.texture=_,v.x=f.layer[1],v.y=f.layer[2],p.addChild(v)}
+h=new egret.RenderTexture,h.drawToTexture(p,new egret.Rectangle(0,0,500,350),i),1==i&&(u=c[n]={
+name:n,texture:h,count:1}
+),egret.setTimeout(function(){
+Utils.FpsManager.instance().resume()}
+,this,500)}
+return h}
+function o(e){
+for(var t in c)c[t].texture==e&&c[t].count--;
+null==l&&(l=egret.setTimeout(function(){
+l=null;
+for(var e in c)0==c[e].count&&(c[e].texture.dispose(),delete c[e])}
+,null,5e3))}
+function a(e){
+var t=e.lastIndexOf("/"),i=e.length,n=e.slice(t+1,i);
+return n+"_png"}
+e.getPicturePath=t,e.loadPicture=i;
+var s=new egret.DisplayObjectContainer,c={
+}
+;
+e.renderPicture=n,e.getPictur

@@ -1,0 +1,13 @@
+tring()],s=new eui.Image;
+this.groupGet.addChild(s),s.width=39,s.height=36,s.x=r%4*50,s.y=45*Math.floor(r/4),s.source="capsule_line_"+a.type+"_png",this.imageList[r]=s}
+}
+,t.prototype.onTapTask=function(e){
+core.DisplayManage.getInstance().popup(new CapsuleTaskView(e))}
+,t.prototype.setGiftItems=function(e){
+this.giftItems=e}
+,t.prototype.onReward=function(e){
+var t=this,i=Tabikaeru.DataManager.instance().capsuleData.get("reward")[e.toString()];
+egret.Tween.get(this.btnTwist).to({
+rotation:90}
+,400).call(function(){
+t.imageDrop.source="capsule_type_"+i.type+"_png",t.imageDrop.verticalCenter=20,egret.Tween

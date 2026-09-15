@@ -1,0 +1,812 @@
+{
+      "1": {
+                  "desk_pic": {
+                                  "index": "desk_stamp1",
+                                    "src": "Scene/Craft/Bg_ui"
+                              },
+                 "dimension": 1,
+                        "id": 1,
+               "pattern_pic": [ {
+                                  "index": "stamp_pic1_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic1_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic1_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                 "stamp_pic": [ {
+                                  "index": "stamp1_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp1_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp1_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                     "state": [ 1, 2, 3 ],
+                      "type": 1
+           },
+    "101": {
+                  "desk_pic": {
+                                  "index": "desk_stamp2",
+                                    "src": "Scene/Craft/Bg_ui"
+                              },
+                 "dimension": 1,
+                        "id": 101,
+               "pattern_pic": [ {
+                                  "index": "stamp_pic101_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic101_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic101_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                 "stamp_pic": [ {
+                                  "index": "stamp101_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp101_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp101_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                     "state": [ 1, 2, 3 ],
+                      "type": 2
+           },
+    "102": {
+                  "desk_pic": {
+                                  "index": "desk_stamp2",
+                                    "src": "Scene/Craft/Bg_ui"
+                              },
+                 "dimension": 2,
+                        "id": 102,
+               "pattern_pic": [ {
+                                  "index": "stamp_pic102_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic102_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic102_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                 "stamp_pic": [ {
+                                  "index": "stamp102_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp102_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp102_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                     "state": [ 1, 2, 3 ],
+                      "type": 2
+           },
+    "103": {
+                  "desk_pic": {
+                                  "index": "desk_stamp2",
+                                    "src": "Scene/Craft/Bg_ui"
+                              },
+                 "dimension": 2,
+                        "id": 103,
+               "pattern_pic": [ {
+                                  "index": "stamp_pic103_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic103_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic103_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                 "stamp_pic": [ {
+                                  "index": "stamp103_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp103_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp103_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                     "state": [ 1, 2, 3 ],
+                      "type": 2
+           },
+    "104": {
+                  "desk_pic": {
+                                  "index": "desk_stamp2",
+                                    "src": "Scene/Craft/Bg_ui"
+                              },
+                 "dimension": 3,
+                        "id": 104,
+               "pattern_pic": [ {
+                                  "index": "stamp_pic104_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic104_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic104_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                 "stamp_pic": [ {
+                                  "index": "stamp104_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp104_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp104_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                     "state": [ 1, 2, 3 ],
+                      "type": 2
+           },
+    "105": {
+                  "desk_pic": {
+                                  "index": "desk_stamp2",
+                                    "src": "Scene/Craft/Bg_ui"
+                              },
+                 "dimension": 3,
+                        "id": 105,
+               "pattern_pic": [ {
+                                  "index": "stamp_pic105_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic105_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic105_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                 "stamp_pic": [ {
+                                  "index": "stamp105_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp105_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp105_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                     "state": [ 1, 2, 3 ],
+                      "type": 2
+           },
+    "106": {
+                  "desk_pic": {
+                                  "index": "desk_stamp2",
+                                    "src": "Scene/Craft/Bg_ui"
+                              },
+                 "dimension": 3,
+                        "id": 106,
+               "pattern_pic": [ {
+                                  "index": "stamp_pic106_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic106_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic106_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                 "stamp_pic": [ {
+                                  "index": "stamp106_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp106_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp106_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                     "state": [ 1, 2, 3 ],
+                      "type": 2
+           },
+    "107": {
+                  "desk_pic": {
+                                  "index": "desk_stamp2",
+                                    "src": "Scene/Craft/Bg_ui"
+                              },
+                 "dimension": 4,
+                        "id": 107,
+               "pattern_pic": [ {
+                                  "index": "stamp_pic107_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic107_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic107_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                 "stamp_pic": [ {
+                                  "index": "stamp107_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp107_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp107_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                     "state": [ 1, 2, 3 ],
+                      "type": 2
+           },
+    "108": {
+                  "desk_pic": {
+                                  "index": "desk_stamp2",
+                                    "src": "Scene/Craft/Bg_ui"
+                              },
+                 "dimension": 4,
+                        "id": 108,
+               "pattern_pic": [ {
+                                  "index": "stamp_pic108_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic108_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic108_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                 "stamp_pic": [ {
+                                  "index": "stamp108_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp108_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp108_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                     "state": [ 1, 2, 3 ],
+                      "type": 2
+           },
+    "109": {
+                  "desk_pic": {
+                                  "index": "desk_stamp2",
+                                    "src": "Scene/Craft/Bg_ui"
+                              },
+                 "dimension": 4,
+                        "id": 109,
+               "pattern_pic": [ {
+                                  "index": "stamp_pic109_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic109_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic109_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                 "stamp_pic": [ {
+                                  "index": "stamp109_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp109_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp109_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                     "state": [ 1, 2, 3 ],
+                      "type": 2
+           },
+      "2": {
+                  "desk_pic": {
+                                  "index": "desk_stamp1",
+                                    "src": "Scene/Craft/Bg_ui"
+                              },
+                 "dimension": 2,
+                        "id": 2,
+               "pattern_pic": [ {
+                                  "index": "stamp_pic2_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic2_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic2_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                 "stamp_pic": [ {
+                                  "index": "stamp2_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp2_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp2_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                     "state": [ 1, 2, 3 ],
+                      "type": 1
+           },
+    "201": {
+                  "desk_pic": {
+                                  "index": "desk_stamp3",
+                                    "src": "Scene/Craft/Bg_ui"
+                              },
+                 "dimension": 1,
+                        "id": 201,
+               "pattern_pic": [ {
+                                  "index": "stamp_pic201_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic201_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic201_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                 "stamp_pic": [ {
+                                  "index": "stamp201_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp201_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp201_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                     "state": [ 1, 2, 3 ],
+                      "type": 3
+           },
+    "202": {
+                  "desk_pic": {
+                                  "index": "desk_stamp3",
+                                    "src": "Scene/Craft/Bg_ui"
+                              },
+                 "dimension": 2,
+                        "id": 202,
+               "pattern_pic": [ {
+                                  "index": "stamp_pic202_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic202_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic202_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                 "stamp_pic": [ {
+                                  "index": "stamp202_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp202_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp202_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                     "state": [ 1, 2, 3 ],
+                      "type": 3
+           },
+    "203": {
+                  "desk_pic": {
+                                  "index": "desk_stamp3",
+                                    "src": "Scene/Craft/Bg_ui"
+                              },
+                 "dimension": 2,
+                        "id": 203,
+               "pattern_pic": [ {
+                                  "index": "stamp_pic203_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic203_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic203_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                 "stamp_pic": [ {
+                                  "index": "stamp203_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp203_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp203_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                     "state": [ 1, 2, 3 ],
+                      "type": 3
+           },
+    "204": {
+                  "desk_pic": {
+                                  "index": "desk_stamp3",
+                                    "src": "Scene/Craft/Bg_ui"
+                              },
+                 "dimension": 3,
+                        "id": 204,
+               "pattern_pic": [ {
+                                  "index": "stamp_pic204_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic204_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic204_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                 "stamp_pic": [ {
+                                  "index": "stamp204_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp204_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp204_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                     "state": [ 1, 2, 3 ],
+                      "type": 3
+           },
+    "205": {
+                  "desk_pic": {
+                                  "index": "desk_stamp3",
+                                    "src": "Scene/Craft/Bg_ui"
+                              },
+                 "dimension": 3,
+                        "id": 205,
+               "pattern_pic": [ {
+                                  "index": "stamp_pic205_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic205_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic205_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                 "stamp_pic": [ {
+                                  "index": "stamp205_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp205_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp205_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                     "state": [ 1, 2, 3 ],
+                      "type": 3
+           },
+    "206": {
+                  "desk_pic": {
+                                  "index": "desk_stamp3",
+                                    "src": "Scene/Craft/Bg_ui"
+                              },
+                 "dimension": 3,
+                        "id": 206,
+               "pattern_pic": [ {
+                                  "index": "stamp_pic206_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic206_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic206_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                 "stamp_pic": [ {
+                                  "index": "stamp206_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp206_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp206_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                     "state": [ 1, 2, 3 ],
+                      "type": 3
+           },
+    "207": {
+                  "desk_pic": {
+                                  "index": "desk_stamp3",
+                                    "src": "Scene/Craft/Bg_ui"
+                              },
+                 "dimension": 4,
+                        "id": 207,
+               "pattern_pic": [ {
+                                  "index": "stamp_pic207_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic207_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic207_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                 "stamp_pic": [ {
+                                  "index": "stamp207_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp207_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp207_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                     "state": [ 1, 2, 3 ],
+                      "type": 3
+           },
+    "208": {
+                  "desk_pic": {
+                                  "index": "desk_stamp3",
+                                    "src": "Scene/Craft/Bg_ui"
+                              },
+                 "dimension": 4,
+                        "id": 208,
+               "pattern_pic": [ {
+                                  "index": "stamp_pic208_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic208_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic208_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                 "stamp_pic": [ {
+                                  "index": "stamp208_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp208_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp208_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                     "state": [ 1, 2, 3 ],
+                      "type": 3
+           },
+    "209": {
+                  "desk_pic": {
+                                  "index": "desk_stamp3",
+                                    "src": "Scene/Craft/Bg_ui"
+                              },
+                 "dimension": 4,
+                        "id": 209,
+               "pattern_pic": [ {
+                                  "index": "stamp_pic209_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic209_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic209_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                 "stamp_pic": [ {
+                                  "index": "stamp209_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp209_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp209_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                     "state": [ 1, 2, 3 ],
+                      "type": 3
+           },
+      "3": {
+                  "desk_pic": {
+                                  "index": "desk_stamp1",
+                                    "src": "Scene/Craft/Bg_ui"
+                              },
+                 "dimension": 2,
+                        "id": 3,
+               "pattern_pic": [ {
+                                  "index": "stamp_pic3_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic3_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic3_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                 "stamp_pic": [ {
+                                  "index": "stamp3_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp3_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp3_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                     "state": [ 1, 2, 3 ],
+                      "type": 1
+           },
+      "4": {
+                  "desk_pic": {
+                                  "index": "desk_stamp1",
+                                    "src": "Scene/Craft/Bg_ui"
+                              },
+                 "dimension": 3,
+                        "id": 4,
+               "pattern_pic": [ {
+                                  "index": "stamp_pic4_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic4_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic4_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                 "stamp_pic": [ {
+                                  "index": "stamp4_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp4_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp4_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                     "state": [ 1, 2, 3 ],
+                      "type": 1
+           },
+      "5": {
+                  "desk_pic": {
+                                  "index": "desk_stamp1",
+                                    "src": "Scene/Craft/Bg_ui"
+                              },
+                 "dimension": 3,
+                        "id": 5,
+               "pattern_pic": [ {
+                                  "index": "stamp_pic5_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic5_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic5_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                 "stamp_pic": [ {
+                                  "index": "stamp5_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp5_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp5_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                     "state": [ 1, 2, 3 ],
+                      "type": 1
+           },
+      "6": {
+                  "desk_pic": {
+                                  "index": "desk_stamp1",
+                                    "src": "Scene/Craft/Bg_ui"
+                              },
+                 "dimension": 3,
+                        "id": 6,
+               "pattern_pic": [ {
+                                  "index": "stamp_pic6_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic6_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic6_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                 "stamp_pic": [ {
+                                  "index": "stamp6_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp6_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp6_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                     "state": [ 1, 2, 3 ],
+                      "type": 1
+           },
+      "7": {
+                  "desk_pic": {
+                                  "index": "desk_stamp1",
+                                    "src": "Scene/Craft/Bg_ui"
+                              },
+                 "dimension": 4,
+                        "id": 7,
+               "pattern_pic": [ {
+                                  "index": "stamp_pic7_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic7_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic7_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                 "stamp_pic": [ {
+                                  "index": "stamp7_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp7_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp7_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                     "state": [ 1, 2, 3 ],
+                      "type": 1
+           },
+      "8": {
+                  "desk_pic": {
+                                  "index": "desk_stamp1",
+                                    "src": "Scene/Craft/Bg_ui"
+                              },
+                 "dimension": 4,
+                        "id": 8,
+               "pattern_pic": [ {
+                                  "index": "stamp_pic8_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic8_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic8_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                 "stamp_pic": [ {
+                                  "index": "stamp8_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp8_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp8_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                     "state": [ 1, 2, 3 ],
+                      "type": 1
+           },
+      "9": {
+                  "desk_pic": {
+                                  "index": "desk_stamp1",
+                                    "src": "Scene/Craft/Bg_ui"
+                              },
+                 "dimension": 4,
+                        "id": 9,
+               "pattern_pic": [ {
+                                  "index": "stamp_pic9_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic9_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp_pic9_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                 "stamp_pic": [ {
+                                  "index": "stamp9_1",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp9_2",
+                                    "src": "Scene/Craft/Stamp"
+                              }, {
+                                  "index": "stamp9_3",
+                                    "src": "Scene/Craft/Stamp"
+                              } ],
+                     "state": [ 1, 2, 3 ],
+                      "type": 1
+           }
+}
