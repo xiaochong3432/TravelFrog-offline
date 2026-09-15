@@ -1,0 +1,76 @@
+
+gif_1_role_qw.png
+size: 80, 101
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+larm
+  rotate: false
+  xy: 52, 14
+  size: 17, 10
+  orig: 17, 10
+  offset: 0, 0
+  index: -1
+larm2
+  rotate: false
+  xy: 36, 26
+  size: 19, 10
+  orig: 19, 10
+  offset: 0, 0
+  index: -1
+larm3
+  rotate: false
+  xy: 2, 10
+  size: 15, 26
+  orig: 15, 26
+  offset: 0, 0
+  index: -1
+larm4
+  rotate: false
+  xy: 19, 10
+  size: 15, 26
+  orig: 15, 26
+  offset: 0, 0
+  index: -1
+lbeye
+  rotate: false
+  xy: 2, 2
+  size: 9, 6
+  orig: 9, 6
+  offset: 0, 0
+  index: -1
+leye
+  rotate: false
+  xy: 36, 2
+  size: 7, 8
+  orig: 7, 8
+  offset: 0, 0
+  index: -1
+qw
+  rotate: false
+  xy: 2, 38
+  size: 76, 61
+  orig: 76, 61
+  offset: 0, 0
+  index: -1
+rarm
+  rotate: false
+  xy: 36, 12
+  size: 14, 12
+  orig: 14, 12
+  offset: 0, 0
+  index: -1
+rbeye
+  rotate: false
+  xy: 52, 5
+  size: 14, 7
+  orig: 14, 7
+  offset: 0, 0
+  index: -1
+reye
+  rotate: false
+  xy: 57, 26
+  size: 17, 10
+  orig: 17, 10
+  offset: 0, 0
+  index: -1

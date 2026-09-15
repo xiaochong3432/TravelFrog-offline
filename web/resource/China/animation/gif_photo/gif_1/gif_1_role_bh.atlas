@@ -1,0 +1,55 @@
+
+gif_1_role_bh.png
+size: 134, 70
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+images/bh-eye
+  rotate: false
+  xy: 83, 28
+  size: 20, 7
+  orig: 20, 7
+  offset: 0, 0
+  index: -1
+images/bh-eye2
+  rotate: false
+  xy: 83, 20
+  size: 20, 6
+  orig: 20, 6
+  offset: 0, 0
+  index: -1
+images/bh_0000_bh-rarm
+  rotate: false
+  xy: 110, 20
+  size: 22, 20
+  orig: 22, 20
+  offset: 0, 0
+  index: -1
+images/bh_0001_bh-body
+  rotate: false
+  xy: 2, 2
+  size: 79, 66
+  orig: 79, 66
+  offset: 0, 0
+  index: -1
+images/bh_0002_bh-larm
+  rotate: false
+  xy: 110, 42
+  size: 17, 26
+  orig: 17, 26
+  offset: 0, 0
+  index: -1
+images/bh_0003_bh-box
+  rotate: false
+  xy: 83, 37
+  size: 25, 31
+  orig: 25, 31
+  offset: 0, 0
+  index: -1
+images/bh_0004_bh-weiba
+  rotate: false
+  xy: 83, 5
+  size: 42, 13
+  orig: 42, 13
+  offset: 0, 0
+  index: -1

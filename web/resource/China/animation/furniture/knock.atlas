@@ -1,0 +1,90 @@
+
+knock.png
+size: 206,515
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+1111111
+  rotate: false
+  xy: 81, 30
+  size: 82, 39
+  orig: 85, 44
+  offset: 0, 3
+  index: -1
+2222222
+  rotate: false
+  xy: 2, 243
+  size: 191, 124
+  orig: 192, 126
+  offset: 1, 0
+  index: -1
+3333333
+  rotate: false
+  xy: 81, 71
+  size: 121, 97
+  orig: 122, 97
+  offset: 0, 0
+  index: -1
+3333333A
+  rotate: false
+  xy: 2, 44
+  size: 77, 124
+  orig: 77, 124
+  offset: 0, 0
+  index: -1
+4444444
+  rotate: false
+  xy: 2, 3
+  size: 73, 39
+  orig: 73, 39
+  offset: 0, 0
+  index: -1
+5555555
+  rotate: false
+  xy: 138, 208
+  size: 27, 33
+  orig: 27, 33
+  offset: 0, 0
+  index: -1
+6666666
+  rotate: false
+  xy: 2, 369
+  size: 202, 144
+  orig: 283, 146
+  offset: 0, 1
+  index: -1
+7777777
+  rotate: false
+  xy: 2, 170
+  size: 134, 71
+  orig: 134, 71
+  offset: 0, 0
+  index: -1
+8888888
+  rotate: false
+  xy: 164, 187
+  size: 23, 19
+  orig: 23, 19
+  offset: 0, 0
+  index: -1
+9999999
+  rotate: false
+  xy: 167, 223
+  size: 19, 18
+  orig: 19, 18
+  offset: 0, 0
+  index: -1
+eyecl
+  rotate: false
+  xy: 138, 183
+  size: 24, 23
+  orig: 24, 23
+  offset: 0, 0
+  index: -1
+eyecr
+  rotate: false
+  xy: 77, 2
+  size: 72, 26
+  orig: 72, 26
+  offset: 0, 0
+  index: -1

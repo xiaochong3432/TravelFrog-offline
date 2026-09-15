@@ -1,0 +1,275 @@
+--[[
+聊天回调基类.
+]]
+local Class = require "ejoysdk_lua.ejoysdk_class"
+local EM = require "ejoysdk_lua.ejoysdk_module"
+
+local M = Class:Inherit('chat_base_handler')
+
+local _TAG = EM.MODULE.CHAT .. 'chat_base_handler'
+
+function M.createSubClass()
+    return Class:Impl(M)
+end
+
+--- 通知聊天状态变更
+--  如果UI上没有显示离线在线状态。一般不需要用户处理。
+--- @param state string online/offline
+--- @return nil
+---@example
+--      user_chat_handler:info_chat_state("online")
+function M:info_chat_state(_state) end
+
+--- 通知聊天任务结果
+-- 一般来说，不需要处理成功返回。某些失败可能需要处理。
+-- 超时错误也会在这里返回。
+-- 比如，因为敏感词，导致用户聊天失败，应该给予用户合适的提示。
+--- @param task_id string model层接口返回的任务id
+--- @param task_name string model层接口名
+--- @param result table 返回结果
+--      result.code 返回code
+--      result.message 返回message
+--- @return nil
+---@example
+--      user_chat_handler:info_chat_rpc_result(
+--          "164854145000000003",
+--          "send_rich_text",
+--          {
+--            "msg_id": "6242d77cc849de83d7c55fcd",
+--            "session_id": "100001:100002",
+--            "code": 0,
+--            "cmd": "send",
+--            "message": "ok",
+--            "content": {
+--              "type": "rich_text",
+--              "data": {
+--                "text": "nihao",
+--                "extend_data": {}
+--              }
+--            },
+--            "sensitive_replace": true
+--          }
+--      )
+function M:info_chat_rpc_result(_task_id, _task_name, _result) end
+
+--- 会话变更通知
+--  所有会话都会通过此回调通知。
+--- @param adds table 新增加的会话
+--  如，有群组新建，有陌生人私聊。
+--- @param updates table 发生变更的会话
+--  如，群组的名字发生变更，原有的会话有新消息
+--- @param removes table 删除的会话
+--  如，有群组销毁。
+--- @return nil
+---@example
+--      user_chat_handler:info_chat_session_change(
+--         {},
+--         {
+--          "100001:100002": {
+--            "session_info": {
+--              "_info": {
+--                "_sdk_src": "user_info_http",
+--                "account": "test_player1",
+--                "user_type": "player",
+--                "official_info": {
+--                  "last_logout_time": 1648535720593,
+--                  "last_login_time": 1648535689586
+--                },
+--                "update_time": 1648535720593,
+--                "chat_user_id": "100001",
+--                "create_time": 1611561050848,
+--                "freeze_status": {},
+--                "player_id": "100001",
+--                "player_info": {
+--                  "lang": "zh-cn",
+--                  "name": "role1",
+--                  "game_class": "码农",
+--                  "gender": "MALE",
+--                  "level": 0
+--                },
+--                "server_id": "test_srpc",
+--                "user_id": "100001"
+--              },
+--              "id": "100001:100002",
+--              "unread": 0
+--            },
+--            "last_msgs": [
+--              {
+--                "session_id": "100001:100002",
+--                "delete_msg_members": {},
+--                "is_ignore": false,
+--                "content_id": "6242d77cc849de83d7c55fcd",
+--                "content": {
+--                  "type": "rich_text",
+--                  "data": {
+--                    "text": "nihao",
+--                    "extend_data": {}
+--                  }
+--                },
+--                "reader_status": 0,
+--                "src_info": {
+--                  "_sdk_src": "user_info_http",
+--                  "account": "uid_000001",
+--                  "user_type": "player",
+--                  "official_info": {
+--                    "last_logout_time": 1648542274221,
+--                    "online": true,
+--                    "last_login_time": 1648547702143
+--                  },
+--                  "update_time": 1648547702143,
+--                  "chat_user_id": "100002",
+--                  "player_id": "100002",
+--                  "player_info": {
+--                    "lang": "zh-cn",
+--                    "name": "role1",
+--                    "game_class": "码农",
+--                    "gender": "MALE",
+--                    "level": 0
+--                  },
+--                  "server_id": "test_srpc",
+--                  "user_id": "100002"
+--                },
+--                "ts": 1648547708,
+--                "src_id": "100002",
+--                "src_type": "user",
+--                "at_list": {},
+--                "msg_id": "6242d77cc849de83d7c55fcd",
+--                "offline": true,
+--                "send_id": "1648547708d71aa61344398f3201650697",
+--                "to_id": "100001"
+--              }
+--            ]
+--          }
+--         },
+--         ["group_xxxxxx"]
+--      )
+function M:info_chat_session_change(_adds, _updates, _removes) end
+
+--- 消息变更通知
+-- 触发情况有两种：
+-- 1. 用户主动拉取。
+-- 2. 有新消息通知。
+-- 
+-- 建议用户都用 ensure 语义处理。如果UI上已经有对应元素，则更新。
+-- 若没有，则新增。
+-- 不存在删除的情况。撤回也是通过改变消息标识位方式实现的。建议将对应UI隐藏即可。
+--- @param session_type string 聊天会话类型 system/group/personal
+--- @param session_id string 会话id
+--- @param msgs table 聊天消息
+--- @return nil
+---@example
+--      user_chat_handler:info_chat_msgs(
+--          "personal",
+--          "100001:100002",
+--          [
+--            {
+--              "send_id": "1648209148d71aa61344398f3202645265",
+--              "ts": 1648209146,
+--              "content": {
+--                "type": "rich_text",
+--                "data": {
+--                  "extend_data": {},
+--                  "text": "me_9"
+--                }
+--              },
+--              "status_msg": "",
+--              "reader_status": 1,
+--              "src_info": {
+--                "user_id": "100002",
+--                "user_type": "player"
+--              },
+--              "to_id": "100001",
+--              "msg_id": "623dacfaecd7f5ebb0b6c491",
+--              "content_id": "623dacfaecd7f5ebb0b6c491",
+--              "session_id": "100001:100002",
+--              "src_id": "100002",
+--              "src_type": "user"
+--            }
+--          ] 
+--      )
+function M:info_chat_msgs(_session_type, _session_id, _msgs) end
+
+--- 通知群组状态变更
+--- @param adds table
+--- @param updates table
+--- @param removes table
+---@example
+--      user_chat_handler:info_group_changes(
+--              {
+--                  "group_test_srpc_qiu_chat_model":{
+--                      "personal_info":{
+--                          "agora_channel_token":"005AQAoAEU0MzQxOTEwRjJDNzYyQUMzOUExQzZCMTYwQTkzQzA3RkY0RTlFNzgQAGTmQiXxRkKKhB56irKy7f8c2UNi159eMiTgQ2IAAA=="
+--                      },
+--                      "group_id":"group_test_srpc_qiu_chat_model",
+--                      "owner":"S3",
+--                      "create_ts":1647851187,
+--                      "owner_type":"game_server",
+--                      "member_infos":[
+--                          {
+--                              "official_info":{
+--                                  "last_login_time":1648613656342,
+--                                  "online":true,
+--                                  "last_logout_time":1648613622104
+--                              },
+--                              "user_id":"0EACFDA30B57D81B49C2CADB32D90224",
+--                              "player_info":{
+--                                  "gender":"MALE",
+--                                  "level":0,
+--                                  "name":"role1",
+--                                  "game_class":"码农",
+--                                  "lang":"zh-cn"
+--                              },
+--                              "account":"test_player1",
+--                              "server_id":"test_srpc",
+--                              "player_id":"0EACFDA30B57D81B49C2CADB32D90224",
+--                              "update_time":1648613656342,
+--                              "create_time":1611561050848,
+--                              "freeze_status":[
+--      
+--                              ],
+--                              "_sdk_src":"user_info_http"
+--                          }
+--                      ],
+--                      "parent_group_id":"",
+--                      "voice_channel_users":[
+--      
+--                      ],
+--                      "info":{
+--                          "type":"guangzhou",
+--                          "name":"group_test_srpc_qiu_chat_model"
+--                      },
+--                      "attr":{
+--                          "voice_channel_mode":"free",
+--                          "sync_member":true,
+--                          "direct_send":true,
+--                          "max_msg_in_one_min":0,
+--                          "expire_ts":-1,
+--                          "stable_level":4,
+--                          "voice_channel_administrator":[
+--      
+--                          ],
+--                          "member_msg_rate_limit_in_second":0,
+--                          "enable_voice":true,
+--                          "is_huge":false
+--                      }
+--                  }
+--              },
+--              {},
+--              {}
+--      )
+--      adds\updates\removes的结构是一样的
+function M:info_group_changes(_adds, _updates, _removes) end
+
+--- 通知聊天有需要人工介入的错误
+-- 如，登录失败达到上限，链接失败达到上限。token过期等等。
+-- 推荐弹窗，让用户点击重试。
+-- 应该拆到连接层，现在不使用这个回调。连接层无限重试。
+-- @param error
+-- @param error.type login_reach_max_fail | connect_reach_max_fail | token_is_expired
+-- @param error.data table
+-- @return nil
+-- function M:info_chat_manual_intervention(_error)
+--     E.LOG.d(TAG, 'info_chat_manual_intervention')
+-- end
+
+return M

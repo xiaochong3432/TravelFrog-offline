@@ -1,0 +1,160 @@
+
+gif_3_tree.png
+size: 714, 153
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+b2
+  rotate: true
+  xy: 472, 37
+  size: 8, 10
+  orig: 8, 10
+  offset: 0, 0
+  index: -1
+b3
+  rotate: false
+  xy: 450, 35
+  size: 9, 10
+  orig: 9, 10
+  offset: 0, 0
+  index: -1
+b4
+  rotate: false
+  xy: 583, 17
+  size: 14, 14
+  orig: 14, 14
+  offset: 0, 0
+  index: -1
+b5
+  rotate: false
+  xy: 461, 36
+  size: 9, 9
+  orig: 9, 9
+  offset: 0, 0
+  index: -1
+b6
+  rotate: false
+  xy: 509, 34
+  size: 11, 11
+  orig: 11, 11
+  offset: 0, 0
+  index: -1
+b7
+  rotate: false
+  xy: 437, 36
+  size: 11, 9
+  orig: 11, 9
+  offset: 0, 0
+  index: -1
+h1
+  rotate: true
+  xy: 493, 7
+  size: 24, 23
+  orig: 25, 25
+  offset: 1, 2
+  index: -1
+h10
+  rotate: true
+  xy: 693, 8
+  size: 25, 18
+  orig: 25, 18
+  offset: 0, 0
+  index: -1
+h11
+  rotate: false
+  xy: 583, 2
+  size: 15, 13
+  orig: 15, 13
+  offset: 0, 0
+  index: -1
+h12
+  rotate: false
+  xy: 493, 33
+  size: 14, 12
+  orig: 14, 12
+  offset: 0, 0
+  index: -1
+h2
+  rotate: true
+  xy: 467, 9
+  size: 25, 24
+  orig: 25, 24
+  offset: 0, 0
+  index: -1
+h3
+  rotate: true
+  xy: 541, 8
+  size: 23, 19
+  orig: 23, 19
+  offset: 0, 0
+  index: -1
+h4
+  rotate: true
+  xy: 518, 10
+  size: 22, 21
+  orig: 22, 21
+  offset: 0, 0
+  index: -1
+h5
+  rotate: true
+  xy: 437, 2
+  size: 31, 28
+  orig: 31, 28
+  offset: 0, 0
+  index: -1
+h6
+  rotate: false
+  xy: 562, 11
+  size: 19, 20
+  orig: 19, 21
+  offset: 0, 0
+  index: -1
+h7
+  rotate: true
+  xy: 647, 33
+  size: 22, 16
+  orig: 22, 16
+  offset: 0, 0
+  index: -1
+h8
+  rotate: true
+  xy: 665, 6
+  size: 27, 26
+  orig: 27, 26
+  offset: 0, 0
+  index: -1
+h9
+  rotate: true
+  xy: 647, 57
+  size: 23, 16
+  orig: 23, 16
+  offset: 0, 0
+  index: -1
+tree
+  rotate: false
+  xy: 2, 5
+  size: 433, 146
+  orig: 436, 151
+  offset: 3, 5
+  index: -1
+tree2
+  rotate: false
+  xy: 437, 47
+  size: 208, 33
+  orig: 208, 43
+  offset: 0, 0
+  index: -1
+tree3
+  rotate: false
+  xy: 437, 82
+  size: 226, 69
+  orig: 230, 75
+  offset: 4, 6
+  index: -1
+tree4
+  rotate: true
+  xy: 665, 35
+  size: 116, 47
+  orig: 116, 48
+  offset: 0, 0
+  index: -1

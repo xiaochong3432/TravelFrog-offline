@@ -1,0 +1,13 @@
+
+gif_3_bg1.png
+size: 506, 356
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+bj
+  rotate: false
+  xy: 2, 2
+  size: 502, 352
+  orig: 502, 352
+  offset: 0, 0
+  index: -1

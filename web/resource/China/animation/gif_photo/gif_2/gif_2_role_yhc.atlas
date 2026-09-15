@@ -1,0 +1,62 @@
+
+gif_2_role_yhc.png
+size: 80, 61
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+3_0000_yhc-cj1
+  rotate: false
+  xy: 2, 2
+  size: 27, 11
+  orig: 27, 11
+  offset: 0, 0
+  index: -1
+3_0001_yhc-CJ2
+  rotate: false
+  xy: 60, 18
+  size: 18, 15
+  orig: 18, 17
+  offset: 0, 2
+  index: -1
+3_0002_yhc-chibang1
+  rotate: true
+  xy: 59, 35
+  size: 24, 15
+  orig: 26, 16
+  offset: 1, 0
+  index: -1
+3_0003_yhc-chibang2
+  rotate: true
+  xy: 49, 4
+  size: 12, 18
+  orig: 13, 19
+  offset: 1, 1
+  index: -1
+3_0004_yhc-cb1
+  rotate: true
+  xy: 34, 26
+  size: 33, 23
+  orig: 33, 23
+  offset: 0, 0
+  index: -1
+3_0005_yhc-body
+  rotate: true
+  xy: 2, 15
+  size: 44, 30
+  orig: 54, 48
+  offset: 10, 10
+  index: -1
+yhc-leg1
+  rotate: false
+  xy: 34, 18
+  size: 24, 6
+  orig: 25, 7
+  offset: 0, 1
+  index: -1
+yhc-leg2
+  rotate: false
+  xy: 31, 5
+  size: 16, 8
+  orig: 16, 8
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,13 @@
+
+gif_3_shidun.png
+size: 396, 99
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+shidun
+  rotate: false
+  xy: 2, 2
+  size: 392, 95
+  orig: 392, 95
+  offset: 0, 0
+  index: -1

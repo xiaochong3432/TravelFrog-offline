@@ -1,0 +1,111 @@
+
+cut.png
+size: 1366,1142
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+00000
+  rotate: false
+  xy: 1156, 563
+  size: 194, 127
+  orig: 194, 127
+  offset: 0, 0
+  index: -1
+11111
+  rotate: false
+  xy: 1278, 110
+  size: 58, 58
+  orig: 60, 59
+  offset: 2, 0
+  index: -1
+22222
+  rotate: false
+  xy: 1278, 170
+  size: 74, 55
+  orig: 74, 55
+  offset: 0, 0
+  index: -1
+22222a
+  rotate: false
+  xy: 1156, 838
+  size: 202, 147
+  orig: 202, 147
+  offset: 0, 0
+  index: -1
+33333
+  rotate: false
+  xy: 1156, 322
+  size: 173, 110
+  orig: 205, 120
+  offset: 32, 0
+  index: -1
+33333A
+  rotate: false
+  xy: 1156, 987
+  size: 208, 153
+  orig: 208, 153
+  offset: 0, 0
+  index: -1
+44444
+  rotate: false
+  xy: 1156, 227
+  size: 183, 93
+  orig: 191, 93
+  offset: 0, 0
+  index: -1
+55555
+  rotate: false
+  xy: 1156, 92
+  size: 71, 44
+  orig: 71, 44
+  offset: 0, 0
+  index: -1
+66666
+  rotate: false
+  xy: 1331, 398
+  size: 27, 34
+  orig: 27, 34
+  offset: 0, 0
+  index: -1
+77777
+  rotate: false
+  xy: 1156, 434
+  size: 190, 127
+  orig: 190, 127
+  offset: 0, 0
+  index: -1
+88888
+  rotate: false
+  xy: 1156, 138
+  size: 120, 87
+  orig: 120, 87
+  offset: 0, 0
+  index: -1
+99999
+  rotate: false
+  xy: 1156, 692
+  size: 200, 144
+  orig: 201, 145
+  offset: 0, 0
+  index: -1
+eyecl
+  rotate: false
+  xy: 1331, 373
+  size: 24, 23
+  orig: 24, 23
+  offset: 0, 0
+  index: -1
+eyecr
+  rotate: false
+  xy: 1229, 82
+  size: 72, 26
+  orig: 72, 26
+  offset: 0, 0
+  index: -1
+家园外部无光有植物
+  rotate: false
+  xy: 2, 2
+  size: 1152, 1138
+  orig: 1152, 1138
+  offset: 0, 0
+  index: -1

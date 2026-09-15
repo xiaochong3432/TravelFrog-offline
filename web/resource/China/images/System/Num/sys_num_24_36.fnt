@@ -1,0 +1,16 @@
+info face="Arial" size=20 bold=0 italic=0 charset="" unicode=1 stretchH=100 smooth=1 aa=1 padding=0,0,0,0 spacing=1,1 outline=0
+common lineHeight=19 base=15 scaleW=256 scaleH=256 pages=1 packed=0 alphaChnl=1 redChnl=0 greenChnl=0 blueChnl=0
+page id=0 file="sys_num_24_36.png"
+chars count=10
+char id=48   x=0     y=0     width=24    height=36    xoffset=0     yoffset=2     xadvance=20     page=0  chnl=15
+char id=49   x=25.8   y=0     width=24    height=36    xoffset=0     yoffset=2     xadvance=20     page=0  chnl=15
+char id=50   x=51.6    y=0     width=24    height=36    xoffset=0    yoffset=2     xadvance=20     page=0  chnl=15
+char id=51   x=77.4    y=0     width=24    height=36    xoffset=0     yoffset=2     xadvance=20     page=0  chnl=15
+char id=52   x=103.2    y=0     width=24    height=36    xoffset=0    yoffset=2     xadvance=20     page=0  chnl=15
+char id=53   x=129    y=0     width=24    height=36    xoffset=0     yoffset=2     xadvance=20     page=0  chnl=15
+char id=54   x=154.8    y=0     width=24    height=36    xoffset=0     yoffset=2     xadvance=20     page=0  chnl=15
+char id=55   x=180.6    y=0     width=24    height=36    xoffset=0     yoffset=2     xadvance=20     page=0  chnl=15
+char id=56   x=206.4    y=0     width=24    height=36    xoffset=0     yoffset=2     xadvance=20     page=0  chnl=15
+char id=57   x=232.2    y=0     width=24    height=36    xoffset=0     yoffset=2     xadvance=20     page=0  chnl=15
+kernings count=1
+kerning first=49  second=49  amount=-1  

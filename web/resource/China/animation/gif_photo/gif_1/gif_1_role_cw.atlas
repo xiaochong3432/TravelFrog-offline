@@ -1,0 +1,48 @@
+
+gif_1_role_cw.png
+size: 111, 74
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+images/cw
+  rotate: false
+  xy: 2, 2
+  size: 79, 70
+  orig: 79, 70
+  offset: 0, 0
+  index: -1
+images/cw-eye
+  rotate: false
+  xy: 83, 60
+  size: 23, 12
+  orig: 23, 12
+  offset: 0, 0
+  index: -1
+images/cw-eye2
+  rotate: false
+  xy: 83, 28
+  size: 20, 10
+  orig: 20, 10
+  offset: 0, 0
+  index: -1
+images/cw-hair
+  rotate: false
+  xy: 95, 12
+  size: 14, 14
+  orig: 14, 14
+  offset: 0, 0
+  index: -1
+images/cw-lleg
+  rotate: false
+  xy: 83, 40
+  size: 20, 18
+  orig: 20, 18
+  offset: 0, 0
+  index: -1
+images/cw-rleg
+  rotate: false
+  xy: 83, 9
+  size: 10, 17
+  orig: 10, 17
+  offset: 0, 0
+  index: -1

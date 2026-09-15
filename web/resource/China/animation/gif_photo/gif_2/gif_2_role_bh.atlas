@@ -1,0 +1,41 @@
+
+gif_2_role_bh.png
+size: 129, 36
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+2_0000_bh-armc
+  rotate: false
+  xy: 113, 5
+  size: 14, 11
+  orig: 14, 14
+  offset: 0, 3
+  index: -1
+2_0001_bihu-body
+  rotate: false
+  xy: 2, 6
+  size: 70, 28
+  orig: 70, 35
+  offset: 0, 7
+  index: -1
+2_0001_bihu-leg
+  rotate: true
+  xy: 74, 2
+  size: 14, 16
+  orig: 15, 17
+  offset: 0, 1
+  index: -1
+2_0002_bh-xiangzi
+  rotate: false
+  xy: 92, 3
+  size: 19, 13
+  orig: 20, 13
+  offset: 1, 0
+  index: -1
+qw-yz
+  rotate: false
+  xy: 74, 18
+  size: 50, 16
+  orig: 50, 16
+  offset: 0, 0
+  index: -1

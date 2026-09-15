@@ -1,0 +1,20 @@
+
+lizi.png
+size: 249, 239
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+光
+  rotate: false
+  xy: 11, 2
+  size: 236, 235
+  orig: 241, 241
+  offset: 2, 4
+  index: -1
+粒子
+  rotate: false
+  xy: 2, 230
+  size: 7, 7
+  orig: 7, 7
+  offset: 0, 0
+  index: -1

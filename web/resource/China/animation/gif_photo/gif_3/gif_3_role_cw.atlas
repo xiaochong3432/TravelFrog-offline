@@ -1,0 +1,111 @@
+
+gif_3_role_cw.png
+size: 395, 108
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+cw-bag
+  rotate: false
+  xy: 350, 14
+  size: 24, 26
+  orig: 26, 27
+  offset: 1, 1
+  index: -1
+cw-body
+  rotate: false
+  xy: 350, 74
+  size: 42, 32
+  orig: 48, 34
+  offset: 3, 2
+  index: -1
+cw-eye
+  rotate: false
+  xy: 129, 3
+  size: 18, 7
+  orig: 18, 7
+  offset: 0, 0
+  index: -1
+cw-eye 2
+  rotate: false
+  xy: 109, 3
+  size: 18, 7
+  orig: 18, 7
+  offset: 0, 0
+  index: -1
+cw-face
+  rotate: false
+  xy: 350, 42
+  size: 42, 30
+  orig: 43, 31
+  offset: 1, 1
+  index: -1
+cw-larm
+  rotate: true
+  xy: 376, 25
+  size: 15, 17
+  orig: 15, 18
+  offset: 0, 0
+  index: -1
+cw-ler
+  rotate: false
+  xy: 321, 4
+  size: 11, 11
+  orig: 12, 11
+  offset: 0, 0
+  index: -1
+cw-lfoot
+  rotate: true
+  xy: 297, 4
+  size: 11, 22
+  orig: 11, 22
+  offset: 0, 0
+  index: -1
+cw-rarm
+  rotate: true
+  xy: 191, 2
+  size: 10, 16
+  orig: 11, 16
+  offset: 1, 0
+  index: -1
+cw-rface
+  rotate: false
+  xy: 149, 2
+  size: 8, 8
+  orig: 9, 9
+  offset: 1, 1
+  index: -1
+cw-rfoot
+  rotate: true
+  xy: 273, 3
+  size: 12, 22
+  orig: 12, 22
+  offset: 0, 0
+  index: -1
+cw00001
+  rotate: true
+  xy: 2, 10
+  size: 96, 105
+  orig: 912, 640
+  offset: 707, 73
+  index: -1
+cw00002
+  rotate: true
+  xy: 109, 12
+  size: 94, 80
+  orig: 912, 640
+  offset: 711, 75
+  index: -1
+cw00005
+  rotate: true
+  xy: 273, 17
+  size: 89, 75
+  orig: 912, 640
+  offset: 706, 69
+  index: -1
+cw00007
+  rotate: true
+  xy: 191, 14
+  size: 92, 80
+  orig: 912, 640
+  offset: 701, 69
+  index: -1

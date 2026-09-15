@@ -1,0 +1,76 @@
+
+gif_1_role_yhc.png
+size: 226, 113
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+images/yhc-chibang1
+  rotate: false
+  xy: 187, 70
+  size: 37, 41
+  orig: 37, 41
+  offset: 0, 0
+  index: -1
+images/yhc_0000_yhceye2
+  rotate: false
+  xy: 136, 5
+  size: 17, 5
+  orig: 17, 5
+  offset: 0, 0
+  index: -1
+images/yhc_0001_yhceye
+  rotate: false
+  xy: 136, 12
+  size: 17, 7
+  orig: 17, 7
+  offset: 0, 0
+  index: -1
+images/yhc_0002_chujiao1
+  rotate: false
+  xy: 169, 34
+  size: 16, 43
+  orig: 16, 43
+  offset: 0, 0
+  index: -1
+images/yhc_0003_chujiao2
+  rotate: false
+  xy: 136, 42
+  size: 31, 35
+  orig: 31, 35
+  offset: 0, 0
+  index: -1
+images/yhc_0004_yhc-rarm
+  rotate: false
+  xy: 136, 21
+  size: 12, 19
+  orig: 12, 19
+  offset: 0, 0
+  index: -1
+images/yhc_0005_yhc-st
+  rotate: false
+  xy: 2, 2
+  size: 132, 109
+  orig: 132, 109
+  offset: 0, 0
+  index: -1
+images/yhc_0006_yhc-larm
+  rotate: false
+  xy: 150, 24
+  size: 8, 16
+  orig: 8, 16
+  offset: 0, 0
+  index: -1
+images/yhc_0007_chibang11
+  rotate: false
+  xy: 136, 79
+  size: 49, 32
+  orig: 49, 32
+  offset: 0, 0
+  index: -1
+images/yhc_0008_yhc-chibang2
+  rotate: false
+  xy: 160, 8
+  size: 57, 24
+  orig: 57, 24
+  offset: 0, 0
+  index: -1

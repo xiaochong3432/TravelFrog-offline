@@ -1,0 +1,20 @@
+
+gif_3_role_qw.png
+size: 68, 54
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+qw-body
+  rotate: false
+  xy: 40, 8
+  size: 26, 44
+  orig: 26, 44
+  offset: 0, 0
+  index: -1
+qw-mz
+  rotate: false
+  xy: 2, 2
+  size: 36, 50
+  orig: 37, 50
+  offset: 1, 0
+  index: -1

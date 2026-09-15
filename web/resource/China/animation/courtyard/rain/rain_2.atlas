@@ -1,0 +1,48 @@
+
+rain_2.png
+size: 1253, 1117
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+rain-2/001
+  rotate: false
+  xy: 2, 33
+  size: 444, 519
+  orig: 461, 568
+  offset: 0, 24
+  index: -1
+rain-2/002
+  rotate: false
+  xy: 2, 554
+  size: 440, 561
+  orig: 461, 568
+  offset: 0, 7
+  index: -1
+rain-2/003
+  rotate: false
+  xy: 444, 556
+  size: 394, 559
+  orig: 461, 568
+  offset: 40, 4
+  index: -1
+rain-2/004
+  rotate: false
+  xy: 448, 2
+  size: 394, 552
+  orig: 461, 568
+  offset: 38, 0
+  index: -1
+rain-2/005
+  rotate: false
+  xy: 840, 583
+  size: 408, 532
+  orig: 461, 568
+  offset: 25, 36
+  index: -1
+rain-2/006
+  rotate: false
+  xy: 844, 48
+  size: 407, 533
+  orig: 461, 568
+  offset: 24, 25
+  index: -1

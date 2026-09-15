@@ -1,0 +1,104 @@
+
+egg_1_dress.png
+size: 923, 250
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+caidan_00000
+  rotate: false
+  xy: 1, 129
+  size: 133, 120
+  orig: 854, 1420
+  offset: 156, 276
+  index: -1
+caidan_00001
+  rotate: false
+  xy: 401, 128
+  size: 132, 121
+  orig: 854, 1420
+  offset: 156, 278
+  index: -1
+caidan_00002
+  rotate: false
+  xy: 133, 5
+  size: 131, 123
+  orig: 854, 1420
+  offset: 156, 278
+  index: -1
+caidan_00003
+  rotate: false
+  xy: 658, 1
+  size: 130, 125
+  orig: 854, 1420
+  offset: 156, 277
+  index: -1
+caidan_00004
+  rotate: false
+  xy: 265, 5
+  size: 131, 123
+  orig: 854, 1420
+  offset: 156, 278
+  index: -1
+caidan_00005
+  rotate: false
+  xy: 789, 1
+  size: 130, 125
+  orig: 854, 1420
+  offset: 156, 277
+  index: -1
+caidan_00006
+  rotate: false
+  xy: 527, 3
+  size: 130, 124
+  orig: 854, 1420
+  offset: 156, 278
+  index: -1
+caidan_00007
+  rotate: false
+  xy: 663, 127
+  size: 129, 122
+  orig: 854, 1420
+  offset: 156, 279
+  index: -1
+caidan_00008
+  rotate: false
+  xy: 534, 128
+  size: 128, 121
+  orig: 854, 1420
+  offset: 156, 279
+  index: -1
+caidan_00009
+  rotate: false
+  xy: 793, 127
+  size: 129, 122
+  orig: 854, 1420
+  offset: 156, 279
+  index: -1
+caidan_00010
+  rotate: false
+  xy: 397, 4
+  size: 129, 123
+  orig: 854, 1420
+  offset: 156, 279
+  index: -1
+caidan_00011
+  rotate: false
+  xy: 1, 6
+  size: 131, 122
+  orig: 854, 1420
+  offset: 156, 279
+  index: -1
+caidan_00012
+  rotate: false
+  xy: 135, 129
+  size: 131, 120
+  orig: 854, 1420
+  offset: 156, 278
+  index: -1
+caidan_00013
+  rotate: false
+  xy: 267, 129
+  size: 133, 120
+  orig: 854, 1420
+  offset: 156, 276
+  index: -1

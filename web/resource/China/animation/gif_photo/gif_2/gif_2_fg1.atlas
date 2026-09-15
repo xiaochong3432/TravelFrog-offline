@@ -1,0 +1,13 @@
+
+gif_2_fg1.png
+size: 382, 240
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+flower02
+  rotate: false
+  xy: 2, 2
+  size: 378, 236
+  orig: 378, 236
+  offset: 0, 0
+  index: -1

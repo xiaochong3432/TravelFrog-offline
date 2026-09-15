@@ -1,0 +1,34 @@
+
+gif_1_bg2.png
+size: 1309, 234
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+bird
+  rotate: false
+  xy: 807, 27
+  size: 211, 120
+  orig: 211, 120
+  offset: 0, 0
+  index: -1
+tree_1
+  rotate: false
+  xy: 416, 2
+  size: 389, 230
+  orig: 389, 230
+  offset: 0, 0
+  index: -1
+tree_2
+  rotate: false
+  xy: 2, 8
+  size: 412, 224
+  orig: 412, 224
+  offset: 0, 0
+  index: -1
+zg_1
+  rotate: false
+  xy: 807, 149
+  size: 500, 83
+  orig: 500, 83
+  offset: 0, 0
+  index: -1
