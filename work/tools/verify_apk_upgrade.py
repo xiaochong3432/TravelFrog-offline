@@ -37,8 +37,9 @@ def inspect_apk(apk):
         for name in archive.namelist():
             if re.fullmatch(r'classes\d*\.dex', name):
                 urls.update(x.decode('ascii') for x in re.findall(
-                    rb'file:///android_asset/[A-Za-z0-9_./-]+', archive.read(name)))
-            if name in ('assets/__probe.js', 'assets/__offline-engine.js'):
+                    rb'(?:file:///android_asset/|http://127\.0\.0\.1:\d+/)[A-Za-z0-9_./-]*', archive.read(name)))
+            if name in ('assets/__probe.js', 'assets/__offline-engine.js',
+                        'assets/game/__probe.js', 'assets/game/__offline-engine.js'):
                 if b'frog.offline.save' in archive.read(name):
                     storage_key = 'frog.offline.save'
     return dict(package=package[1], versionCode=int(package[2]), versionName=package[3],

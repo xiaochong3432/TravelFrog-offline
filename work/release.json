@@ -1,0 +1,8 @@
+{
+  "applicationId": "com.frog.offline",
+  "versionName": "3.1",
+  "versionCode": 5,
+  "signerSha256": "b173b2890e9428b2bcfcb576c1f59d4b5ac6c8da887aeda054ebb72b838bf5b3",
+  "storageUrl": "http://127.0.0.1:18763/index.html",
+  "storageKey": "frog.offline.save"
+}

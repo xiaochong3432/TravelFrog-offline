@@ -1,5 +1,8 @@
 # `android-apk/` —— 用 Android Studio / Gradle 自己出包
 
+**此目录保留 `com.travelfrog.offline` 开发路线，当前正式 3.1 已恢复 `com.frog.offline`。**
+正式出包使用 `work/tools/build_release_apk.py` 与 `work/release.json`，详见 [构建与打包](../docs/构建与打包.md)。不要将本目录产物混入原路线升级包。
+
 这一份是**接手制作的团队**贡献的 Gradle 外壳（提交 `dc7f61f Add Android APK wrapper`），
 作为"自带 SDK 的构建路径"保留在仓库里。它和本仓库原有的打包链
 （`work/tools/build_wrapper_apk.py` + `sign_apk.py` + `apk_identity.py`）是**两条并行的出包方式**：
