@@ -35,7 +35,7 @@ gradle = (ROOT / 'android-apk/app/build.gradle').read_text(encoding='utf-8')
 def value(key):
     return re.search(r'\b' + key + r'\s+["\x27]?([\w.\-]+)', gradle).group(1)
 
-OUT = ROOT / ('dist/TravelFrog-offline-' + value('versionName') + '.apk')
+OUT = ROOT / ('dist/TravelFrog-offline-' + value('versionName') + '-dev.apk')
 OUT.parent.mkdir(parents=True, exist_ok=True)
 for needed in [JAR, JAVA / ('bin/javac' + EXE), BT / ('aapt2' + EXE), KEY, CERT]:
     if not needed.is_file():

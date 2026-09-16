@@ -3727,6 +3727,17 @@ function mdPayload(s) {
   const DECORATION_IDS = Object.keys(DECORATIONS).map(Number)
     .filter((n) => Number.isFinite(n)).sort((a, b) => a - b);
   const DECORATION_CHANCE = Number(process.env.FROG_DECORATION_CHANCE || 35);
+  const DECORATION_ITEMS = new Map(Object.values(DECORATIONS).map(row => [row.id,
+    gamedata.items.find(i => i.type === 14 && i.sub_type === 6 && i.name === row.name)]));
+
+  function decorationInventory() {
+    return Object.values(DECORATIONS).map(row => {
+      const item = DECORATION_ITEMS.get(row.id);
+      const house = item && state.items.house.find(i => i.item_id === item.id);
+      const stored = state.decoration.hasList.find(d => d.id === row.id);
+      return { id: row.id, num: (stored ? stored.num : 0) + (house ? house.count : 0) };
+    }).filter(row => row.num > 0);
+  }
 
   function addDecoration(id, n) {
     const list = state.decoration.hasList;
@@ -5319,7 +5330,7 @@ function mdPayload(s) {
         icon: state.frog.icon,
         pic_show: state.frog.picShow,
         today_step: state.frog.todayStep,
-        decoration: state.decoration.hasList,
+        decoration: decorationInventory(),
         taobao_data: state.frog.taobaoData,
       },
       gacha: { color_ball: state.gacha.colorBall },
@@ -5402,7 +5413,12 @@ function mdPayload(s) {
 
   function refreshFrogMotion(t) {
     if (state.frog.status !== 0) return false;          // only while at home
-    if (t < (state.frog.motionNextAt || 0)) return false;
+    // Sleep only in the game's night/late-night states (3/4), never day/evening.
+    // A day/night boundary must interrupt the previous activity's timer.
+    const sleeping = hoursTypeNow() >= 3;
+    const mode = sleeping ? 'sleep' : state.furniture.craft ? 'craft' : 'awake';
+    if (state.frog.motionMode === mode && t < (state.frog.motionNextAt || 0)) return false;
+    state.frog.motionMode = mode;
     const keys = Object.keys(FROGPATTERN);
     if (!keys.length) return false;
 
@@ -5417,6 +5433,13 @@ function mdPayload(s) {
     state.frog.motionStep = ((state.frog.motionStep || 0) + 1) % seq.length;
     const token = seq[state.frog.motionStep];
     state.frog.motion = Number(FROGMOTIONNUM[token]) || 0;
+    if (sleeping) {
+      state.frog.motion = 10 + state.frog.motionStep % 4;
+      const bed = state.furniture.placed.find(r => r.type === 9);
+      // The newest bed has no sleep_2..4 skin in the shipped Spine assets.
+      if (bed && bed.id > 1909) state.frog.motion = 10;
+    }
+    else if (mode === 'craft') state.frog.motion = 5 + state.frog.motionStep % 5;
     state.frog.motionNextAt = t + FROG_MOTION_SEC;
     save();
     // 回忆彩蛋 type 1 (frog_motion): the moment's param IS a FrogMotionName value
@@ -6367,7 +6390,13 @@ function mdPayload(s) {
         bench_lock: state.furniture.benchLock ? 1 : 0,
         bench: (state.furniture.bench || []).slice(0, 10),
         replace_fur: state.furniture.replaceFur || [],
-        put_fur: state.furniture.placed || [],
+        // The room skin includes the default furniture, but its animations and
+        // sleep skins also need these entries in the model. Custom pieces win.
+        put_fur: Array.from(new Map([
+          ...Array.from(FURNITURE_BY_ID.values()).filter(r => Number(r.style) === 1)
+            .map(r => [Number(r.type), { type: Number(r.type), id: Number(r.id) }]),
+          ...(state.furniture.placed || []).map(r => [r.type, r]),
+        ]).values()),
         has_fur: state.furniture.owned || [],
         mate_list: craftMateList(),
         fur_list: [],
@@ -6397,7 +6426,7 @@ function mdPayload(s) {
       const produce = PLANT_HARVEST.get(Number(grownPlant));
       if (!produce) return {};                 // keep unknown plants intact
       const itemId = produce.id;
-      const num = 1 + (Math.random() < 0.3 ? 1 : 0);
+      const num = 1;
       // record the species so the 图鉴 (encyclopedia) fills up as you garden
       if (!state.flowerpot.grown) state.flowerpot.grown = [];
       if (state.flowerpot.grown.indexOf(grownPlant) === -1) {
@@ -6414,6 +6443,7 @@ function mdPayload(s) {
       const count = getHaveItem(itemId);
       // addHouseItem is a stub client-side, so push the inventory too
       ctx.push('item_update', { item: { item_id: itemId, count } });
+      ctx.push('client_load_decorate', handlers.client_load_decorate());
       ctx.push('item_load_handbook', handlers.item_load_handbook());
       // update_flowerpot() has NO event binding in the client (and
       // furniture_load_compost even dispatches the wrong event), so a full role
@@ -6740,16 +6770,15 @@ function mdPayload(s) {
       const extraId = lotteryItemPool().length
         ? lotteryItemPool()[randInt(0, lotteryItemPool().length - 1)] : 0;
       const extra = extraId ? { item_id: extraId, count: 1 } : { item_id: 0, count: 0 };
-      if (extraId) addHouseItem(extraId, 1);
 
       state.clover = Math.min(DEF('CloverMax', 999999), state.clover + open.count);
       L.state = LOTTERY_STATE.Select;
       L.extraItem = extra;
+      L.extraPending = true;
       L.answer = [];
       L.rightFlag = [];
       save();
       ctx.push('clover_update', { clover: state.clover });
-      if (extraId) pushItemUpdate(ctx, extraId, getHaveItem(extraId));
       if (verbose) {
         console.log(`[engine] lottery_open -> ${open.count} clover, extra ${extraId}`);
       }
@@ -7345,7 +7374,9 @@ function mdPayload(s) {
     /* 庭院装饰. Payload is {has_list, put_id, status}; the client's handler is
        `this.decorationList = convertArray(e.has_list)` plus the other two. */
     client_load_decorate: () => ({
-      has_list: (state.decoration.hasList || []).map((d) => ({ id: d.id, num: d.num })),
+      // Harvested flower items remain in the house until selected for the vase.
+      // Expose them with decoration IDs without copying/duplicating ownership.
+      has_list: decorationInventory(),
       put_id: state.decoration.putId || 0,
       status: state.decoration.status || 0,
     }),
@@ -7355,14 +7386,25 @@ function mdPayload(s) {
          * one unit of the PREVIOUSLY displayed entry is consumed (the old flower
            is used up), and the entry is dropped when it hits 0,
          * put_id becomes the new id,
-         * status becomes 1 (blooming -- `pic[0]` is 花苞, `pic[1]` is 花朵).
+         * status becomes 1 (the first picture: fresh flower or bud by species).
        NOTE: the newly placed one is NOT decremented by the client, so neither do
        we -- mirroring the client is what keeps the two in sync. */
-    client_change_decorate: (d) => {
+    client_change_decorate: (d, ctx) => {
+      if (state.frog.status === 0) return { code: -1 }; // leave the frog undisturbed
       const id = Number(d && d.id);
       if (!DECORATIONS[String(id)]) return { code: -1 };
       const D = state.decoration;
-      const have = (D.hasList || []).find((x) => x.id === id);
+      if (D.putId === id) return { code: 1 }; // client otherwise consumes it twice
+      let have = (D.hasList || []).find((x) => x.id === id);
+      if (!have || have.num <= 0) {
+        const item = DECORATION_ITEMS.get(id);
+        if (item && state.items.house.some(i => i.item_id === item.id && i.count > 0)) {
+          addHouseItem(item.id, -1);
+          addDecoration(id, 1);
+          have = D.hasList.find(x => x.id === id);
+          pushItemUpdate(ctx, item.id, getHaveItem(item.id));
+        }
+      }
       if (!have || have.num <= 0) return { code: -1 };
       const prev = (D.hasList || []).find((x) => x.id === D.putId);
       if (prev && D.putId && D.putId !== id) {
@@ -7374,6 +7416,7 @@ function mdPayload(s) {
       D.putId = id;
       D.status = 1;
       save();
+      ctx.push('client_load_decorate', handlers.client_load_decorate());
       return { code: 0 };
     },
 
@@ -8351,13 +8394,26 @@ function mdPayload(s) {
           save();
           return { code: 0 };
         }
-        case 3:
-          // a free extra raffle roll: LotteryModel.onGetExtraItem() does the work
-          // client-side, and reward_raffle() asks the server for a ball when
-          // colorBall is -1, so arming one is what makes it claimable
-          if (state.gacha.colorBall < 0) state.gacha.colorBall = rollPrizeRank();
+        case 3: {
+          // Lottery's share bonus is the displayed extra item, not a gacha roll.
+          const L = state.lottery;
+          const extra = L.extraItem || {};
+          if (!(extra.item_id > 0 && extra.count > 0)) return { code: 1 };
+          const mailed = !!L.extraPending;
+          if (mailed) {
+            const m = makeMail({ title: '分享奖励', message: '邻里交流的额外礼物，请查收。',
+              items: [{ item_id: extra.item_id, count: extra.count }] });
+            state.mails.push(m);
+            trimMails();
+            ctx.push('notify_new_mail', { mail: m });
+            ctx.push('mail_load', state.mails);
+          }
+          // Older builds already credited this bonus on opening the lottery.
+          L.extraPending = false;
+          L.extraItem = { item_id: 0, count: 0 };
           save();
-          return { code: 0 };
+          return { code: 0, delivery: mailed ? 'mail' : 'inventory' };
+        }
         case 4:
           // furniture welfare goods: n(true) already ran requestBuy, which is the
           // grant; this call is the share report and needs only an ack

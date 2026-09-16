@@ -11,10 +11,11 @@
 | 存档导出/导入 | 无原生桥（只靠 WebView 存储） | 有 `SaveBridge`，悬浮球可导出/导入存档 |
 | 包名 | `com.travelfrog.offline` | `com.frog.offline` |
 
-当前版本 **3.1**（`versionCode=4`）继续使用这一份外壳的 `com.travelfrog.offline`。
-升级时不得改为 `com.frog.offline`：Android 按应用包名隔离数据，改名会使原存档不可见。
+当前开发安装版 **3.1**（`versionCode=5`）继续使用这一份外壳的 `com.travelfrog.offline`。
+它只能升级同包名、同签名、同存储地址的开发安装版，**不是网盘 V1–V3（`com.frog.offline`）的升级包**。
+网盘发布路线应保留 `com.frog.offline` 及原外壳、签名、存储地址，不能只给这一份外壳改包名。
 必须保持原签名、`file:///android_asset/index.html` 与存储键 `frog.offline.save`，覆盖安装而不卸载。
-APK 文件名采用 `TravelFrog-offline-3.1.apk`；文件名不决定应用身份。
+开发 APK 文件名采用 `TravelFrog-offline-3.1-dev.apk`；文件名不决定应用身份。
 
 ## 一、为什么 `web/` 不在仓库里
 

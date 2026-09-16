@@ -2127,6 +2127,7 @@ test('flowerpot: every crop and flower variety yields its own item, even after r
       const before = haveOf(engine, itemId);
       const result = call(engine, 'furniture_flowerpot_harvest', { type: 1, index: 1 });
       eq(result.reply.item_list[0].item_id, itemId, 'planted ' + plant);
+      eq(result.reply.item_list[0].num, 1, 'one plant yields exactly one item');
       eq(haveOf(engine, itemId), before + result.reply.item_list[0].num, 'correct inventory credit');
       eq(engine.state.flowerpot.slots[1].id, 2010301, 'other slot unchanged');
       const again = call(engine, 'furniture_flowerpot_harvest', { type: 1, index: 1 });
@@ -3394,6 +3395,7 @@ test('decorate: every decoration row has the two pics status selects between', (
 });
 
 test('decorate: change puts the flower on display and sets status 1', ({ engine }) => {
+  engine.state.frog.status = 1;
   engine.state.decoration = { hasList: [{ id: 100, num: 1 }], putId: 0, status: 0 };
   eq(call(engine, 'client_change_decorate', { id: 100 }).reply.code, 0, 'answers 0');
   eq(engine.state.decoration.putId, 100, 'now displayed');
@@ -3401,6 +3403,7 @@ test('decorate: change puts the flower on display and sets status 1', ({ engine 
 });
 
 test('decorate: placing a new flower consumes the PREVIOUSLY displayed one', ({ engine }) => {
+  engine.state.frog.status = 1;
   // the client's own mirror decrements the entry whose id === the OLD put_id and
   // splices it out at 0 -- mirroring that is what keeps the two in sync
   engine.state.decoration = { hasList: [{ id: 100, num: 1 }, { id: 101, num: 2 }], putId: 100, status: 1 };
@@ -3421,8 +3424,9 @@ test('decorate: a flower you do not have cannot be displayed', ({ engine }) => {
 });
 
 test('decorate: re-placing the SAME flower does not consume it', ({ engine }) => {
+  engine.state.frog.status = 1;
   engine.state.decoration = { hasList: [{ id: 100, num: 3 }], putId: 100, status: 1 };
-  eq(call(engine, 'client_change_decorate', { id: 100 }).reply.code, 0, 'answers 0');
+  eq(call(engine, 'client_change_decorate', { id: 100 }).reply.code, 1, 'already displayed');
   eq(engine.state.decoration.hasList.find((x) => x.id === 100).num, 3,
     'same id: the old-entry branch must not fire');
 });
@@ -6376,6 +6380,90 @@ test('兼容: a trip plan written by an OLD build (no `carried`) still returns h
 });
 
 /* ------------------------------------------------------------------ done */
+
+test('room: default furniture supplies candle animations and a sleep skin; custom wins', ({ engine }) => {
+  let rows = call(engine, 'furniture_load_furniture').reply.put_fur;
+  eq(rows.find(r => r.type === 25).id, 1025);
+  eq(rows.find(r => r.type === 9).id, 1009);
+  engine.state.furniture.placed = [{type:25,id:1225}];
+  rows = call(engine, 'furniture_load_furniture').reply.put_fur;
+  eq(rows.filter(r => r.type === 25).length, 1);
+  eq(rows.find(r => r.type === 25).id, 1225);
+});
+
+test('room: bedtime and morning interrupt motion timers, crafts use workshop actions', ({ engine }) => {
+  const RealDate = Date;
+  let time = new RealDate(2026, 8, 16, 20, 59).getTime();
+  global.Date = class extends RealDate {
+    constructor(...args) { super(...(args.length ? args : [time])); }
+    static now() { return time; }
+  };
+  try {
+    engine.state.items.bag = [-1,-1,-1,-1];
+    engine.state.items.desk = Array(8).fill(-1);
+    engine.tick();
+    assert(engine.state.frog.motion < 5);
+    engine.state.frog.motionNextAt = time / 1000 + 999999;
+    time = new RealDate(2026,8,16,21).getTime();
+    engine.tick();
+    assert(engine.state.frog.motion >= 10 && engine.state.frog.motion <= 13);
+    engine.state.furniture.placed=[{type:9,id:2009}];
+    engine.state.frog.motionNextAt=0;
+    engine.tick();
+    eq(engine.state.frog.motion,10,'new bed uses the available sleep animation');
+    time = new RealDate(2026,8,17,6).getTime();
+    engine.tick();
+    assert(engine.state.frog.motion < 5);
+    engine.state.furniture.craft = {furnitureId:1101, finishAt:time / 1000 + 300};
+    engine.tick();
+    assert(engine.state.frog.motion >= 5 && engine.state.frog.motion <= 9);
+  } finally { global.Date = RealDate; }
+});
+
+test('room: harvested flowers fit the vase only while away and survive reload without duplication', ({ engine, savePath }) => {
+  engine.state.flowerpot.slots = [{id:2010604,stage:3,plantedAt:1}];
+  const before = haveOf(engine,202254);
+  call(engine,'furniture_flowerpot_harvest',{type:1,index:1});
+  eq(haveOf(engine,202254),before+1);
+  eq(call(engine,'client_load_decorate').reply.has_list.find(r=>r.id===10054).num,1);
+  eq(call(engine,'client_change_decorate',{id:10054}).reply.code,-1,'at home is locked');
+  eq(haveOf(engine,202254),before+1,'refusal consumes nothing');
+  engine.state.frog.status=1;
+  eq(call(engine,'client_change_decorate',{id:10054}).reply.code,0);
+  eq(haveOf(engine,202254),before,'transfer from house to vase');
+  const restored=reopen(savePath);
+  eq(restored.state.decoration.putId,10054);
+  eq(call(restored,'client_load_decorate').reply.has_list.find(r=>r.id===10054).num,1);
+  eq(call(restored,'client_change_decorate',{id:10054}).reply.code,1);
+});
+
+test('share: lottery extra reward is mailed once and credited only when opened', ({ engine, savePath }) => {
+  const opened=call(engine,'lottery_open').reply;
+  const extra=opened.extra_item;
+  assert(extra.item_id>0);
+  const before=haveOf(engine,extra.item_id);
+  const count=engine.state.mails.length;
+  eq(call(engine,'adsmgr_share',{ads_type:3}).reply.delivery,'mail');
+  eq(engine.state.mails.length,count+1);
+  eq(haveOf(engine,extra.item_id),before);
+  const restored=reopen(savePath);
+  assert(call(restored,'adsmgr_share',{ads_type:3}).reply.code!==0);
+  const mail=restored.state.mails.at(-1);
+  eq(mail.items[0].item_id,extra.item_id);
+  call(restored,'mail_open',{id:mail.id});
+  eq(haveOf(restored,extra.item_id),before+extra.count);
+  call(restored,'mail_open',{id:mail.id});
+  eq(haveOf(restored,extra.item_id),before+extra.count);
+});
+
+test('share: legacy lottery extras are not paid twice', ({ engine }) => {
+  engine.state.lottery.extraItem={item_id:4000,count:1};
+  delete engine.state.lottery.extraPending;
+  const before=engine.state.mails.length;
+  eq(call(engine,'adsmgr_share',{ads_type:3}).reply.delivery,'inventory');
+  eq(engine.state.mails.length,before);
+  assert(call(engine,'adsmgr_share',{ads_type:3}).reply.code!==0);
+});
 
 console.log(`\n${passed} passed, ${failed} failed`
   + (skipped ? `, ${skipped} skipped（缺少客户端美术资源，见 docs/数据与逆向说明.md）` : ''));

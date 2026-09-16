@@ -23,6 +23,26 @@ CLEAN = MAIN + ".clean"
 
 PATCHES = [
     (
+        "room observes role and weather changes",
+        'DrawingEventType.ITEM_CHANGE,RoleEventType.updateDecoration)',
+        'DrawingEventType.ITEM_CHANGE,RoleEventType.updateDecoration,RoleEventType.loadRole,"offlineWeatherChanged")',
+    ),
+    (
+        "candles burn at night while the frog is awake at home",
+        'if(0==s.isHome||s.isHome&&t&&s.isSleep==i)',
+        'if((0==s.isHome||s.isHome&&t&&s.isSleep==i)&&(a.type!==25||this.getModel(WeatherModel).data.hours_type>=2))',
+    ),
+    (
+        "mail pagination keeps all collected pages",
+        'this.mailInfoList.length=e.mails.length,this.revice_mails',
+        'this.mailInfoList.length=e.total,this.revice_mails',
+    ),
+    (
+        "share toast matches actual reward destination",
+        'i.getModel(LotteryModel).onGetExtraItem(),core.DisplayManage.getInstance().popupLayer.addChild(new ModalAlert(_("叮咚~邮箱有动静")))):(i.on_get_gift(),core.DisplayManage.getInstance().popupLayer.addChild(new ModalAlert(_("叮咚~邮箱有动静"))))',
+        'i.getModel(LotteryModel).onGetExtraItem(),core.DisplayManage.getInstance().popupLayer.addChild(new ModalAlert(_(n.delivery==="inventory"?"奖励已在背包中":"叮咚~邮箱有动静")))):(2==e&&i.on_get_gift(),core.DisplayManage.getInstance().popupLayer.addChild(new ModalAlert(_(2==e?"叮咚~邮箱有动静":"奖励已领取"))))',
+    ),
+    (
         "merchant updates stock and closes a finished visit",
         'var n=core.Time.getServerTime();this.serverData.shop.start_time<n&&this.serverData.shop.leave_time>n&&',
         'var n=core.Time.getServerTime(),o=core.PageManage.getInstance().getControl(FurnitureShopController,core.ViewLayerType.WindowLayer);'
@@ -115,6 +135,7 @@ def main():
         text = text.replace(old, new)
         applied += n
         print(f"  [ok]   {name}: {n} replacement(s)")
+    text += '\n' + (PROJECT_ROOT / 'work/tools/client_room_fixes.js').read_text(encoding='utf8')
     open(MAIN, "wb").write(text.encode("utf8"))
     print(f"  wrote {MAIN}  ({applied} total replacements)")
     return 0
