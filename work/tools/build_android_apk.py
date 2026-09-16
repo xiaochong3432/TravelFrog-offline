@@ -10,6 +10,7 @@ import os
 import re
 import shutil
 import subprocess
+import sys
 import tempfile
 import zipfile
 import xml.etree.ElementTree as ET
@@ -26,6 +27,7 @@ EXE = '.exe' if os.name == 'nt' else ''
 env = dict(os.environ, JAVA_HOME=str(JAVA))
 env['PATH'] = str(JAVA / 'bin') + os.pathsep + env.get('PATH', '')
 env['JAVA_TOOL_OPTIONS'] = '-Duser.language=en -Dfile.encoding=UTF-8'
+env['FROG_ANDROID_BUILD_TOOLS'] = str(BT)
 
 def run(args):
     print('RUN:', ' '.join(str(x) for x in args), flush=True)
@@ -84,6 +86,12 @@ with tempfile.TemporaryDirectory(prefix='frog-android-') as temp:
                 assert z.read('assets/' + p.relative_to(web).as_posix()) == p.read_bytes(), str(p)
                 count += 1
         print('All asset bytes verified:', count, flush=True)
+    # A supplied release baseline must match before publishing the output file.
+    # A debug certificate with the same subject is NOT the same signing key.
+    upgrade_from = os.environ.get('FROG_UPGRADE_FROM')
+    if upgrade_from:
+        run([sys.executable, ROOT / 'work/tools/verify_apk_upgrade.py',
+             Path(upgrade_from).resolve(), stage / 'signed.apk'])
     shutil.copy2(stage / 'signed.apk', OUT)
     report = {'commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT).decode().strip(),
               'package': value('applicationId'), 'versionName': value('versionName'),
