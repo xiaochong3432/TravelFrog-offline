@@ -10,16 +10,16 @@ android {
         applicationId "com.travelfrog.offline"
         minSdk 23
         targetSdk 35
-        versionCode 1
-        versionName "1.0.0-offline"
+        versionCode 4
+        versionName "3.1"
     }
 
     sourceSets {
         main {
             // 资产取自本仓库的运行时目录（其中 resource/ 由 extract_game.py 本地生成，
             // 不进仓库）。说明见 android-apk/README.md 与 CONTRIBUTING.md。
-            // 想共用存档、共用签名，请把上面的 namespace/applicationId 对齐到
-            // com.frog.offline，并先与原作者在 Issue/PR 里确认。
+            // 升级必须保留 com.travelfrog.offline、原签名和 file:// 加载地址。
+            // 改 APK 文件名无影响；改 applicationId 会隔离原存档，禁止为升级而改包名。
             assets.srcDirs = ["../../work/run/web"]
         }
     }

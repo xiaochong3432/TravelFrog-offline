@@ -69248,6 +69248,12 @@ function isWelfareRow(row) { return Number(row && row.type) === FURNITURE_TYPE_W
    the offer is not. */
 const WELFARE_PER_DAY = 1;
 
+function merchantDayAt(seconds) {
+  const day = new Date(seconds * 1000);
+  day.setHours(0, 0, 0, 0);
+  return Math.floor(day.getTime() / 1000);
+}
+
 /* tumbler / compost / pocket share one contract: payload is index+1 (1-based),
    code 1 = "hide it", code 0 = "show it", and the client sets BOTH show_index and
    replace_index from that. The client sends `selection + 1` with a 0-based
@@ -70000,9 +70006,11 @@ function defaultState() {
       placed: [],           // put_fur: [{type, id}] currently in the courtyard
       replaceFur: [],       // replace_fur: furniture TYPEs being rotated out
       shopBought: {},       // shop id -> times bought (against FurnitureShop limit)
+      shopDay: merchantDayAt(t),
+      shopDailyBought: {},  // repeatable stock is replenished each local calendar day
       welfareTaken: {},     // shop id -> welfare goods taken on `welfareDay`
       welfareDay: {},       // shop id -> createDay() the welfare count belongs to
-      compost: { showIndex: 0, replaceIndex: 0, boxIndex: 1, boxes: [0, 0, 0, 0, 0, 0], list: [] },
+      compost: { showIndex: 1, replaceIndex: 0, boxIndex: 1, boxes: [0, 0, 0, 0, 0, 0], list: [21000] },
       pocket: { showIndex: 0, replaceIndex: 0, clover: 0 },
       tumbler: { showIndex: 0, replaceIndex: 0 },
     },
@@ -70238,6 +70246,14 @@ function loadState(savePath) {
       s.frog = Object.assign(defaultState().frog, raw.frog || {});
       s.decoration = Object.assign(defaultState().decoration, raw.decoration || {});
       s.items = Object.assign(defaultState().items, raw.items || {});
+      if (s.frog.status === 0) s.items.bagCompleted = 0; // old returns left the bag locked
+      s.drawing = Object.assign(defaultState().drawing, raw.drawing || {});
+      // Older returns cleared the guest but left the invitation accepted. Preserve
+      // the bag/collection while returning that orphaned state to waiting.
+      if (s.drawing.state === 2 && Number(s.drawing.guest) < 0) {
+        s.drawing.state = 0;
+        s.drawingReturnAt = 0;
+      }
       s.gacha = Object.assign(defaultState().gacha, raw.gacha || {});
       // migration: the engine used to default colorBall to 0, which the client
       // reads as "a white ball is waiting". It never granted one, so a stored 0
@@ -70256,6 +70272,18 @@ function loadState(savePath) {
         s.weather.weather = 1;
       }
       s.travel = Object.assign(defaultState().travel, raw.travel || {});
+      s.furniture = Object.assign(defaultState().furniture, raw.furniture || {});
+      s.furniture.compost = Object.assign(defaultState().furniture.compost, (raw.furniture || {}).compost || {});
+      // Old saves started with no owned compost bin, making its entire UI invisible.
+      if (!Array.isArray(s.furniture.compost.list) || !s.furniture.compost.list.length) {
+        s.furniture.compost.list = [21000];
+        s.furniture.compost.showIndex = 1;
+      }
+      // Preserve today's purchases when migrating the old lifetime-only stock ledger.
+      if (!(raw.furniture || {}).shopDailyBought) {
+        s.furniture.shopDay = merchantDayAt(Number(raw.lastSeen) || nowSec());
+        s.furniture.shopDailyBought = Object.assign({}, s.furniture.shopBought);
+      }
     }
   } catch (e) {
     console.error('[engine] save load failed, starting fresh:', e.message);
@@ -70518,11 +70546,10 @@ function createEngine(opts) {
      prerequisite is not owned yet are withheld, which is exactly how the
      original chain gated them. */
   function furnitureShopList() {
+    refreshMerchantDay();
     const out = [];
     for (const [shopId, row] of FURNITURE_SHOP) {
-      const limit = Number(row.limit) || 1;
-      const bought = state.furniture.shopBought[shopId] || 0;
-      const num = limit - bought;
+      const num = furnitureStock(row);
       if (num <= 0) continue;
       // `has_item` 0/absent = no prerequisite; otherwise it is a furniture id
       const need = Number(row.has_item) || 0;
@@ -70536,6 +70563,34 @@ function createEngine(opts) {
     });
     return out;
   }
+
+  function refreshMerchantDay() {
+    const day = merchantDayAt(nowSec());
+    if (state.furniture.shopDay === day) return;
+    state.furniture.shopDay = day;
+    state.furniture.shopDailyBought = {};
+    save();
+  }
+
+  function furnitureStock(row) {
+    const limit = Number(row.limit);
+    if (limit > 0 && !isWelfareRow(row)) return Math.max(0, limit - (state.furniture.shopBought[row.id] || 0));
+    const dailyLimit = isWelfareRow(row) ? WELFARE_PER_DAY : (Number(row.shop_limit) || 1);
+    return Math.max(0, dailyLimit - (state.furniture.shopDailyBought[row.id] || 0));
+  }
+
+  function merchantShop() {
+    const shop_list = furnitureShopList();
+    const now = nowSec(), day = merchantDayAt(now);
+    const next = new Date(day * 1000);
+    next.setDate(next.getDate() + 1);
+    const hours = Number(process.env.FROG_SHOP_HOURS || 0);
+    const start_time = hours > 0 ? day + Math.floor((24 - hours) * 1800) : day - 1;
+    const end = hours > 0 ? start_time + hours * 3600 : Math.floor(next.getTime() / 1000);
+    return { shop_list, start_time, leave_time: shop_list.length ? end : now - 1 };
+  }
+
+  let merchantStatusSeen;
 
   /** ItemModel.getHaveItem: house count plus one per bag/desk slot holding it. */
   function getHaveItem(itemId) {    let n = 0;
@@ -71434,6 +71489,56 @@ function mdPayload(s) {
     return 'house';
   }
 
+  // Repair misplaced slots from older saves before the client paints them by index.
+  // Clear all wrong slots first, so swapped food/tools can return to their own kinds.
+  const misplaced = [];
+  for (const [from, types] of [['bag', BAG_SLOT_TYPE], ['desk', DESK_SLOT_TYPE]]) {
+    const list = state.items[from];
+    list.forEach((id, slot) => {
+      if (id !== -1 && !isType(id, types[slot])) {
+        misplaced.push({ id, slot, from });
+        list[slot] = -1;
+      }
+    });
+  }
+  for (const row of misplaced) placeBack(row.id, row.slot, row.from);
+
+  function returnsFromTrip(id) {
+    const item = ITEM_BY_ID.get(id);
+    // The koi-shaped jade charm (Item 1001) is the only reusable amulet.
+    if (item && item.type === ITEM_TYPE_AMULET) return id === 1001;
+    return !item || item.spend !== 1;
+  }
+
+  function packItem(from, d, ctx, remove) {
+    const list = state.items[from];
+    const types = from === 'bag' ? BAG_SLOT_TYPE : DESK_SLOT_TYPE;
+    const pos = Number(d.pos) - 1;
+    const id = remove ? -1 : Number(d.item_id);
+    const refuse = () => {
+      ctx.push('item_load_items', handlers.item_load_items());
+      return { code: -1, conflict: 1 };
+    };
+    if (!Number.isInteger(pos) || pos < 0 || pos >= types.length
+        || (!remove && !isType(id, types[pos]))) return refuse();
+    const prev = list[pos];
+    if (prev === id) return { code: 0, conflict: 0 };
+    const owned = state.items.house.find(row => row.item_id === id);
+    if (!remove && (!owned || owned.count < 1)) return refuse();
+    // Moving into a slot reserves one unit; removing it returns that same unit.
+    // Client addHouseItem/consumeHouseItem are stubs, so the engine owns both sides.
+    list[pos] = id;
+    if (prev !== -1) addHouseItem(prev, 1);
+    if (!remove) addHouseItem(id, -1);
+    for (const changed of [prev, id]) {
+      if (changed === -1) continue;
+      const row = state.items.house.find(item => item.item_id === changed);
+      pushItemUpdate(ctx, changed, row ? row.count : 0);
+    }
+    save();
+    return { code: 0, conflict: 0 };
+  }
+
   /* Prepare a trip out of the bag AND the desk.
      The client's own BagItem enum fixes the bag layout: [LunchBox, Amulet, Tool,
      Tool]. The desk is not just a pantry either -- the game's own first-run text
@@ -71478,10 +71583,7 @@ function mdPayload(s) {
 
     const amuletRow = carried.find((r) => isType(r.id, ITEM_TYPE_AMULET));
     const tools = carried.filter((r) => isType(r.id, ITEM_TYPE_TOOLS)).length;
-    const carryBack = carried.filter((r) => {
-      const it = ITEM_BY_ID.get(r.id);
-      return !it || it.spend !== 1;            // keep durable gear
-    });
+    const carryBack = carried.filter((r) => returnsFromTrip(r.id));
     state.items.bag = state.items.bag.map(() => -1);
     return {
       lunch, lunchFrom, amulet: amuletRow ? amuletRow.id : -1,
@@ -71597,21 +71699,14 @@ function mdPayload(s) {
     return owned;
   }
 
-  /** Is there anything to travel with? A packed bag, or something usable on the
-      desk. The desk counts for ALL THREE usable kinds, not just a lunch box: the
-      client's own first-run text tells the player 「如果在桌子上放好了东西 …
-      {0}也会自己挑选东西出门旅行」, so a tool or an amulet laid out there is a
-      preparation too. (Requiring *something* is what keeps an empty-handed 放浪
-      from being the default; see the note in tick().) */
+  /** A departure requires food in a food slot, in the bag or on the desk. */
   function tripPrepared() {
-    if ((state.items.bag || []).some((id) => id !== -1 && id !== null && id !== undefined)) {
-      return true;
-    }
-    return (state.items.desk || []).some((id) => isType(id, ITEM_TYPE_LUNCHBOX)
-      || isType(id, ITEM_TYPE_AMULET) || isType(id, ITEM_TYPE_TOOLS));
+    return isType(state.items.bag[0], ITEM_TYPE_LUNCHBOX)
+      || state.items.desk.slice(0, 2).some(id => isType(id, ITEM_TYPE_LUNCHBOX));
   }
 
   function departFrog(ctx, t) {
+    if (!tripPrepared()) return null;
     state.travel.waitingForBag = false;
     // Provisions are decided (and consumed) at DEPARTURE: the stray-or-not outcome
     // depends on whether a lunch box was packed, so it cannot be deferred.
@@ -71657,6 +71752,7 @@ function mdPayload(s) {
     const plan = state.travel.plan || null;
     const r = rollTripRewards(plan);
     state.frog.status = 0;                       // home again
+    state.items.bagCompleted = 0;
     state.clover += r.clover;
     state.ticket += r.ticket;
 
@@ -71675,7 +71771,7 @@ function mdPayload(s) {
         const id = Number(isRow ? entry.id : entry);
         const want = isRow ? Number(entry.slot) : -1;
         const from = isRow && entry.from === 'desk' ? 'desk' : 'bag';
-        if (!(id > 0)) continue;
+        if (!(id > 0) || !returnsFromTrip(id)) continue;
         // already home somewhere?
         if (state.items.bag.indexOf(id) !== -1 || state.items.desk.indexOf(id) !== -1) continue;
         placeBack(id, want, from);
@@ -71804,10 +71900,7 @@ function mdPayload(s) {
         state.travel.nextDepartAt = t + randInt(TRAVEL_IDLE_MIN, TRAVEL_IDLE_MAX);
         save();
       } else if (t >= state.travel.nextDepartAt) {
-        /* 没准备就不出门: `provisionTrip()` turns an empty bag into a 放浪 trip that
-           brings nothing home, so the frog waits here until SOMETHING is packed -- a bag
-           item, or a lunch box set out on the desk. The client's own bag/desk UI is where
-           the player prepares, and the save editor has 立刻出门 for going out regardless. */
+        // No food, no departure; tools and amulets alone cannot start a trip.
         if (tripPrepared()) {
           departFrog(ctx, t);
         } else {
@@ -71828,6 +71921,11 @@ function mdPayload(s) {
     checkAchievements(ctx);
     /* 工作台制作到点结算（离线也算：finishAt 是绝对时间，开机后第一拍就会结算） */
     craftTick(ctx, t);
+    const merchantBefore = merchantStatusSeen;
+    const furniture = handlers.furniture_load_furniture();
+    if (merchantBefore !== undefined && merchantBefore !== merchantStatusSeen) {
+      ctx.push('furniture_load_furniture', furniture);
+    }
     return pushes;
   }
 
@@ -72034,7 +72132,7 @@ function mdPayload(s) {
         ctx.push('guest_load_drawing', drawingPayload());
         return;
       }
-      d.state = 2;                 // back to accept, ready for a new bag
+      d.state = 0;                 // invitation finished; wait for the next partner
       d.bag = (d.bag || []).map(() => -1);
       d.guest = -1;
       state.drawingReturnAt = 0;
@@ -73337,14 +73435,13 @@ function mdPayload(s) {
     return Number(m[String(type)]) || 0;
   }
 
-  /** `task_load_list` rows: one per tier, `pro` = how many tiers are already claimed. */
+  /** GuideTaskModel.dataReward is keyed by plan TYPE, not the encoded claim id. */
   function listClaimRows() {
     const out = [];
     for (const k of Object.keys(LIST_TYPE)) {
       const type = Number(k);
-      const tiers = (LIST_TYPE[k] || {}).target || [];
       const done = claimedTiers(type);
-      for (let i = 0; i < tiers.length; i++) out.push({ id: type * 100 + i + 1, pro: done });
+      out.push({ id: type, pro: done });
     }
     out.sort((a, b) => a.id - b.id);
     return out;
@@ -73386,16 +73483,22 @@ function mdPayload(s) {
      what the client's `stage` 1..3 maps onto -- and the spec confirms `stage >= 3`
      is the only harvestable state.
 
-     The produce is a FARM speciality (type 3, Specialty.place among the farm
-     categories: 谷物/蔬菜/水果/牛乳/乳制品/饮料). That is data-driven and it also
-     explains those achievements ("米超过30个", "卷心菜超过30个", ...) which are only
-     reachable by growing crops. (The spec's guess of "ItemType 14 sub_type 6 花材"
-     is wrong -- that sub-type is stickers and merch.) */
+     Harvest identity comes from the plant: flowers match Item type 14/sub_type 6
+     by their full variety name, vegetables/fruits match type 3 by species name.
+     Picking from all farm specialities can turn a tulip into milk or rice. */
   const FP_TABLE = (gamedata.tables && gamedata.tables.flowerpotData) || {};
   const FP_POTS = FP_TABLE.flowerpot || {};
   const FLOWERPOT_ID = Number(Object.keys(FP_POTS)[0] || 23001);
   const FLOWERPOT_SLOTS = (((FP_POTS[String(FLOWERPOT_ID)] || {}).pos_list) || []).length || 2;
   const FLOWER_PLANTS = Object.keys(FP_TABLE.plant || {});
+  const PLANT_HARVEST = new Map(FLOWER_PLANTS.map((id) => {
+    const name = FP_TABLE.plant[id].name;
+    const flower = gamedata.items.find((item) => item.type === 14
+      && Number(item.sub_type) === 6 && item.name === name);
+    const crop = gamedata.items.find((item) => item.type === 3
+      && item.name === name.split('·')[0]);
+    return [Number(id), flower || crop];
+  }));
   /* Growth timing is not in any table we can read, so this is our choice:
      three stages over FROG_PLANT_SEC (default 10 minutes total). */
   const PLANT_STAGE_SEC = Number(process.env.FROG_PLANT_STAGE_SEC || 200);
@@ -74044,7 +74147,8 @@ function mdPayload(s) {
       }
 
       case 'travel_now':
-        departFrog(ctx, nowSec());
+        if (state.frog.status === 1) return bad('青蛙已经出门了');
+        if (!departFrog(ctx, nowSec())) return bad('请先在背包或桌子上准备食物');
         return ok('青蛙已出门');
 
       case 'come_home':
@@ -74267,31 +74371,11 @@ function mdPayload(s) {
       }),
     }),
 
-    /* --- packing (client tracks its own copy; reply only carries `conflict`) --- */
-    item_putin_bag: (d) => {
-      const pos = Number(d.pos) - 1;
-      if (pos >= 0 && pos < state.items.bag.length) state.items.bag[pos] = Number(d.item_id);
-      save();
-      return { code: 0, conflict: 0 };
-    },
-    item_takeout_bag: (d) => {
-      const pos = Number(d.pos) - 1;
-      if (pos >= 0 && pos < state.items.bag.length) state.items.bag[pos] = -1;
-      save();
-      return { code: 0, conflict: 0 };
-    },
-    item_putin_desk: (d) => {
-      const pos = Number(d.pos) - 1;
-      if (pos >= 0 && pos < state.items.desk.length) state.items.desk[pos] = Number(d.item_id);
-      save();
-      return { code: 0, conflict: 0 };
-    },
-    item_takeout_desk: (d) => {
-      const pos = Number(d.pos) - 1;
-      if (pos >= 0 && pos < state.items.desk.length) state.items.desk[pos] = -1;
-      save();
-      return { code: 0, conflict: 0 };
-    },
+    /* --- packing: typed slots and real inventory transfers --- */
+    item_putin_bag: (d, ctx) => packItem('bag', d, ctx, false),
+    item_takeout_bag: (d, ctx) => packItem('bag', d, ctx, true),
+    item_putin_desk: (d, ctx) => packItem('desk', d, ctx, false),
+    item_takeout_desk: (d, ctx) => packItem('desk', d, ctx, true),
 
     /* 行囊「准备完成 / 锁定」按钮 —— the client's ONLY trip trigger.
        ItemModel.setBagLock(e) sends this with the single positional param `completed`
@@ -74307,6 +74391,13 @@ function mdPayload(s) {
        players who never touch the button). Unlocking before departure is allowed. */
     item_set_bag_completed: (d, ctx) => {
       const completed = d.completed === true || Number(d.completed) > 0;
+      if (completed && state.frog.status !== 1 && !tripPrepared()) {
+        state.items.bagCompleted = 0;
+        state.travel.waitingForBag = true;
+        save();
+        ctx.push('item_load_items', handlers.item_load_items());
+        return { code: -1 };
+      }
       const wasCompleted = state.items.bagCompleted ? 1 : 0;
       state.items.bagCompleted = completed ? 1 : 0;
       save();
@@ -74707,26 +74798,13 @@ function mdPayload(s) {
        Also: load_tumbler entries WITHOUT `layers` silently skip the whole draw
        branch -- it does not throw, it just draws nothing. */
     furniture_load_furniture: (d) => {
-      /* The merchant shop is now OPEN, because furniture_buy_shop is implemented
-         (before that, unlocking it was a dead end). `start_time < now <
-         leave_time` is the client's ONLY check for "the merchant is here", and
-         it also arms a timer that closes the window and says 嘟嘟已经收拾回家了.
-
-         The original schedule is server-side and unrecoverable, so this is our
-         choice, labelled as such: the merchant is always in. Override with
-         FROG_SHOP_HOURS (0 = always open). */
+      // Offline schedule: present while stocked; repeatable goods restock tomorrow.
+      // FROG_SHOP_HOURS optionally narrows the daily window.
       const now = nowSec();
-      const hours = Number(process.env.FROG_SHOP_HOURS || 0);
-      const open = hours <= 0
-        ? { start_time: 1, leave_time: now + 10 * 365 * 24 * 3600 }
-        : (() => {
-          // a daily window: [start of today + (24-hours)/2, +hours]
-          const day = Math.floor(now / 86400) * 86400;
-          const start = day + Math.floor((24 - hours) * 1800);
-          return { start_time: start, leave_time: start + hours * 3600 };
-        })();
+      const shop = merchantShop();
+      merchantStatusSeen = state.furniture.shopDay + '/' + (shop.start_time < now && now < shop.leave_time);
       return {
-        shop: { shop_list: furnitureShopList(), ...open },
+        shop,
         mood: 0,
         bench_lock: state.furniture.benchLock ? 1 : 0,
         bench: (state.furniture.bench || []).slice(0, 10),
@@ -74753,13 +74831,14 @@ function mdPayload(s) {
        clears the slot nor runs its callback. `type`/`index` are 1-based. */
     furniture_flowerpot_harvest: (d, ctx) => {
       const index = Number(d && d.index);
+      if (Number(d && d.type) !== 1 || !Number.isInteger(index)) return {};
       const slot = (state.flowerpot.slots || [])[index - 1];
       if (!slot || !slot.id) return {};
       if (slot.stage < 3) return {};            // only stage >= 3 is harvestable
       const grownPlant = slot.id;
-      const itemId = FARM_SPECIALTY_IDS.length
-        ? FARM_SPECIALTY_IDS[randInt(0, FARM_SPECIALTY_IDS.length - 1)]
-        : 0;
+      const produce = PLANT_HARVEST.get(Number(grownPlant));
+      if (!produce) return {};                 // keep unknown plants intact
+      const itemId = produce.id;
       const num = 1 + (Math.random() < 0.3 ? 1 : 0);
       // record the species so the 图鉴 (encyclopedia) fills up as you garden
       if (!state.flowerpot.grown) state.flowerpot.grown = [];
@@ -74770,7 +74849,7 @@ function mdPayload(s) {
       slot.stage = 0;
       slot.plantedAt = 0;
       addHouseItem(itemId, num);
-      if (state.handbook.specialtys.indexOf(itemId) === -1) {
+      if (produce.type === 3 && state.handbook.specialtys.indexOf(itemId) === -1) {
         state.handbook.specialtys.push(itemId);
       }
       save();
@@ -74946,13 +75025,11 @@ function mdPayload(s) {
       /* A welfare row's `limit` is 0 (= unrestricted for the client); the old
          `|| 1` made it a single, permanent purchase. Offer it once per day
          instead, tracked separately from the paid chain. */
-      const boughtToday = welfare
-        ? ((state.furniture.welfareDay && state.furniture.welfareDay[shopId] === createDay())
-          ? (state.furniture.welfareTaken[shopId] || 0) : 0)
-        : 0;
-      const limit = welfare ? WELFARE_PER_DAY : (Number(row.limit) || 1);
-      if (bought >= limit && !welfare) return { code: -1 };
-      if (welfare && boughtToday >= WELFARE_PER_DAY) return { code: -1 };
+      const shop = merchantShop();
+      if (!(shop.start_time < nowSec() && nowSec() < shop.leave_time)) return { code: -1 };
+      const boughtToday = state.furniture.shopDailyBought[shopId] || 0;
+      const limit = Number(row.limit) || (welfare ? WELFARE_PER_DAY : Number(row.shop_limit) || 1);
+      if (furnitureStock(row) <= 0) return { code: -1 };
       if (row.has_item && state.furniture.owned.indexOf(Number(row.has_item)) === -1) {
         return { code: -1 };
       }
@@ -74962,6 +75039,7 @@ function mdPayload(s) {
       const itemId = Number(row.item_id);
       state.clover -= price;
       state.furniture.shopBought[shopId] = bought + 1;
+      state.furniture.shopDailyBought[shopId] = boughtToday + 1;
       if (welfare) {
         if (!state.furniture.welfareTaken) state.furniture.welfareTaken = {};
         if (!state.furniture.welfareDay) state.furniture.welfareDay = {};
@@ -74991,6 +75069,7 @@ function mdPayload(s) {
       }
       // 回忆彩蛋 type 4 (shop): param "drummer" is 嘟嘟, the merchant
       momentTrigger(4, 'drummer');
+      ctx.push('furniture_load_furniture', handlers.furniture_load_furniture());
       if (verbose) {
         console.log(`[engine] furniture_buy_shop ${shopId} -> item ${itemId} `
           + `for ${price} clover (${bought + 1}/${limit})${welfare ? ' [welfare]' : ''}`);
@@ -75019,6 +75098,9 @@ function mdPayload(s) {
       const accepted = flag === undefined ? true : !!flag;
       const cur = state.drawing;
       if (accepted) {
+        if (cur.state !== 1 || drawingGuestIds().indexOf(Number(cur.guest)) === -1) {
+          return { code: -1 };                 // no invitation to accept
+        }
         cur.state = 2;                       // DrawingState.accept
       } else {
         cur.state = 0;                       // DrawingState.wait
@@ -75300,7 +75382,7 @@ function mdPayload(s) {
 
     /* One tier of a cumulative plan (是日清单 / 当周计划 / …). `id` is the client's
        own encoding: 100 * type + (tier 1-based). Paying is gated on the plan's own
-       progress, and a tier that was already claimed just answers 0. */
+       progress. A duplicate request resynchronizes the UI without a reward popup. */
     task_get_list_reward: (d, ctx) => {
       const id = Number(firstDefined(d, ['id']));
       if (!Number.isFinite(id) || id <= 0) return { code: -1 };
@@ -75311,7 +75393,10 @@ function mdPayload(s) {
       const target = Number((plan.target || [])[tier - 1]);
       const rewardId = Number((plan.reward || [])[tier - 1]);
       if (!Number.isFinite(target) || !Number.isFinite(rewardId)) return { code: -1 };
-      if (claimedTiers(type) >= tier) return { code: 0 };          // already paid
+      if (claimedTiers(type) >= tier) {
+        ctx.push('task_load_list', handlers.task_load_list());
+        return { code: 1 };                                    // already paid
+      }
       if (listTypeProgress(type) < target) return { code: -1 };    // not earned yet
       const m = state.taskTiers || (state.taskTiers = {});
       m[String(type)] = Math.max(Number(m[String(type)]) || 0, tier);

@@ -258,17 +258,12 @@ const haveOf = (engine, itemId) => {
   return n;
 };
 
-test('travel: with NO lunch box the frog strays and brings nothing back', ({ engine }) => {
-  // Reference build: departing without a bento produces a 放浪 trip, which brings
-  // back neither a photo nor a souvenir.
+test('travel: with NO lunch box the frog stays home and keeps its gear', ({ engine }) => {
   const specBefore = engine.state.specialtys.length;
   const picBefore = engine.state.pictures.length;
-  /* A stray trip is one WITHOUT a lunch box, so the bag still has to hold something --
-     the departure rule is "nothing packed, stay home". A tool keeps it prepared and
-     still leaves `lunch === -1`. The bag is emptied by each departure, so re-pack. */
   const tool = idsOfType(2)[0];
   for (let i = 0; i < 20; i++) {
-    packForTrip(engine, tool);
+    engine.state.items.bag[2] = tool;
     engine.state.travel.nextDepartAt = 1;
     engine.tick();
     engine.state.travel.returnAt = 1;
@@ -276,7 +271,9 @@ test('travel: with NO lunch box the frog strays and brings nothing back', ({ eng
   }
   eq(engine.state.specialtys.length, specBefore, 'a stray trip must bring back no souvenir');
   eq(engine.state.pictures.length, picBefore, 'a stray trip must bring back no photo');
-  eq(engine.state.travel.tripCount >= 20, true, 'tripCount should track trips');
+  eq(engine.state.travel.tripCount, 0, 'no food means no trips');
+  eq(engine.state.frog.status, 0);
+  eq(engine.state.items.bag[2], tool);
 });
 
 test('travel: a packed lunch box brings back souvenirs and photos', ({ engine, savePath }) => {
@@ -354,7 +351,7 @@ test('travel: gear comes home to its OWN slot, never shifted into the food/amule
   eq(bag[3], tools[1], 'tool 2 returns to slot 3');
 });
 
-test('travel: a stray trip pays less clover on average than a provisioned one', ({ engine }) => {
+test('travel: waiting without food yields no trip rewards', ({ engine }) => {
   const lunch = idsOfType(0)[0];
   const avgClover = (pack, trips) => {
     let sum = 0;
@@ -371,10 +368,99 @@ test('travel: a stray trip pays less clover on average than a provisioned one', 
   };
   const stray = avgClover(false, 60);
   const fed = avgClover(true, 60);
-  assert(stray <= fed, `stray average ${stray} should not exceed provisioned ${fed}`);
+  eq(stray, 0, 'waiting does not grant travel clover');
+  assert(fed > 0, 'provisioned trips still grant clover');
 });
 
 /* ------------------------------------------------ 行囊「准备完成」 (bag lock) */
+
+test('packing: every bag and desk slot accepts only its type and transfers inventory', ({ engine, savePath }) => {
+  const layout = { bag:[0,1,2,2], desk:[0,0,1,1,2,2,2,2] };
+  for (const [storage, types] of Object.entries(layout)) {
+    for (let slot = 0; slot < types.length; slot++) {
+      const id = idsOfType(types[slot])[0];
+      const replacement = idsOfType(types[slot])[1];
+      engine.state.items.house = [{item_id:id,count:2},{item_id:replacement,count:1}];
+      const put = data => call(engine, 'item_putin_' + storage, {pos:slot+1,...data});
+      const packed = put({item_id:id});
+      eq(packed.reply.code, 0);
+      eq(engine.state.items[storage][slot], id);
+      eq(engine.state.items.house.find(x=>x.item_id===id).count, 1, 'one reserved');
+      eq(pushNamed(packed, 'item_update')[0].data.item.count, 1, 'client gets house count, not house + packed');
+      eq(put({item_id:id}).reply.code, 0, 'repeat request is idempotent');
+      eq(engine.state.items.house.find(x=>x.item_id===id).count, 1);
+      const snapshot = JSON.stringify(engine.state.items);
+      for (const type of [0,1,2].filter(t=>t!==types[slot])) {
+        eq(put({item_id:idsOfType(type)[0]}).reply.code, -1, 'wrong type refused');
+      }
+      eq(JSON.stringify(engine.state.items), snapshot, 'wrong type cannot change inventory');
+      eq(put({item_id:replacement}).reply.code, 0);
+      eq(engine.state.items.house.find(x=>x.item_id===id).count, 2, 'replaced item returned');
+      assert(!engine.state.items.house.some(x=>x.item_id===replacement), 'last unit reserved');
+      eq(reopen(savePath).state.items[storage][slot], replacement, 'packing persisted');
+      eq(call(engine, 'item_takeout_' + storage, {pos:slot+1}).reply.code, 0);
+      eq(call(engine, 'item_takeout_' + storage, {pos:slot+1}).reply.code, 0);
+      eq(engine.state.items.house.find(x=>x.item_id===replacement).count, 1, 'takeout returns exactly once');
+    }
+  }
+});
+
+test('packing: unowned items and invalid slots never create or lose inventory', ({ engine }) => {
+  engine.state.items.house = [];
+  for (const storage of ['bag','desk']) {
+    const before = JSON.stringify(engine.state.items);
+    for (const pos of [0,1,1.5,99]) {
+      eq(call(engine, 'item_putin_' + storage, {pos,item_id:0}).reply.code, -1);
+    }
+    eq(JSON.stringify(engine.state.items), before);
+  }
+});
+
+test('packing: old swapped food and tools are repaired on load without losing items', ({ engine, savePath }) => {
+  const tools = idsOfType(2).slice(0,2);
+  const food = idsOfType(0)[0];
+  engine.state.items.bag = [tools[0], tools[1], food, 1001];
+  engine.state.items.desk = [tools[0], -1, -1, -1, food, -1, -1, -1];
+  fs.writeFileSync(savePath, JSON.stringify(engine.state));
+  const fixed = reopen(savePath).state.items;
+  eq(JSON.stringify(fixed.bag), JSON.stringify([food,1001,...tools]));
+  eq(JSON.stringify(fixed.desk), JSON.stringify([food,-1,-1,-1,tools[0],-1,-1,-1]));
+  eq(JSON.stringify(fixed.house), JSON.stringify(engine.state.items.house));
+});
+
+test('packing: every amulet is used once except the reusable koi jade charm', ({ engine }) => {
+  for (const storage of ['bag','desk']) {
+    for (const id of idsOfType(1)) {
+      engine.state.items.bag = [-1,-1,-1,-1];
+      engine.state.items.desk = Array(8).fill(-1);
+      engine.state.items.house = [{item_id:0,count:1},{item_id:id,count:1}];
+      const pos = storage === 'bag' ? 2 : 3;
+      eq(call(engine, 'item_putin_' + storage, {pos:1,item_id:0}).reply.code, 0);
+      eq(call(engine, 'item_putin_' + storage, {pos,item_id:id}).reply.code, 0);
+      eq(haveOf(engine,id), 1, 'packing does not duplicate amulet');
+      engine.state.travel.nextDepartAt = 1;
+      engine.tick();
+      eq(engine.state.travel.plan.amulet, id, 'carried amulet keeps its travel effect');
+      eq(haveOf(engine,id), 0, 'away amulet is unavailable');
+      engine.state.travel.returnAt = 1;
+      engine.tick();
+      eq(haveOf(engine,id), id===1001?1:0, 'only koi jade returns: ' + id);
+      if (id===1001) eq(engine.state.items[storage][pos-1], id, 'koi returns to original slot');
+      else eq(call(engine, 'item_putin_' + storage, {pos,item_id:id}).reply.code, -1, 'used amulet cannot be repacked');
+    }
+  }
+});
+
+test('packing: legacy travel plans cannot return spent amulets', ({ engine }) => {
+  packForTrip(engine);
+  engine.state.travel.nextDepartAt = 1;
+  engine.tick();
+  engine.state.travel.plan.carryBack = [1000, {id:1002,slot:1,from:'bag'}, 1001];
+  engine.state.travel.returnAt = 1;
+  engine.tick();
+  eq(engine.state.items.bag[1], 1001);
+  assert(!engine.state.items.bag.includes(1000) && !engine.state.items.bag.includes(1002));
+});
 
 console.log('\n== bag lock / 准备完成 ==');
 
@@ -396,11 +482,12 @@ test('baglock: 准备完成 with provisions departs immediately', ({ engine }) =
   assert(pushNamed(r, 'notify_new_event').length === 1, 'departure event pushed');
 });
 
-test('baglock: 准备完成 with an empty bag records the lock but does NOT depart', ({ engine }) => {
+test('baglock: 准备完成 without food refuses the lock and departure', ({ engine }) => {
   eq(engine.state.frog.status, 0, 'starts at home');
   engine.state.travel.nextDepartAt = 0;
   const r = call(engine, 'item_set_bag_completed', { completed: true });
-  eq(engine.state.items.bagCompleted, 1, 'lock recorded');
+  eq(r.reply.code, -1, 'food required');
+  eq(engine.state.items.bagCompleted, 0, 'bag stays editable');
   eq(engine.state.frog.status, 0, 'nothing packed -> the frog stays home');
   eq(pushNamed(r, 'notify_new_event').length, 0, 'no departure event');
 });
@@ -434,6 +521,33 @@ test('baglock: the lock survives a restart', ({ engine, savePath }) => {
   const re = reopen(savePath);
   eq(re.state.items.bagCompleted, 1, 'bag_completed persisted');
   eq(re.state.frog.status, 1, 'away state persisted');
+});
+
+test('baglock: coming home unlocks the bag, and gear alone cannot start the next trip', ({ engine, savePath }) => {
+  packForTrip(engine);
+  engine.state.items.bag[1] = 1001;
+  engine.state.items.bag[2] = idsOfType(2)[0];
+  call(engine,'item_set_bag_completed',{completed:true});
+  eq(engine.state.items.bagCompleted,1);
+  engine.state.travel.returnAt = 1;
+  const pushes = engine.tick();
+  eq(engine.state.items.bagCompleted,0);
+  eq(pushes.find(x=>canon(x.cmd)==='item_load_items').data.bag_completed,0);
+  eq(reopen(savePath).state.items.bagCompleted,0);
+  engine.state.travel.nextDepartAt = 1;
+  engine.tick();
+  eq(engine.state.frog.status,0);
+  eq(call(engine,'item_set_bag_completed',{completed:true}).reply.code,-1);
+  engine.state.items.desk[0] = 0; // food on the table also counts
+  eq(call(engine,'item_set_bag_completed',{completed:true}).reply.code,0);
+  eq(engine.state.frog.status,1);
+});
+
+test('baglock: old at-home locked saves reopen editable', ({ engine, savePath }) => {
+  engine.state.frog.status = 0;
+  engine.state.items.bagCompleted = 1;
+  fs.writeFileSync(savePath,JSON.stringify(engine.state));
+  eq(reopen(savePath).state.items.bagCompleted,0);
 });
 
 /* ------------------------------------------------- 相册容量 / 扩容 (第七轮) */
@@ -916,6 +1030,77 @@ test('furniture: buying charges clover, grants the item and decrements num', ({ 
   // limit is usually 1, so the row disappears entirely; if limit > 1 num drops
   if (same) eq(same.num, row.num - 1, 'remaining purchases must decrease');
   else assert(row.num === 1, 'a limit-1 row must vanish once bought');
+});
+
+test('merchant: buying all available stock ends the visit and survives restart', ({ engine, savePath }) => {
+  engine.state.clover = 100000000;
+  let last;
+  for (let purchases=0; purchases<500; purchases++) {
+    const rows = call(engine, 'furniture_load_furniture', {}).reply.shop.shop_list;
+    if (!rows.length) break;
+    last = call(engine, 'furniture_buy_shop', {shop_id:rows[0].shop_id});
+    eq(last.reply.code, 0);
+  }
+  const closed = call(engine, 'furniture_load_furniture', {}).reply.shop;
+  eq(closed.shop_list.length, 0);
+  assert(closed.leave_time <= Math.floor(Date.now()/1000), 'sold-out merchant must leave');
+  const pushed = pushNamed(last, 'furniture_load_furniture');
+  eq(pushed.length, 1, 'the final purchase immediately pushes the closed shop');
+  eq(pushed[0].data.shop.shop_list.length, 0);
+  eq(call(reopen(savePath), 'furniture_load_furniture', {}).reply.shop.shop_list.length, 0, 'restart cannot restock');
+  const before = engine.state.clover;
+  eq(call(engine, 'furniture_buy_shop', {shop_id:2001}).reply.code, -1);
+  eq(engine.state.clover, before);
+});
+
+test('merchant: next day restocks repeatable and welfare goods but preserves lifetime limits', ({ engine, savePath }) => {
+  engine.state.clover = 100000;
+  for (const id of [1,2001,7003]) eq(call(engine,'furniture_buy_shop',{shop_id:id}).reply.code,0);
+  let ids = call(engine,'furniture_load_furniture',{}).reply.shop.shop_list.map(x=>x.shop_id);
+  assert(!ids.includes(1) && !ids.includes(2001) && !ids.includes(7003));
+  const realNow = Date.now;
+  const tomorrow = realNow() + 86400000;
+  Date.now = () => tomorrow;
+  try {
+    const pushes = engine.tick();
+    assert(pushes.some(x=>canon(x.cmd)==='furniture_load_furniture'), 'new visit is pushed to the open courtyard');
+    ids = call(engine,'furniture_load_furniture',{}).reply.shop.shop_list.map(x=>x.shop_id);
+    assert(!ids.includes(1), 'one-time tool package never restocks');
+    assert(ids.includes(2001) && ids.includes(7003), 'materials and welfare restock');
+    eq(call(reopen(savePath),'furniture_buy_shop',{shop_id:7003}).reply.code,0, 'restock survives reopening');
+  } finally { Date.now = realNow; }
+});
+
+test('merchant: old lifetime stock is migrated without resetting today purchases', ({ engine, savePath }) => {
+  engine.state.furniture.shopBought = {1:1,2001:1,7003:1};
+  delete engine.state.furniture.shopDailyBought;
+  delete engine.state.furniture.shopDay;
+  fs.writeFileSync(savePath, JSON.stringify(engine.state));
+  const restored = reopen(savePath);
+  let ids = call(restored,'furniture_load_furniture',{}).reply.shop.shop_list.map(x=>x.shop_id);
+  assert(!ids.includes(1) && !ids.includes(2001) && !ids.includes(7003));
+  restored.state.furniture.shopDay -= 86400;
+  ids = call(restored,'furniture_load_furniture',{}).reply.shop.shop_list.map(x=>x.shop_id);
+  assert(!ids.includes(1) && ids.includes(2001) && ids.includes(7003));
+});
+
+test('compost: starter bin is visible and old empty lists heal without losing contents or chosen skins', ({ engine, savePath }) => {
+  const starter = call(engine,'furniture_load_compost',{}).reply;
+  eq(starter.compost_list[starter.show_index-1],21000);
+  engine.state.furniture.compost.list = [];
+  engine.state.furniture.compost.showIndex = 0;
+  engine.state.furniture.compost.boxes[2] = 20001;
+  fs.writeFileSync(savePath,JSON.stringify(engine.state));
+  const restored = reopen(savePath);
+  const data = call(restored,'furniture_load_compost',{}).reply;
+  eq(data.compost_list[data.show_index-1],21000);
+  eq(data.box_list[2],20001);
+  restored.state.furniture.compost.list = [21011];
+  restored.state.furniture.compost.showIndex = 0;
+  fs.writeFileSync(savePath,JSON.stringify(restored.state));
+  const hidden = call(reopen(savePath),'furniture_load_compost',{}).reply;
+  eq(hidden.compost_list[0],21011);
+  eq(hidden.show_index,0,'a deliberately hidden owned bin stays hidden');
 });
 
 test('furniture: buying without enough clover is refused, not silently granted', ({ engine }) => {
@@ -1765,19 +1950,13 @@ test('tasks: task 1 pays its table values once the goal is met', ({ engine }) =>
 /* the OLD version of the test above asserted `list` carried task ids -- which is
    exactly the bug, so it is gone rather than kept. */
 
-test('tasks: task_load_list exposes the plan tiers as 100*type + tier + 1', ({ engine }) => {
+test('tasks: task_load_list keys claimed tier counts by plan type', ({ engine }) => {
   const r = call(engine, 'task_load_list', {});
   assert(Array.isArray(r.reply.reward), 'reward must be an array');
-  let expected = 0;
-  for (const k of Object.keys(TASKD.list_type)) {
-    expected += (TASKD.list_type[k].target || []).length;
-  }
-  eq(r.reply.reward.length, expected, 'one row per tier across all plans');
+  eq(r.reply.reward.length, Object.keys(TASKD.list_type).length, 'one row per plan');
   for (const row of r.reply.reward) {
-    const type = Math.floor(row.id / 100);
-    const tier = row.id % 100;
-    assert(type >= 1 && tier >= 1, `id ${row.id} should encode type/tier`);
-    assert(TASKD.list_type[String(type)], `id ${row.id} names a real plan`);
+    assert(TASKD.list_type[String(row.id)], `id ${row.id} names a real plan`);
+    eq(row.pro, 0, 'fresh plans are unclaimed');
   }
 });
 
@@ -1909,10 +2088,10 @@ test('flowerpot: harvest replies {item_list:[{item_id,num}]} with NO code', ({ e
   const row = r.reply.item_list[0];
   assert(typeof row.item_id === 'number', 'item_id');
   assert(typeof row.num === 'number', 'the field must be named num, not count');
-  // produce must be a FARM speciality (type 3), which is what the farming
-  // achievements ("米超过30个") are waiting on
   const item = GD.items.find((i) => i.id === row.item_id);
-  assert(item && item.type === 3, `produce ${row.item_id} should be a type-3 speciality`);
+  const plant = GD.tables.flowerpotData.plant[slot.id];
+  assert(item && (item.name === plant.name || item.name === plant.name.split('·')[0]),
+    `produce ${row.item_id} must match the planted species/variety`);
   eq(engine.state.flowerpot.slots[0].id, 0, 'the slot should be cleared');
   assert(pushNamed(r, 'client_load_role').length === 1,
     'a full role push is what redraws the pot (update_flowerpot has no event binding)');
@@ -1925,6 +2104,49 @@ test('flowerpot: an unripe slot cannot be harvested', ({ engine }) => {
   assert(!Array.isArray(r.reply.item_list) || r.reply.item_list.length === 0,
     'stage < 3 must not yield anything');
   assert(engine.state.flowerpot.slots[0].id > 0, 'and the plant must stay put');
+});
+
+test('flowerpot: every crop and flower variety yields its own item, even after reopening', ({ engine, savePath }) => {
+  // Explicit client table mappings are the regression oracle, independent of the
+  // engine's name lookup. The old random farm pool fails this immediately.
+  const groups = [
+    [20101, [202211, 202212, 202213]], [20102, [202221, 202222, 202223]],
+    [20103, [4101, 4101, 4101]], [20104, [202231, 202232, 202233]],
+    [20105, [202241, 202242, 202243, 202244]],
+    [20106, [202251, 202252, 202253, 202254]],
+    [20107, [4102, 4102, 4102]], [20108, [4103, 4103, 4103]],
+    [20109, [4006, 4006, 4006]], [20110, [4104, 4104, 4104]],
+    [20111, [202261, 202262, 202263]],
+  ];
+  for (const [species, variants] of groups) {
+    for (let v = 0; v < variants.length; v++) {
+      const plant = species * 100 + v + 1, itemId = variants[v];
+      engine.state.flowerpot.slots = [
+        { id: plant, stage: 3, plantedAt: 1 }, { id: 2010301, stage: 1, plantedAt: 1 },
+      ];
+      const before = haveOf(engine, itemId);
+      const result = call(engine, 'furniture_flowerpot_harvest', { type: 1, index: 1 });
+      eq(result.reply.item_list[0].item_id, itemId, 'planted ' + plant);
+      eq(haveOf(engine, itemId), before + result.reply.item_list[0].num, 'correct inventory credit');
+      eq(engine.state.flowerpot.slots[1].id, 2010301, 'other slot unchanged');
+      const again = call(engine, 'furniture_flowerpot_harvest', { type: 1, index: 1 });
+      assert(!again.reply.item_list, 'double harvest rejected');
+      if (itemId > 200000) assert(!engine.state.handbook.specialtys.includes(itemId), 'flowers are not specialties');
+      eq(haveOf(reopen(savePath), itemId), haveOf(engine, itemId), 'reward survives reopening');
+    }
+  }
+});
+
+test('flowerpot: unknown plant and invalid pot keep inventory and slots intact', ({ engine }) => {
+  call(engine, 'furniture_load_flowerpot', {});
+  engine.state.flowerpot.slots[0] = { id: 99999999, stage: 3, plantedAt: 1 };
+  const before = JSON.stringify(engine.state.flowerpot);
+  const house = JSON.stringify(engine.state.items.house);
+  for (const data of [{type:1,index:1}, {type:2,index:1}, {type:1,index:1.5}]) {
+    assert(!call(engine, 'furniture_flowerpot_harvest', data).reply.item_list);
+  }
+  eq(JSON.stringify(engine.state.flowerpot), before);
+  eq(JSON.stringify(engine.state.items.house), house);
 });
 
 test('flowerpot: growth advances by elapsed time', ({ engine }) => {
@@ -2708,6 +2930,28 @@ test('drawing: the feature stays closed until you own the 友情绘本 (item 700
   eq(engine.state.drawing.state, 0, 'no invitation without the book');
 });
 
+test('drawing: absent invitation cannot create a souvenir packing state', ({ engine }) => {
+  eq(call(engine, 'guest_accept_invit', {is_accept:true}).reply.code, -1);
+  eq(engine.state.drawing.state, 0);
+  engine.state.drawing.state = 1;
+  engine.state.drawing.guest = -1;
+  eq(call(engine, 'guest_accept_invit', {is_accept:true}).reply.code, -1);
+});
+
+test('drawing: legacy accepted state without a partner migrates without losing bag or collections', ({ engine, savePath }) => {
+  engine.state.drawing.state = 2;
+  engine.state.drawing.guest = -1;
+  engine.state.drawing.bag = [1,-1,-1,-1,-1,-1];
+  engine.state.drawing.colls = [1];
+  engine.state.drawingReturnAt = 99;
+  fs.writeFileSync(savePath, JSON.stringify(engine.state));
+  const restored = reopen(savePath);
+  eq(restored.state.drawing.state, 0);
+  eq(restored.state.drawingReturnAt, 0);
+  eq(restored.state.drawing.bag[0], 1);
+  eq(restored.state.drawing.colls[0], 1);
+});
+
 test('drawing: with the book, an invitation eventually arrives', ({ engine }) => {
   engine.state.items.house = [{ item_id: 7001, count: 1 }];
   engine.state.drawingNextRollAt = 0;
@@ -2809,7 +3053,7 @@ test('drawing: the locked trip returns with a real collectible', ({ engine }) =>
   const row = Object.values(GD.tables.drawingCollectData).find((r) => Number(r.id) === got);
   assert(row, `collectible ${got} must exist in drawingCollectData`);
   eq(Number(row.guest), who, 'the collectible must belong to the guest that visited');
-  eq(engine.state.drawing.state, 2, 'back to accept');
+  eq(engine.state.drawing.state, 0, 'back to waiting for a new partner');
   eq(engine.state.drawing.bag.every((v) => v === -1), true, 'bag cleared for next time');
 });
 
@@ -3926,18 +4170,16 @@ test('values: offline pacing stays short so a sitting is playable', ({ engine })
     `offline travel window ${w}s must stay inside 12..40 min (faithful mode is opt-in via FROG_FAITHFUL=1)`);
 });
 
-test('values: a STRAY trip uses the table\'s shorter window', ({ engine }) => {
-  // a trip with no lunch box is a 放浪, which the table says returns in 10-20
+test('travel: tools on the desk cannot substitute for food', ({ engine }) => {
   engine.state.items.bag = [-1, -1, -1, -1];
-  packForTrip(engine, idsOfType(2)[0]);          // prepared, but with no lunch box
+  engine.state.items.desk[4] = idsOfType(2)[0];
   engine.state.travel.plan = null;
   engine.state.travel.nextDepartAt = 1;
   engine.tick();
-  const p = engine.state.travel.plan;
-  eq(!!(p && p.stray), true, 'with no lunch box this must be a stray trip');
-  const w = engine.state.travel.returnAt - engine.state.travel.departAt;
-  assert(w >= 10 && w <= 20,
-    `stray window ${w}s must be the table's FROG_DRIFTRETURNTIME range 10..20`);
+  eq(engine.state.travel.plan, null);
+  eq(engine.state.frog.status, 0);
+  eq(call(engine,'item_set_bag_completed',{completed:true}).reply.code,-1);
+  eq(engine.state.items.bagCompleted,0);
 });
 
 /** What the engine's defaultState() produces for the 20 clover slots. */
@@ -4303,6 +4545,8 @@ test('wire: guest_accept_invit honours is_accept (it used to always mean REJECT)
   // false and ACCEPTING silently behaved as REJECTING.
   const load = call(engine, 'guest_load_drawing', {}).reply;
   assert(load && load.state !== undefined, 'guest_load_drawing must answer a state');
+  engine.state.drawing.state = 1;
+  engine.state.drawing.guest = 0;
   const accept = call(engine, 'guest_accept_invit', { is_accept: true }).reply;
   eq(accept.code, 0, 'accept must be accepted');
   eq(engine.state.drawing.state, 2, 'state must be DrawingState.accept (2)');
@@ -5842,16 +6086,30 @@ test('tasks: the cumulative plan rewards (「伴蛙前行」面板) are payable 
   eq(pushNamed(r, 'task_load').length, 1, 'the task rows are re-pushed');
   eq(pushNamed(r, 'task_load_list').length, 1, 'and so are the tier rows');
   /* once only */
-  eq(call(engine, 'task_get_list_reward', { id: 101 }).reply.code, 0, 'a repeat answers 0');
+  eq(call(engine, 'task_get_list_reward', { id: 101 }).reply.code, 1, 'a repeat must not trigger the reward popup');
   eq(haveOf(engine, Number(type1.reward[0])), before + 1, 'but pays nothing');
   /* the client learns which tiers are claimed from `pro` */
   const rows = call(engine, 'task_load_list', {}).reply.reward;
-  const t1 = rows.filter((x) => x.id === 101)[0];
+  const t1 = rows.filter((x) => x.id === 1)[0];
   eq(t1.pro, 1, 'the claimed tier count is reported back');
   /* and task rows carry the progress the client's red dot reads */
   const tasks = call(engine, 'task_load', {}).reply.tasks;
   for (const t of tasks) assert(typeof t.pro === 'number', 'every task row carries `pro`');
   eq(tasks.find((t) => t.id === 1).pro, 5, 'type 1 tasks count trips');
+});
+
+test('tasks: claimed route rewards restore under the client plan key and never replay success', ({ engine, savePath }) => {
+  engine.state.travel.tripCount = 5;
+  eq(call(engine,'task_get_list_reward',{id:101}).reply.code,0);
+  const restored = reopen(savePath);
+  const rows = call(restored,'task_load_list',{}).reply.reward;
+  eq(rows.find(x=>x.id===1).pro,1);
+  assert(!rows.some(x=>x.id===101),'claim request ids must not leak into loaded plan ids');
+  const before = JSON.stringify(restored.state.items);
+  const repeat = call(restored,'task_get_list_reward',{id:101});
+  eq(repeat.reply.code,1,'success would pop up a second reward');
+  eq(pushNamed(repeat,'task_load_list')[0].data.reward.find(x=>x.id===1).pro,1);
+  eq(JSON.stringify(restored.state.items),before);
 });
 
 /* ==================================================================== 目的地系统

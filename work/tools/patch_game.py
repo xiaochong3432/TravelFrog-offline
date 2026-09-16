@@ -22,6 +22,63 @@ MAIN = os.path.join(WEB, "js", "main.min.js")
 CLEAN = MAIN + ".clean"
 
 PATCHES = [
+    (
+        "merchant updates stock and closes a finished visit",
+        'var n=core.Time.getServerTime();this.serverData.shop.start_time<n&&this.serverData.shop.leave_time>n&&',
+        'var n=core.Time.getServerTime(),o=core.PageManage.getInstance().getControl(FurnitureShopController,core.ViewLayerType.WindowLayer);'
+        'egret.clearTimeout(this.timerShopClose);'
+        'if(o){if(!(this.serverData.shop.start_time<n&&this.serverData.shop.leave_time>n)){'
+        'core.PageManage.getInstance().removeControl(FurnitureShopController,core.ViewLayerType.WindowLayer);'
+        'core.DisplayManage.getInstance().popup(new ModalAlert(_("嘟嘟已经收拾回家了")));'
+        '}else if(o.view)o.view.update();}'
+        'this.serverData.shop.start_time<n&&this.serverData.shop.leave_time>n&&',
+    ),
+    (
+        "compost data refreshes its own view",
+        'this.compostData.compost_list=Utils.convertArray(e.compost_list),this.dispatchEvent(new core.Event(FurnitureEventType.UPDATE_TUMBER))',
+        'this.compostData.compost_list=Utils.convertArray(e.compost_list),this.dispatchEvent(new core.Event(FurnitureEventType.UPDATE_COMPOST))',
+    ),
+    (
+        "hidden compost clears its old image",
+        't.prototype.update_compost=function(){var e=this.getModel(FurnitureModel).compostData;',
+        't.prototype.update_compost=function(){this.compost.source="";var e=this.getModel(FurnitureModel).compostData;',
+    ),
+    (
+        "bag packing checks slot type and inventory",
+        't.prototype.setBagData=function(e,t,i){var n=this;if(void 0===t&&(t=-1),this.bagDataList.length>e)',
+        't.prototype.setBagData=function(e,t,i){var n=this;void 0===t&&(t=-1);'
+        'if(!Number.isInteger(e)||e<0||e>=4)return!1;'
+        'if(t!==-1){var q=this.getItemInfo(t);if(!q||q.type!==[0,1,2,2][e]||(this.bagDataList[e]!==t&&this.getHouseItemCount(t)<1))return!1;}'
+        'if(this.bagDataList.length>e)',
+    ),
+    (
+        "desk packing checks slot type and inventory",
+        't.prototype.setDeskData=function(e,t,i){var n=this;if(void 0===t&&(t=-1),this.deskDataList.length>e)',
+        't.prototype.setDeskData=function(e,t,i){var n=this;void 0===t&&(t=-1);'
+        'if(!Number.isInteger(e)||e<0||e>=8)return!1;'
+        'if(t!==-1){var q=this.getItemInfo(t);if(!q||q.type!==[0,0,1,1,2,2,2,2][e]||(this.deskDataList[e]!==t&&this.getHouseItemCount(t)<1))return!1;}'
+        'if(this.deskDataList.length>e)',
+    ),
+    (
+        "bag does not draw rejected items",
+        'Music.play("SE_Enter"),this.itemModel.setBagData(i,e,a);var s=',
+        'Music.play("SE_Enter");if(!this.itemModel.setBagData(i,e,a))return;var s=',
+    ),
+    (
+        "desk does not draw rejected items",
+        'Music.play("SE_Enter"),this.itemModel.setDeskData(i,e,a),this.SetclearBtnState();var s=',
+        'Music.play("SE_Enter");if(!this.itemModel.setDeskData(i,e,a))return;this.SetclearBtnState();var s=',
+    ),
+    (
+        "drawing starts without an invitation",
+        'this.data={state:DrawingState.accept,guest:-1,bag:[],pages:[],colls:[],show_coll:0,pen_motion:"write"}',
+        'this.data={state:DrawingState.wait,guest:-1,bag:[],pages:[],colls:[],show_coll:0,pen_motion:"write"}',
+    ),
+    (
+        "souvenir page requires a partner",
+        'if(e.getModel(DrawingModel).data.state==DrawingState.accept||e.getModel(DrawingModel).data.state==DrawingState.lock){var l=new Souvenir;',
+        'if(e.getModel(DrawingModel).data.guest>=0&&(e.getModel(DrawingModel).data.state==DrawingState.accept||e.getModel(DrawingModel).data.state==DrawingState.lock)){var l=new Souvenir;',
+    ),
     # NOTE: the original build gated scene entry on
     #   this.loadComplete && isSyncComplete() && GameConfig.activate
     # We deliberately do NOT neutralise that gate: it is what guarantees the role

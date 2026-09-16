@@ -1,7 +1,9 @@
 # 旅行青蛙·中国之旅 —— 离线单机版
 
 把已停运的《旅行青蛙·中国之旅》（国服 Egret H5 客户端）改造成**纯本地、无服务端、无广告、无充值**的单机游戏。
-客户端一行不改即可运行：规则引擎内联进游戏页面，替换掉原有的网络层。
+规则引擎内联进游戏页面，替换掉原有的网络层；客户端修复由可重放补丁维护。
+
+当前 Android 版本 **3.1**（`versionCode=4`），沿用 `com.travelfrog.offline`。升级必须保持包名、签名和 WebView 存储地址不变；不要卸载旧版。详见 [升级与存档规范](docs/构建与打包.md#升级与存档规范31)。
 
 - **244 条客户端协议已实现 217 条**；剩下 27 条是客户端单向发出的推送/上报，服务端无需回包
 - 数值与规则以客户端自身逻辑为准绳：60 张数据表从客户端加密包解出，另加原版调参表与归档的地图数据
@@ -41,7 +43,7 @@ dist/               玩家说明书、启动器脚本、签名证书（**不含*
 
 ```bash
 # 1) 引擎单元测试（最快的一环，改逻辑先跑它）
-node work/tools/engine_test.js                 # 期望 346 passed, 0 failed
+node work/tools/engine_test.js                 # 期望 362 passed, 0 failed
 #    未包含客户端美术资源时（见下节），会有 1 条用例标记 SKIP，属正常
 
 # 2) 在浏览器里真跑（headless Edge 分步驱动）
@@ -53,7 +55,7 @@ python work/tools/bundle_engine.py
 
 # 4) 出包
 python work/tools/build_pc_zip.py              # PC 解压即玩包
-python work/tools/build_wrapper_apk.py         # 安卓外壳 APK（未签名）
+python work/tools/build_android_apk.py         # 3.1 安卓包，沿用 android-apk 的包名与现有签名
 python work/tools/sign_apk.py --in <unsigned.apk> --out <signed.apk>
 python work/tools/apk_identity.py              # 期望 RESULT: OK
 ```
@@ -77,8 +79,8 @@ python work/tools/bundle_engine.py    # 重建内联引擎
 
 仓库**不提供**成品包，也**不使用 GitHub Releases**。成品（安卓 APK / PC 解压即玩包）
 由项目自身的发布渠道提供；需要自己出包时按 `docs/构建与打包.md` 构建。
-两个 Android 包名（本仓库的 `com.frog.offline` 与早期接手版本的 `com.travelfrog.offline`）
-**存档互不相通**，换包前请先在游戏内悬浮球里「导出存档」。
+当前 3.1 使用 `com.travelfrog.offline`；历史 HTTP 外壳使用 `com.frog.offline`。
+两者存档隔离，不能互相当作升级包；当前开发应沿用 `android-apk/`，不得通过改包名或卸载来解决安装冲突。
 
 ## 可移植性
 

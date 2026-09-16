@@ -11,9 +11,10 @@
 | 存档导出/导入 | 无原生桥（只靠 WebView 存储） | 有 `SaveBridge`，悬浮球可导出/导入存档 |
 | 包名 | `com.travelfrog.offline` | `com.frog.offline` |
 
-> ⚠️ **包名不同 = 存档不互通**。Android 按包名隔离应用数据，两个包会并存、各有一份存档。
-> 想共用存档，需要把这一份的 `applicationId`/`namespace` 对齐到 `com.frog.offline`
-> （并且用同一把签名密钥），这属于对原贡献的改动，请先在 Issue/PR 里和作者确认。
+当前版本 **3.1**（`versionCode=4`）继续使用这一份外壳的 `com.travelfrog.offline`。
+升级时不得改为 `com.frog.offline`：Android 按应用包名隔离数据，改名会使原存档不可见。
+必须保持原签名、`file:///android_asset/index.html` 与存储键 `frog.offline.save`，覆盖安装而不卸载。
+APK 文件名采用 `TravelFrog-offline-3.1.apk`；文件名不决定应用身份。
 
 ## 一、为什么 `web/` 不在仓库里
 
@@ -37,6 +38,16 @@ python work/tools/bundle_engine.py    # 重建内联引擎（__offline-engine.js
 
 ## 二、构建
 
+现有 SDK 可直接编译同一份 Java/Manifest（无需下载 Gradle）：
+
+```bash
+# 配置 JAVA_HOME 与 ANDROID_HOME，准备与已安装版本一致的签名密钥/证书
+python work/tools/build_android_apk.py
+# -> dist/TravelFrog-offline-3.1.apk；签名验证并逐文件核对 APK 资产
+```
+
+也可使用 Gradle（Release 产物仍需使用原密钥签名，不能拿 debug 签名覆盖正式包）：
+
 ```bash
 cd android-apk
 # 需要：JDK 17、Android SDK（platform 35 + build-tools）、Gradle 8.7+
@@ -47,8 +58,8 @@ gradle :app:assembleRelease        # 或在 Android Studio 里直接 Build
 - SDK 路径通过 `ANDROID_HOME` 或 `local.properties` 的 `sdk.dir` 指定（`local.properties` 已被 gitignore）。
 - 产物在 `app/build/outputs/apk/`；本仓库的 `.gitignore` 已排除 `app/build/` 与 `*.apk`。
 
-## 三、和主打包链的取舍
+## 三、升级边界
 
-- 想要**存档导出/导入**与身份校验（`apk_identity.py`），用主打包链；
-- 想要**在 Android Studio 里调试**或自带 SDK 构建，用这一份；
-- 两边都请遵守同一把签名密钥，否则老用户无法覆盖安装（Android 要求升级包同一签名）。
+- 本分支的 3.1 升级继续使用本工程；`build_wrapper_apk.py` 的 HTTP 外壳有不同包名及存储地址，不能替代。
+- Android Studio 的调试构建可能使用另一张证书；签名不匹配时应修正构建配置，禁止卸载原包规避。
+- 版本、签名、覆盖安装和存档验收步骤见 `docs/构建与打包.md`。
