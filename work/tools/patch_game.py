@@ -23,6 +23,21 @@ CLEAN = MAIN + ".clean"
 
 PATCHES = [
     (
+        "postcard sky layers honor their target size",
+        'v.texture=_,v.x=f.layer[1],v.y=f.layer[2],p.addChild(v)',
+        'v.texture=_,v.x=f.layer[1],v.y=f.layer[2],f.size&&(v.width=f.size[0],v.height=f.size[1]),p.addChild(v)',
+    ),
+    (
+        "postcard load cache keys include ordered layers and sizes",
+        'i+=o.layer[0].toString()+o.layer[1].toString()+o.layer[2].toString()',
+        'i+=JSON.stringify(o)',
+    ),
+    (
+        "postcard render cache keys include ordered layers and sizes",
+        'n+=l.layer[0].toString()+l.layer[1].toString()+l.layer[2].toString()',
+        'n+=JSON.stringify(l)',
+    ),
+    (
         "room observes role and weather changes",
         'DrawingEventType.ITEM_CHANGE,RoleEventType.updateDecoration)',
         'DrawingEventType.ITEM_CHANGE,RoleEventType.updateDecoration,RoleEventType.loadRole,"offlineWeatherChanged")',

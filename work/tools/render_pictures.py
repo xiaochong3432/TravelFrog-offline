@@ -44,6 +44,8 @@ def render(pid, dy=0, dx=0, only_pose=False):
             im = Image.open(fp).convert('RGBA')
         except Exception:
             continue
+        if l.get('size'):
+            im = im.resize(tuple(l['size']), Image.Resampling.LANCZOS)
         sc = l.get('scale', 1)
         if sc != 1:
             im = im.resize((max(1, int(im.width * sc)), max(1, int(im.height * sc))),
@@ -68,6 +70,7 @@ def sheet(pids, out, dy=0, dx=0, cols=5):
     if not tiles:
         print('nothing rendered')
         return
+    cols = min(cols, len(tiles))
     rows = (len(tiles) + cols - 1) // cols
     out_im = Image.new('RGB', (cols * W, rows * H), (32, 32, 32))
     for i, (p, bg, used) in enumerate(tiles):

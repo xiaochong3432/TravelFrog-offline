@@ -2334,7 +2334,7 @@ const LAYERS = JSON.parse(fs.readFileSync(
   path.join(__dirname, '..', 'run', 'engine', 'data', 'picture-layers.json'), 'utf8'));
 
 /* Shipped PNG header size, for the placement rules that need the sprite's real
-   dimensions (the pose anchor is bottom-centre). */
+   dimensions (poses use their PNG registration frame). */
 const ART_DIR = path.join(__dirname, '..', 'run', 'web', 'resource', 'China', 'images');
 function artSize(rid) {
   const rel = RES_TABLE[String(rid)];
@@ -2355,7 +2355,7 @@ test('layers: every emitted resId is a real key in resources.json', () => {
   // wrong-looking postcard rather than an error. Assert it directly instead.
   const bad = [];
   for (const [pid, rec] of Object.entries(LAYERS)) {
-    for (const l of rec.layers.concat(rec.travelers || [])) {
+    for (const l of rec.layers) {
       if (!Object.prototype.hasOwnProperty.call(RES_TABLE, String(l.layer[0]))) {
         bad.push(`${pid}: resId ${l.layer[0]}`);
       }
@@ -2367,23 +2367,22 @@ test('layers: every emitted resId is a real key in resources.json', () => {
 test('layers: every layer actually intersects the 500x350 canvas', () => {
   /* The invariant that matters is VISIBILITY, not a plausible-looking top-left:
      art taller/wider than the frame is legitimately placed so that only part of it
-     is inside (the ground bands are bottom-aligned, and a pose is anchored by its
-     bottom-centre), so a negative top-left is a correct answer for those. */
+     is inside, so a negative top-left is a correct answer for those. */
   const out = [];
   let frogs = 0;
   for (const [pid, rec] of Object.entries(LAYERS)) {
     for (const l of rec.layers) {
       const [rid, x, y] = l.layer;
-      const s = artSize(rid);
+      const s = l.size || artSize(rid);
       if (s) {
         const w = s[0] || 1, h = s[1] || 1;
         if (x + w <= 0 || x >= 500 || y + h <= 0 || y >= 350) {
           out.push(`${pid}: ${RES_TABLE[String(rid)]} at (${x},${y}) ${w}x${h}`);
         }
-      } else if (x < -260 || x > 460 || y < -400 || y > 400) {
+      } else if (!Number.isFinite(x) || !Number.isFinite(y)) {
         out.push(`${pid}: (${x},${y})`);
       }
-      if (l.scale) frogs++;
+      if (l.role === 'qw') frogs++;
     }
   }
   eq(out.length, 0, `layers that never touch the frame: ${out.slice(0, 5)}`);
@@ -2400,45 +2399,45 @@ test('layers: every layer actually intersects the 500x350 canvas', () => {
   assert(frogs >= 200, `expected >=200 frogs, got ${frogs}`);
 });
 
-test('layers: traveller slots sit in a wider band (three friends spread out)', () => {
-  // The table's travellerPos.x reaches 227, i.e. 477 centre-relative. That is
-  // expected for a three-friend layout and is why travellers are kept in a
-  // SEPARATE list: they are only drawn for friends actually on the trip.
-  const out = [];
+test('layers: characters retain their species and one companion per photograph', () => {
+  let checked = 0;
   for (const [pid, rec] of Object.entries(LAYERS)) {
-    for (const l of rec.travelers || []) {
-      const [, x, y] = l.layer;
-      if (x < -260 || x > 520 || y < -400 || y > 400) out.push(`${pid}: (${x},${y})`);
+    const actors = rec.layers.filter(l => l.role);
+    assert(actors.filter(l => l.role !== 'qw').length <= 1, `${pid}: multiple companions overlap`);
+    for (const actor of actors) {
+      checked++;
+      const name = path.basename(RES_TABLE[String(actor.layer[0])]).toLowerCase();
+      // These special poses use a bare filename, e.g. wet3, rather than _qw.
+      if (actor.role === 'qw' && /^(wet|dry|fuza)[0-3]$|^gz_alone$/.test(name)) continue;
+      assert(name.includes(actor.role), `${pid}: ${actor.role} uses another species: ${name}`);
     }
   }
-  eq(out.length, 0, `traveller coords out of band: ${out.slice(0, 5)}`);
+  assert(checked > 350, 'character metadata must cover composed photographs');
 });
 
-test('layers: every pose is anchored by its BOTTOM-CENTRE, inside the 500x350 frame', () => {
-  /* Recovered rule (see build_picture_layers.py): the role skeleton's root bone is
-     the sprite's bottom-centre and sits at (250 + frogPos.x, 350 + frogPos.y). The
-     old rule used a top-left anchor with the canvas MIDDLE as the y origin, which
-     floated every frog ~175-h px -- the "小青蛙飞在天上" report.
-     The check is on the ANCHOR, not the top-left: a sprite taller than the frame
-     legitimately has a negative top-left while its feet stay on the ground. */
-  skipUnless(fs.existsSync(ART_DIR),
-    '客户端美术资源不在本 checkout 内（' + ART_DIR + '）');
-  const bad = [];
-  let checked = 0;
-  const check = (pid, l) => {
-    const [rid, x, y] = l.layer;
-    const s = artSize(rid);
-    if (!s) return;
-    checked++;
-    const cx = x + s[0] / 2, cy = y + s[1];
-    if (cx < -1 || cx > 501 || cy < 100 || cy > 351) bad.push(`${pid}: anchor (${cx},${cy})`);
-  };
-  for (const [pid, rec] of Object.entries(LAYERS)) {
-    for (const l of rec.layers) if (l.scale) check(pid, l);
-    for (const l of rec.travelers || []) check(pid, l);
+test('layers: known reference compositions keep their registration and draw order', () => {
+  const names = pid => LAYERS[pid].layers.map(l => path.basename(RES_TABLE[String(l.layer[0])]));
+  // Reviewed Beijing reference: frog and gecko sit on the painted stone ledge.
+  eq(JSON.stringify(LAYERS[2000].layers.map(l => l.layer)),
+    JSON.stringify([[59,0,0],[157,111,205],[223,336,241]]), 'Beijing registration changed');
+  eq(names(2003).join(','), 'g_guangzhou1,GZ1_BH,GZ1_QW', 'companion must be behind frog, above scenery');
+  for (const pid of [107,108]) {
+    const layers = LAYERS[pid].layers;
+    const frog = layers.findIndex(l => l.role === 'qw');
+    const friend = layers.findIndex(l => l.role === 'bh');
+    assert(friend > 0 && friend < frog && frog < layers.length-1, 'bamboo z-order');
   }
-  assert(checked > 150, `expected to check many poses, only saw ${checked}`);
-  eq(bad.length, 0, `pose anchors outside the frame: ${bad.slice(0, 5)}`);
+  // This single role sprite ALREADY contains both animals and the stump.
+  const stump = LAYERS[202].layers;
+  eq(stump[1].layer[0], 1021, 'stump must stay after background and before branches');
+  eq(stump.filter(l => l.role).length, 1, 'do not add a second frog over the combined sprite');
+  const size = artSize(1021);
+  if (size) eq(stump[1].layer[2] + size[1], 350, 'cut stump bottom must touch the crop edge');
+  const umbrella = LAYERS[1003].layers;
+  const lining = umbrella.find(l => l.role === 'qw');
+  const canopy = umbrella[umbrella.length - 1];
+  eq(canopy.layer[0], 394, 'canopy must be above both characters');
+  assert(canopy.layer[2] < lining.layer[2] - 10, 'outer canopy must sit above the lining');
 });
 
 test('layers: album_load hands the client composed layers, not a bare id', () => {

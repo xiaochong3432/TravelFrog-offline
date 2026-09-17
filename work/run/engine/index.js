@@ -119,7 +119,6 @@ function withLayers(p) {
   const rec = pictureLayers[String(p.pic_id)];
   if (!rec) return p;
   const out = Object.assign({}, p, { layers: rec.layers });
-  if (rec.travelers) out.travelers = rec.travelers;
   return out;
 }
 
