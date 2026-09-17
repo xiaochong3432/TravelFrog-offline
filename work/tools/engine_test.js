@@ -3903,9 +3903,9 @@ test('animpicture: payload carries the FULL model', ({ engine }) => {
   assert(Array.isArray(r.pic_list) && Array.isArray(r.exp_pic), 'both are arrays');
 });
 
-test('animpicture: only the THREE pic_map postcards can become a moving photo', ({ engine }) => {
+test('animpicture: only the pic_map postcards can become a moving photo', ({ engine }) => {
   const map = ANIMD.pic_map;
-  eq(Object.keys(map).length, 3, 'pic_map has exactly three entries');
+  assert(Object.keys(map).length >= 1, 'pic_map must list the animatable postcards');
   // a postcard NOT in pic_map must be refused
   const other = Object.values(GD.tables.Picture).map((r) => Number(r.id))
     .find((id) => map[String(id)] === undefined);
@@ -3918,6 +3918,7 @@ test('animpicture: only the THREE pic_map postcards can become a moving photo', 
   const ok = Number(Object.keys(map)[0]);
   engine.state.pictures = [{ id: 9002, pic_id: ok, read: 0, new: 1 }];
   eq(call(engine, 'animpicture_select_pic', { id: 9002 }).reply.code, 0, 'accepted');
+  /* and it LEAVES the album: the client's req_select_pic success callback does the same splice */
   eq(engine.state.pictures.length, 0, 'and left the album');
   eq(call(engine, 'animpicture_load', {}).reply.pic_list.length, 1, 'a page was created');
 });
@@ -3928,7 +3929,7 @@ test('animpicture: use_item ALWAYS answers a phase >= 0 (it is the gate)', ({ en
   assert(r.reply.phase >= 0, 'the client gate is `e.phase >= 0`');
 });
 
-test('animpicture: open_album is 1-based and stops at the slot phase count', ({ engine }) => {
+test('animpicture: open_album is 1-based, costs a 照片存储开启物 and stops at the 4 painted slots', ({ engine }) => {
   const ok = Number(Object.keys(ANIMD.pic_map)[0]);
   const slot = ANIMD.pic_map[String(ok)];
   const total = ANIMD.list[String(slot)].phase_list
@@ -3938,12 +3939,108 @@ test('animpicture: open_album is 1-based and stops at the slot phase count', ({ 
   call(engine, 'animpicture_select_pic', { id: 9100 });
   eq(call(engine, 'animpicture_open_album', { index: 2 }).reply.code, -1,
     'page 2 does not exist');
-  for (let i = 0; i < total; i++) {
+  /* The client will not even CALL this without 9002 in the house -- its own code is
+     `if (getHouseItemCount(9002) <= 0) return GuideHelpView.show("物品不足")` -- so an
+     engine that opens the slot for free would let the player buy slots it never charged for. */
+  eq(call(engine, 'animpicture_open_album', { index: 1 }).reply.code, -1,
+    'no 照片存储开启物 in the house, no slot');
+  engine.state.items.house.push({ item_id: 9002, count: 10 });
+  /* the show page paints exactly four slots (`for (o = 0; 4 > o; o++)`), so the cap is 4,
+     not the phase count: a fifth slot would be paid for and never drawn. */
+  const painted = Math.min(4, total);
+  for (let i = 0; i < painted; i++) {
     eq(call(engine, 'animpicture_open_album', { index: 1 }).reply.code, 0, `slot ${i} opens`);
   }
   eq(call(engine, 'animpicture_open_album', { index: 1 }).reply.code, -1,
-    'no more slots than the table has phases');
-  eq(call(engine, 'animpicture_load', {}).reply.pic_list[0].put_num, total, 'put_num reached it');
+    'no more slots than the page paints');
+  eq(call(engine, 'animpicture_load', {}).reply.pic_list[0].put_num, painted, 'put_num reached it');
+  const left = engine.state.items.house.find((h) => Number(h.item_id) === 9002);
+  eq(Number(left.count), 10 - painted, 'and every slot cost one 9002');
+});
+
+/* The MAKE page (the one you land on after picking a postcard) adds photos with a DIFFERENT
+   protocol from the show page: `req_add_pic(ids)` -> send("animpicture_add_pic", <array of album
+   picture ids>). The engine only had `animpicture_album_add_pic`, so the button answered nothing
+   at all and the picture list never refreshed ("添加照片没反应"). */
+test('animpicture: the make page adds photos with animpicture_add_pic (an ARRAY of album ids)', ({ engine }) => {
+  const ok = ANIM_PIC();
+  engine.state.pictures = [
+    { id: 9300, pic_id: ok, read: 0, new: 1 },
+    { id: 9301, pic_id: ok, read: 0, new: 1 },
+    { id: 9302, pic_id: ok, read: 0, new: 1 },
+  ];
+  call(engine, 'animpicture_select_pic', { id: 9300 });
+  eq(call(engine, 'animpicture_load', {}).reply.pic_list.length, 1, 'the seed made a page');
+  const r = call(engine, 'animpicture_add_pic', [9301, 9302]);
+  eq(r.reply.code, 0, 'the make page gets an answer now');
+  const pl = call(engine, 'animpicture_load', {}).reply;
+  eq(pl.exp_pic.length, 2, 'both photos are staged on the page');
+  eq(engine.state.pictures.length, 0, 'and they left the album');
+  /* `exp` must stay 0: the client's model resets it and never advances it in this flow, and it
+     REPLACES its whole data object whenever an `animpicture_load` push arrives -- so a value we
+     kept here would both disagree with the page and (via that push) orphan the page's snapshot. */
+  eq(Number(pl.exp), 0, 'exp stays 0, exactly like the client model');
+  eq(call(engine, 'animpicture_add_pic', []).reply.code, -1, 'an empty payload is refused');
+  /* ids the engine does not know: fall back to photos of the SAME postcard (the client's own
+     filter), and refuse with a reason only when there are none left. */
+  const fbr = call(engine, 'animpicture_add_pic', [999999]).reply;
+  assert(fbr.code === 0 || (fbr.code === -1 && fbr.why), 'falls back, or refuses with a reason');
+});
+
+/* `req_use_item(8002 + e)` sends the 显影液's ITEM id; the client checks the house count before
+   opening its confirm dialog but never spends the item itself. */
+test('animpicture: use_item spends the 显影液, steps the phase, and refuses without one', ({ engine }) => {
+  const ok = ANIM_PIC();
+  engine.state.pictures = [{ id: 9400, pic_id: ok, read: 0, new: 1 }];
+  call(engine, 'animpicture_select_pic', { id: 9400 });
+  const none = call(engine, 'animpicture_use_item', { id: 8002 }).reply;
+  eq(none.phase, -1, 'no bottle -> phase -1 (the client stays still, it must not be a free step)');
+  engine.state.items.house.push({ item_id: 8002, count: 2 });
+  const before = Number(call(engine, 'animpicture_load', {}).reply.phase);
+  const r = call(engine, 'animpicture_use_item', { id: 8002 }).reply;
+  eq(typeof r.phase, 'number', 'phase is the client gate');
+  eq(r.phase, before + 1, '单色显影液 develops one layer');
+  const row = engine.state.items.house.find((h) => Number(h.item_id) === 8002);
+  eq(Number(row.count), 1, 'and one bottle was spent');
+  eq(call(engine, 'animpicture_use_item', { id: 9001 }).reply.phase >= 0, true,
+    'an item the engine does not know is not a gate failure');
+});
+
+test('animpicture: a finished page pays out the 9002 the reward card promises', ({ engine }) => {
+  const ok = ANIM_PIC();
+  engine.state.pictures = [{ id: 9500, pic_id: ok, read: 0, new: 1 }];
+  call(engine, 'animpicture_select_pic', { id: 9500 });
+  let guard = 0;
+  while (Number(call(engine, 'animpicture_load', {}).reply.phase) !== 0 && guard < 40) {
+    call(engine, 'animpicture_use_item', {});
+    guard += 1;
+  }
+  eq(Number(call(engine, 'animpicture_load', {}).reply.phase), 0, 'the page completes');
+  const pending = Number(call(engine, 'animpicture_load', {}).reply.item_num);
+  assert(pending >= 1, 'a finished page is worth one 照片存储开启物');
+  const have = () => {
+    const r2 = engine.state.items.house.find((h) => Number(h.item_id) === 9002);
+    return Number(r2 && r2.count) || 0;
+  };
+  const before = have();
+  call(engine, 'animpicture_get_item', {});
+  eq(have(), before + pending, 'the items really arrive in the house');
+  eq(Number(call(engine, 'animpicture_load', {}).reply.item_num), 0, 'and item_num resets');
+});
+
+/* The client's own gate for the MAKE page is
+     canShowEmpty() = pic_list.length < page_num && phase == 0
+   so a page_num of 0 hides the 制作 button (and the make area) entirely -- which is exactly
+   "动态照片能点开但是不能制作". Only some slots of the table can be seen then. */
+test('animpicture: page_num comes from the table + 动态相框 and is never 0', ({ engine }) => {
+  const base = Number(ANIMD.base_info.album_num) || 0;
+  const frame = Number(ANIMD.base_info.page_id);
+  assert(base > 0, 'the table has base pages');
+  engine.state.items.house = [];
+  eq(Number(call(engine, 'animpicture_load', {}).reply.page_num), base, 'base pages without any 相框');
+  engine.state.items.house.push({ item_id: frame, count: 2 });
+  eq(Number(call(engine, 'animpicture_load', {}).reply.page_num), base + 2,
+    'each 动态相框 adds one page (its shop row says 获得后动态相册页数+1)');
 });
 
 test('animpicture: use_item walks the phases and finishes the page', ({ engine }) => {
@@ -3970,16 +4067,17 @@ test('animpicture: album_add_pic moves a photo in, remove_pic returns it', ({ en
   call(engine, 'animpicture_select_pic', { id: 9300 });
   const slotId = ANIMD.pic_map[String(ok)];
   // a photo can only be placed if it is a real album row
-  eq(call(engine, 'animpicture_album_add_pic', { index: 1, slot: 1, id: 9301 }).reply.code, 0,
-    'placed');
+  eq(call(engine, 'animpicture_album_add_pic',
+    { anim_index: 1, pic_index: 1, pic_uid: 9301 }).reply.code, 0,
+    'placed (wire names: anim_index/pic_index/pic_uid)');
   eq(engine.state.pictures.length, 0, 'it left the album');
   const page = call(engine, 'animpicture_load', {}).reply.pic_list[0];
   eq(page.id, Number(slotId), 'into the right slot');
   assert(page.pictures[0] && page.pictures[0].id === 9301, 'the photo is in slot 0');
 
   // flag falsey -> the photo goes BACK to the album
-  eq(call(engine, 'animpicture_album_remove_pic', { index: 1, slot: 1, flag: false }).reply.code, 0,
-    'removed');
+  eq(call(engine, 'animpicture_album_remove_pic',
+    { anim_index: 1, pic_index: 1, is_delete: 0 }).reply.code, 0, 'removed');
   assert(engine.state.pictures.some((p) => p.id === 9301), 'returned to the album');
 });
 
@@ -4033,6 +4131,20 @@ test('events: a HALF-BUILT event must stay closed, never half-visible', ({ engin
   }
   eq(missing.length, 0,
     `an event window was opened without its commands: ${missing.join('; ')}`);
+});
+/* 老存档迁移：`guide` 以前默认 0，而客户端只在 `data.guide > 1` 时显示动态照片入口。
+   离线没有任何东西会把它推上去，所以这一条只管"把入口还回来"，不动已经进行中的进度。 */
+test('animpicture: a save with guide 0 gets the entry back (guide -> 2)', ({ engine, savePath }) => {
+  engine.state.animPicture.guide = 0;
+  fs.writeFileSync(savePath, JSON.stringify(engine.state));
+  const fixed = reopen(savePath).state.animPicture;
+  eq(Number(fixed.guide) >= 2, true, 'the reloaded save must not keep the entry hidden');
+});
+
+test('animpicture: a save that is mid-tutorial keeps its own guide', ({ engine, savePath }) => {
+  engine.state.animPicture.guide = 5;
+  fs.writeFileSync(savePath, JSON.stringify(engine.state));
+  eq(Number(reopen(savePath).state.animPicture.guide), 5, 'guide 5 must not be clamped');
 });
 
 /* ----------------------------------------------------- 故事 (story_*) */

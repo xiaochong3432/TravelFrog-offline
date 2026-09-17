@@ -797,7 +797,7 @@
            content is this overlay. */
         var CREDITS_TITLE = '制作人员';
         var CREDITS_GROUP = '旅行青蛙离线版制作组';
-        var CREDITS_NAMES = ['Balticx', '兔子国国王', '西瓜给我咬一口', 'yxcatqwq'];
+        var CREDITS_NAMES = ['Balticx', '兔子国国王', '西瓜给我咬一口', 'yxcatqwq', '优帕solace'];
 
         function showCredits() {
             if (!document || !document.body) return false;
@@ -1084,14 +1084,48 @@
              ...
            }
 
-       AdsVideoView loads resource/China/video/test.mp4 and closes ONLY when the video
-       ENDS (or via its own close button). Offline there is nothing to advertise and
-       autoplay/decode is not reliable, so the player sits on a black screen with nothing
-       on it -- and because nothing throws, the view-failure guard above cannot help.
+       `AdsVideoView`'s CONSTRUCTOR is what loads the video, and it does so before anyone
+       can veto the view:
 
-       So the player is not opened at all. Instead we take the branch the client itself
-       takes when the video ends -- `AdsModel.req_share(1)`, i.e. adsmgr_share{ads_type:1},
-       which the engine already answers by mailing the daily gift -- and say why. */
+           t.video = new egret.Video;  t.video.load("resource/China/video/test.mp4"); ...
+
+       It is a 4.2 MB ad video, and once the class below is stubbed out nothing loads it. The
+       debug `play_video` command is the only other caller and it registers an IOError handler,
+       so even an absent file would just log egret's "video load error happened".
+
+       and egret's HTML5 player, on load, sets `autoplay` AND calls `video.play()` at once,
+       on a 1x1 element that is never even attached to the DOM:
+
+           n.setAttribute("autoplay","autoplay"); ... n.load(); this.videoPlay();  // -> video.play()
+           n.height = 1; n.width = 1; n.style.zIndex = "-88888";
+
+       So the ad's AUDIO starts playing the moment the view is constructed, from an
+       invisible detached element. Two earlier mistakes of ours made that worse: our
+       `addChild` interception below swallowed the VIEW (so the player was never shown and
+       had no close button), and nothing blocked the play() -- the APK's WebView sets
+       `setMediaPlaybackRequiresUserGesture(false)`, and in a plain browser it depends on
+       the autoplay policy, which is exactly the kind of difference that makes a bug look
+       "occasional". Net effect for the player: the game's music keeps playing while ~52 s
+       of the ad's voice/music plays over it, with no way to stop it. (Reported as
+       "背景声音偶发出现人声/杂音".)
+
+       Fix, in three layers:
+         1. `installAdsVideoStub()` -- `AdsVideoView` is a plain global in main.min.js, so
+            the class itself is replaced by an inert stand-in: nothing loads, no element
+            exists. The poster still "opens" something and still grants the daily gift.
+         2. `stopAdMedia()` -- belt and braces: if a real view ever gets constructed, stop
+            and dispose the media element it created, and make its `close()` harmless (its
+            ENDED handler calls `close()` -> `this.parent.removeChild(this)`, and this view
+            is deliberately never added to a parent = TypeError 52 s later).
+         3. `installSilentVideoGuard()` -- last resort: every `<video>` element the client
+            creates is muted at creation and again at every `play()`. The game has exactly
+            two places that create one (AdsVideoView and the debug `play_video` command), so
+            muting videos cannot silence anything the player is meant to hear -- and the
+            guard deliberately does NOT touch `<audio>`, which is what BGM and every SE use.
+
+       Instead of the video we take the branch the client itself takes when the video ends --
+       `AdsModel.req_share(1)`, i.e. adsmgr_share{ads_type:1}, which the engine already
+       answers by mailing the daily gift -- and say why. */
     function installOfflineAds() {
         if (!window.core || !core.DisplayManage) return false;
         var dm = core.DisplayManage.getInstance();
@@ -1099,12 +1133,14 @@
         var layer = null;
         try { layer = dm.getNoticeLayer(); } catch (e) { return false; }
         if (!layer || layer.__adsPatched) return false;
+        installAdsVideoStub();
         var oAdd = layer.addChild;
         layer.addChild = function (child) {
             var cls = '';
             try { cls = String(child && child.__class__ || ''); } catch (e) { cls = ''; }
             if (cls === 'AdsVideoView') {
                 push('[ads]', ['ad video poster tapped; granting the daily gift instead']);
+                stopAdMedia(child);
                 try {
                     core.SocketManage.getInstance().send('adsmgr_share',
                         new core.Action2(function (r) {
@@ -1128,6 +1164,82 @@
         push('[shell]', ['offline ads guard installed']);
         return true;
     }
+
+    /* Replace the ad player class itself, so constructing it cannot create a media element.
+       The client's handler resolves `AdsVideoView` through the global scope, and main.min.js
+       declares it with a top-level `var`, so overwriting the global is enough. */
+    function installAdsVideoStub() {
+        var real = window.AdsVideoView;
+        if (!real || real.__offlineInert) return false;
+        function OfflineAdsStub() { /* deliberately creates nothing: no skin, no video, no sound */ }
+        OfflineAdsStub.prototype.__class__ = 'AdsVideoView';   // kept so the guard above still recognises it
+        OfflineAdsStub.__offlineInert = true;
+        window.AdsVideoView = OfflineAdsStub;
+        push('[shell]', ['AdsVideoView replaced by an inert stand-in (no video element is created)']);
+        return true;
+    }
+
+    /* If a real ad view slipped through, stop what its constructor already started. */
+    function stopAdMedia(view) {
+        try {
+            var v = view && view.video;
+            if (v) {
+                try { if (v.close) v.close(); } catch (e) { /* already closed */ }
+                try { v.once = function () { return this; }; } catch (e) { /* ignore */ }
+                var el = v.video;                                  /* egret's HTMLVideoPlayer */
+                try { if (el && el.pause) el.pause(); } catch (e) { /* ignore */ }
+                try { if (el && el.removeAttribute) el.removeAttribute('src'); } catch (e) { /* ignore */ }
+            }
+            /* its ENDED handler calls close(); the view has no parent, so the real close()
+               would throw on this.parent.removeChild -- give it a harmless one instead. */
+            if (view) view.close = function () { try { Music.onResume(); } catch (e) { } };
+            push('[ads]', ['ad media stopped and disposed']);
+        } catch (e) {
+            push('[ads]', ['stopAdMedia: ' + String(e)]);
+        }
+        return true;
+    }
+
+    /* Last-resort guard: no <video> in this build may make a sound. <audio> is untouched --
+       that is what the BGM and all 15 SEs use, and silencing it would mute the whole game. */
+    function installSilentVideoGuard() {
+        if (window.__silentVideoGuard) return true;
+        window.__silentVideoGuard = true;
+        var noted = false;
+        function mute(el, how) {
+            try {
+                el.muted = true;
+                el.volume = 0;
+                if (el.setAttribute) el.setAttribute('muted', 'muted');
+                if (!noted) { noted = true; push('[shell]', ['video element silenced (' + how + ')']); }
+            } catch (e) { /* nothing else we can do */ }
+        }
+        var oCreate = document.createElement.bind(document);
+        document.createElement = function (tag) {
+            var el = oCreate.apply(document, arguments);
+            if (String(tag || '').toLowerCase() === 'video') {
+                mute(el, 'createElement');
+                try {
+                    var op = el.play;
+                    el.play = function () { mute(this, 'play'); return op.apply(this, arguments); };
+                } catch (e) { /* ignore */ }
+            }
+            return el;
+        };
+        if (window.HTMLMediaElement && HTMLMediaElement.prototype && HTMLMediaElement.prototype.play) {
+            var oPlay = HTMLMediaElement.prototype.play;
+            HTMLMediaElement.prototype.play = function () {
+                /* catches a video element created before this guard ran, or created some way
+                   other than document.createElement */
+                if (String(this.tagName || '').toUpperCase() === 'VIDEO') mute(this, 'prototype.play');
+                return oPlay.apply(this, arguments);
+            };
+        }
+        return true;
+    }
+
+    /* 装得越早越好：客户端脚本是后加载的，这个守卫不依赖 core/DisplayManage。 */
+    installSilentVideoGuard();
 
     /* ------------------------------------- 5. diagnostics (opt-in) */
     installDiagnostics();
