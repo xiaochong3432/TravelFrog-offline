@@ -3,7 +3,7 @@
 把已停运的《旅行青蛙·中国之旅》（国服 Egret H5 客户端）改造成**纯本地、无服务端、无广告、无充值**的单机游戏。
 规则引擎内联进游戏页面，替换掉原有的网络层；客户端修复由可重放补丁维护。
 
-当前发布版 **3.1**（`versionCode=5`）恢复原路线 **`com.frog.offline`**，使用仓库保留的原签名，并保留原 HTTP 存档地址。构建命令：`python work/tools/build_release_apk.py`（先设置 `FROG_UPGRADE_FROM` 为原版 APK）。`com.travelfrog.offline` 属于另一个包，不能直接覆盖或自动读取其存档。详见 [升级与存档规范](docs/构建与打包.md#升级与存档规范31)。
+当前版本 **3.2**（`versionCode=6`）沿用原路线 **`com.frog.offline`**、原签名和 `http://127.0.0.1:18763/index.html` 存档地址，包含照片图层修订与安卓存档桥补齐。构建命令：`python work/tools/build_release_apk.py`（先设置 `FROG_UPGRADE_FROM` 为实际发布的旧 APK）。`com.travelfrog.offline` 属于另一个包，不能直接覆盖或自动读取其存档。详见 [构建与打包](docs/构建与打包.md) 和 [安卓打包接口规范](docs/安卓打包接口规范.md)。
 
 - **244 条客户端协议已实现 217 条**；剩下 27 条是客户端单向发出的推送/上报，服务端无需回包
 - 数值与规则以客户端自身逻辑为准绳：60 张数据表从客户端加密包解出，另加原版调参表与归档的地图数据
@@ -14,6 +14,7 @@
 
 ```
 docs/               开发者文档（先读这里）
+work/app/src/      安卓外壳 Java 源码（本地 HTTP 服务、WebView 与存档桥）
 work/run/engine/    游戏服务端全部逻辑（引擎 + 协议 + 数据表）
 work/run/server/    路线 A：本地 WebSocket 服务端（仅调试用）
 work/run/web/       游戏网页运行时（页面代码 + 离线补丁 + 内联引擎；resource/ 本地生成）
@@ -21,7 +22,7 @@ work/tools/         数据解密、打包、验收、单测等工具
 work/spec/          字段级逆向规格与解出的权威数据表
 work/notes/         专题发现记录
 work/pristine/      原版客户端 JS 的独立副本（补丁与比对用）
-android-apk/        接手团队贡献的 Gradle 出包工程（自带 SDK 的构建路径，见其 README）
+android-apk/        com.travelfrog.offline 开发路线参考（不是当前发布入口）
 dist/               玩家说明书、启动器脚本、签名证书（**不含** APK / 压缩包）
 ```
 
@@ -43,7 +44,7 @@ dist/               玩家说明书、启动器脚本、签名证书（**不含*
 
 ```bash
 # 1) 引擎单元测试（最快的一环，改逻辑先跑它）
-node work/tools/engine_test.js                 # 期望 362 passed, 0 failed
+node work/tools/engine_test.js                 # 所有检查通过，0 failed
 #    未包含客户端美术资源时（见下节），会有 1 条用例标记 SKIP，属正常
 
 # 2) 在浏览器里真跑（headless Edge 分步驱动）
@@ -55,9 +56,9 @@ python work/tools/bundle_engine.py
 
 # 4) 出包
 python work/tools/build_pc_zip.py              # PC 解压即玩包
-python work/tools/build_android_apk.py         # 3.1 安卓包，沿用 android-apk 的包名与现有签名
-python work/tools/sign_apk.py --in <unsigned.apk> --out <signed.apk>
-python work/tools/apk_identity.py              # 期望 RESULT: OK
+# 设置 FROG_UPGRADE_FROM 为实际发布的旧 com.frog.offline APK 后：
+python work/tools/build_release_apk.py         # 3.2 安卓包，编译原生源码并沿用原签名
+python work/tools/apk_identity.py --apk dist/TravelFrog-offline-3.2.apk # 期望 RESULT: OK
 ```
 
 ## 关于游戏资源
@@ -79,8 +80,8 @@ python work/tools/bundle_engine.py    # 重建内联引擎
 
 仓库**不提供**成品包，也**不使用 GitHub Releases**。成品（安卓 APK / PC 解压即玩包）
 由项目自身的发布渠道提供；需要自己出包时按 `docs/构建与打包.md` 构建。
-3.1 成品为 `dist/TravelFrog-offline-3.1.apk`，包名 `com.frog.offline`。版本由 `work/release.json` 管理。
-用户提供的 V3 实包为 `com.travelfrog.offline`，与原路线不兼容；本次按维护者决定恢复原路线。已使用该 V3 或开发分支的玩家需先导出再导入存档，不能直接卸载。发布前始终核对目标旧 APK 的包名、签名和存储地址。
+3.2 成品为 `dist/TravelFrog-offline-3.2.apk`，包名 `com.frog.offline`。版本由 `work/release.json` 管理。
+用户提供的 V3 实包为 `com.travelfrog.offline`，与原路线不兼容；3.1 已恢复原路线，3.2 继续沿用。已使用该 V3 或开发分支的玩家需先导出再导入存档，不能直接卸载。发布前始终核对目标旧 APK 的包名、签名和存储地址。
 
 ## 可移植性
 
@@ -103,6 +104,8 @@ export FROG_BROWSER=/path/to/chrome        # 无头浏览器（默认自动查�
 | `docs/玩法与实现状态.md` | 已实现的全部玩法、协议覆盖率、诚实的功能边界 |
 | `docs/架构.md` | 两条路途线的接缝、引擎接口、数据文件与浏览器内联机制 |
 | `docs/构建与打包.md` | 构建链、打包命令、目录布局、发行注意事项 |
+| `docs/安卓打包接口规范.md` | 原生桥接口、存档来源、端口与覆盖升级验收要求 |
+| `docs/照片图层修订.md` | 照片图层修订依据、视觉验收与回归方法 |
 | `docs/测试与验收.md` | 四层验收体系、全部测试入口与期望结果 |
 | `docs/数据与逆向说明.md` | 数据表怎么来的、加密包怎么解、资源如何重建、CDN 归档 |
 | `docs/目的地系统.md` | 目的地/区域系统的数据依据、算法与判定规则 |

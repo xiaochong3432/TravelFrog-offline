@@ -1187,7 +1187,7 @@
             'color:' + INK,
         ].join(';');
 
-        var BUILD_STAMP = '2026-09-15 18:32';
+        var BUILD_STAMP = "3.2";
 
         var title = document.createElement('div');
         title.textContent = '存档编辑';
@@ -1468,7 +1468,7 @@
 
         var stampLine = document.createElement('div');
         stampLine.textContent = '版本 ' + BUILD_STAMP;
-        stampLine.title = '这一份的文件时间；比对我的改动时间就知道是不是最新的一份';
+        stampLine.title = '当前离线发行版本';
         stampLine.style.cssText = 'font-size:10px;color:#a79c81;text-align:center;margin-top:6px';
         panel.appendChild(stampLine);
 

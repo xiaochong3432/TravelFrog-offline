@@ -1,8 +1,8 @@
-"""Build the com.frog.offline release, retaining the verified old native shell.
+"""Build the com.frog.offline release with the native save bridge from source.
 
-FROG_UPGRADE_FROM must point to the old com.frog.offline APK. Native shell sources
-are absent from this slim repository, so preserve its DEX/resources byte for byte.
-Only manifest versions and assets/game change. Never recreate an upgrade identity.
+FROG_UPGRADE_FROM must point to a verified old com.frog.offline APK. Preserve its
+manifest (except versions), icons and resource table. Compile the restored native
+shell and check package, signer and storage origin before publishing the output.
 """
 import hashlib
 import json
@@ -19,6 +19,34 @@ import _toolchain
 from verify_apk_upgrade import inspect_apk
 
 ROOT = Path(__file__).resolve().parents[2]
+
+
+def compile_native(stage):
+    sources = sorted((ROOT/'work/app/src').rglob('*.java'))
+    android_jar = _toolchain.android_jar()
+    javac = _toolchain.javac()
+    bt = _toolchain.build_tools_dir()
+    if not sources or not android_jar or not javac or not bt:
+        raise RuntimeError('Native sources/JDK/Android SDK missing; set JAVA_HOME and ANDROID_HOME.')
+    classes = stage/'classes'
+    dex_dir = stage/'dex'
+    classes.mkdir()
+    dex_dir.mkdir()
+    subprocess.run([javac, '-encoding', 'UTF-8', '-source', '8', '-target', '8',
+                    '-classpath', android_jar, '-d', str(classes),
+                    *map(str, sources)], check=True)
+    subprocess.run([_toolchain.java(), '-cp', str(Path(bt)/'lib/d8.jar'),
+                    'com.android.tools.r8.D8', '--min-api', '21', '--lib', android_jar,
+                    '--output', str(dex_dir), *map(str, sorted(classes.rglob('*.class')))], check=True)
+    dex = (dex_dir/'classes.dex').read_bytes()
+    # Catch a stale/wrong shell before signing; the emulator additionally checks
+    # that these methods really are exposed and that export writes a real file.
+    for marker in (b'FrogNative', b'SaveBridge', b'exportSave', b'exitApp',
+                   b'mirrorSave', b'readMirrorSave', b'onShowFileChooser',
+                   b'__saveExported', b'__saveExportFailed'):
+        if marker not in dex:
+            raise ValueError('Native bridge missing: '+marker.decode())
+    return dex
 
 
 def patch_versions(manifest, version_code, version_name):
@@ -102,6 +130,7 @@ def main():
     out = ROOT/('dist/TravelFrog-offline-'+config['versionName']+'.apk')
     if out.resolve() == baseline:
         raise SystemExit('Keep the baseline APK separate from the output file.')
+    subprocess.run([sys.executable, str(ROOT/'work/tools/add_build_stamp.py')], check=True)
     with tempfile.TemporaryDirectory(prefix='frog-release-') as folder:
         stage = Path(folder)
         native = {}
@@ -113,14 +142,17 @@ def main():
                     continue
                 if not (name == 'resources.arsc' or name.startswith('res/') or re.fullmatch(r'classes\d*\.dex', name)):
                     raise ValueError('Unexpected native payload: '+name)
-                native[name] = src.read(name)
+                if not re.fullmatch(r'classes\d*\.dex', name):
+                    native[name] = src.read(name)
             manifest = patch_versions(src.read('AndroidManifest.xml'), config['versionCode'], config['versionName'])
+        dex = compile_native(stage)
         assets = {p.relative_to(web).as_posix(): p for p in web.rglob('*')
                   if p.is_file() and not p.name.endswith(('.clean','.orig','.bak')) and p.name != '__captest.html'}
         with zipfile.ZipFile(stage/'unsigned.apk', 'w', zipfile.ZIP_DEFLATED) as dst:
             dst.writestr('AndroidManifest.xml', manifest)
             for name, data in native.items():
                 dst.writestr(name, data, compress_type=zipfile.ZIP_STORED if name == 'resources.arsc' else zipfile.ZIP_DEFLATED)
+            dst.writestr('classes.dex', dex)
             for name, path in sorted(assets.items()):
                 dst.write(path, 'assets/game/'+name)
         subprocess.run([_toolchain.build_tool('zipalign'), '-f', '4', str(stage/'unsigned.apk'), str(stage/'aligned.apk')], check=True)
@@ -132,13 +164,17 @@ def main():
         new = inspect_apk(stage/'signed.apk')
         if new['versionCode'] != config['versionCode'] or new['versionName'] != config['versionName']:
             raise ValueError('Manifest version verification failed')
-        for field in ('package', 'signer_sha256', 'webview_urls', 'storage_key'):
+        for field in ('package', 'signer_sha256', 'webview_origins', 'storage_key'):
             if new[field] != old[field]:
                 raise ValueError('Upgrade identity changed: '+field)
+        if config['storageUrl'] not in new['webview_urls']:
+            raise ValueError('Configured entry URL missing from the compiled native shell')
         with zipfile.ZipFile(stage/'signed.apk') as result:
+            if result.read('classes.dex') != dex:
+                raise ValueError('Compiled native shell differs from signed APK')
             for name, data in native.items():
                 if result.read(name) != data:
-                    raise ValueError('Native shell changed: '+name)
+                    raise ValueError('Baseline resource changed: '+name)
             for name, path in assets.items():
                 if result.read('assets/game/'+name) != path.read_bytes():
                     raise ValueError('Asset mismatch: '+name)
@@ -146,7 +182,8 @@ def main():
         out.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(stage/'signed.apk', out)
         report = dict(identity=new, apk=out.name, sha256=hashlib.sha256(out.read_bytes()).hexdigest(),
-                      native_files_preserved=len(native), assets_verified=len(assets),
+                      native_resources_preserved=len(native), native_dex_sha256=hashlib.sha256(dex).hexdigest(),
+                      assets_verified=len(assets),
                       baseline_sha256=hashlib.sha256(baseline.read_bytes()).hexdigest())
         (ROOT/'work/logs').mkdir(exist_ok=True)
         (ROOT/'work/logs/release-build-report.json').write_text(json.dumps(report,indent=2),encoding='utf8')

@@ -10,6 +10,7 @@ import re
 import subprocess
 import zipfile
 from pathlib import Path
+from urllib.parse import urlsplit
 
 import _toolchain
 
@@ -37,13 +38,16 @@ def inspect_apk(apk):
         for name in archive.namelist():
             if re.fullmatch(r'classes\d*\.dex', name):
                 urls.update(x.decode('ascii') for x in re.findall(
-                    rb'(?:file:///android_asset/|http://127\.0\.0\.1:\d+/)[A-Za-z0-9_./-]*', archive.read(name)))
+                    rb'(?:file:///android_asset/|http://127\.0\.0\.1:\d+/?)[A-Za-z0-9_./-]*', archive.read(name)))
             if name in ('assets/__probe.js', 'assets/__offline-engine.js',
                         'assets/game/__probe.js', 'assets/game/__offline-engine.js'):
                 if b'frog.offline.save' in archive.read(name):
                     storage_key = 'frog.offline.save'
+    origins = {'file:///android_asset' if url.startswith('file:') else
+               '{}://{}'.format(urlsplit(url).scheme, urlsplit(url).netloc) for url in urls}
     return dict(package=package[1], versionCode=int(package[2]), versionName=package[3],
-                signer_sha256=certs, webview_urls=sorted(urls), storage_key=storage_key)
+                signer_sha256=certs, webview_urls=sorted(urls), webview_origins=sorted(origins),
+                storage_key=storage_key)
 
 
 def main():
@@ -57,7 +61,7 @@ def main():
     if args.new:
         new = inspect_apk(args.new)
         report['new'] = new
-        for field in ('package', 'signer_sha256', 'webview_urls', 'storage_key'):
+        for field in ('package', 'signer_sha256', 'webview_origins', 'storage_key'):
             if not old[field] or not new[field] or old[field] != new[field]:
                 errors.append(field + ' differs or is unverified')
         if new['versionCode'] <= old['versionCode']:

@@ -36,14 +36,16 @@ git config core.hooksPath .githooks
 python work/tools/extract_game.py     # 从 base.apk 提取 assets/game/ 到 work/run/web
 python work/tools/patch_game.py       # 应用离线补丁（幂等）
 python work/tools/bundle_engine.py    # 重建内联引擎
-node   work/tools/engine_test.js      # 362 passed / 0 failed 即为正常
+node   work/tools/engine_test.js      # 所有检查通过，0 failed
 cd work/run/web && python -m http.server 8231   # 浏览器打开 http://127.0.0.1:8231/index.html
 ```
 
-打包见 `docs/构建与打包.md`。当前 3.1 沿用 `com.travelfrog.offline`，必须保持原签名和
-`file:///android_asset/index.html` 加载地址，仅提升版本号并覆盖安装，不得先卸载。
-APK 文件名可以变化，`applicationId` 不得随版本变化。历史 `com.frog.offline` 与
-转发包 `com.offline.frog.appx` 的存档与当前包隔离，不可互作升级包。
+打包见 [构建与打包](docs/构建与打包.md) 和 [安卓打包接口规范](docs/安卓打包接口规范.md)。
+当前 3.2（`versionCode=6`）沿用 `com.frog.offline`、原签名和
+`http://127.0.0.1:18763/index.html` 加载地址，必须覆盖安装，不得先卸载。
+正式入口为 `python work/tools/build_release_apk.py`：从 `work/app/src/` 编译原生外壳，
+保留实际旧包的图标与资源并校验升级身份。APK 文件名可以变化，`applicationId` 不得随版本变化。
+`com.travelfrog.offline` 与转发包 `com.offline.frog.appx` 的数据与当前包隔离，不可互作升级包。
 
 ## 三、协作方式
 
