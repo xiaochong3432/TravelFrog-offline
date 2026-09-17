@@ -1501,7 +1501,11 @@ function defaultState() {
        `animpicture_use_item` callback is `if (e.phase >= 0) {...}`, so a reply
        without `phase` silently does nothing. */
     animPicture: {
-      guide: 0,
+      /* 2, not 0: the client only SHOWS the 动态照片 entry when `guide > 1`
+         (Lumberroom's `this.animPicBtn.visible = ... data.guide > 1`), and `guide` is
+         server-provided. With 2 the entry is visible and the client's own tutorial walks the
+         player through it (finger at the button -> req_guide -> 3 -> make page -> ... -> 5). */
+      guide: 2,
       pageNum: 0,
       phase: 0,
       itemNum: 0,
@@ -1828,6 +1832,12 @@ function loadState(savePath) {
       if (!(Number(s.weather.weather) >= 1 && Number(s.weather.weather) <= 9)) {
         s.weather.weather = 1;
       }
+      s.animPicture = Object.assign(defaultState().animPicture, raw.animPicture || {});
+      // migration: `guide` used to default to 0. The client only SHOWS the 动态照片 entry when
+      // `data.guide > 1` (Lumberroom: `this.animPicBtn.visible = ... data.guide > 1`), and offline
+      // nothing ever advances it -- so every save written by an earlier build keeps the entry
+      // hidden for good. 【自设计】2 is where the client's own tutorial starts.
+      if (Number(s.animPicture.guide) < 2) s.animPicture.guide = 2;
       s.travel = Object.assign(defaultState().travel, raw.travel || {});
       s.furniture = Object.assign(defaultState().furniture, raw.furniture || {});
       s.furniture.compost = Object.assign(defaultState().furniture.compost, (raw.furniture || {}).compost || {});
@@ -3885,7 +3895,9 @@ function mdPayload(s) {
     const A = state.animPicture;
     return {
       guide: A.guide || 0,
-      page_num: A.pageNum || 0,
+      /* derived, not stored: base pages + 动态相框 (see animPageCount). The old `A.pageNum`
+         field is left in the save for compatibility but is no longer what the client sees. */
+      page_num: animPageCount(),
       phase: A.phase || 0,
       item_num: A.itemNum || 0,
       exp: A.exp || 0,
@@ -3912,6 +3924,62 @@ function mdPayload(s) {
     return row.phase_list.reduce((a, p) => Math.max(a, Number(p.phase) || 0), 0);
   }
 
+  /* ---- 动态照片：显影液与进度 -------------------------------------------------
+     【自设计】The tables describe the animation layers (`phase_list[].phase` = 1..N) and give
+     an `exp` number per layer, but the LAST layer's exp is 0 (slot 1: phase 7 -> exp 0) and
+     nothing in the data says what a bottle of 显影液 is worth. Deriving the phase from an
+     invented exp amount therefore never finished a page (measured on a real phone: 200 bottles of
+     多色显影液 and the page still sat on phase 5; `animpicture: use_item spends the 显影液`
+     in work/tools/engine_test.js locks the stepping in).
+
+     So the phase is STEPPED, one layer per developing pass, and the three 显影液 differ only in
+     how many layers they develop at once -- which is exactly what their own texts say
+     (单色 略有效果 / 双色 真有效果 / 多色 效果显著). `exp` is still kept as the progress
+     number the client's model carries, and it resets when the page is finished.
+
+     The only invented number is the step count; it is labelled 【自设计】 in
+     docs/设计取舍与自定数值.md together with 动态照片's other two settings. */
+  const ANIM_ITEM_STEPS = { 8002: 1, 8003: 2, 8004: 3 };
+  const ANIM_STORAGE_ITEM = 9002;          // 照片存储开启物
+  const ANIM_PAGE_SLOTS = 5;               // the make page's own cap (exp_pic.length >= 5)
+
+  const ANIM_SHOW_SLOTS = 4;               // the show page paints exactly four photo slots
+
+  /** How many pages the moving-photo album has: `base_info.album_num` plus one per 动态相框
+      (9001, the shop chain whose row says "获得后动态相册页数+1"). The client's own gate for
+      the MAKE page is `canShowEmpty() = pic_list.length < page_num && phase == 0`, so this
+      number decides whether 制作 exists at all. */
+  function animPageCount() {
+    const base = Number(ANIM_BASE.album_num) || 0;
+    const frameItem = Number(ANIM_BASE.page_id) || 9001;
+    return base + getHaveItem(frameItem);
+  }
+
+  /** The page the make page is working on (the newest one unless it was told otherwise). */
+  function animWorkingIndex() {
+    const A = state.animPicture;
+    if (A.workingIndex != null && (A.picList || [])[A.workingIndex]) return A.workingIndex;
+    return Math.max(0, (A.picList || []).length - 1);
+  }
+
+  /** Move album photos onto the page being made (`animpicture_add_pic`'s whole job). */
+  function animTakeAlbumPhotos(ids) {
+    const A = state.animPicture;
+    A.expPic = A.expPic || [];
+    let moved = 0;
+    for (const raw of ids) {
+      if (A.expPic.length >= ANIM_PAGE_SLOTS) break;
+      const id = Number(raw);
+      const i = (state.pictures || []).findIndex((p) => p && (p.id === id || String(p.id) === String(id)));
+      if (i === -1) continue;
+      A.expPic.push(state.pictures.splice(i, 1)[0]);
+      moved += 1;
+    }
+    /* `exp` stays 0: the client's own model resets it to 0 and never advances it in this flow,
+       so anything we kept here would just disagree with the page until the next reload. */
+    A.exp = 0;
+    return moved;
+  }
   const CAPSULE = (gamedata.tables && gamedata.tables.capsuleData) || {};
   const CAPSULE_REWARD = CAPSULE.reward || {};
   const CAPSULE_NUM_REWARD = CAPSULE.num_reward || {};
@@ -7580,20 +7648,25 @@ function mdPayload(s) {
          use_item      : `if (e.phase >= 0)` is a GATE. `phase` MUST be present
                          and >= 0 or the whole command silently does nothing.
                          On phase 0 the page is finished: item_num++ and every
-                         `exp_pic` goes back to the album.
-         open_album(i) : put_num++ and an empty PictureInfo appended
+                         `exp_pic` goes back to the album. The payload carries the
+                         显影液's item id, which the ENGINE spends (the client only
+                         checks the count); the phase advances one layer per pass
+                         (see ANIM_ITEM_STEPS).
+         add_pic(ids)  : the MAKE page's 加照片 -- an ARRAY of album ids -> the
+                         staged photos of the page being made (max 5).
+         open_album(i) : put_num++ and an empty PictureInfo appended, one
+                         照片存储开启物 spent per slot (max 4 slots)
          select_pic(id): album picture -> a new page (only the 3 pic_map ids
                          qualify); phase = (phase_list.length == 1 ? 0 : 1)
          *_add_pic     : album picture -> that slot
          *_remove_pic  : slot -> album (when the flag is falsey)
-         guide/get_item: guide++ / item_num = 0 */
+         guide/get_item: guide++ / the finished page's storage tickets are handed over */
     animpicture_load: () => animPayload(),
 
     animpicture_guide: (d, ctx) => {
       const A = state.animPicture;
       A.guide = (A.guide || 0) + 1;
       save();
-      ctx.push('animpicture_load', animPayload());
       return { code: 0 };
     },
 
@@ -7602,16 +7675,23 @@ function mdPayload(s) {
     animpicture_get_item: (d, ctx) => {
       const A = state.animPicture;
       if (A.itemNum > 0) {
+        /* The client pops a reward card for `item_num` x 9002 the moment this answers, so the
+           engine has to hand them over. Counting them in a private field made that card a lie
+           (nothing ever arrived in the house). */
+        addHouseItem(ANIM_STORAGE_ITEM, A.itemNum);
         A.collected = (A.collected || 0) + A.itemNum;
         A.itemNum = 0;
         save();
-        ctx.push('animpicture_load', animPayload());
       }
       return { code: 0 };
     },
 
-    /* Payload is an ALBUM picture id. Only ids present in animpictureData's
-       pic_map can become a moving photo (there are just three). */
+    /* Payload is an ALBUM picture id. Only ids present in animpictureData's pic_map can become a
+       moving photo -- three in these tables (100, 104, 2000).
+       The client removes the photo from its own album list right here (its `req_select_pic`
+       success callback does `r.splice(o, 1)`), so the engine mirrors that: the selected photo
+       leaves the album and becomes the animated page. `animpicture_album_add_pic` then fills that
+       page's slots with OTHER album photos -- which is why it looks the uid up in the album. */
     animpicture_select_pic: (d, ctx) => {
       const A = state.animPicture;
       const picId = Number(d && d.id);
@@ -7622,10 +7702,11 @@ function mdPayload(s) {
       const pic = state.pictures.splice(i, 1)[0];
       A.phase = animStartPhase(slot);
       A.exp = 0;
+      A.expPic = [];                   // a fresh page carries no staged photos
       A.picList.push({ id: Number(slot), putNum: 0, pictures: [] });
+      A.workingIndex = A.picList.length - 1;   // the make page works on the page it just made
       A.lastPic = pic;                 // kept so a removal can return it
       save();
-      ctx.push('animpicture_load', animPayload());
       return { code: 0 };
     },
 
@@ -7635,11 +7716,15 @@ function mdPayload(s) {
       const idx = Number(d && d.index);
       const page = (A.picList || [])[idx - 1];
       if (!page) return { code: -1 };
-      if ((page.putNum || 0) >= animPhaseCount(page.id)) return { code: -1 };
+      /* The client only calls this for a slot the page does not have yet, and it refuses to
+         even try without a 照片存储开启物 in the house ("物品不足") -- so spend one here. The
+         page paints four slots, so a fifth would be paid for and never seen. */
+      if ((page.putNum || 0) >= ANIM_SHOW_SLOTS) return { code: -1 };
+      if (getHaveItem(ANIM_STORAGE_ITEM) < 1) return { code: -1 };
+      addHouseItem(ANIM_STORAGE_ITEM, -1);
       page.putNum = (page.putNum || 0) + 1;
-      page.pictures.push({ id: 0, pic_id: 0, layers: [] });
+      while (page.pictures.length < page.putNum) page.pictures.push({ id: 0, pic_id: 0, layers: [] });
       save();
-      ctx.push('animpicture_load', animPayload());
       return { code: 0 };
     },
 
@@ -7655,14 +7740,13 @@ function mdPayload(s) {
       const picId = Number(firstDefined(d, ['pic_uid', 'id']));
       const page = (A.picList || [])[animIndex - 1];
       const slot = picIndex - 1;
-      if (!page || !(slot >= 0)) return { code: -1 };
+      if (!page || !(slot >= 0) || slot >= ANIM_SHOW_SLOTS) return { code: -1 };
       const i = (state.pictures || []).findIndex((p) => p.id === picId);
       if (i === -1) return { code: -1 };
       const pic = state.pictures.splice(i, 1)[0];
       while (page.pictures.length <= slot) page.pictures.push({ id: 0, pic_id: 0, layers: [] });
       page.pictures[slot] = pic;
       save();
-      ctx.push('animpicture_load', animPayload());
       return { code: 0 };
     },
 
@@ -7674,13 +7758,12 @@ function mdPayload(s) {
       const picIndex = Number(firstDefined(d, ['pic_index', 'slot']));
       const page = (A.picList || [])[animIndex - 1];
       const slot = picIndex - 1;
-      if (!page || !page.pictures[slot]) return { code: -1 };
+      if (!page || !(slot >= 0) || slot >= ANIM_SHOW_SLOTS || !page.pictures[slot]) return { code: -1 };
       const pic = page.pictures[slot];
       const keep = !!firstDefined(d, ['is_delete', 'flag']);
       if (!keep && pic && pic.id) state.pictures.push(pic);
       page.pictures[slot] = { id: 0, pic_id: 0, layers: [] };
       save();
-      ctx.push('animpicture_load', animPayload());
       return { code: 0 };
     },
 
@@ -7701,7 +7784,6 @@ function mdPayload(s) {
       }
       A.picList.splice(idx - 1, 1);
       save();
-      ctx.push('animpicture_load', animPayload());
       return { code: 0 };
     },
 
@@ -7710,25 +7792,94 @@ function mdPayload(s) {
        page, which is when the client bumps item_num and returns exp_pic. */
     animpicture_use_item: (d, ctx) => {
       const A = state.animPicture;
-      const page = (A.picList || [])[A.workingIndex || 0];
-      const total = page ? animPhaseCount(page.id) : 0;
+      const page = (A.picList || [])[animWorkingIndex()];
+      const slotId = page ? page.id : 0;
+      const itemId = Number(firstDefined(d, ['id', 'item_id']));
+      const steps = ANIM_ITEM_STEPS[itemId];
+      /* The client sends the 显影液 id and checks the house count before its confirm dialog,
+         but it never spends the item -- that is ours. No bottle, no developing. */
+      if (itemId && steps) {
+        if (getHaveItem(itemId) < 1) return { phase: -1, why: 'no-item', item: itemId };
+        addHouseItem(itemId, -1);
+      }
+      const top = animPhaseCount(slotId);        // how many layers this slot has
+      const step = steps || 1;
       let phase = Number(A.phase || 0);
-      if (total > 0 && phase < total) {
-        phase += 1;
-        if (phase >= total) phase = 0;      // page finished -> back to 0
+      if (top > 1 && phase >= 1) {
+        phase += step;                           // one layer per pass, 多色 does three
+        if (phase > top) phase = 0;              // past the last layer -> the page is done
       } else {
-        phase = 0;
+        phase = 0;                               // single-layer slots have nothing to develop
       }
       A.phase = phase;
+      A.exp = 0;
       if (phase === 0) {
-        A.itemNum = (A.itemNum || 0) + 1;
-        A.exp = 0;
-        // the client pushes every exp_pic back into the album itself
+        /* Page finished: every staged photo goes back to the album (the client pushes its own
+           copies back too, hence the payload below clears exp_pic) and the page is worth one
+           照片存储开启物. The count is bumped AFTER the push, because the client's own
+           callback also does `item_num++` -- pushing the new value first would double it. */
+        for (const p of A.expPic || []) {
+          if (p && p.id) state.pictures.push(p);
+        }
         A.expPic = [];
       }
       save();
-      ctx.push('animpicture_load', animPayload());
-      return { phase };                      // never undefined: it is the gate
+      /* 扣了道具就要让客户端的持有数跟上：它以前一直显示旧数字（5/5/5），于是在家里已经没货之后
+         仍然让你点，每次都只拿到 {phase:-1} —— 玩家看到的就是"用多少瓶都没变化"。
+         注意这里推的是 item_load_items（物品模型），不是 animpicture_load
+         （客户端收到 animpicture_load 时做的是 `this.data = e`，制作页手里那份快照
+         就会被换成新的 —— "有反应但画面没变化"就是这么来的）。 */
+      if (itemId && steps) {
+        try { ctx.push('item_load_items', handlers.item_load_items()); } catch (e) { /* 推送失败不影响本步 */ }
+      }
+      if (phase === 0) {
+        A.itemNum = (A.itemNum || 0) + 1;
+        save();
+      }
+      return itemId && steps
+        ? { phase, used: itemId, left: getHaveItem(itemId) }
+        : { phase };                          // never undefined: it is the gate
+    },
+
+    /* The MAKE page's 加照片. Its own code is
+         req_add_pic(ids) -> send("animpicture_add_pic", ids)
+       while the SHOW page sends `animpicture_album_add_pic` (page + slot + uid). Only the
+       second one existed, so this protocol answered nothing at all: no reply -> the client's
+       Action2 callback never ran -> the picture list never refreshed ("添加照片没反应").
+       The payload is the ARRAY of album picture ids; up to 5 per page. */
+    animpicture_add_pic: (d, ctx) => {
+      const A = state.animPicture;
+      const ids = Array.isArray(d) ? d : (d && Array.isArray(d.list) ? d.list : []);
+      const page = (A.picList || [])[animWorkingIndex()];
+      if (!page) return { code: -1, why: 'no-page' };
+      /* 实测（真机）：客户端会发来**空数组** —— 它用自己那份内存相册列表把选中的照片翻译成 id，
+         两者不同步时就翻成空。空数组不该是拒绝理由，应该走下面的"同款"兜底。 */
+      let moved = ids.length ? animTakeAlbumPhotos(ids) : 0;
+      let how = moved ? 'id' : '';
+      if (!moved) {
+        /* The client keeps its OWN album list in memory and reuses it, so after a restart (or any
+           moment where the engine's album moved on) the ids it sends may no longer exist here --
+           measured on a real device: `add_pic [45,44,43,42] -> {"code":-1}` three times, while the
+           engine's album held one page and no such ids. What the page actually wants is "photos of
+           the same postcard", which is the same filter the client used to offer them, so fall back
+           to that: only REAL album photos are moved, nothing is invented. */
+        const want = (ANIM_LIST[String(page.id)] || {}).pic_list || [];
+        const free = ANIM_PAGE_SLOTS - (A.expPic || []).length;
+        const picks = [];
+        for (let i = (state.pictures || []).length - 1; i >= 0 && picks.length < free; i -= 1) {
+          const p = state.pictures[i];
+          if (p && want.some((w) => Number(w) === Number(p.pic_id))) picks.push(p.id);
+        }
+        if (picks.length) {
+          moved = animTakeAlbumPhotos(picks);
+          how = 'same-card';
+        }
+      }
+      if (!moved) {
+        return { code: -1, why: 'not-found', ids: ids.slice(0, 4), album: (state.pictures || []).length };
+      }
+      save();
+      return { code: 0, moved: moved, how: how };
     },
 
     /* ---------------- 故事 (story_*) ---------------------------------------
