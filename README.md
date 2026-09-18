@@ -3,7 +3,7 @@
 把已停运的《旅行青蛙·中国之旅》（国服 Egret H5 客户端）改造成**纯本地、无服务端、无广告、无充值**的单机游戏。
 规则引擎内联进游戏页面，替换掉原有的网络层；客户端修复由可重放补丁维护。
 
-当前版本 **3.2**（`versionCode=6`）沿用原路线 **`com.frog.offline`**、原签名和 `http://127.0.0.1:18763/index.html` 存档地址，包含照片图层修订与安卓存档桥补齐。构建命令：`python work/tools/build_release_apk.py`（先设置 `FROG_UPGRADE_FROM` 为实际发布的旧 APK）。`com.travelfrog.offline` 属于另一个包，不能直接覆盖或自动读取其存档。详见 [构建与打包](docs/构建与打包.md) 和 [安卓打包接口规范](docs/安卓打包接口规范.md)。
+当前版本 **3.4**（`versionCode=8`）沿用原路线 **`com.frog.offline`**、原签名和 `http://127.0.0.1:18763/index.html` 存档地址。本版集中修复玩家反馈中的照片收取、邻居回礼与邀约、堆肥、手工品、家具、信箱/场景显示、相册回收站、工作台库存刷新和购买页布局。构建命令：`python work/tools/build_release_apk.py`（先设置 `FROG_UPGRADE_FROM` 为实际发布的旧 APK）。`com.travelfrog.offline` 属于另一个包，不能直接覆盖或自动读取其存档。详见 [3.4 修复记录](docs/修复记录-3.4.md)、[构建与打包](docs/构建与打包.md) 和 [安卓打包接口规范](docs/安卓打包接口规范.md)。
 
 - **244 条客户端协议已实现 217 条**；剩下 27 条是客户端单向发出的推送/上报，服务端无需回包
 - 数值与规则以客户端自身逻辑为准绳：60 张数据表从客户端加密包解出，另加原版调参表与归档的地图数据
@@ -57,8 +57,8 @@ python work/tools/bundle_engine.py
 # 4) 出包
 python work/tools/build_pc_zip.py              # PC 解压即玩包
 # 设置 FROG_UPGRADE_FROM 为实际发布的旧 com.frog.offline APK 后：
-python work/tools/build_release_apk.py         # 3.2 安卓包，编译原生源码并沿用原签名
-python work/tools/apk_identity.py --apk dist/TravelFrog-offline-3.2.apk # 期望 RESULT: OK
+python work/tools/build_release_apk.py         # 3.4 安卓包，编译原生源码并沿用原签名
+python work/tools/apk_identity.py --apk dist/TravelFrog-offline-3.4.apk # 期望 RESULT: OK
 ```
 
 ## 关于游戏资源
@@ -80,8 +80,8 @@ python work/tools/bundle_engine.py    # 重建内联引擎
 
 仓库**不提供**成品包，也**不使用 GitHub Releases**。成品（安卓 APK / PC 解压即玩包）
 由项目自身的发布渠道提供；需要自己出包时按 `docs/构建与打包.md` 构建。
-3.2 成品为 `dist/TravelFrog-offline-3.2.apk`，包名 `com.frog.offline`。版本由 `work/release.json` 管理。
-用户提供的 V3 实包为 `com.travelfrog.offline`，与原路线不兼容；3.1 已恢复原路线，3.2 继续沿用。已使用该 V3 或开发分支的玩家需先导出再导入存档，不能直接卸载。发布前始终核对目标旧 APK 的包名、签名和存储地址。
+3.4 成品为 `dist/TravelFrog-offline-3.4.apk`，包名 `com.frog.offline`。版本由 `work/release.json` 管理。
+用户提供的 V3 实包为 `com.travelfrog.offline`，与原路线不兼容；3.1 已恢复原路线，3.4 继续沿用。已使用该 V3 或开发分支的玩家需先导出再导入存档，不能直接卸载。发布前始终核对目标旧 APK 的包名、签名和存储地址。
 
 ## 可移植性
 
@@ -101,6 +101,7 @@ export FROG_BROWSER=/path/to/chrome        # 无头浏览器（默认自动查�
 
 | 文档 | 内容 |
 |---|---|
+| `docs/修复记录-3.4.md` | v4 前最后一个准备版本的修复清单、行为边界与发行验收 |
 | `docs/玩法与实现状态.md` | 已实现的全部玩法、协议覆盖率、诚实的功能边界 |
 | `docs/架构.md` | 两条路途线的接缝、引擎接口、数据文件与浏览器内联机制 |
 | `docs/构建与打包.md` | 构建链、打包命令、目录布局、发行注意事项 |

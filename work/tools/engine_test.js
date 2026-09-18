@@ -737,6 +737,25 @@ test('craft: 制作中/完成状态能持久化', ({ engine, savePath }) => {
   eq(re.state.furniture.benchLock, 1, '重启后仍锁定');
 });
 
+test('craft: changing bench slots pushes fresh material counts to the open picker', ({ engine }) => {
+  const material = 10001;
+  engine.state.items.house = [{ item_id: material, count: 1 }];
+
+  const put = call(engine, 'furniture_putin_bench', { pos: 6, id: material });
+  eq(put.reply.code, 0, 'first slot accepts the material');
+  const putUpdates = pushNamed(put, 'item_update');
+  eq(putUpdates.length, 1, 'placing pushes one inventory update');
+  eq(putUpdates[0].data.item.item_id, material, 'placing updates the selected material');
+  eq(putUpdates[0].data.item.count, 0, 'picker sees the consumed material disappear');
+
+  const take = call(engine, 'furniture_takeout_bench', { pos: 6 });
+  eq(take.reply.code, 0, 'slot can be cleared');
+  const takeUpdates = pushNamed(take, 'item_update');
+  eq(takeUpdates.length, 1, 'clearing pushes one inventory update');
+  eq(takeUpdates[0].data.item.item_id, material, 'clearing updates the returned material');
+  eq(takeUpdates[0].data.item.count, 1, 'picker sees the returned material immediately');
+});
+
 /* ------------------------------------------------------------ GM console */
 
 console.log('\n== GM / save editor ==');
@@ -1027,27 +1046,30 @@ test('furniture: buying charges clover, grants the item and decrements num', ({ 
 
   const after = call(engine, 'furniture_load_furniture', {}).reply.shop.shop_list;
   const same = after.find((r) => r.shop_id === row.shop_id);
-  // limit is usually 1, so the row disappears entirely; if limit > 1 num drops
-  if (same) eq(same.num, row.num - 1, 'remaining purchases must decrease');
-  else assert(row.num === 1, 'a limit-1 row must vanish once bought');
+  assert(same, 'sold-out items must remain in the list');
+  eq(same.num, row.num - 1, 'remaining purchases must decrease');
 });
 
-test('merchant: buying all available stock ends the visit and survives restart', ({ engine, savePath }) => {
+test('merchant: sold-out stock stays visible until the scheduled departure, including after restart', ({ engine, savePath }) => {
   engine.state.clover = 100000000;
+  const scheduled = call(engine, 'furniture_load_furniture').reply.shop.leave_time;
   let last;
   for (let purchases=0; purchases<500; purchases++) {
-    const rows = call(engine, 'furniture_load_furniture', {}).reply.shop.shop_list;
+    const rows = call(engine, 'furniture_load_furniture', {}).reply.shop.shop_list.filter(r=>r.num>0);
     if (!rows.length) break;
     last = call(engine, 'furniture_buy_shop', {shop_id:rows[0].shop_id});
     eq(last.reply.code, 0);
   }
   const closed = call(engine, 'furniture_load_furniture', {}).reply.shop;
-  eq(closed.shop_list.length, 0);
-  assert(closed.leave_time <= Math.floor(Date.now()/1000), 'sold-out merchant must leave');
+  assert(closed.shop_list.length > 0, 'keep sold-out rows');
+  assert(closed.shop_list.every(r=>r.num===0));
+  eq(closed.leave_time, scheduled, 'selling out must not change the visit schedule');
   const pushed = pushNamed(last, 'furniture_load_furniture');
-  eq(pushed.length, 1, 'the final purchase immediately pushes the closed shop');
-  eq(pushed[0].data.shop.shop_list.length, 0);
-  eq(call(reopen(savePath), 'furniture_load_furniture', {}).reply.shop.shop_list.length, 0, 'restart cannot restock');
+  eq(pushed.length, 1, 'the final purchase pushes the updated shop');
+  assert(pushed[0].data.shop.shop_list.every(r=>r.num===0));
+  const restored=call(reopen(savePath), 'furniture_load_furniture', {}).reply.shop;
+  eq(restored.leave_time,scheduled);
+  assert(restored.shop_list.length>0 && restored.shop_list.every(r=>r.num===0),'restart cannot restock');
   const before = engine.state.clover;
   eq(call(engine, 'furniture_buy_shop', {shop_id:2001}).reply.code, -1);
   eq(engine.state.clover, before);
@@ -1056,7 +1078,7 @@ test('merchant: buying all available stock ends the visit and survives restart',
 test('merchant: next day restocks repeatable and welfare goods but preserves lifetime limits', ({ engine, savePath }) => {
   engine.state.clover = 100000;
   for (const id of [1,2001,7003]) eq(call(engine,'furniture_buy_shop',{shop_id:id}).reply.code,0);
-  let ids = call(engine,'furniture_load_furniture',{}).reply.shop.shop_list.map(x=>x.shop_id);
+  let ids = call(engine,'furniture_load_furniture',{}).reply.shop.shop_list.filter(x=>x.num>0).map(x=>x.shop_id);
   assert(!ids.includes(1) && !ids.includes(2001) && !ids.includes(7003));
   const realNow = Date.now;
   const tomorrow = realNow() + 86400000;
@@ -1064,7 +1086,7 @@ test('merchant: next day restocks repeatable and welfare goods but preserves lif
   try {
     const pushes = engine.tick();
     assert(pushes.some(x=>canon(x.cmd)==='furniture_load_furniture'), 'new visit is pushed to the open courtyard');
-    ids = call(engine,'furniture_load_furniture',{}).reply.shop.shop_list.map(x=>x.shop_id);
+    ids = call(engine,'furniture_load_furniture',{}).reply.shop.shop_list.filter(x=>x.num>0).map(x=>x.shop_id);
     assert(!ids.includes(1), 'one-time tool package never restocks');
     assert(ids.includes(2001) && ids.includes(7003), 'materials and welfare restock');
     eq(call(reopen(savePath),'furniture_buy_shop',{shop_id:7003}).reply.code,0, 'restock survives reopening');
@@ -1077,10 +1099,10 @@ test('merchant: old lifetime stock is migrated without resetting today purchases
   delete engine.state.furniture.shopDay;
   fs.writeFileSync(savePath, JSON.stringify(engine.state));
   const restored = reopen(savePath);
-  let ids = call(restored,'furniture_load_furniture',{}).reply.shop.shop_list.map(x=>x.shop_id);
+  let ids = call(restored,'furniture_load_furniture',{}).reply.shop.shop_list.filter(x=>x.num>0).map(x=>x.shop_id);
   assert(!ids.includes(1) && !ids.includes(2001) && !ids.includes(7003));
   restored.state.furniture.shopDay -= 86400;
-  ids = call(restored,'furniture_load_furniture',{}).reply.shop.shop_list.map(x=>x.shop_id);
+  ids = call(restored,'furniture_load_furniture',{}).reply.shop.shop_list.filter(x=>x.num>0).map(x=>x.shop_id);
   assert(!ids.includes(1) && ids.includes(2001) && ids.includes(7003));
 });
 
@@ -1153,17 +1175,19 @@ test('furniture: bench refuses an item the player does not own', ({ engine }) =>
 });
 
 test('furniture: compost box uses 0 for empty, is 1-based, and swaps correctly', ({ engine }) => {
-  const itemId = TOOL_ITEM_ID();
-  engine.state.items.house = [{ item_id: itemId, count: 1 }];
+  const itemId = items.find(i => i.type === 3).id;
+  engine.state.items.house = [{ item_id: itemId, count: 2 }];
   const load = () => call(engine, 'furniture_load_compost', {}).reply;
   for (const v of load().box_list) eq(v, 0, 'compost slots are 0 when empty (NOT -1)');
 
   eq(call(engine, 'furniture_putin_box', { index: 1, id: itemId }).reply.code, 0, 'putin code 0');
   eq(load().box_list[0], itemId, 'box_list[0] holds it');
-  eq(haveOf(engine, itemId), 0, 'consumed from the house');
+  eq(haveOf(engine, itemId), 1, 'one reserved from the house');
+  eq(call(engine, 'furniture_takeout_box', { index: 1 }).reply.code, 6, 'active slot locks');
 
-  eq(call(engine, 'furniture_takeout_box', { index: 1 }).reply.code, 0, 'takeout code 0');
-  eq(load().box_list[0], 0, 'empty again');
+  eq(call(engine, 'furniture_putin_box', { index: 2, id: itemId }).reply.code, 0, 'queue another');
+  eq(call(engine, 'furniture_takeout_box', { index: 2 }).reply.code, 0, 'queued slot can be removed');
+  eq(load().box_list[1], 0, 'queued slot empty again');
   eq(haveOf(engine, itemId), 1, 'returned to the house');
 
   eq(call(engine, 'furniture_putin_box', { index: 7, id: itemId }).reply.code, -1, 'index 7 out of range');
@@ -1306,7 +1330,7 @@ const ROW_IDS = CHAR.rowItemId;
 /** Force a visit. Real time cannot be advanced, so re-arm the roll each tick. */
 function forceGuest(engine) {
   for (let i = 0; i < 300; i++) {
-    /* A FED visitor now stays for a short farewell window (see guest_serve), so the
+    /* A FED visitor stays until its scheduled departure, so the
        helper must not hand back an already-served one. */
     if (engine.state.guest && !engine.state.guest.served) return engine.state.guest;
     engine.state.guest = null;
@@ -1316,6 +1340,68 @@ function forceGuest(engine) {
   }
   throw new Error('no visitor appeared after 300 rolls');
 }
+
+test('feedback59: reopening never announces an already expired neighbour', ({engine,savePath})=>{
+  engine.state.guest={id:0,confirmed:false,served:false,pos:0,startAt:1,expire_time:2};
+  engine.save();
+  const loaded=reopen(savePath), boot=call(loaded,'hall_enter_game',{});
+  const guests=pushNamed(boot,'guest_load');
+  assert(guests.length>0 && guests.every(x=>x.data.id===-1),'expired guest must be settled before boot notices');
+});
+
+test('feedback59: stale finish cannot dismiss a current neighbour', ({engine})=>{
+  const guest=forceGuest(engine);
+  call(engine,'guest_finish',{});
+  assert(engine.state.guest && engine.state.guest.id===guest.id,'unexpired visit stays');
+});
+
+test('feedback23: old paid visits and unfed visits do not receive duplicate gifts', ({engine})=>{
+  for(const served of [false,true]){
+    engine.state.guest={id:0,confirmed:true,served,pos:0,startAt:1,expire_time:2};
+    const before=engine.state.mails.length;
+    engine.tick();
+    eq(engine.state.guest,null);
+    eq(engine.state.mails.length,before,'legacy served visits already received an immediate payout');
+  }
+});
+
+test('feedback23: stale neighbour zero feed cannot consume food for neighbour one', ({engine})=>{
+  const now=Math.floor(Date.now()/1000),itemId=ROW_IDS[0];
+  engine.state.guest={id:1,confirmed:true,served:false,pos:0,startAt:now,expire_time:now+1200};
+  engine.state.items.house.push({item_id:itemId,count:1});
+  call(engine,'guest_serve',{id:0,item_id:itemId});
+  eq(engine.state.guest.served,false);
+  eq(haveOf(engine,itemId),1);
+});
+
+test('feedback23: fed neighbours keep their visit and mail one gift on departure', ({engine,savePath})=>{
+  call(engine,'hall_enter_game',{});
+  for(let id=0;id<3;id++){
+    const now=Math.floor(Date.now()/1000), itemId=ROW_IDS[0];
+    engine.state.guest={id,confirmed:true,served:false,pos:0,startAt:now-300,expire_time:now+1200};
+    engine.state.items.house.push({item_id:itemId,count:1});
+    const before={clover:engine.state.clover,ticket:engine.state.ticket,mails:engine.state.mails.length};
+    call(engine,'guest_serve',{id,item_id:itemId});
+    eq(engine.state.guest.expire_time,now+1200,'feeding must not shorten the visit to 20 seconds');
+    eq(engine.state.clover,before.clover,'gift is not credited before mail collection');
+    eq(engine.state.ticket,before.ticket,'ticket stays in gift');
+    call(engine,'guest_serve',{id,item_id:itemId});
+    engine.state.guest.expire_time=now-1;engine.save();
+    const loaded=reopen(savePath);
+    call(loaded,'hall_enter_game',{});
+    eq(loaded.state.mails.length,before.mails+1);
+    const mail=loaded.state.mails.find(m=>m.senderCharaId===id&&m.title==='小伙伴的回礼');
+    assert(mail && (mail.resource.clover_point>0||mail.resource.ticket>0||mail.items.length>0),'mail contains the reward');
+    const count=loaded.state.mails.length;
+    loaded.tick();call(loaded,'guest_finish',{});call(loaded,'hall_enter_game',{});
+    eq(loaded.state.mails.length,count,'departure is settled once');
+    call(loaded,'mail_open',{id:mail.id});
+    assert(!loaded.state.mails.some(m=>m.id===mail.id),'gift is claimable');
+    const balance=JSON.stringify([loaded.state.clover,loaded.state.ticket,loaded.state.items.house]);
+    call(loaded,'mail_open',{id:mail.id});
+    eq(JSON.stringify([loaded.state.clover,loaded.state.ticket,loaded.state.items.house]),balance,'mail pays once');
+  }
+});
 
 test('visitor: with nobody visiting, guest_load reports id -1', ({ engine }) => {
   const r = call(engine, 'guest_load', {});
@@ -1369,14 +1455,17 @@ test('visitor: serving a specialty feeds the taste table and pays out', ({ engin
      `sendGuestServed(e); friendFeedBack(e);` back to back, and friendFeedBack looks the
      friend up by `getGuestData().id` in the Character table -- with id already -1 that
      lookup returns undefined and `o.taste[a]` throws 呱呱吃坏肚子了. So they linger for a
-     short farewell window and tickGuest clears them afterwards. */
+     scheduled stay and tickGuest clears them afterwards. */
   assert(engine.state.guest, 'a fed visitor must still be present for the feedback step');
   eq(engine.state.guest.served, true, 'and marked as served');
-  engine.state.guest.expire_time = 1;              // the farewell window has passed
+  engine.state.guest.expire_time = 1;              // the scheduled visit has ended
   engine.tick();
-  eq(engine.state.guest, null, 'the visitor leaves once the farewell window closes');
+  eq(engine.state.guest, null, 'the visitor leaves once the visit ends');
   const house = engine.state.items.house.find((h) => h.item_id === itemId);
   assert(!house, 'the offered specialty is consumed');
+  const mail=engine.state.mails.find(m=>m.title==='小伙伴的回礼');
+  assert(mail,'the thank-you gift arrives by mail');
+  call(engine,'mail_open',{id:mail.id});
   const gained = engine.state.clover > cloverBefore
     || engine.state.ticket > 0
     || (engine.state.items.house.find((h) => h.item_id === 1000));
@@ -1401,6 +1490,7 @@ test('visitor: only a Specialty (type 3) can be offered', ({ engine }) => {
 
 test('visitor: guest_finish clears the visit', ({ engine }) => {
   forceGuest(engine);
+  engine.state.guest.expire_time=1;
   const r = call(engine, 'guest_finish', {});
   eq(engine.state.guest, null, 'visitor cleared');
   const push = pushNamed(r, 'guest_load');
@@ -1812,8 +1902,7 @@ test('achievements: the travel-count badges unlock as trips accumulate', ({ engi
     '"旅行达到10次" (id 1) should be unlocked after 12 trips');
   assert(engine.state.achieves.indexOf(2) === -1,
     '"旅行达到25次" (id 2) must NOT be unlocked yet');
-  eq(engine.state.curAchieve, engine.state.achieves[engine.state.achieves.length - 1],
-    'cur_achieve should track the newest badge');
+  eq(engine.state.curAchieve, 0, 'unlocking a badge must preserve the selected title');
 });
 
 test('achievements: owning 10 of a named item unlocks its badge', ({ engine }) => {
@@ -2014,10 +2103,6 @@ test('visitor: a delighted visitor is much likelier to give the rare gift', ({ e
   // ordinary clover onto the rare rewards. That is worth asserting, because the
   // naive expectation ("better food = more clover") is backwards.
   const RARE_FREE = 1000;                     // the four-leaf-clover item
-  const countFour = () => {
-    const h = engine.state.items.house.find((x) => x.item_id === RARE_FREE);
-    return h ? h.count : 0;
-  };
   const run = (wantHigh) => {
     let rares = 0;
     let trials = 0;
@@ -2031,12 +2116,9 @@ test('visitor: a delighted visitor is much likelier to give the rare gift', ({ e
       if (idx < 0) continue;
       const itemId = ROW_IDS[idx];
       engine.state.items.house.push({ item_id: itemId, count: 1 });
-      const fBefore = countFour();
       call(engine, 'guest_serve', { id: g.id, item_id: itemId });
-      // NB: do not use "ticket went up" as the rare signal -- FRIEND_GIFTBOUNUS_TICKET
-      // is granted on EVERY feed, so it always fires. The four-leaf category
-      // (18% normal vs 50% rare) is the discriminator.
-      if (countFour() > fBefore) rares++;
+      // The gift is reserved until departure, then delivered by mail.
+      if (engine.state.guest.pendingGift.items.some(x=>x.item_id===RARE_FREE)) rares++;
       trials++;
     }
     return rares / Math.max(1, trials);
@@ -2093,8 +2175,10 @@ test('flowerpot: harvest replies {item_list:[{item_id,num}]} with NO code', ({ e
   assert(item && (item.name === plant.name || item.name === plant.name.split('·')[0]),
     `produce ${row.item_id} must match the planted species/variety`);
   eq(engine.state.flowerpot.slots[0].id, 0, 'the slot should be cleared');
-  assert(pushNamed(r, 'client_load_role').length === 1,
-    'a full role push is what redraws the pot (update_flowerpot has no event binding)');
+  assert(pushNamed(r, 'client_load_role').length === 0,
+    'harvesting must not reset the whole garden camera');
+  eq(pushNamed(r, 'furniture_load_flowerpot')[0].data.plant_list[0].id, 0,
+    'the client receives the emptied plant slot');
 });
 
 test('flowerpot: an unripe slot cannot be harvested', ({ engine }) => {
@@ -2708,15 +2792,42 @@ test('album: recovering into a full album is refused and keeps the picture', ({ 
     'the picture must stay recoverable rather than vanish');
 });
 
-test('album: delete_new drops a pending row without re-adding it', ({ engine }) => {
+test('album: declining ordinary and visitor photos preserves them in the recycle bin across reload', ({ engine, savePath }) => {
   // the client removes the row locally BEFORE sending, so a server that kept it
   // would make the row reappear on the next load
   engine.state.albumPending = [{ id: 3, pic_id: 100, read: 0, new: 1 }];
   engine.state.albumPendingVisit = [{ id: 4, pic_id: 101, read: 0, new: 1, visit: 1 }];
-  call(engine, 'album_delete_new', { id: 3 });
+  eq(call(engine, 'album_delete_new', { id: 3 }).reply.code,0);
   eq(call(engine, 'album_load_new', {}).reply.pictures.length, 0, 'pending row gone');
   call(engine, 'album_delete_new', { id: 4 });
   eq(call(engine, 'album_load_new', {}).reply.visted_pic.length, 0, 'visit row gone too');
+  const restored=reopen(savePath);
+  const bin=call(restored,'album_load_recover').reply.pictures;
+  eq(bin.length,2);eq(bin[0].id,3);eq(bin[1].id,4);
+  assert(bin.every(p=>p.layers.length>0),'discarded photos retain renderable layers');
+  call(restored,'album_delete_new',{id:3});call(restored,'album_delete_new',{id:4});
+  eq(restored.state.albumDeleted.length,2,'repeated decline does not duplicate photos');
+  for(const id of [3,4])eq(call(restored,'album_recover',{id}).reply.code,0);
+  eq(restored.state.albumDeleted.length,0);
+  const again=reopen(savePath);
+  assert([3,4].every(id=>again.state.pictures.some(p=>p.id===id)),'recovery persists');
+  eq(again.state.albumPending.length+again.state.albumPendingVisit.length,0);
+});
+
+test('album: overflow is recoverable and declining one copy never removes another', ({engine})=>{
+  engine.state.pictures=Array.from({length:ALBUM_CAPACITY},(_,i)=>({id:i+1,pic_id:100,read:0,new:1}));
+  engine.state.albumPending=[{id:90001,pic_id:100,read:0,new:1},{id:90002,pic_id:100,read:0,new:1}];
+  eq(call(engine,'album_save_new',{id:90001}).reply.code,75);
+  eq(engine.state.albumDeleted.length,1,'full-album rejection still preserves the photo');
+  eq(call(engine,'album_delete_new',{id:90002}).reply.code,0);
+  eq(engine.state.albumDeleted.length,2,'same-template copies keep distinct handles');
+  eq(call(engine,'album_recover',{id:90001}).reply.code,101,'full album still refuses recovery');
+  eq(engine.state.albumDeleted.length,2);
+  eq(call(engine,'album_delete_new',{id:99999}).reply.code,76);
+  eq(engine.state.albumDeleted.length,2);eq(engine.state.pictures.length,ALBUM_CAPACITY);
+  call(engine,'album_delete',{id:1});
+  eq(call(engine,'album_recover',{id:90001}).reply.code,0);
+  assert(engine.state.albumDeleted.some(p=>p.id===90002),'other declined copy stays recoverable');
 });
 
 test('reply keys: item_load_select_gift answers under `list`, not `items`', ({ engine }) => {
@@ -2952,23 +3063,115 @@ test('drawing: legacy accepted state without a partner migrates without losing b
   eq(restored.state.drawing.colls[0], 1);
 });
 
-test('drawing: with the book, an invitation eventually arrives', ({ engine }) => {
+test('drawing: holding the book alone never rolls a timed invitation', ({ engine }) => {
   engine.state.items.house = [{ item_id: 7001, count: 1 }];
-  engine.state.drawingNextRollAt = 0;
-  for (let i = 0; i < 600 && engine.state.drawing.state === 0; i++) {
+  const random=Math.random;
+  try {
+    Math.random=()=>0;
+    for (let i = 0; i < 3; i++) {
     engine.state.drawingNextRollAt = 1;
     engine.tick();
+    }
+  } finally {Math.random=random;}
+  eq(engine.state.drawing.state,0,'the old periodic invitation roll must be gone');
+});
+
+function feedDrawingGuest(engine, guest, liked=true) {
+  const table=GD.tables.Character;
+  const idx=table.data[guest].taste.findIndex(value=>liked ? value>=60 : value<60);
+  const id=table.rowItemId[idx];
+  assert(id!==undefined,'fixture needs a real specialty with the selected taste');
+  engine.state.items.house=[{item_id:7001,count:1},{item_id:id,count:2}];
+  engine.state.guest={id:guest,served:false,confirmed:true,pos:0,startAt:Math.floor(Date.now()/1000)-300,expire_time:Math.floor(Date.now()/1000)+300};
+  call(engine,'guest_serve',{id:guest,item_id:id});
+  return id;
+}
+
+function finishDrawingGuest(engine, roll) {
+  engine.state.guest.expire_time=1;
+  const random=Math.random;
+  try {Math.random=()=>roll;return call(engine,'guest_finish',{});} finally {Math.random=random;}
+}
+
+test('drawing: liked food leaves the same neighbour invitation only on departure', ({engine})=>{
+  for(const guest of [0,1,2]) {
+    engine.state.drawing.state=0;engine.state.drawing.guest=-1;
+    const id=feedDrawingGuest(engine,guest);
+    eq(engine.state.drawing.state,0,'feeding must not immediately place an invitation');
+    assert(engine.state.guest.servedFeeling>=60,'taste is saved for departure');
+    eq(engine.state.guest.servedItemId,id);
+    call(engine,'guest_finish',{});
+    eq(engine.state.drawing.state,0,'an early finish request cannot trigger an invitation');
+    const r=finishDrawingGuest(engine,0);
+    eq(engine.state.drawing.state,1);
+    eq(engine.state.drawing.guest,guest,'inviter is the guest who ate, not a random partner');
+    assert(r.pushes.some(p=>p.cmd==='guest.load_drawing'&&p.data.guest===guest),'courtyard receives invitation push');
+    assert(r.pushes.some(p=>p.cmd==='notify.new_mail'),'normal departure gift is still mailed');
   }
-  eq(engine.state.drawing.state, 1, 'state must be invite (1)');
-  assert(engine.state.drawing.guest >= 0, 'and it must name a guest');
-  // the tables contain shared rows with guest === -1; those are content, not an
-  // inviter, so they must never be picked (this actually happened)
-  const guests = new Set();
-  for (const src of [GD.tables.drawingCollectData, GD.tables.drawingPageData]) {
-    for (const r of Object.values(src)) guests.add(Number(r.guest));
+});
+
+test('drawing: eligibility, failed chance and busy activities do not create or replace invites', ({engine})=>{
+  for(const reason of ['unliked','unfed','no-book','chance','legacy']) {
+    feedDrawingGuest(engine,0,reason!=='unliked');
+    if(reason==='unfed'){engine.state.guest.served=false;delete engine.state.guest.pendingGift;}
+    if(reason==='no-book')engine.state.items.house=engine.state.items.house.filter(i=>i.item_id!==7001);
+    if(reason==='legacy'){delete engine.state.guest.servedFeeling;delete engine.state.guest.servedItemId;delete engine.state.guest.pendingGift.feeling;}
+    finishDrawingGuest(engine,reason==='chance'?0.99:0);
+    eq(engine.state.drawing.state,0,reason+' should not invite');
+    const random=Math.random;
+    try {Math.random=()=>0;engine.state.drawingNextRollAt=1;engine.tick();} finally {Math.random=random;}
+    eq(engine.state.drawing.state,0,'failed departure must not be retried by timer');
   }
-  assert(guests.has(engine.state.drawing.guest),
-    `guest ${engine.state.drawing.guest} must be a real guest in the tables`);
+  for(const state of [1,2,3,4]) {
+    engine.state.drawing.state=state;engine.state.drawing.guest=2;
+    feedDrawingGuest(engine,0);
+    finishDrawingGuest(engine,0);
+    eq(engine.state.drawing.state,state);eq(engine.state.drawing.guest,2,'existing activity preserved');
+  }
+});
+
+test('drawing: offline departure persists one invite and one mail without re-rolling on boot', ({engine,savePath})=>{
+  feedDrawingGuest(engine,1);
+  engine.state.guest.expire_time=1;engine.save();
+  const re=reopen(savePath), random=Math.random;
+  try {Math.random=()=>0;call(re,'hall_enter_game',{});} finally {Math.random=random;}
+  eq(re.state.drawing.state,1);eq(re.state.drawing.guest,1);
+  const count=re.state.mails.filter(m=>m.title==='小伙伴的回礼').length;
+  eq(count,1);
+  call(re,'guest_accept_invit',{is_accept:false});
+  const again=reopen(savePath);
+  try {Math.random=()=>0;call(again,'hall_enter_game',{});again.tick();} finally {Math.random=random;}
+  eq(again.state.drawing.state,0,'rejected invitation cannot respawn from the same departure');
+  eq(again.state.mails.filter(m=>m.title==='小伙伴的回礼').length,count);
+});
+
+test('drawing: exhausted-content visits end and legacy visit timers cannot remain stuck', ({engine,savePath})=>{
+  engine.state.items.house=[{item_id:7001,count:1}];
+  const d=engine.state.drawing;
+  d.colls=Object.values(GD.tables.drawingCollectData).map(r=>Number(r.id));
+  d.pages=Object.values(GD.tables.drawingPageData).map(r=>Number(r.id));
+  d.state=3;d.guest=0;
+  engine.state.drawingReturnAt=Math.floor(Date.now()/1000)-1;
+  engine.tick();eq(d.state,4,'return with no new content enters a short visit');
+  engine.state.drawingReturnAt=1;engine.tick();
+  eq(d.state,0);eq(d.guest,-1);eq(engine.state.drawingReturnAt,0);
+  d.state=4;d.guest=1;engine.state.drawingReturnAt=1;engine.save();
+  const re=reopen(savePath);call(re,'hall_enter_game',{});
+  eq(re.state.drawing.state,0,'old expired visit settles at login');
+});
+
+test('drawing: 75 percent boundary and pre-upgrade saved taste are honoured', ({engine})=>{
+  for(const [roll,expected] of [[0.74999,1],[0.75,0]]) {
+    engine.state.drawing.state=0;
+    feedDrawingGuest(engine,2);
+    delete engine.state.guest.servedFeeling;
+    delete engine.state.guest.servedItemId;
+    finishDrawingGuest(engine,roll);
+    eq(engine.state.drawing.state,expected,'exact 75% boundary with legacy pending gift');
+  }
+  engine.state.drawing.state=3;engine.state.drawing.guest=2;
+  eq(call(engine,'guest_accept_invit',{accept:false}).reply.code,-1);
+  eq(engine.state.drawing.state,3,'stale decline must not cancel a trip');
 });
 
 test('drawing: accept -> 2, reject -> 0, through the SAME command', ({ engine }) => {
@@ -4665,6 +4868,7 @@ test('wire: guest_accept_invit honours is_accept (it used to always mean REJECT)
   const accept = call(engine, 'guest_accept_invit', { is_accept: true }).reply;
   eq(accept.code, 0, 'accept must be accepted');
   eq(engine.state.drawing.state, 2, 'state must be DrawingState.accept (2)');
+  engine.state.drawing.state = 1; // a new invitation, not cancellation of the accepted one
   const reject = call(engine, 'guest_accept_invit', { is_accept: false }).reply;
   eq(reject.code, 0, 'reject must be accepted');
   eq(engine.state.drawing.state, 0, 'state must be DrawingState.wait (0)');
@@ -4948,7 +5152,143 @@ test('museum: museum_load reports OWNERSHIP, keyed by the client\'s own table', 
     true, 'a pending postcard still counts as owned');
 });
 
+test('craft: returning home stores completed desk items without losing collections or unfinished work', ({engine,savePath})=>{
+  engine.state.items.house=[{item_id:7000,count:1}];
+  engine.state.craft={seq:3,pending:[],wishes:[
+    {id:1,state:4,body:102,paper:1001,make_time:1,stamp_time:1,stamp:1,stamp_state:3,u_id:1}],
+    stamps:[{id:109,state:3,time:1,u_id:2},{id:1,state:2,time:Math.floor(Date.now()/1000)+1000,u_id:3,materialPaid:true}]};
+  const before=call(engine,'pray_load_grays').reply;
+  eq(before.wish_new.u_id,1);eq(before.stamp_new.u_id,2);
+  engine.state.frog.status=1;engine.state.travel.returnAt=1;engine.state.travel.plan={stray:true};
+  const pushes=engine.tick();
+  const update=pushes.find(p=>p.cmd==='pray.load_grays');
+  assert(update,'return pushes desk cleanup to the open room');
+  eq(update.data.wish_new,false);eq(update.data.stamp_new,false);
+  eq(update.data.wishs.length,1);eq(update.data.stamps.length,2);
+  eq(engine.state.craft.stamps[1].state,2,'unfinished job is preserved');
+  const re=reopen(savePath);
+  re.state.frog.status=1;re.state.travel.returnAt=Math.floor(Date.now()/1000)+1000;
+  const again=call(re,'pray_load_grays').reply;
+  eq(again.wish_new,false);eq(again.stamp_new,false,'old desk items stay stored after reload and departure');
+  re.state.craft.stamps[1].time=1;
+  const next=call(re,'pray_load_grays').reply;
+  eq(next.stamp_new.u_id,3,'a newly completed piece still appears on the desk');
+  eq(next.stamps.length,2,'both stored and new crafts remain in the collection');
+});
+
+test('craft: no tool means no consumption, progress or output, including legacy jobs', ({engine,savePath})=>{
+  engine.state.items.house=[{item_id:8000,count:3},{item_id:8001,count:2}];
+  engine.state.frog.motion=5;engine.state.frog.motionNextAt=Math.floor(Date.now()/1000)+10000;
+  engine.state.travel.nextDepartAt=Math.floor(Date.now()/1000)+10000;
+  call(engine,'pray_load_grays');engine.tick();
+  eq(engine.state.craft.seq,0,'animation alone cannot start production');
+  eq(haveOf(engine,8000),3);eq(haveOf(engine,8001),2);
+  engine.state.craft={seq:2,pending:[],wishes:[{id:1,state:3,make_time:1,u_id:1}],
+    stamps:[{id:1,state:2,time:1,u_id:2,materialPaid:true}],
+    wood:{itemId:8501,startedAt:1,finishAt:2,materialPaid:true}};
+  engine.save();
+  const re=reopen(savePath);call(re,'hall_enter_game');re.tick();
+  eq(re.state.craft.wishes[0].state,3);eq(re.state.craft.stamps[0].state,2);
+  eq(haveOf(re,8000),3);eq(haveOf(re,8001),2);eq(haveOf(re,8501),0);
+  eq(re.state.craft.pending.length,0);
+  re.state.items.house.push({item_id:7000,count:1});
+  const resumed=call(re,'pray_load_grays').reply;
+  eq(resumed.wish_new.state,4);eq(resumed.stamp_new.state,3);eq(haveOf(re,8501),1);
+  eq(haveOf(re,7000),1,'tool is durable and never consumed');
+});
+
+test('craft: composing also requires the tool and never consumes pieces on refusal', ({engine})=>{
+  engine.state.items.house=[8501,8502,8503].map(item_id=>({item_id,count:1}));
+  const before=JSON.stringify(engine.state.items.house);
+  eq(call(engine,'pray_compose',{id:5502}).reply.code,42);
+  eq(JSON.stringify(engine.state.items.house),before);
+});
+
+test('craft: materials are charged once per job, never per refresh or stage', ({engine,savePath})=>{
+  engine.state.items.house=[{item_id:7000,count:1}];
+  let r=call(engine,'pray_load_grays',{}).reply;
+  eq(r.wishs.length+r.stamps.length,0,'no materials means no work');
+  engine.state.items.house=[{item_id:7000,count:1},{item_id:8000,count:2}];
+  r=call(engine,'pray_load_grays',{}).reply;
+  eq(r.wishs.length,1);eq(r.stamps.length,1);
+  const count=e=>(e.state.items.house.find(i=>i.item_id===8000)||{}).count||0;
+  eq(count(engine),0,'one wish plus one stamp costs two materials');
+  call(engine,'pray_load_grays',{});
+  eq(engine.state.craft.seq,2,'refresh does not create more jobs');
+  const re=reopen(savePath);
+  for(let n=0;n<3;n++) {
+    re.state.craft.wishes[0].make_time=1;re.state.craft.stamps[0].time=1;
+    call(re,'pray_load_grays',{});
+  }
+  eq(re.state.craft.wishes[0].state,4);eq(re.state.craft.stamps[0].state,3);
+  eq(count(re),0,'finishing after reload does not charge again');
+  eq(re.state.craft.seq,2,'empty stock prevents follow-up work');
+});
+
+test('craft: one material cannot start two jobs and away frogs cannot start work', ({engine})=>{
+  engine.state.items.house=[{item_id:7000,count:1},{item_id:8000,count:1},{item_id:8001,count:1}];
+  engine.state.frog.status=1;
+  call(engine,'pray_load_grays',{});
+  eq(engine.state.craft.seq,0);assert(!engine.state.craft.wood);
+  engine.state.frog.status=0;
+  call(engine,'pray_load_grays',{});
+  eq(engine.state.craft.wishes.length+engine.state.craft.stamps.length,1);
+  assert(engine.state.craft.wood,'wood piece has a timed job');
+});
+
+test('craft: each wooden piece costs one rotten wood and finishes exactly once after reload', ({engine,savePath})=>{
+  const count=(e,id)=>(e.state.items.house.find(i=>i.item_id===id)||{}).count||0;
+  engine.state.items.house=[{item_id:7000,count:1},{item_id:8001,count:1}];
+  call(engine,'pray_load_grays',{});
+  eq(count(engine,8001),0);
+  const job=engine.state.craft.wood;
+  assert(job && [8501,8502,8503].includes(job.itemId));
+  eq(count(engine,job.itemId),0,'not granted until completion');
+  engine.state.craft.wood.finishAt=1;engine.save();
+  const re=reopen(savePath);
+  call(re,'hall_enter_game',{});
+  eq(count(re,job.itemId),1);eq(re.state.craft.pending.filter(id=>id===job.itemId).length,1);
+  assert(!re.state.craft.wood,'no wood left for another job');
+  call(re,'pray_load_grays',{});re.tick();call(re,'pray_confirm_make_box',{});
+  const again=reopen(savePath);call(again,'pray_load_grays',{});
+  eq(count(again,job.itemId),1);eq(again.state.craft.pending.length,0);
+});
+
+test('craft: legacy unpaid active work waits for materials; finished history is never billed', ({engine})=>{
+  engine.state.items.house=[];
+  engine.state.craft={seq:2,pending:[],stamps:[],wishes:[
+    {id:1,state:4,body:101,paper:1001,make_time:1,u_id:1},
+    {id:1,state:3,body:'',paper:'',make_time:1,u_id:2}]};
+  call(engine,'pray_load_grays',{});
+  eq(engine.state.craft.wishes[1].state,3);
+  engine.state.items.house=[{item_id:7000,count:1},{item_id:8000,count:1}];
+  call(engine,'pray_load_grays',{});
+  eq(engine.state.craft.wishes[1].state,4);
+  eq((engine.state.items.house.find(i=>i.item_id===8000)||{}).count||0,0);
+  eq(engine.state.craft.wishes.length,2,'finished history does not incur additional debt');
+});
+
+test('craft: three paid wooden pieces can be composed without charging wood twice', ({engine})=>{
+  engine.state.items.house=[{item_id:7000,count:1}];
+  const original=Math.random;
+  try {
+    for(const roll of [0,0.4,0.9]) {
+      engine.state.items.house.push({item_id:8001,count:1});
+      Math.random=()=>roll;
+      call(engine,'pray_load_grays',{});
+      engine.state.craft.wood.finishAt=1;
+      call(engine,'pray_load_grays',{});
+    }
+  } finally {Math.random=original;}
+  for(const id of [8501,8502,8503])eq(engine.state.items.house.find(i=>i.item_id===id)?.count,1);
+  const reply=call(engine,'pray_compose',{id:5502}).reply;
+  eq(reply.item_list[0],1306);
+  assert(!engine.state.items.house.some(i=>[8001,8501,8502,8503].includes(i.item_id)));
+  eq(engine.state.items.house.find(i=>i.item_id===1306)?.count,1);
+});
+
 test('craft: pray_compose needs one of EACH piece, then pays the amulet', ({ engine }) => {
+  engine.state.items.house=[{item_id:7000,count:1}];
   const pieces = require(path.join(__dirname, '..', 'run', 'engine', 'data', 'gamedata.json'))
     .items.filter((i) => i.type === 16).map((i) => i.id);
   eq(pieces.length, 3, 'exactly three COMPOSE items exist (ItemType.COMPOSE = 16)');
@@ -4978,6 +5318,7 @@ test('craft: pray_compose needs one of EACH piece, then pays the amulet', ({ eng
 });
 
 test('craft: pray_load_grays carries the row fields the two pages render', ({ engine }) => {
+  engine.state.items.house=[{item_id:7000,count:1},{item_id:8000,count:2}];
   const r = call(engine, 'pray_load_grays', {}).reply;
   for (const key of ['wishs', 'stamps', 'boxes']) {
     assert(Array.isArray(r[key]), `${key} must be an array`);
@@ -5011,7 +5352,33 @@ test('craft: pray_load_grays carries the row fields the two pages render', ({ en
     'wish_new must be {make_time, u_id} so the red dot can fire');
 });
 
+test('craft: newly finished room items carry full render data after completion and reload', ({ engine, savePath }) => {
+  engine.state.items.house=[{item_id:7000,count:1},{item_id:8000,count:2}];
+  engine.state.craft = { seq: 2, pending: [],
+    wishes: [{ id: 1, state: 3, body: '', paper: '', content: 1, make_time: 1, u_id: 1 }],
+    stamps: [{ id: 109, state: 2, time: 1, u_id: 2 }],
+  };
+  function checkPayload(r) {
+    // MainInView resolves desk_pic by id and passes *_new directly to the detail
+    // renderer. Merely returning the red-dot timestamp produces a blank item.
+    eq(r.wish_new.id, 1, 'room wish icon needs its table id');
+    eq(r.stamp_new.id, 109, 'room stamp icon needs its table id');
+    eq(r.wish_new.state, 4, 'wish detail is the completed stage');
+    eq(r.stamp_new.state, 3, 'stamp detail uses a renderable table stage');
+    for (const key of ['body', 'paper', 'content', 'stamp', 'stamp_state', 'stamp_time']) {
+      assert(Number(r.wish_new[key]) > 0, `wish completion detail needs ${key}`);
+    }
+    eq(JSON.stringify(r.wish_new), JSON.stringify(r.wishs.find(w => w.u_id === 1)),
+      'completion and collection views receive the same wish');
+    eq(JSON.stringify(r.stamp_new), JSON.stringify(r.stamps.find(s => s.u_id === 2)),
+      'completion and collection views receive the same stamp');
+  }
+  checkPayload(call(engine, 'pray_load_grays', {}).reply);
+  checkPayload(call(reopen(savePath), 'pray_load_grays', {}).reply);
+});
+
 test('craft: the work is persisted and pray_confirm_make_box empties the inbox', ({ engine, savePath }) => {
+  engine.state.items.house=[{item_id:7000,count:1},{item_id:8000,count:2}];
   engine.state.craft.pending.push(1306);
   const r = call(engine, 'pray_load_grays', {}).reply;
   eq(r.boxes.length, 1, 'pending crafts are reported as boxes');
@@ -5024,10 +5391,7 @@ test('craft: the work is persisted and pray_confirm_make_box empties the inbox',
   eq(call(again, 'pray_load_grays', {}).reply.boxes.length, 0, 'and so does the clear');
 });
 
-test('craft: the three 木片 really can arrive from a trip (they are OUR source)', ({ engine }) => {
-  /* No table places these items and the client never mentions them, so offline the
-     only source is the one we designed: a rare find on a trip. Force the RNG so the
-     test is deterministic, then check a COMPOSE item reached the house. */
+test('craft: travel no longer grants free wooden pieces', ({ engine }) => {
   const pieces = items.filter((i) => i.type === 16).map((i) => i.id);
   const lunch = idsOfType(0)[0];
   const orig = Math.random;
@@ -5043,8 +5407,7 @@ test('craft: the three 木片 really can arrive from a trip (they are OUR source
   }
   const owned = engine.state.items.house.concat(engine.state.items.bag)
     .filter((h) => h && pieces.indexOf(h.item_id) !== -1 && h.count > 0);
-  assert(owned.length > 0,
-    'a 木片 must be able to come home from a trip, or the 三拼 box is a dead end');
+  eq(owned.length,0,'wooden pieces must be made by consuming rotten wood at home');
 });
 
 /* ------------------------------------------------------------- 博物馆冒险 */
@@ -5726,7 +6089,8 @@ test('editor: an edit is pushed to the client, so no restart is needed', ({ engi
 
 test('editor: all_furniture grants every row, and the client payload carries them', ({ engine }) => {
   const g = (cmd) => call(engine, 'client_gm', { cmd }).reply;
-  eq(engine.state.furniture.owned.length, 0, 'a fresh save owns no furniture');
+  eq(engine.state.furniture.owned.length, Object.values(GDATA.tables.furnitureData)
+    .filter(row => Number(row.style) === 1).length, 'a fresh save owns the plain style');
   const r = g('all_furniture');
   eq(r.succeed, true, 'all_furniture reports success');
   const rows = Object.keys(GDATA.tables.furnitureData || {}).map(Number);
@@ -5985,6 +6349,7 @@ test('annual: the 手工品 counts come from the CRAFT records, not from a const
 console.log('\n== 手工品：印章停在 state 3，祈愿物带 stamp_time ==');
 
 test('craft: a STAMP stops at state 3 (the only states stampData knows)', ({ engine }) => {
+  engine.state.items.house=[{item_id:7000,count:1},{item_id:8000,count:1}];
   /* The client resolves a stamp's picture with
      `StampCraftDB.get(id).state.indexOf(stamp_state)`; every one of stampData's 27
      rows lists state [1,2,3], so a row pushed to 4 indexes to -1, sets no source and
@@ -6009,6 +6374,7 @@ test('craft: a STAMP stops at state 3 (the only states stampData knows)', ({ eng
 });
 
 test('craft: a finished 祈愿物 carries the stamp_time/stamp the detail card needs', ({ engine }) => {
+  engine.state.items.house=[{item_id:7000,count:1},{item_id:8000,count:1}];
   /* PrayCraftDetailRender.dataChanged reads:
        DateFormat.format(1000 * data.stamp_time, "YYYY.MM.DD")     -> the DATE
        if (data.stamp && 0 != data.stamp_time) { ...pattern_pic[state.indexOf(stamp_state)] }
@@ -6574,6 +6940,199 @@ test('share: legacy lottery extras are not paid twice', ({ engine }) => {
   eq(call(engine,'adsmgr_share',{ads_type:3}).reply.delivery,'inventory');
   eq(engine.state.mails.length,before);
   assert(call(engine,'adsmgr_share',{ads_type:3}).reply.code!==0);
+});
+
+test('feedback54: an owned postcard can arrive again with a new handle', ({ engine, savePath }) => {
+  // A complete album (including the starter museum photos) must not suppress mail.
+  const pics = GDATA.tables.Picture;
+  engine.state.pictures = pics.map((p, i) => ({id:i+1,pic_id:Number(p.id),read:1,new:0}));
+  engine.state.pictureSeq = pics.length;
+  const lunch = idsOfType(0).find(id => effectSum(id, 'HP') > 0);
+  for (let i=0;i<3;i++) {
+    engine.state.items.bag=[lunch,1017,-1,-1];
+    engine.state.travel.nextDepartAt=1;
+    engine.tick();
+    engine.state.travel.returnAt=1;
+    engine.tick();
+  }
+  assert(engine.state.albumPending.length>=3, 'repeat trips must still deliver postcards');
+  const pending = call(engine,'album_load_new').reply.pictures;
+  assert(pending.length>=3, 'delivered postcards must reach the client pending list');
+  const handles=engine.state.pictures.concat(pending).map(p=>p.id);
+  eq(new Set(handles).size,handles.length,'every physical copy has its own handle');
+  eq(reopen(savePath).state.albumPending.length,pending.length,'delivery survives restart');
+});
+
+test('feedback54: ordinary trips push earned photos without a client request', ({engine})=>{
+  call(engine,'hall_enter_game',{}); // only the starter museum photos are filed
+  const museums=new Set(engine.state.pictures.map(p=>p.pic_id));
+  assert(museums.size>0);
+  const lunch=idsOfType(0).find(id=>effectSum(id,'HP')>0);
+  const random=Math.random;let seed=123456789,earned=0;
+  Math.random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
+  try {
+    for(let i=0;i<8;i++){
+      engine.state.items.bag=[lunch,-1,-1,-1];
+      engine.state.items.desk=Array(8).fill(-1);
+      engine.state.travel.nextDepartAt=1;engine.tick();
+      assert(!engine.state.travel.plan.carried.some(id=>id>=1017&&id<=1021),'no museum ticket');
+      const before=engine.state.albumPending.length;
+      engine.state.travel.returnAt=1;
+      const pushes=engine.tick();
+      const fresh=engine.state.albumPending.slice(before);
+      if(!fresh.length)continue;
+      const delivered=pushes.find(p=>canon(p.cmd)==='album_load_new');
+      assert(delivered,'photos were generated but never pushed to the client');
+      for(const photo of fresh)assert(delivered.data.pictures.some(p=>p.id===photo.id),'every earned photo is delivered');
+      earned+=fresh.filter(p=>!museums.has(p.pic_id)).length;
+    }
+  } finally {Math.random=random;}
+  assert(earned>0,'ordinary trips must deliver non-museum pictures');
+});
+
+test('feedback54: login delivers pending ordinary photos from older saves', ({engine,savePath})=>{
+  call(engine,'hall_enter_game',{});
+  const museumIds=new Set(engine.state.pictures.map(p=>p.pic_id));
+  const photo=GDATA.tables.Picture.find(p=>!museumIds.has(Number(p.id)));
+  const id=++engine.state.pictureSeq;
+  engine.state.albumPending=[{id,pic_id:Number(photo.id),read:0,new:1}];engine.save();
+  const loaded=reopen(savePath),boot=call(loaded,'hall_enter_game',{});
+  const delivery=pushNamed(boot,'album_load_new');
+  assert(delivery.length===1,'login must push pending photos without a manual query');
+  assert(delivery[0].data.pictures.some(p=>p.id===id),'old pending photo is delivered');
+  eq(call(loaded,'album_save_new',{id}).reply.code,0,'the delivered photo can be saved');
+  assert(loaded.state.pictures.some(p=>p.id===id));
+  eq(loaded.state.albumPending.length,0);
+});
+
+test('feedback45: selected title survives reload and later achievement unlocks', ({ engine, savePath }) => {
+  engine.state.achieves=[0,1];
+  engine.state.curAchieve=1;
+  call(engine,'client_set_achieve',{id:0});
+  eq(engine.state.curAchieve,0,'the fire-and-forget selection is persisted');
+  eq(reopen(savePath).state.curAchieve,0);
+  engine.state.travel.tripCount=25;
+  engine.tick();
+  assert(engine.state.achieves.includes(2),'new achievement still unlocks');
+  eq(engine.state.curAchieve,0,'earning a title must not equip it automatically');
+  call(engine,'client_set_achieve',{id:999999});
+  eq(engine.state.curAchieve,0,'unknown title is refused');
+});
+
+test('feedback60: an idle compost bin never marks the first slot as fermenting', ({engine,savePath})=>{
+  eq(call(engine,'furniture_load_compost').reply.box_index,0,'all idle slots are editable');
+  engine.state.furniture.compost.boxIndex=1; // legacy fake active slot
+  const itemId = items.find(i => i.type === 3).id;
+  engine.state.furniture.compost.boxes=[0,itemId,0,0,0,0];
+  engine.save();
+  const restored=reopen(savePath);
+  const payload=call(restored,'furniture_load_compost').reply;
+  eq(payload.box_index,2,'legacy save starts a real job on an occupied slot');
+  eq(JSON.stringify(payload.box_list),JSON.stringify([0,itemId,0,0,0,0]),'migration preserves stored items');
+  assert(payload.finish_at >= Math.floor(Date.now()/1000)+299,'legacy items get a full cycle, no retroactive consumption');
+});
+
+test('furniture: plain style is owned by default and legacy migration preserves custom placement', ({engine,savePath})=>{
+  const rows=Object.values(GDATA.tables.furnitureData);
+  const plain=rows.filter(row=>Number(row.style)===1).map(row=>Number(row.id));
+  const custom=rows.find(row=>Number(row.style)!==1);
+  const load=e=>call(e,'furniture_load_furniture').reply;
+  eq(plain.length,27,'all 27 plain furniture types');
+  eq(JSON.stringify(load(engine).has_fur.slice().sort((a,b)=>a-b)),JSON.stringify(plain.slice().sort((a,b)=>a-b)));
+  engine.state.furniture.owned=[Number(custom.id),plain[0]];
+  engine.state.furniture.placed=[{id:Number(custom.id),type:Number(custom.type)}];
+  engine.save();
+  const again=reopen(savePath);
+  const payload=load(again);
+  assert(plain.every(id=>payload.has_fur.includes(id)),'old save receives every missing plain item');
+  eq(payload.has_fur.length,28,'one custom item retained, no duplicates or unrelated unlocks');
+  eq(payload.put_fur.find(row=>row.type===Number(custom.type)).id,Number(custom.id),'custom placement preserved');
+  again.save();
+  eq(load(reopen(savePath)).has_fur.length,28,'migration is idempotent');
+  assert(engine.importSave({furniture:{owned:[Number(custom.id)],placed:[]}}),'legacy import succeeds');
+  eq(load(engine).has_fur.length,28,'import also grants plain furniture immediately');
+  eq(call(engine,'furniture_load_compost').reply.box_index,0,'an imported partial save still has a valid compost bin');
+});
+
+test('compost: random selection, timer persistence and active-slot protection', ({engine,savePath})=>{
+  const id=items.find(i=>i.type===3).id;
+  const c=engine.state.furniture.compost;
+  c.boxes=[0,id,0,0,id,0];
+  const random=Math.random;
+  let payload;
+  try {Math.random=()=>0.99;payload=call(engine,'furniture_load_compost').reply;} finally {Math.random=random;}
+  eq(payload.box_index,5,'randomly choose among occupied eligible slots, not always first');
+  eq(c.job.finishAt-c.job.startedAt,300,'five minutes');
+  engine.state.items.house=[{item_id:id,count:2}];
+  eq(call(engine,'furniture_takeout_box',{pos:5}).reply.code,6);
+  eq(call(engine,'furniture_putin_box',{pos:5,id}).reply.code,6);
+  eq(haveOf(engine,id),2,'refusal cannot consume or refund inventory');
+  engine.save();
+  const again=reopen(savePath);
+  eq(call(again,'furniture_load_compost').reply.finish_at,payload.finish_at,'reopen must not restart timer');
+  eq(call(again,'furniture_load_compost').reply.box_index,5,'selection persists');
+});
+
+test('compost: finish once, increase fertility and continue through offline hours', ({engine,savePath})=>{
+  const id=items.find(i=>i.type===3).id;
+  const c=engine.state.furniture.compost;
+  c.boxes=[id,id,id,id,id,id];
+  const first=call(engine,'furniture_load_compost').reply;
+  const start=c.job.startedAt;
+  const originalNow=Date.now;
+  try {
+    Date.now=()=> (start+300-1)*1000;
+    eq(call(engine,'furniture_load_compost').reply.fertility,0,'cannot finish early');
+    Date.now=()=> (start+300)*1000;
+    const pushes=engine.tick();
+    assert(pushes.some(p=>p.cmd==='furniture.load_compost'),'completion is pushed to the live client');
+    eq(c.fertility,1);eq(c.boxes[first.box_index-1],0,'only completed slot consumed');
+    eq(c.job.finishAt,start+600,'next job starts at previous completion');
+    call(engine,'furniture_load_compost');engine.tick();
+    eq(c.fertility,1,'repeated ticks/loads do not pay twice');
+    engine.save();
+    Date.now=()=> (start+3*300+60)*1000;
+    const again=reopen(savePath);
+    const half=call(again,'furniture_load_compost').reply;
+    eq(half.fertility,3,'offline catch-up finishes all elapsed cycles');
+    eq(half.finish_at,start+4*300,'partial next cycle preserves elapsed time');
+    Date.now=()=> (start+8*300)*1000;
+    const end=call(again,'furniture_load_compost').reply;
+    eq(end.fertility,6,'exactly six reserved items consumed');
+    eq(end.box_index,0);eq(end.finish_at,0);assert(end.box_list.every(v=>v===0));
+    const reloaded=reopen(savePath);
+    eq(call(reloaded,'furniture_load_compost').reply.fertility,6,'fertility survives reload without duplicate credit');
+  } finally {Date.now=originalNow;}
+});
+
+test('compost: existing three-hour job adopts five minutes without resetting elapsed time', ({engine,savePath})=>{
+  const id=items.find(i=>i.type===3).id,now=Math.floor(Date.now()/1000);
+  const c=engine.state.furniture.compost;
+  c.boxes=[0,0,id,0,0,0];
+  c.job={index:3,itemId:id,startedAt:now-120,finishAt:now-120+10800};
+  engine.save();
+  const re=reopen(savePath);
+  const payload=call(re,'furniture_load_compost').reply;
+  eq(payload.box_index,3);eq(payload.finish_at,now+180);
+  eq(payload.fertility,0);
+  re.state.furniture.compost.job={index:3,itemId:id,startedAt:now-301,finishAt:now-301+10800};
+  eq(call(re,'furniture_load_compost').reply.fertility,1,'overdue old job finishes immediately');
+  eq(call(re,'furniture_load_compost').reply.fertility,1,'migration pays once');
+});
+
+test('compost: queued swaps conserve inventory and reject unsupported inputs', ({engine})=>{
+  const [a,b]=items.filter(i=>i.type===3).slice(0,2).map(i=>i.id);
+  engine.state.items.house=[{item_id:a,count:3},{item_id:b,count:2},{item_id:TOOL_ITEM_ID(),count:1}];
+  call(engine,'furniture_putin_box',{pos:1,id:a});
+  call(engine,'furniture_putin_box',{pos:2,id:a});
+  eq(call(engine,'furniture_putin_box',{pos:2,id:b}).reply.code,0);
+  eq(haveOf(engine,a),2);eq(haveOf(engine,b),1);
+  eq(call(engine,'furniture_takeout_box',{pos:2}).reply.code,0);eq(haveOf(engine,b),2);
+  eq(call(engine,'furniture_putin_box',{pos:2,id:TOOL_ITEM_ID()}).reply.code,-1);
+  eq(call(engine,'furniture_putin_box',{pos:1.5,id:b}).reply.code,-1);
+  const c=engine.state.furniture.compost;
+  c.boxes[4]=TOOL_ITEM_ID();
+  eq(call(engine,'furniture_takeout_box',{pos:5}).reply.code,0,'legacy invalid contents remain retrievable');
 });
 
 console.log(`\n${passed} passed, ${failed} failed`

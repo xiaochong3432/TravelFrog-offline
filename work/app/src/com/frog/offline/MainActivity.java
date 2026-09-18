@@ -27,12 +27,14 @@ public final class MainActivity extends Activity {
     private static final Object MIRROR_LOCK = new Object();
     private static final int IMPORT_DOCUMENT = 1;
     private static final int EXPORT_DOCUMENT = 2;
+    private static final int EXPORT_IMAGE = 3;
     private static AssetServer server;
     private WebView web;
     private ValueCallback<Uri[]> fileCallback;
     private final Object exportLock = new Object();
     private String pendingSave;
     private String pendingName;
+    private byte[] pendingImage;
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
@@ -147,6 +149,60 @@ public final class MainActivity extends Activity {
             // Preserve the old SAF interaction for existing callers.
             beginDocumentExport(safeFilename(name), text);
         }
+
+        @JavascriptInterface public String exportImage(String name, String dataUrl) {
+            if (dataUrl == null || !dataUrl.startsWith("data:image/png;base64,")
+                    || dataUrl.length() > 28000000) return "";
+            final byte[] bytes;
+            try {
+                bytes = android.util.Base64.decode(dataUrl.substring(22), android.util.Base64.DEFAULT);
+                android.graphics.BitmapFactory.Options options = new android.graphics.BitmapFactory.Options();
+                options.inJustDecodeBounds = true;
+                android.graphics.BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
+                if (options.outWidth <= 0 || options.outHeight <= 0 || !"image/png".equals(options.outMimeType)) return "";
+            } catch (Exception e) { return ""; }
+            final String filename = safeFilename(name).replaceAll("(?i)\\.png$", "") + ".png";
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                Uri uri = null;
+                try {
+                    ContentValues values = new ContentValues();
+                    values.put(MediaStore.MediaColumns.DISPLAY_NAME, filename);
+                    values.put(MediaStore.MediaColumns.MIME_TYPE, "image/png");
+                    values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/TravelFrog");
+                    values.put(MediaStore.MediaColumns.IS_PENDING, 1);
+                    uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                    if (uri == null) throw new IOException("Cannot create image");
+                    try (OutputStream out = getContentResolver().openOutputStream(uri, "w")) {
+                        if (out == null) throw new IOException("Cannot write image");
+                        out.write(bytes);
+                    }
+                    values.clear(); values.put(MediaStore.MediaColumns.IS_PENDING, 0);
+                    if (getContentResolver().update(uri, values, null, null) < 1) throw new IOException("Cannot publish image");
+                    return uri.toString();
+                } catch (Exception e) {
+                    if (uri != null) try { getContentResolver().delete(uri, null, null); } catch (Exception ignored) {}
+                    Log.w(TAG, "Cannot export image", e);
+                    return "";
+                }
+            }
+            synchronized (exportLock) {
+                if (pendingImage != null || isFinishing() || isDestroyed()) return "";
+                pendingImage = bytes;
+            }
+            runOnUiThread(() -> {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                    intent.setType("image/png");
+                    intent.putExtra(Intent.EXTRA_TITLE, filename);
+                    startActivityForResult(intent, EXPORT_IMAGE);
+                } catch (Exception e) {
+                    synchronized (exportLock) { pendingImage = null; }
+                    notifyPage("__frogImageExportResult", "");
+                }
+            });
+            return "PICKER";
+        }
     }
 
     private AtomicFile mirrorFile() {
@@ -254,6 +310,22 @@ public final class MainActivity extends Activity {
 
     @Override protected void onActivityResult(int request, int result, Intent data) {
         super.onActivityResult(request, result, data);
+        if (request == EXPORT_IMAGE) {
+            byte[] bytes;
+            synchronized (exportLock) { bytes = pendingImage; pendingImage = null; }
+            Uri uri = data == null ? null : data.getData();
+            String saved = "";
+            if (result == RESULT_OK && uri != null && bytes != null) {
+                try (OutputStream out = getContentResolver().openOutputStream(uri, "wt")) {
+                    if (out == null) throw new IOException("Cannot write image document");
+                    out.write(bytes);
+                    out.flush();
+                    saved = uri.toString();
+                } catch (Exception e) { Log.w(TAG, "Cannot export image document", e); }
+            }
+            notifyPage("__frogImageExportResult", saved);
+            return;
+        }
         Uri uri = result == RESULT_OK && data != null ? data.getData() : null;
         if (request == IMPORT_DOCUMENT && fileCallback != null) {
             fileCallback.onReceiveValue(uri == null ? null : new Uri[] {uri});

@@ -41,7 +41,7 @@
     setRole(0,4);
     check(room.cover_light.visible,'waking did not relight candles');
     weather.weather_load({season:3,hours_type:1,weather:1});
-    check(!room.cover_light.visible,'morning did not remove candle glow');
+    check(room.cover_light.visible,'awake frog must keep candles lit in daytime');
     check(room.bgGroup.filters.length===0,'morning tint still present');
     weather.weather_load({season:3,hours_type:3,weather:1});
     room.updateSeason(); room.updateSeason();

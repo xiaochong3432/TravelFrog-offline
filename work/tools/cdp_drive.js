@@ -159,9 +159,11 @@ const pageErrors = [];
   const show = (r, label) => {
     console.log(`\n=== ${label} ===`);
     if (r.exceptionDetails) {
+      exceptions.push((r.exceptionDetails.exception && r.exceptionDetails.exception.description) || r.exceptionDetails.text);
       console.log('EVAL THREW: ' + ((r.exceptionDetails.exception && r.exceptionDetails.exception.description) || r.exceptionDetails.text));
     } else {
       const v = r.result && r.result.value;
+      if (v && typeof v === 'object' && v.passed === false) exceptions.push(label + ': probe reported passed=false');
       if (v !== undefined) console.log(typeof v === 'string' ? v : JSON.stringify(v, null, 1));
     }
     return r;
@@ -198,6 +200,11 @@ const pageErrors = [];
     await client.send('Page.enable');
     await client.send('Runtime.enable');
     await client.send('Log.enable');
+    if (arg('download-dir', '')) {
+      const downloadPath = path.resolve(arg('download-dir'));
+      fs.mkdirSync(downloadPath, {recursive:true});
+      await client.send('Browser.setDownloadBehavior', {behavior:'allow', downloadPath});
+    }
 
     /* --inject <file> runs BEFORE any page script, via
        Page.addScriptToEvaluateOnNewDocument. That is the only way to observe
@@ -270,6 +277,7 @@ const pageErrors = [];
     }
     client.close();
   } catch (e) {
+    exceptions.push('driver failed: ' + e.message);
     console.error('driver failed:', e.message);
   } finally {
     try { proc.kill(); } catch (e) { }

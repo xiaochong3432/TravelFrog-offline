@@ -677,7 +677,7 @@ t.saveNewPictureInfo(e.pic.id, function (t) {
      for (var e, t = 0; t < this.newAdsPictureInfoList.length; t++)
        e = this.newAdsPictureInfoList[t], core.SocketManage.getInstance().send("album_delete_new", null, e.id);
      ```
-* 回包：`{ "code": 0 }`（成功）。离线环境只要把该 id 从待保存池删掉即可。
+* 回包：`{ "code": 0 }`（成功）。按用户确认的规则，把该 id 从待保存池移入回收站，保留原照片编号和内容；重复放弃不重复入站。不能直接销毁。相册已满而无法保存时，同样保留到回收站。
 
 ### 4.7 `album_delete`（从相册删除 · 客户端主动）
 

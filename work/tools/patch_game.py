@@ -43,9 +43,9 @@ PATCHES = [
         'DrawingEventType.ITEM_CHANGE,RoleEventType.updateDecoration,RoleEventType.loadRole,"offlineWeatherChanged")',
     ),
     (
-        "candles burn at night while the frog is awake at home",
+        "candles burn whenever the frog is awake at home",
         'if(0==s.isHome||s.isHome&&t&&s.isSleep==i)',
-        'if((0==s.isHome||s.isHome&&t&&s.isSleep==i)&&(a.type!==25||this.getModel(WeatherModel).data.hours_type>=2))',
+        'if(a.type===25?t&&!this.roleModel.isFrogSleep():(0==s.isHome||s.isHome&&t&&s.isSleep==i))',
     ),
     (
         "mail pagination keeps all collected pages",
@@ -133,6 +133,24 @@ PATCHES = [
 ]
 
 
+# Non-fullscreen (offline TestChannel) returned before publishing stage dimensions.
+# CameraView uses them to place its crop frame and decide whether to hide controls.
+PATCHES.append((
+    'publish stage dimensions in non-fullscreen mode',
+    'return 0==GameConfig.fullScreen?[2]:',
+    'return 0==GameConfig.fullScreen?(t.stageWidth=this.stage.stageWidth,'
+    't.stageHeight=this.stage.stageHeight,this.stage.dispatchEventWith("uiresize"),[2]):',
+))
+
+# Weather-specific effects must not be appended to the shared seasonal tables.
+for weather_table in ('SeasonCover', 'SeasonSpine', 'SeasonPartical'):
+    PATCHES.append((
+        'copy ' + weather_table + ' before adding weather effects',
+        't=Tabikaeru.DefineExtra.' + weather_table + '[e]||[];',
+        't=(Tabikaeru.DefineExtra.' + weather_table + '[e]||[]).slice();',
+    ))
+
+
 def main():
     if not os.path.exists(CLEAN):
         print(f"missing pristine baseline: {CLEAN}")
@@ -151,6 +169,7 @@ def main():
         applied += n
         print(f"  [ok]   {name}: {n} replacement(s)")
     text += '\n' + (PROJECT_ROOT / 'work/tools/client_room_fixes.js').read_text(encoding='utf8')
+    text += '\n' + (PROJECT_ROOT / 'work/tools/client_feedback_fixes.js').read_text(encoding='utf8')
     open(MAIN, "wb").write(text.encode("utf8"))
     print(f"  wrote {MAIN}  ({applied} total replacements)")
     return 0

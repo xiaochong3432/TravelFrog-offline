@@ -41,6 +41,7 @@
     await wait(500);
     const compost = pages.getControl(CompostViewControl,core.ViewLayerType.WindowLayer);
     check(compost?.view.itemGrids.length===6,'compost window did not open');
+    check(compost.view.itemGrids.every(g=>g.touchEnabled),'idle compost has a falsely fermenting slot');
     pages.removeControl(CompostViewControl,core.ViewLayerType.WindowLayer);
 
     // Sell the last repeatable item through the real merchant request/callback.
@@ -57,19 +58,25 @@
     pages.addViewControl(FurnitureShopController,core.ViewLayerType.WindowLayer);
     await wait(500);
     const shop = pages.getControl(FurnitureShopController,core.ViewLayerType.WindowLayer);
-    check(shop?.view.shopItems.length===1,'expected the last merchant item');
+    check(shop?.view.shopItems.length>1,'sold-out goods disappeared');
+    const rowsBefore=shop.view.shopItems.length;
     let purchases = 0;
     fm.requestBuy(2001,new core.Action1(()=>purchases++));
     await wait(500);
     check(purchases===1,'last merchant purchase failed');
-    check(!pages.getControl(FurnitureShopController,core.ViewLayerType.WindowLayer),'empty green shop stayed open');
-    check(!fm.isOpenShop() && !scene.shop_mc.visible,'sold-out merchant did not leave');
+    check(!!pages.getControl(FurnitureShopController,core.ViewLayerType.WindowLayer),'sold-out shop closed early');
+    check(fm.isOpenShop() && scene.shop_mc.visible,'sold-out merchant left early');
+    check(shop.view.shopItems.length===rowsBefore,'purchase removed a row');
+    check(fm.getShopData().shop_list.every(x=>x.num===0),'expected sold-out quantities');
+    const rendered=[];
+    (function walk(n){if(n instanceof FurnitureShopItem)rendered.push(n); for(const c of n.$children||[])walk(c);})(shop.view);
+    check(rendered.length>0 && rendered.every(x=>/^soldout/.test(x.currentState)),'sold-out state not rendered');
     engine.state.furniture.shopDay -= 86400;
     fm.furniture_load_furniture(clone(engine.dispatch('furniture_load_furniture',{}).reply));
     await wait(200);
     check(fm.isOpenShop() && scene.shop_mc.visible,'restocked merchant did not return');
     check(fm.getShopData().shop_list.some(x=>x.shop_id===2001),'repeatable item did not restock');
-    check(!fm.getShopData().shop_list.some(x=>x.shop_id===1),'one-time item restocked');
+    check(fm.getShopData().shop_list.find(x=>x.shop_id===1)?.num===0,'one-time item restocked');
     return {passed:true,routeRewardCallbacks:rewards,compostVisible:true,compostSlots:6,
-        soldOutClosed:true,merchantLeft:true,restocked:true};
+        soldOutRowsRetained:true,merchantStays:true,restocked:true};
 })()

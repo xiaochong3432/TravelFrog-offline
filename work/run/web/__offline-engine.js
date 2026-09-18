@@ -69159,6 +69159,8 @@ for (const k of Object.keys(FURNITURE_TABLE)) {
   const id = Number((row && row.id) !== undefined ? row.id : k);
   if (Number.isFinite(id)) FURNITURE_BY_ID.set(id, row);
 }
+const PLAIN_FURNITURE_IDS = Array.from(FURNITURE_BY_ID.values())
+  .filter(row => Number(row.style) === 1).map(row => Number(row.id));
 const FURNITURE_SHOP = new Map();
 for (const k of Object.keys(FURNITURE_SHOP_TABLE)) {
   const row = FURNITURE_SHOP_TABLE[k];
@@ -69357,15 +69359,18 @@ const RENAME_CLOVER = 50;
                   amulet and the only wooden amulet in the Item table is 1306
                   紫檀木护符, so that is what we grant -- the original mapping was
                   server-side and is not in our snapshot);
-                  WHERE the pieces come from (no table places them and the client
-                  never mentions 8501-8503, so the original source was a pure
-                  server grant: we make them a rare travel find);
                   the craft PACING below.
-   All three are disclosed in dist/README.txt. */
+   User-confirmed costs: one 8000 per wish/stamp; one 8001 per wooden piece.
+   Pieces are made at home, not granted as free travel rewards. */
 const CRAFT_STAGE_SEC = 90;          // one stage per 90 s, OURS
+const HANDCRAFT_TOOL_ID = 7000;      // EnumItemID.HAND_CRAFT_TOOL; persistent unlock
+const HANDCRAFT_MATERIAL_ID = 8000;
+const ROTTEN_WOOD_ID = 8001;
+const WOOD_PIECE_SEC = CRAFT_STAGE_SEC * 3;
+// Temporary user-requested pacing: one reserved item per 5 minutes, fertility +1.
+const COMPOST_DURATION_SEC = 5 * 60;
 const COMPOSE_RECIPE_ID = 5502;      // Define.ComposeId, recovered
 const COMPOSE_AMULET_ID = 1306;      // 紫檀木护符 -- OUR reading, see above
-const COMPOSE_PIECE_CHANCE = 12;     // % per trip, OURS
 /* The three pieces, taken from the Item table rather than hard-coded so the list
    cannot drift from the data. */
 const COMPOSE_PIECE_IDS = gamedata.items
@@ -69573,8 +69578,7 @@ const VISITOR_STAY_SEC = Number(process.env.FROG_VISITOR_STAY || 900);
 const VISITOR_COOL_SEC = Number(process.env.FROG_VISITOR_COOL || 600);
 const VISITOR_FOOD_MAX = Number(process.env.FROG_VISITOR_FOOD_MAX || 20);
 /* 友情绘本 (drawing) pacing -- OUR choices, the original schedule was server-side. */
-const DRAWING_ROLL_SEC = Number(process.env.FROG_DRAWING_ROLL || 420);
-const DRAWING_CHANCE = Number(process.env.FROG_DRAWING_CHANCE || 20);
+const DRAWING_CHANCE = Number(process.env.FROG_DRAWING_CHANCE || 75);
 const DRAWING_TRIP_SEC = Number(process.env.FROG_DRAWING_TRIP || 600);
 /* The item that unlocks the whole feature: the client's `isOpen()` is
    `ItemModel.getHouseItemCount(Tabikaeru.ItemID.DRAWING_BOOK) > 0`, and that
@@ -69678,6 +69682,7 @@ const BOOT_PUSH = [
   'travel_load_note',
   'travel_load_gift',
   'album_load',
+  'album_load_new',
   'guest_load',
   'mail_load',
   'task_load',
@@ -70005,7 +70010,7 @@ function defaultState() {
       bench: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
       benchLock: 0,         // bench_lock: 1 while a craft is running (client refuses edits)
       craft: null,          // 进行中的制作 {furnitureId, drawing, materials, startedAt, finishAt}
-      owned: [],            // has_fur: furniture ids the player owns
+      owned: PLAIN_FURNITURE_IDS.slice(), // All default 素 furniture is owned.
       placed: [],           // put_fur: [{type, id}] currently in the courtyard
       replaceFur: [],       // replace_fur: furniture TYPEs being rotated out
       shopBought: {},       // shop id -> times bought (against FurnitureShop limit)
@@ -70013,7 +70018,7 @@ function defaultState() {
       shopDailyBought: {},  // repeatable stock is replenished each local calendar day
       welfareTaken: {},     // shop id -> welfare goods taken on `welfareDay`
       welfareDay: {},       // shop id -> createDay() the welfare count belongs to
-      compost: { showIndex: 1, replaceIndex: 0, boxIndex: 1, boxes: [0, 0, 0, 0, 0, 0], list: [21000] },
+      compost: { showIndex: 1, replaceIndex: 0, boxIndex: 0, boxes: [0, 0, 0, 0, 0, 0], list: [21000], job: null, fertility: 0 },
       pocket: { showIndex: 0, replaceIndex: 0, clover: 0 },
       tumbler: { showIndex: 0, replaceIndex: 0 },
     },
@@ -70282,7 +70287,13 @@ function loadState(savePath) {
       if (Number(s.animPicture.guide) < 2) s.animPicture.guide = 2;
       s.travel = Object.assign(defaultState().travel, raw.travel || {});
       s.furniture = Object.assign(defaultState().furniture, raw.furniture || {});
+      s.furniture.owned = Array.from(new Set([
+        ...(Array.isArray(s.furniture.owned) ? s.furniture.owned : []), ...PLAIN_FURNITURE_IDS,
+      ]));
       s.furniture.compost = Object.assign(defaultState().furniture.compost, (raw.furniture || {}).compost || {});
+      // Legacy fake indices have no timer. Start their first real job on load;
+      // preserve real jobs so relaunching cannot reset a running timer.
+      if (!s.furniture.compost.job) s.furniture.compost.boxIndex = 0;
       // Old saves started with no owned compost bin, making its entire UI invisible.
       if (!Array.isArray(s.furniture.compost.list) || !s.furniture.compost.list.length) {
         s.furniture.compost.list = [21000];
@@ -70559,7 +70570,6 @@ function createEngine(opts) {
     const out = [];
     for (const [shopId, row] of FURNITURE_SHOP) {
       const num = furnitureStock(row);
-      if (num <= 0) continue;
       // `has_item` 0/absent = no prerequisite; otherwise it is a furniture id
       const need = Number(row.has_item) || 0;
       if (need && state.furniture.owned.indexOf(need) === -1) continue;
@@ -70596,7 +70606,7 @@ function createEngine(opts) {
     const hours = Number(process.env.FROG_SHOP_HOURS || 0);
     const start_time = hours > 0 ? day + Math.floor((24 - hours) * 1800) : day - 1;
     const end = hours > 0 ? start_time + hours * 3600 : Math.floor(next.getTime() / 1000);
-    return { shop_list, start_time, leave_time: shop_list.length ? end : now - 1 };
+    return { shop_list, start_time, leave_time: end };
   }
 
   let merchantStatusSeen;
@@ -70704,7 +70714,21 @@ function advanceCraft(t) {
   const wishIds = Object.keys(wishRows);
   const stampIds = Object.keys(stampRows);
   const atHome = !state.frog || state.frog.status === 0;
+  const canCraft = getHaveItem(HANDCRAFT_TOOL_ID) > 0;
   let changed = false;
+
+  // Reserve from storage and persist the receipt with the job. Stages, reloads
+  // and acknowledgements never charge it again. Old unfinished jobs lacking a
+  // receipt wait for a material; completed history is never retroactively billed.
+  function reserveMaterial(job, id) {
+    if (job.materialPaid === true) return true;
+    const stock = state.items.house.find(row => row.item_id === id);
+    if (!stock || stock.count < 1) return false;
+    addHouseItem(id, -1);
+    job.materialPaid = true;
+    changed = true;
+    return true;
+  }
 
 /** A finished 祈愿木牌 is STAMPED with a seal, and the client's detail card draws
      it like this (PrayCraftDetailRender.dataChanged):
@@ -70742,7 +70766,7 @@ function advanceCraft(t) {
   }
 
   for (const w of c.wishes) {
-    if (w.state > 3 || t < w.make_time) continue;
+    if (!canCraft || w.state > 3 || !reserveMaterial(w, HANDCRAFT_MATERIAL_ID) || t < w.make_time) continue;
     w.state += 1;
     if (w.state > 3) {
       /* The table's last stage lists the pieces that MAY be used ("102,103,104,
@@ -70772,7 +70796,7 @@ function advanceCraft(t) {
      `stampData[id].state.indexOf(stamp_state)` -- a state of 4 indexes to -1, sets NO
      source, and the detail card comes out BLANK. So 3 is "finished" for a stamp. */
   for (const s of c.stamps) {
-    if (Number(s.state) >= CRAFT_STAMP_MAX || t < s.time) continue;
+    if (!canCraft || Number(s.state) >= CRAFT_STAMP_MAX || !reserveMaterial(s, HANDCRAFT_MATERIAL_ID) || t < s.time) continue;
     s.state = Number(s.state) + 1;
     s.time = Number(s.state) >= CRAFT_STAMP_MAX ? t : t + CRAFT_STAGE_SEC;
     changed = true;
@@ -70802,7 +70826,9 @@ function advanceCraft(t) {
 
   /* Start new work only when the previous piece is finished, so the list reads as a
      history of what the frog has been making. */
-  if (atHome && wishIds.length && !c.wishes.some((w) => w.state <= 3)) {
+  const wishJob = {}, stampJob = {};
+  if (canCraft && atHome && wishIds.length && !c.wishes.some((w) => w.state <= 3)
+      && reserveMaterial(wishJob, HANDCRAFT_MATERIAL_ID)) {
     c.seq += 1;
     c.wishes.push({
       id: Number(wishIds[randInt(0, wishIds.length - 1)]),
@@ -70812,24 +70838,51 @@ function advanceCraft(t) {
       content: noteIds.length ? Number(noteIds[randInt(0, noteIds.length - 1)]) : 0,
       make_time: t + CRAFT_STAGE_SEC,
       u_id: c.seq,
+      materialPaid: true,
     });
     changed = true;
   }
-  if (atHome && stampIds.length && !c.stamps.some((s) => s.state < 3)) {
+  if (canCraft && atHome && stampIds.length && !c.stamps.some((s) => s.state < 3)
+      && reserveMaterial(stampJob, HANDCRAFT_MATERIAL_ID)) {
     c.seq += 1;
     c.stamps.push({
       id: Number(stampIds[randInt(0, stampIds.length - 1)]),
       state: 1,
       time: t + CRAFT_STAGE_SEC,
       u_id: c.seq,
+      materialPaid: true,
     });
     changed = true;
+  }
+
+  if (canCraft && c.wood && t >= c.wood.finishAt) {
+    const piece = c.wood.itemId;
+    addHouseItem(piece, 1);
+    c.pending.push(piece);
+    c.wood = null;
+    changed = true;
+  }
+  const woodJob = {};
+  if (canCraft && atHome && !c.wood && COMPOSE_PIECE_IDS.length && reserveMaterial(woodJob, ROTTEN_WOOD_ID)) {
+    c.wood = { itemId: COMPOSE_PIECE_IDS[randInt(0, COMPOSE_PIECE_IDS.length - 1)],
+      startedAt: t, finishAt: t + WOOD_PIECE_SEC, materialPaid: true };
   }
 
   /* Keep the history bounded; the client renders the whole list. */
   if (c.wishes.length > 30) c.wishes.splice(0, c.wishes.length - 30);
   if (c.stamps.length > 30) c.stamps.splice(0, c.stamps.length - 30);
   return changed;
+}
+
+function handcraftPayload() {
+  const c = state.craft || {};
+  const wishes = (c.wishes || []).slice();
+  const stamps = (c.stamps || []).slice();
+  const newestWish = wishes.filter(r => craftDone('wish', r) && !r.stored).sort((a, b) => b.make_time - a.make_time)[0];
+  const newestStamp = stamps.filter(r => craftDone('stamp', r) && !r.stored).sort((a, b) => b.time - a.time)[0];
+  return { wishs: wishes, stamps, boxes: (c.pending || []).slice(),
+    wish_new: newestWish ? Object.assign({}, newestWish) : false,
+    stamp_new: newestStamp ? Object.assign({}, newestStamp) : false };
 }
 
 /* Every postcard the player owns, as a Set of Picture-table ids.
@@ -71450,6 +71503,78 @@ function mdPayload(s) {
     return changed;
   }
 
+  function isCompostItem(id) {
+    const item = ITEM_BY_ID.get(Number(id));
+    // Match the original selector: specialties and courtyard fertilizer items.
+    return !!item && (item.type === ITEM_TYPE_SPECIALTY || (item.type === 15 && item.sub_type === 1));
+  }
+
+  function refreshCompost(t) {
+    const c = state.furniture.compost;
+    const before = JSON.stringify(c);
+    c.boxes = Array.from({length: 6}, (_, i) => Number((c.boxes || [])[i]) || 0);
+    c.fertility = Number.isSafeInteger(c.fertility) && c.fertility >= 0 ? c.fertility : 0;
+    const job = c.job;
+    if (job && !(Number.isInteger(job.index) && job.index >= 1 && job.index <= 6
+        && isCompostItem(job.itemId) && c.boxes[job.index - 1] === job.itemId
+        && Number.isFinite(job.startedAt) && job.startedAt > 0
+        && Number.isFinite(job.finishAt)
+        && [COMPOST_DURATION_SEC, 3 * 60 * 60].includes(job.finishAt - job.startedAt))) {
+      c.job = null; // Invalid job: keep its contents, restart a full cycle.
+    }
+    // Existing three-hour jobs keep their selected slot and elapsed time.
+    if (c.job) c.job.finishAt = c.job.startedAt + COMPOST_DURATION_SEC;
+    let cursor = t;
+    // At most six reserved items. Catch up from each finish time, not login time.
+    for (let i = 0; i <= 6; i++) {
+      if (!c.job) {
+        const candidates = c.boxes.map((id, index) => isCompostItem(id) ? index + 1 : 0).filter(Boolean);
+        if (!candidates.length) break;
+        const index = candidates[randInt(0, candidates.length - 1)];
+        c.job = {index, itemId: c.boxes[index - 1], startedAt: cursor, finishAt: cursor + COMPOST_DURATION_SEC};
+      }
+      if (t < c.job.finishAt) break;
+      cursor = c.job.finishAt;
+      c.boxes[c.job.index - 1] = 0;
+      c.fertility = Math.min(Number.MAX_SAFE_INTEGER, c.fertility + 1);
+      c.job = null;
+    }
+    c.boxIndex = c.job ? c.job.index : 0;
+    return JSON.stringify(c) !== before;
+  }
+
+  function compostPayload() {
+    const c = state.furniture.compost;
+    return {
+      show_index: c.showIndex, replace_index: c.replaceIndex,
+      // Original pips light at 2/3/4; keep the uncapped total separately.
+      state: Math.min(4, 1 + c.fertility), fertility: c.fertility,
+      box_index: c.boxIndex, box_list: c.boxes.slice(), compost_list: c.list || [],
+      finish_at: c.job ? c.job.finishAt : 0,
+    };
+  }
+
+  function changeCompost(d, ctx, remove) {
+    const t = nowSec();
+    if (refreshCompost(t)) save();
+    const c = state.furniture.compost, index = posOf(d), id = Number(d && d.id);
+    const answer = code => {
+      ctx.push('furniture_load_compost', compostPayload());
+      ctx.push('item_load_items', handlers.item_load_items());
+      return {code};
+    };
+    if (!Number.isInteger(index) || index < 1 || index > 6) return answer(-1);
+    if (c.boxIndex === index) return answer(6);
+    const prev = c.boxes[index - 1];
+    if (remove ? prev <= 0 : !isCompostItem(id) || getHaveItem(id) <= 0) return answer(-1);
+    if (prev > 0) addHouseItem(prev, 1);
+    if (!remove) addHouseItem(id, -1);
+    c.boxes[index - 1] = remove ? 0 : id;
+    refreshCompost(t);
+    save();
+    return answer(0);
+  }
+
   /* ------------------------------------------------------------ travel */
 
   // tolerant of an inverted range (e.g. min > max from bad env vars)
@@ -71650,13 +71775,6 @@ function mdPayload(s) {
       out.steps = mapped.steps;
       out.minutes = mapped.minutes;
       out.museum = mapped.museum;
-      /* 手工拼装的材料: one of the three 木片, rarely. OURS -- no table places these
-         items and the client never mentions them (search 8501: 0 hits), so in the
-         original they were a pure server grant. Without a source here the 三拼 box
-         could never be used, so the frog brings one home now and then. */
-      if (COMPOSE_PIECE_IDS.length && Math.random() * 100 < COMPOSE_PIECE_CHANCE) {
-        out.items.push(COMPOSE_PIECE_IDS[randInt(0, COMPOSE_PIECE_IDS.length - 1)]);
-      }
       const itemMax = Number(DEF('TRAVEL_ITEM_GETMAX', 10));
       while (out.items.length > itemMax) out.items.pop();
       return out;
@@ -71669,10 +71787,6 @@ function mdPayload(s) {
     const itemMax = Number(DEF('TRAVEL_ITEM_GETMAX', 10));
     if (SPECIALTY_IDS.length && Math.random() * 100 < Number(DEF('SPECIALTY_PER', 60))) {
       out.items.push(SPECIALTY_IDS[randInt(0, SPECIALTY_IDS.length - 1)]);
-    }
-    if (COMPOSE_PIECE_IDS.length
-        && Math.random() * 100 < COMPOSE_PIECE_CHANCE) {
-      out.items.push(COMPOSE_PIECE_IDS[randInt(0, COMPOSE_PIECE_IDS.length - 1)]);
     }
     // one souvenir-collection for the BackHome event (evt_value[4])
     if (COLLECTION_IDS.length && Math.random() * 100 < Number(DEF('COLLECT_PER', [15])[0])) {
@@ -71758,6 +71872,10 @@ function mdPayload(s) {
   }
 
   function returnFrog(ctx, t) {
+    // Clear the desk on return, while retaining every row in the craft collection.
+    for (const [kind, rows] of [['wish', (state.craft || {}).wishes], ['stamp', (state.craft || {}).stamps]]) {
+      for (const row of rows || []) if (craftDone(kind, row)) row.stored = true;
+    }
     const plan = state.travel.plan || null;
     const r = rollTripRewards(plan);
     state.frog.status = 0;                       // home again
@@ -71847,11 +71965,10 @@ function mdPayload(s) {
       // That is the client's own flow (it rebuilds newPictureInfoList from that
       // payload and shows a save action); auto-filing straight into the album
       // would leave album_save_new / album_delete_new with nothing to act on.
-      if (!state.pictures.some((p) => p && p.pic_id === pic)
-        && !state.albumPending.some((p) => p && p.pic_id === pic)) {
-        state.pictureSeq = (state.pictureSeq || 0) + 1;
-        state.albumPending.push({ id: state.pictureSeq, pic_id: pic, read: 0, new: 1 });
-      }
+      // Each trip awards a physical copy, even if this template is already owned.
+      // Dynamic-photo making also needs multiple copies of the same postcard.
+      state.pictureSeq = (state.pictureSeq || 0) + 1;
+      state.albumPending.push({ id: state.pictureSeq, pic_id: pic, read: 0, new: 1 });
     }
 
     // the frog may also bring a cut flower home for the 庭院 -- decoration.json's
@@ -71876,6 +71993,7 @@ function mdPayload(s) {
     // NOTE [4] is a Collection id (0..61), NOT a picture id -- see README.
     const ev = makeEvent(EV_BACK_HOME, [0, 0, r.clover, r.ticket, r.collection, ...r.items]);
     ctx.push('client_load_role', rolePayload());
+    ctx.push('pray_load_grays', handcraftPayload());
     ctx.push('clover_update', { clover: state.clover });
     ctx.push('item_update_ticket', { ticket: state.ticket });
     ctx.push('item_load_items', handlers.item_load_items());
@@ -71889,6 +72007,9 @@ function mdPayload(s) {
       ctx.push('travel_load_note', handlers.travel_load_note());
       ctx.push('notify_new_event', { event: makeEvent(EV_NEW_NOTE, []) });
     }
+    // TravelModel never requests this list on return. Without the push, earned
+    // photos stay in the save but never reach the receive/save-photo UI.
+    ctx.push('album_load_new', handlers.album_load_new());
     checkAchievements(ctx);        // a trip can unlock several at once
     return ev;
     return ev;
@@ -71899,6 +72020,10 @@ function mdPayload(s) {
     const t = nowSec();
     const pushes = [];
     const ctx = { push: (c, d) => pushes.push({ cmd: toWire(c), data: d }) };
+    if (refreshCompost(t)) {
+      save();
+      ctx.push('furniture_load_compost', compostPayload());
+    }
     refreshClovers(t);
     // season / time-of-day / weather: only push when something actually changed
     if (refreshWeather()) ctx.push('weather_load', weatherPayload());
@@ -71930,6 +72055,11 @@ function mdPayload(s) {
     checkAchievements(ctx);
     /* 工作台制作到点结算（离线也算：finishAt 是绝对时间，开机后第一拍就会结算） */
     craftTick(ctx, t);
+    if (advanceCraft(t)) {
+      save();
+      ctx.push('item_load_items', handlers.item_load_items());
+      ctx.push('pray_load_grays', handcraftPayload());
+    }
     const merchantBefore = merchantStatusSeen;
     const furniture = handlers.furniture_load_furniture();
     if (merchantBefore !== undefined && merchantBefore !== merchantStatusSeen) {
@@ -71975,13 +72105,7 @@ function mdPayload(s) {
      cleared either by expiring or by `guest_finish`. */
   function tickGuest(ctx, t) {
     if (state.guest) {
-      if (t >= state.guest.expire_time) {
-        state.guest = null;
-        state.guestCoolUntil = t + GUEST_COOL_SEC;
-        state.guestNextRollAt = 0;
-        save();
-        ctx.push('guest_load', guestPayload());
-      }
+      finishGuest(ctx, t);
       return;
     }
     if (!state.guestNextRollAt) {
@@ -72032,9 +72156,42 @@ function mdPayload(s) {
     ctx.push('visit_load', visitorPayload());
   }
 
-  /* 【自设计】 how long a fed visitor stays before leaving (seconds). Long enough for
-     the client's two feedback popups, short enough that the visit still visibly ends. */
-  const GUEST_FAREWELL_SEC = 20;
+  // Settle before boot snapshots as well as during play. The gift and departure
+  // are saved together, so a restart cannot lose or duplicate the mailed reward.
+  function finishGuest(ctx, t) {
+    const g = state.guest;
+    if (!g || !(g.expire_time > 0) || t < g.expire_time) return false;
+    let mail;
+    if (g.served && g.pendingGift) {
+      mail = makeMail({
+        title: '小伙伴的回礼', message: '谢谢你的招待！这是送给你的小礼物。',
+        senderCharaId: g.id, clover: g.pendingGift.clover,
+        items: g.pendingGift.items || [],
+      });
+      state.mails.push(mail);
+      trimMails();
+    }
+    // Legacy served visits already received an immediate payout. Without a
+    // pendingGift they must not get the same reward again after upgrading.
+    const feeling = Number(g.servedFeeling ?? (g.pendingGift && g.pendingGift.feeling));
+    const invite = g.served && feeling >= 60 && getHaveItem(DRAWING_BOOK_ID) > 0
+      && state.drawing.state === 0 && drawingGuestIds().includes(Number(g.id))
+      && Math.random() * 100 < DRAWING_CHANCE;
+    if (invite) {
+      state.drawing.state = 1;
+      state.drawing.guest = Number(g.id);
+      state.drawingNextRollAt = 0;
+    }
+    state.guest = null;
+    state.guestBonusTickets = 0;
+    state.guestCoolUntil = t + GUEST_COOL_SEC;
+    state.guestNextRollAt = 0;
+    save();
+    ctx.push('guest_load', guestPayload());
+    if (mail) ctx.push('notify_new_mail', { mail });
+    if (invite) ctx.push('guest_load_drawing', drawingPayload());
+    return true;
+  }
 
   function pickGuest() {
     const n = GUEST_DATA.length || 3;
@@ -72117,13 +72274,11 @@ function mdPayload(s) {
     return null;
   }
 
-  /* Roll for an invitation. Gated on owning the picture book, exactly like the
-     client's isOpen(): without item 7001 the whole UI is closed, so inviting
-     would be a dead end. */
+  // Invitations are rolled once in finishGuest. This timer only settles visits.
   function maybeDrawing(ctx) {
     const t = nowSec();
     const d = state.drawing;
-    if (getHaveItem(DRAWING_BOOK_ID) <= 0) return;
+    let changed = false;
 
     if (d.state === 3 /* lock */ && state.drawingReturnAt && t >= state.drawingReturnAt) {
       // the guest comes back with a collectible and/or a page
@@ -72136,34 +72291,24 @@ function mdPayload(s) {
       if (!got.length) {
         // nothing left to give: fall through to the visit branch
         d.state = 4; // visit
-        state.drawingReturnAt = t + 60;
-        save();
-        ctx.push('guest_load_drawing', drawingPayload());
-        return;
+        state.drawingReturnAt += 60;
+      } else {
+        d.state = 0;
+        if (verbose) console.log(`[engine] drawing trip returned ${got.join(',')}`);
       }
-      d.state = 0;                 // invitation finished; wait for the next partner
+      changed = true;
+    }
+    if (d.state === 4) {
+      if (!state.drawingReturnAt) { state.drawingReturnAt = t + 60; changed = true; }
+      if (t >= state.drawingReturnAt) { d.state = 0; changed = true; }
+    }
+    if (!changed) return;
+    if (d.state === 0) {
       d.bag = (d.bag || []).map(() => -1);
       d.guest = -1;
       state.drawingReturnAt = 0;
-      state.drawingNextRollAt = t + DRAWING_ROLL_SEC;
-      save();
-      if (verbose) console.log(`[engine] drawing trip returned ${got.join(',')}`);
-      ctx.push('guest_load_drawing', drawingPayload());
-      return;
+      state.drawingNextRollAt = 0;
     }
-    if (d.state === 1 || d.state === 2 || d.state === 3 || d.state === 4) return;
-    if (!state.drawingNextRollAt) {
-      state.drawingNextRollAt = t + DRAWING_ROLL_SEC;
-      save();
-      return;
-    }
-    if (t < state.drawingNextRollAt) return;
-    state.drawingNextRollAt = t + DRAWING_ROLL_SEC;
-    if (Math.random() * 100 >= DRAWING_CHANCE) { save(); return; }
-    const guests = drawingGuestIds();
-    if (!guests.length) return;
-    d.state = 1;                   // DrawingState.invite
-    d.guest = guests[randInt(0, guests.length - 1)];
     save();
     ctx.push('guest_load_drawing', drawingPayload());
   }
@@ -72823,27 +72968,21 @@ function mdPayload(s) {
      sensible magnitudes -- it is ours, not the original's. */
   const GUEST_CLOVER_POW = Number(process.env.FROG_GUEST_CLOVER_POW || 150);
 
-  function rollGuestGift(feeling, ctx, activeSec) {
+  function rollGuestGift(feeling, activeSec) {
     const maps = defineData.maps || {};
     const rare = feeling >= 80;
     const w = (rare ? maps.FRIEND_GIFTPER_RARE : maps.FRIEND_GIFTPER_NORMAL)
       || { Clover: 80, FourClover: 18, Ticket: 2 };
-    const roll = Math.random() * 100;
-    let acc = Number(w.Clover) || 0;
-    let got = 'clover';
-    if (roll >= acc) {
-      acc += Number(w.FourClover) || 0;
-      got = roll < acc ? 'four_leaf' : 'ticket';
-    }
+    // User-confirmed offline rule: either clover or one four-leaf clover.
+    // Keep the table's relative weights for these two categories only.
+    const cloverWeight = Number(w.Clover) || 0;
+    const fourWeight = Number(w.FourClover) || 0;
+    const got = Math.random() * (cloverWeight + fourWeight) < cloverWeight ? 'clover' : 'four_leaf';
 
     let clover = 0;
-    let ticket = 0;
+    const giftItems = [];
     if (got === 'four_leaf') {
-      const count = addHouseItem(FOUR_LEAF_CLOVER_ID, 1);
-      save();
-      pushItemUpdate(ctx, FOUR_LEAF_CLOVER_ID, count);
-    } else if (got === 'ticket') {
-      ticket = 1;
+      giftItems.push({ item_id: FOUR_LEAF_CLOVER_ID, count: 1 });
     } else {
       // the original's formula
       const tier = Math.min((state.guestFeeds || 0), 2);
@@ -72852,25 +72991,9 @@ function mdPayload(s) {
       clover = Math.floor(
         GUEST_CLOVER_POW * ((100 + feeling) / 100) * (active / 1800)
         * (Number(debuff) || 1) / 15);
+      clover = Math.max(1, clover + Number(DEF('FRIEND_GIFTBOUNUS_CLOVER', 0)));
     }
-    // the bonus that Define DOES specify, on top of the category reward
-    clover += Number(DEF('FRIEND_GIFTBOUNUS_CLOVER', 0));
-    const maxBonusTickets = Number(DEF('FRIEND_GIFTBOUNUS_TICKET_MAX', 3));
-    if ((state.guestBonusTickets || 0) < maxBonusTickets) {
-      ticket += Number(DEF('FRIEND_GIFTBOUNUS_TICKET', 0));
-      state.guestBonusTickets = (state.guestBonusTickets || 0) + 1;
-    }
-
-    if (clover) {
-      state.clover += clover;
-      ctx.push('clover_update', { clover: state.clover });
-    }
-    if (ticket) {
-      state.ticket += ticket;
-      ctx.push('item_update_ticket', { ticket: state.ticket });
-    }
-    save();
-    return { got, clover, ticket, feeling, rare };
+    return { got, clover, items: giftItems, feeling, rare };
   }
 
   /* ------------------------------------------------------- raffle */
@@ -73401,7 +73524,6 @@ function mdPayload(s) {
       try { ok = !!r.test(state); } catch (e) { ok = false; }
       if (!ok) continue;
       state.achieves.push(r.id);
-      state.curAchieve = r.id;
       gained++;
       if (verbose) console.log(`[engine] achievement unlocked: ${r.id} ${r.name}`);
     }
@@ -74300,6 +74422,10 @@ function mdPayload(s) {
     hall_reconnect: () => ({ code: 0, account: state.account }),
 
     hall_enter_game: (d, ctx) => {
+      // Do not announce an offline-expired guest and then remove it on the next tick.
+      // The normal boot mail snapshot delivers any newly settled gift.
+      finishGuest({ push: () => {} }, nowSec());
+      maybeDrawing({ push: () => {} });
       refreshClovers(nowSec());
       refreshWeather();                 // real season / time-of-day before first push
       ensureTutorialMails();
@@ -74785,8 +74911,8 @@ function mdPayload(s) {
                           **75 = album full** -> the client DROPS the pending entry
          album_recover  : 0  = recovered
          album_delete   : 0  = deleted
-       `album_delete_new` is fire-and-forget: the client removes the row locally
-       BEFORE sending, so the server must not re-add it. */
+       `album_delete_new` removes a pending row locally before sending. Reply with
+       code 0 so the confirmation closes, and keep the photo in the recycle bin. */
     album_load_by_id_list: (d) => {
       const ids = Array.isArray(d && d.id_list) ? d.id_list : [];
       // NOTE: unlike album_load_all, THIS id_list is a plain array of numbers.
@@ -74848,7 +74974,7 @@ function mdPayload(s) {
         // 75 is the code the client treats as "album full": it drops the pending
         // row WITHOUT filing it, so returning anything else would leave the row
         // stuck on screen forever.
-        pend.splice(i, 1);
+        (state.albumDeleted || (state.albumDeleted = [])).push(pend.splice(i, 1)[0]);
         save();
         return { code: 75 };
       }
@@ -74863,13 +74989,13 @@ function mdPayload(s) {
         const list = state[key] || [];
         const i = list.findIndex((p) => p.id === id);
         if (i !== -1) {
-          list.splice(i, 1);
+          (state.albumDeleted || (state.albumDeleted = [])).push(list.splice(i, 1)[0]);
           save();
-          break;
+          return { code: 0 };
         }
       }
-      // the client has already removed the row locally; there is no reply to read
-      return undefined;
+      // Retrying a completed discard must not duplicate or destroy the photo.
+      return { code: (state.albumDeleted || []).some(p => p.id === id) ? 0 : 76 };
     },
 
     /* --- misc boot loads: well-formed empties --- */
@@ -74954,20 +75080,16 @@ function mdPayload(s) {
       ctx.push('item_update', { item: { item_id: itemId, count } });
       ctx.push('client_load_decorate', handlers.client_load_decorate());
       ctx.push('item_load_handbook', handlers.item_load_handbook());
-      // update_flowerpot() has NO event binding in the client (and
-      // furniture_load_compost even dispatches the wrong event), so a full role
-      // push is what actually redraws the pot.
-      ctx.push('client_load_role', rolePayload());
+      // Redraw the plants without resetting MainOutView's camera to the house.
+      ctx.push('furniture_load_flowerpot', {
+        show_list: [{ type: 1, id: FLOWERPOT_ID }], list: [], plant_list: plantList(),
+      });
       return { item_list: [{ item_id: itemId, num }] };
     },
-    furniture_load_compost: () => ({
-      show_index: state.furniture.compost.showIndex,
-      replace_index: state.furniture.compost.replaceIndex,
-      state: 0,
-      box_index: state.furniture.compost.boxIndex,
-      box_list: (state.furniture.compost.boxes || []).slice(0, 6),
-      compost_list: state.furniture.compost.list || [],
-    }),
+    furniture_load_compost: () => {
+      if (refreshCompost(nowSec())) save();
+      return compostPayload();
+    },
     furniture_load_pocket: () => ({
       show_index: state.furniture.pocket.showIndex,
       replace_index: state.furniture.pocket.replaceIndex,
@@ -75017,6 +75139,12 @@ function mdPayload(s) {
       /* 图纸进台面之后：材料够就自动开工（原版也是服务端看着台面决定、再推 FurnitureFinish） */
       const started = maybeStartCraft();
       save();
+      /* ItemModel.addHouseItem/consumeHouseItem are validation-only stubs in the
+         shipped client. Without an authoritative inventory push, the material
+         picker keeps showing the item consumed by the previous bench slot. A
+         tap on the next slot then sends stale data and the engine rejects it. */
+      pushItemUpdate(ctx, id, getHaveItem(id));
+      if (prev > 0 && prev !== id) pushItemUpdate(ctx, prev, getHaveItem(prev));
       ctx.push('furniture_load_furniture', handlers.furniture_load_furniture({}));
       return started ? { code: 0, crafting: 1 } : { code: 0 };
     },
@@ -75030,6 +75158,7 @@ function mdPayload(s) {
       state.furniture.bench[slot] = -1;
       addHouseItem(id, 1);
       save();
+      pushItemUpdate(ctx, id, getHaveItem(id));
       ctx.push('furniture_load_furniture', handlers.furniture_load_furniture({}));
       return { code: 0 };
     },
@@ -75037,29 +75166,8 @@ function mdPayload(s) {
     /* compost box: wire index is 1-BASED, but the slot value is 0 when empty
        (NOT -1 like the bench). Items are consumed from / returned to the house
        inventory exactly like the bench. Declared wire name is `pos`. */
-    furniture_putin_box: (d) => {
-      const index = posOf(d);
-      if (!(index >= 1 && index <= 6)) return { code: -1 };
-      const id = Number(d && d.id);
-      if (!ITEM_BY_ID.has(id) || getHaveItem(id) <= 0) return { code: -1 };
-      const prev = state.furniture.compost.boxes[index - 1];
-      if (prev > 0) addHouseItem(prev, 1);
-      addHouseItem(id, -1);
-      state.furniture.compost.boxes[index - 1] = id;
-      save();
-      return { code: 0 };
-    },
-
-    furniture_takeout_box: (d) => {
-      const index = posOf(d);
-      if (!(index >= 1 && index <= 6)) return { code: -1 };
-      const id = state.furniture.compost.boxes[index - 1];
-      if (id <= 0) return { code: -1 };
-      state.furniture.compost.boxes[index - 1] = 0;
-      addHouseItem(id, 1);
-      save();
-      return { code: 0 };
-    },
+    furniture_putin_box: (d, ctx) => changeCompost(d, ctx, false),
+    furniture_takeout_box: (d, ctx) => changeCompost(d, ctx, true),
 
     /* The pocket stores clover and the CLIENT zeroes its own copy on success --
        it never touches the player's clover total, because addClover() is an
@@ -75200,10 +75308,11 @@ function mdPayload(s) {
         }
         cur.state = 2;                       // DrawingState.accept
       } else {
+        if (cur.state !== 1) return { code: -1 };
         cur.state = 0;                       // DrawingState.wait
         cur.guest = -1;
         cur.bag = (cur.bag || []).map(() => -1);
-        state.drawingNextRollAt = nowSec() + DRAWING_ROLL_SEC;
+        state.drawingNextRollAt = 0;
       }
       save();
       ctx.push('guest_load_drawing', drawingPayload());
@@ -75355,6 +75464,7 @@ function mdPayload(s) {
        needResponse:false -- the client acts locally and expects no reply, so the
        server must push any resulting state itself. */
     guest_confirm: (d, ctx) => {
+      finishGuest(ctx, nowSec());
       const g = state.guest;
       if (g && Number(d.id) === g.id) {
         g.confirmed = true;              // and every later push must keep saying so,
@@ -75368,14 +75478,15 @@ function mdPayload(s) {
        lookup into Character.taste, which is what picks the NORMAL vs RARE reward
        weights -- that is the whole point of the taste vectors. */
     guest_serve: (d, ctx) => {
+      finishGuest(ctx, nowSec());
       const g = state.guest;
       if (!g) return undefined;
       /* The wire carries {id, item_id} (send("guest_serve", null, guestId, item)).
          Only one guest is present at a time, so `id` is redundant -- but ignoring
          it meant a stale request could feed whoever happens to be here now, so
          check it when the client supplies one. */
-      const gid = Number(firstDefined(d, ['id']));
-      if (gid && Number(g.id) !== gid) return undefined;
+      const suppliedId = firstDefined(d, ['id']);
+      if (suppliedId !== undefined && Number(g.id) !== Number(suppliedId)) return undefined;
       const itemId = Number(firstDefined(d, ['item_id']));
       const it = ITEM_BY_ID.get(itemId);
       if (!it || it.type !== ITEM_TYPE_SPECIALTY) return undefined;
@@ -75385,21 +75496,14 @@ function mdPayload(s) {
       addHouseItem(itemId, -1);
       const feeling = guestFeeling(g.id, itemId);
       const active = nowSec() - (g.startAt || nowSec());
-      const gift = rollGuestGift(feeling, ctx, active);
+      const gift = rollGuestGift(feeling, active);
       state.guestFeeds = (state.guestFeeds || 0) + 1;
       g.served = true;
-      /* The visitor still LEAVES after being fed, but not instantly: the client runs
-         `sendGuestServed(e); friendFeedBack(e);` back to back, and friendFeedBack reads
-         `getGuestData().id` to look the friend up in the Character table
-         (`data.find(e => e.id === id)`) -- with id already -1 that lookup returns
-         undefined and `o.taste[a]` throws 「呱呱吃坏肚子了」. Against the networked
-         server the clearing push simply arrived later; we keep them for a short
-         farewell window so the same sequence stays valid. tickGuest clears them when
-         expire_time passes. */
-      g.expire_time = nowSec() + GUEST_FAREWELL_SEC;
-      state.guestBonusTickets = 0;
-      state.guestCoolUntil = nowSec() + GUEST_FAREWELL_SEC + GUEST_COOL_SEC;
-      state.guestNextRollAt = 0;
+      g.servedFeeling = feeling;
+      g.servedItemId = itemId;
+      // Feeding preserves the scheduled visit. Store the rolled reward without
+      // crediting inventory; finishGuest mails it when the neighbour leaves.
+      g.pendingGift = gift;
       save();
       ctx.push('item_load_items', handlers.item_load_items());
       ctx.push('guest_load', guestPayload());
@@ -75411,13 +75515,7 @@ function mdPayload(s) {
     },
 
     guest_finish: (d, ctx) => {
-      if (!state.guest) return undefined;
-      state.guest = null;
-      state.guestBonusTickets = 0;
-      state.guestCoolUntil = nowSec() + GUEST_COOL_SEC;
-      state.guestNextRollAt = 0;
-      save();
-      ctx.push('guest_load', guestPayload());
+      finishGuest(ctx, nowSec());
       return undefined;
     },
 
@@ -76476,30 +76574,18 @@ function mdPayload(s) {
        The client's whole 手工 window is fed by this one command:
          wishs / stamps : the craft history (each row carries the fields the client
                           renders -- see the `craft` note in defaultState)
-         wish_new       : the freshest FINISHED wish, read as `{make_time, u_id}`
+         wish_new       : full freshest FINISHED wish (desk icon + detail + red dot)
                           (the client stores `u_id` in a cookie, so re-sending the
                           same one does not re-raise the red dot)
          stamp_new      : same idea, but the field is `time`, not `make_time`
          boxes          : finished crafts to pop up; each entry is an ITEM ID
                           (`ItemDB.get(id)` + "获得物品，已放入" + ItemPutDesc[type]) */
-    pray_load_grays: () => {
-      if (advanceCraft(nowSec())) save();
-      const c = state.craft || {};
-      const wishes = (c.wishes || []).slice();
-      const stamps = (c.stamps || []).slice();
-      const done = (list) => list.filter((r) => r.state > 3);
-      const doneStamps = (list) => list.filter((r) => craftDone('stamp', r));
-      const newestWish = done(wishes).sort((a, b) => b.make_time - a.make_time)[0];
-      const newestStamp = doneStamps(stamps).sort((a, b) => b.time - a.time)[0];
-      return {
-        wishs: wishes,
-        stamps,
-        boxes: (c.pending || []).slice(),
-        wish_new: newestWish
-          ? { make_time: newestWish.make_time, u_id: newestWish.u_id } : false,
-        stamp_new: newestStamp
-          ? { time: newestStamp.time, u_id: newestStamp.u_id } : false,
-      };
+    pray_load_grays: (d, ctx) => {
+      if (advanceCraft(nowSec())) {
+        save();
+        if (ctx) ctx.push('item_load_items', handlers.item_load_items());
+      }
+      return handcraftPayload();
     },
 
     /* 三拼: one of each COMPOSE material -> one amulet. BoxCraftView only calls this
@@ -76508,6 +76594,7 @@ function mdPayload(s) {
     pray_compose: (d) => {
       const id = Number(firstDefined(d, ['id']));
       if (id !== COMPOSE_RECIPE_ID) return { code: 5 };        // 5 = 参数非法
+      if (getHaveItem(HANDCRAFT_TOOL_ID) <= 0) return { code: 42 };
       for (const piece of COMPOSE_PIECE_IDS) {
         if (getHaveItem(piece) <= 0) return { code: 42 };      // 42 = 物品不足
       }
@@ -77325,7 +77412,13 @@ function mdPayload(s) {
     },
     client_set_lang: () => undefined,
     client_set_client_envinfo: () => undefined,
-    client_set_achieve: () => undefined,
+    client_set_achieve: (d) => {
+      const id = Number(d && d.id);
+      if (!Number.isInteger(id) || !state.achieves.includes(id)) return undefined;
+      state.curAchieve = id;
+      save();
+      return undefined; // The client applies its choice locally and expects no reply.
+    },
     client_set_icon: () => undefined,
     client_set_pic_show: () => undefined,
     client_set_ads: () => undefined,
@@ -77406,6 +77499,11 @@ function mdPayload(s) {
     state.gacha = Object.assign(fresh.gacha, obj.gacha || {});
     state.weather = Object.assign(fresh.weather, obj.weather || {});
     state.travel = Object.assign(fresh.travel, obj.travel || {});
+    state.furniture = Object.assign({}, fresh.furniture, obj.furniture || {});
+    state.furniture.compost = Object.assign({}, fresh.furniture.compost, (obj.furniture || {}).compost || {});
+    state.furniture.owned = Array.from(new Set([
+      ...(Array.isArray(state.furniture.owned) ? state.furniture.owned : []), ...PLAIN_FURNITURE_IDS,
+    ]));
     if (!Array.isArray(state.clovers) || state.clovers.length !== CLOVER_SLOTS) state.clovers = makeClovers();
     state.__saveReport = makeSaveReport();
     state.__saveReport.action = 'import';

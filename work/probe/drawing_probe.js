@@ -20,19 +20,19 @@
   }
   o.stateWithoutBook = eng.state.drawing.state;
 
-  // 3. with the book -> invitation arrives
+  // 3. liked food + scheduled departure -> invite from that same neighbour.
   eng.state.items.house = [{ item_id: 7001, count: 1 }];
   eng.state.drawingNextRollAt = 0;
-  for (var j = 0; j < 600 && eng.state.drawing.state === 0; j++) {
-    eng.state.drawingNextRollAt = 1;
-    eng.tick();
-  }
+  eng.state.items.house.push({item_id:3001,count:1});
+  eng.state.guest={id:0,served:false,confirmed:true,pos:0,startAt:1,expire_time:Math.floor(Date.now()/1000)+600};
+  eng.dispatch('guest_serve',{id:0,item_id:3001});
+  eng.state.guest.expire_time=1;
+  var rng=Math.random;
+  try {Math.random=function(){return 0.74;};eng.dispatch('guest_finish',{});} finally {Math.random=rng;}
   o.inviteState = eng.state.drawing.state;
   o.inviteGuest = eng.state.drawing.guest;
 
-  // 4. accept, then pack. NOTE: keep a picture book in the house too -- the
-  // roll is gated on owning item 7001, so consuming the only copy into the bag
-  // silently stops the whole feature (I hit exactly that while probing).
+  // 4. accept, then pack.
   o.acceptCode = eng.dispatch('guest_accept_invit', { accept: true }).reply.code;
   o.stateAfterAccept = eng.state.drawing.state;
   var itemId = 3001;

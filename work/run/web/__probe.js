@@ -1299,7 +1299,7 @@
             'color:' + INK,
         ].join(';');
 
-        var BUILD_STAMP = "3.2";
+        var BUILD_STAMP = "3.4";
 
         var title = document.createElement('div');
         title.textContent = '存档编辑';
