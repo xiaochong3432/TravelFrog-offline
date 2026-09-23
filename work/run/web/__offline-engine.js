@@ -68491,10 +68491,10 @@ const DEF = (name, fallback) => (
    |---------------------|------------------------------------|-----------------|
    | visitor cooldown    | FRIEND_VISIT_COOL = 21600 (6 h)    | 300 s           |
    | visitor arrival     | RNDPER 10 / RNDSEC 1800            | 60 s roll       |
-   | travel length       | TRAVEL_TIME_MIN = 60               | 90-240 s        |
-   | stray (放浪) return | FROG_DRIFTRETURNTIME 10 / MAX 20   | same            |
-   | frog rest           | FROG_RESTTIME 400 / MAX 900        | 20-45 s         |
-   | standby wait        | FROG_STANDBY_WAIT_MIN = 60         | 20-45 s         |
+   | travel length       | TRAVEL_TIME_MIN = 60 (min)         | 2-8.5 h         |
+   | stray (放浪) return | FROG_DRIFTRETURNTIME 10 / MAX 20   | same (min)      |
+   | frog at-home action | (no table)                         | 10 min          |
+   | standby wait        | FROG_STANDBY_WAIT_MIN = 60 (min)   | 3-5 h           |
    | rest tick           | REST_TIME = 180                    | (unused)        |
    | clover withering    | CloverDestroyTime = 0.6            | (was missing)   |
    --------------------------------------------------------------------------- */
@@ -68555,12 +68555,20 @@ try {
   console.warn('[engine] picture-layers.json missing - postcards will render blank');
 }
 
-/** Attach the composed `layers` for a postcard's pic_id. */
+/** Attach the composed `layers` for a postcard's pic_id.
+ *
+ *  ALWAYS returns a `layers` ARRAY, even when the table has no record for that pic_id:
+ *  the client composes every card by iterating `pic.layers`
+ *  (`Tabikaeru.loadPicture` / `getPictureTexture` both do `for (… r = e.layers; … r.length …)`),
+ *  so an undefined `layers` is a hard TypeError -> Reload.JSError ("吃坏肚子").
+ *  7 official templates genuinely have empty layer lists; an empty array renders blank,
+ *  which is exactly what those are supposed to look like. */
 function withLayers(p) {
   if (!p) return p;
   const rec = pictureLayers[String(p.pic_id)];
-  if (!rec) return p;
-  const out = Object.assign({}, p, { layers: rec.layers });
+  const layers = (rec && Array.isArray(rec.layers)) ? rec.layers : [];
+  const out = Object.assign({}, p, { layers });
+  if (rec && rec.travelers) out.travelers = rec.travelers;
   return out;
 }
 
@@ -68687,9 +68695,17 @@ function tvRows(name) {
 /** tag -> Picture ids (PictureTag.picNames are Picture.name), and the reverse. */
 const TV_TAG_PICS = {};
 const TV_PIC_TAG = {};
+/* V36-GIFTBOX-VISIT PictureTag 的 picNames 里带 `_TRAVELER_ID` 标记的那些标签，属于某一位
+   旅行伙伴（0/1/2）；礼物盒来访的明信片要按伙伴分池挑，所以这里建反查表。
+   同时把 Picture 表的全部 id 收进一个 Set，用来过滤掉不在表里的 id。 */
+const TV_PIC_FRIEND = {};
+const TV_PICTURE_IDS = new Set();
 (function tvIndexPictures() {
   const byName = {};
-  tvRows('Picture').forEach((p) => { if (p && p.name !== undefined) byName[p.name] = p.id; });
+  tvRows('Picture').forEach((p) => {
+    if (p && p.id !== undefined) TV_PICTURE_IDS.add(Number(p.id));
+    if (p && p.name !== undefined) byName[p.name] = p.id;
+  });
   tvRows('PictureTag').forEach((t) => {
     const ids = [];
     (t.picNames || []).forEach((n) => {
@@ -68699,6 +68715,11 @@ const TV_PIC_TAG = {};
     if (!ids.length) return;
     TV_TAG_PICS[String(t.Tag)] = ids;
     ids.forEach((id) => { TV_PIC_TAG[id] = String(t.Tag); });
+    const marker = (t.picNames || []).indexOf('_TRAVELER_ID');
+    const friendId = marker >= 0 ? Number(t.picNames[marker + 1]) : -1;
+    if (friendId >= 0 && friendId <= 2) {
+      ids.forEach((id) => { TV_PIC_FRIEND[id] = friendId; });
+    }
   });
 })();
 
@@ -69363,6 +69384,11 @@ const RENAME_CLOVER = 50;
    User-confirmed costs: one 8000 per wish/stamp; one 8001 per wooden piece.
    Pieces are made at home, not granted as free travel rewards. */
 const CRAFT_STAGE_SEC = 90;          // one stage per 90 s, OURS
+/* 【并入他的 V3】手工品的阶段时长按他的口径：祈愿物 86 分钟/阶段、印章 129 分钟/阶段
+   （他注释里写明这是他的设定）。想回到我们原来的短节奏：
+   FROG_CRAFT_WISH_STAGE_SEC=90 FROG_CRAFT_STAMP_STAGE_SEC=90。 */
+const CRAFT_WISH_STAGE_SEC = Number(process.env.FROG_CRAFT_WISH_STAGE_SEC || 86 * 60);
+const CRAFT_STAMP_STAGE_SEC = Number(process.env.FROG_CRAFT_STAMP_STAGE_SEC || 129 * 60);
 const HANDCRAFT_TOOL_ID = 7000;      // EnumItemID.HAND_CRAFT_TOOL; persistent unlock
 const HANDCRAFT_MATERIAL_ID = 8000;
 const ROTTEN_WOOD_ID = 8001;
@@ -69392,6 +69418,12 @@ const COMPOSE_PIECE_IDS = gamedata.items
 /* 大冒险 (museum adventure) master switch. The player asked for it to go away for now
    and for the museum 图鉴 to be unlocked instead; flipping this to true restores it. */
 const MUSEUM_DAY_ENABLED = false;
+/* 开局是否白送「博物馆图鉴 + 博物馆明信片」。
+   2026-09-19 玩家要求取消：博物馆内容本来就能正常玩出来（门票在许愿池换，博物馆行程
+   必定带回该馆目的地照，纪念品/典藏则随旅行回来），开局直接送等于把这段进度跳掉。
+   需要补的时候用存档编辑器的「解锁博物馆图鉴」按钮、或指令台 `unlock_museum` —— 两者调的
+   都是下面的 unlockMuseum()，效果与旧的开局自动解锁**完全一致**。改 true 即恢复旧行为。 */
+const AUTO_UNLOCK_MUSEUM = false;
 const MD_MUSEUMS = [1, 2, 3, 4];
 const MD_DESC_END = 401;
 const MD_COMPASS_ID = 200002;
@@ -69479,6 +69511,63 @@ const COLLECTION_IDS = ((gamedata.tables && gamedata.tables.Collection) || [])
 const ITEM_TYPE_LUNCHBOX = 0;
 const ITEM_TYPE_AMULET = 1;
 const ITEM_TYPE_TOOLS = 2;
+
+/* 【自设计·并入他的 V3，2026-09-19】开局行李（他的 STARTER_* 口径）。
+   小时级节奏下"没便当就只能放浪"，所以开局补一套能真的出门的东西：
+   便当（绘本食物 + 前三样便当）各 3、护身符各 1、工具各 1、特产各 2。 */
+const DRAWING_FOOD_IDS = ['value2', 'value3', 'value4']
+  .map((k) => String((((((gamedata.tables || {}).drawingCommonData || {}).food) || {})[k]
+    || [])[0] || '').split(',')[1])
+  .map((v) => Number(v))
+  .filter((v) => Number.isFinite(v));
+const STARTER_LUNCH_IDS = Array.from(new Set(DRAWING_FOOD_IDS.concat(gamedata.items
+  .filter((i) => Number(i.type) === ITEM_TYPE_LUNCHBOX && Number(i.id) > 0)
+  .slice(0, 3).map((i) => Number(i.id)))));
+const STARTER_AMULET_IDS = gamedata.items
+  .filter((i) => Number(i.type) === ITEM_TYPE_AMULET && Number(i.id) > 0)
+  .slice(0, 2).map((i) => Number(i.id));
+const STARTER_TOOL_IDS = gamedata.items
+  .filter((i) => Number(i.type) === ITEM_TYPE_TOOLS && Number(i.id) > 0)
+  .slice(0, 3).map((i) => Number(i.id));
+const STARTER_SPECIALTY_IDS = SPECIALTY_IDS.slice(0, 8);
+
+/* 【并入他的 V3】礼物盒来访：出发时有 50% 概率带走 1–3 件，回来由伙伴寄「拜访回礼」。 */
+const GIFTBOX_VISIT_CHANCE = Number(process.env.FROG_GIFTBOX_VISIT_CHANCE || 50);
+const GIFTBOX_VISIT_MAX_SEND = Number(process.env.FROG_GIFTBOX_VISIT_MAX_SEND || 3);
+/* 只有带 `_TRAVELER_ID` 标记、且确实在 Picture 表里的明信片才算"伙伴的明信片"，
+   这样伙伴的明信片组不会和别的青蛙/动物明信片混在一起。 */
+const GIFTBOX_VISIT_PICTURE_IDS = Object.keys(TV_PIC_FRIEND)
+  .map(Number)
+  .filter((id, i, a) => TV_PICTURE_IDS.has(id) && a.indexOf(id) === i);
+/* 回礼里的"东西"：两瓶饮料 + 任一种特产。 */
+const GIFTBOX_VISIT_RETURN_ITEMS = [12, 14].concat(SPECIALTY_IDS)
+  .filter((id, i, a) => ITEM_BY_ID.has(id) && a.indexOf(id) === i);
+
+/* V36-HOURS-EXTRAS 【并入他的 V3】客人回礼的额外奖池 —— 他用的是同一份数据：
+   SEED_IDS（GiftData 5003 = 花种）与 TV_MUSEUM_TICKETS（门票 1017..1021）。 */
+const GUEST_FLOWER_REWARD_IDS = SEED_IDS.filter((id) => ITEM_BY_ID.has(id));
+
+/* V36-WORKSHOP-MOOD 【并入他的 V3】家具工坊：心情/压力 + 自动换家具 + 自动开工。
+   他注释里写明：客户端只保留了 mood/bench_lock 的**显示**逻辑，原始阈值在服务端，
+   所以这几个数是他的【离线复原】值，全部可用环境变量覆盖。 */
+const envNum = (name, fallback, minValue) => {
+  const raw = process.env[name];
+  const v = Number(raw);
+  return Number.isFinite(v) ? Math.max(Number(minValue) || 0, v) : fallback;
+};
+const FURNITURE_MOOD = { VERY_HAPPY: 1, HAPPY: 2, CALM: 3, ANGRY: 4, VERY_ANGRY: 5 };
+const FURNITURE_MESS_STRESS = envNum('FROG_FURNITURE_MESS_STRESS', 27, 1);
+const FURNITURE_REPLACE_STRESS = envNum('FROG_FURNITURE_REPLACE_STRESS', 1, 1);
+const FURNITURE_TRIP_RELIEF = envNum('FROG_FURNITURE_TRIP_RELIEF', 5, 1);
+const FURNITURE_HANDCRAFT_RELIEF = envNum('FROG_FURNITURE_HANDCRAFT_RELIEF', 3, 1);
+const FURNITURE_CRAFT_RELIEF = envNum('FROG_FURNITURE_CRAFT_RELIEF', 2, 1);
+const FURNITURE_AUTO_REPLACE_MIN_SEC = envNum('FROG_FURNITURE_AUTO_REPLACE_MIN_SEC', 8 * 3600, 60);
+const FURNITURE_AUTO_REPLACE_MAX_SEC = envNum('FROG_FURNITURE_AUTO_REPLACE_MAX_SEC', 12 * 3600, 60);
+const FURNITURE_AUTO_REPLACE_CHANCE = envNum('FROG_FURNITURE_AUTO_REPLACE_CHANCE', 35, 0);
+/* 见文件头"差异 1"：默认每拍检查，概率仍 35%；设成 10800 就是他的 3 小时。 */
+const FURNITURE_AUTO_CRAFT_MIN_SEC = envNum('FROG_FURNITURE_AUTO_CRAFT_MIN_SEC', 0, 0);
+const FURNITURE_AUTO_CRAFT_MAX_SEC = envNum('FROG_FURNITURE_AUTO_CRAFT_MAX_SEC', 0, 0);
+const FURNITURE_AUTO_CRAFT_CHANCE = envNum('FROG_FURNITURE_AUTO_CRAFT_CHANCE', 35, 0);
 
 /* Raffle prize pool: 23 rows, ranks 0..5 (Prize.Rank also defines FURNITURE = 6,
    but the table has NO row for it -- rolling a 6 would hand the client an empty
@@ -69635,7 +69724,9 @@ const WISH_POOL_COIN_MAX = Number(process.env.FROG_WISH_COIN_MAX || 10);
 const GUEST_COOL_SEC = pace('FROG_GUEST_COOL', 300, ORIG.friendVisitCool);
 /* gameplay table: 串门/邻居 both have DurationFloor = DurationUpper = 30 minutes,
    so a visit lasts 1800 seconds. */
-const GUEST_STAY_SEC = 1800;
+/* 【并入他的 V3 的可选项】他是 3600（1 小时）；我们默认保留 3.4 的 30 分钟，
+   想照他的来：FROG_GUEST_STAY=3600。 */
+const GUEST_STAY_SEC = Number(process.env.FROG_GUEST_STAY || 1800);
 const GUEST_POS_MAX = Number(DEF('FRIEND_RNDPOS_MAX', 3));
 
 // Offline pacing: the live game used 6-72h trips (TRAVEL_TIME_MIN = 60 in
@@ -69643,23 +69734,33 @@ const GUEST_POS_MAX = Number(DEF('FRIEND_RNDPOS_MAX', 3));
 // 90-240 s, which players reported as "a bit fast"; it is now 12-40 minutes, so a trip
 // feels like a trip while a session can still see it leave and come back.
 // FROG_FAITHFUL=1 restores the recovered values, and the env vars always win.
-const TRAVEL_MIN_SEC = pace('FROG_TRAVEL_MIN', 12 * 60, ORIG.travelTimeMin * 60);
+/* V36-PACING 【自设计·并入他的 V3，2026-09-19】小时级节奏设为**默认**（不再是开关）：
+   一趟 2–8.5 小时，与他的 FROG_TRAVEL_MIN/MAX 默认值一致。
+   FROG_FAITHFUL=1 仍是原版口径（60 分钟起、6 倍上限），env 仍可覆盖。 */
+const TRAVEL_MIN_SEC = pace('FROG_TRAVEL_MIN', 120 * 60, ORIG.travelTimeMin * 60);
 /* define.json gives the travel FLOOR (TRAVEL_TIME_MIN = 60 min) but no ceiling,
    so in faithful mode the ceiling is OUR choice: 6x the floor. Labelled because
    it is not a recovered number. */
-const TRAVEL_MAX_SEC = pace('FROG_TRAVEL_MAX', 40 * 60, ORIG.travelTimeMin * 60 * 6);
-// How long the frog waits at home before heading out again.
-const TRAVEL_IDLE_MIN = pace('FROG_IDLE_MIN', 2 * 60, ORIG.standbyWaitMin);
-const TRAVEL_IDLE_MAX = pace('FROG_IDLE_MAX', 6 * 60, ORIG.restTick);
-/* 没准备就不出门 (OUR rule, see the file header note): while the bag is empty the frog
-   stays home, and it re-checks on this interval instead of leaving. */
-const TRAVEL_WAIT_UNPREPARED_MIN = pace('FROG_WAIT_MIN', 3 * 60, ORIG.standbyWaitMin);
-const TRAVEL_WAIT_UNPREPARED_MAX = pace('FROG_WAIT_MAX', 8 * 60, ORIG.restTick);
+const TRAVEL_MAX_SEC = pace('FROG_TRAVEL_MAX', 510 * 60, ORIG.travelTimeMin * 60 * 6);
+/* 便当 HP 加成与门票缩短之后再压一道硬上限：任何一趟都不超过 72 小时（他的设定）。 */
+const TRAVEL_HARD_MAX_SEC = 72 * 60 * 60;
+// How long the frog waits at home before rolling to head out again (3-5 h).
+const TRAVEL_IDLE_MIN = pace('FROG_IDLE_MIN', 3 * 3600, ORIG.standbyWaitMin);
+const TRAVEL_IDLE_MAX = pace('FROG_IDLE_MAX', 5 * 3600, ORIG.restTick);
+/* 到点只掷一次骰：50% 才真的出门（他的 TRAVEL_DEPART_CHANCE）。掷不中就按下面的
+   间隔重新排下一次检查；中了就走，哪怕背包是空的 —— 那一趟按放浪（短窗口）结算。 */
+const TRAVEL_DEPART_CHANCE = Number(process.env.FROG_TRAVEL_CHANCE || 50);
+/* 掷骰没中时下一次检查的间隔（3–5 小时）。空背包也能出门，所以这不再等于
+   "没准备就不出门"的等待，只是下一次掷骰的间隔。 */
+const TRAVEL_WAIT_UNPREPARED_MIN = pace('FROG_WAIT_MIN', 3 * 3600, ORIG.standbyWaitMin);
+const TRAVEL_WAIT_UNPREPARED_MAX = pace('FROG_WAIT_MAX', 5 * 3600, ORIG.restTick);
 /* The original also shortens a 放浪 (stray) trip: FROG_DRIFTRETURNTIME 10 /
    _MAX 20. We were not using these at all, so a stray trip used the normal
    travel window -- now it uses the table's own numbers. */
-const DRIFT_RETURN_MIN = Number(process.env.FROG_DRIFT_MIN || ORIG.driftReturn);
-const DRIFT_RETURN_MAX = Number(process.env.FROG_DRIFT_MAX || ORIG.driftReturnMax);
+/* 表里这两项是**分钟**（10 / 20），引擎存的是秒，所以要 ×60 —— 他的口径。
+   以前按秒用，一趟放浪只有 10–20 秒。 */
+const DRIFT_RETURN_MIN = Number(process.env.FROG_DRIFT_MIN || (ORIG.driftReturn * 60));
+const DRIFT_RETURN_MAX = Number(process.env.FROG_DRIFT_MAX || (ORIG.driftReturnMax * 60));
 
 /**
  * The upstream server PUSHES the whole game state right after hall_enter_game.
@@ -70013,6 +70114,15 @@ function defaultState() {
       owned: PLAIN_FURNITURE_IDS.slice(), // All default 素 furniture is owned.
       placed: [],           // put_fur: [{type, id}] currently in the courtyard
       replaceFur: [],       // replace_fur: furniture TYPEs being rotated out
+      /* 【并入他的 V3】心情：换家具会涨压力，旅行/手工会降；>=27 时工作台"乱掉" */
+      mood: FURNITURE_MOOD.CALM,
+      moodStress: 0,
+      moodRecoverTrips: 0,
+      moodRecoverCrafts: 0,
+      nextAutoCraftAt: 0,   // 自动开工的下一次检查时间
+      nextAutoReplaceAt: 0, // 自动换家具的下一次检查时间
+      autoReplaceCount: 0,
+      autoReplaceLastAt: 0,
       shopBought: {},       // shop id -> times bought (against FurnitureShop limit)
       shopDay: merchantDayAt(t),
       shopDailyBought: {},  // repeatable stock is replenished each local calendar day
@@ -70287,9 +70397,12 @@ function loadState(savePath) {
       if (Number(s.animPicture.guide) < 2) s.animPicture.guide = 2;
       s.travel = Object.assign(defaultState().travel, raw.travel || {});
       s.furniture = Object.assign(defaultState().furniture, raw.furniture || {});
-      s.furniture.owned = Array.from(new Set([
-        ...(Array.isArray(s.furniture.owned) ? s.furniture.owned : []), ...PLAIN_FURNITURE_IDS,
-      ]));
+      /* `clear_furniture` 置了 plainDefaultsOff 就不要再把素风格默认家具并回来 */
+      if (!s.furniture.plainDefaultsOff) {
+        s.furniture.owned = Array.from(new Set([
+          ...(Array.isArray(s.furniture.owned) ? s.furniture.owned : []), ...PLAIN_FURNITURE_IDS,
+        ]));
+      }
       s.furniture.compost = Object.assign(defaultState().furniture.compost, (raw.furniture || {}).compost || {});
       // Legacy fake indices have no timer. Start their first real job on load;
       // preserve real jobs so relaunching cannot reset a running timer.
@@ -70304,6 +70417,11 @@ function loadState(savePath) {
         s.furniture.shopDay = merchantDayAt(Number(raw.lastSeen) || nowSec());
         s.furniture.shopDailyBought = Object.assign({}, s.furniture.shopBought);
       }
+  // A2 (merge): was this save written by an engine that already debits a packed unit out of
+  // the house on every packing operation? `shopDailyBought` only ever exists in saves written
+  // by the V3.1 line (defaultState defines it, and loadState fills it in for older saves --
+  // which is exactly why this must be decided from `raw`, not from the loaded state).
+  s.__legacySlotAccounting = !(raw && raw.furniture && raw.furniture.shopDailyBought);
     }
   } catch (e) {
     console.error('[engine] save load failed, starting fresh:', e.message);
@@ -70447,10 +70565,60 @@ function createEngine(opts) {
     return missing.length ? { bp, missing } : { bp, missing: [] };
   }
 
+  /* 【并入他的 V3】自动换家具 / 自动开工的引擎侧胶水（要 ctx 推送，所以放在这里）。 */
+  function maybeAutoReplaceFurniture(ctx, t) {
+    let changed = false;
+    if (!Number(state.furniture.nextAutoReplaceAt)) {
+      scheduleNextFurnitureAutoReplace(t);
+      changed = true;
+    }
+    if (t < Number(state.furniture.nextAutoReplaceAt)) {
+      if (changed) save();
+      return false;
+    }
+    scheduleNextFurnitureAutoReplace(t);
+    changed = true;
+    const chance = Math.max(0, Math.min(100, Number(FURNITURE_AUTO_REPLACE_CHANCE) || 0));
+    if (Math.random() * 100 >= chance) {
+      save();
+      return false;
+    }
+    const result = autoReplaceOneFurniture(t, false);
+    if (result.changed) {
+      save();
+      ctx.push('furniture_load_furniture', handlers.furniture_load_furniture({}));
+      /* 客户端 MainOutController 收到 FurniturePut(22) 会提示"小屋好像发生了一点变化" */
+      ctx.push('notify_new_event', { event: makeEvent(TIMER_EVENT.FurniturePut, []) });
+      return true;
+    }
+    if (changed) save();
+    return false;
+  }
+
+  function autoCraftCheck(ctx, t) {
+    if (state.furniture.craft) return false;
+    if (!Number(state.furniture.nextAutoCraftAt)) {
+      scheduleNextFurnitureAutoCraft(t);
+      save();
+    }
+    if (t < Number(state.furniture.nextAutoCraftAt)) return false;
+    scheduleNextFurnitureAutoCraft(t);
+    if (furnitureMoodBlocked()) { save(); return false; }
+    const chance = Math.max(0, Math.min(100, Number(FURNITURE_AUTO_CRAFT_CHANCE) || 0));
+    if (Math.random() * 100 >= chance) { save(); return false; }
+    if (!maybeStartCraft()) { save(); return false; }
+    ctx.push('furniture_load_furniture', handlers.furniture_load_furniture({}));
+    ctx.push('item_load_items', handlers.item_load_items());
+    ctx.push('client_load_role', rolePayload());
+    return true;
+  }
+
   /** 台面上出现图纸、且材料够 -> 开始制作（锁住工作台，材料当场扣掉）。
    *  返回 true 表示这一拍真的开工了。 */
   function maybeStartCraft() {
     if (state.furniture.craft) return false;
+    /* 【并入他的 V3】心情太差（>=27，工作台乱了）时不开新活。 */
+    if (furnitureMoodBlocked()) return false;
     const info = craftMissing();
     if (!info || info.missing.length) return false;
     const { bp } = info;
@@ -70479,6 +70647,8 @@ function createEngine(opts) {
     state.furniture.benchLock = 0;
     if (!Array.isArray(state.furniture.owned)) state.furniture.owned = [];
     if (state.furniture.owned.indexOf(fid) === -1) state.furniture.owned.push(fid);
+    /* 【并入他的 V3】做出一件家具 = 安抚一次。 */
+    sootheFurnitureMood(FURNITURE_CRAFT_RELIEF, 'craft');
     save();
     const ev = makeEvent(EV_FURNITURE_FINISH, [fid, craft.drawing || 0]);
     if (ctx) {
@@ -70519,6 +70689,9 @@ function createEngine(opts) {
     addHouseItem(drawing, -1);
     bench[slot] = drawing;
     save();
+    if (furnitureMoodBlocked()) {
+      return { ok: false, reason: '蛙蛙心情太差（工作台乱了）：先让它旅行回家或做件手工恢复' };
+    }
     return maybeStartCraft() ? { ok: true } : { ok: false, reason: '材料没凑齐（不该发生，请报我）' };
   }
   const unknown = new Map();
@@ -70556,6 +70729,141 @@ function createEngine(opts) {
       specialtys: (state.giftBox.specialtys || []).map((s) => ({
         item_id: s.item_id, count: s.count,
       })),
+    };
+  }
+
+  /* ---- 礼物盒来访（并入他的 V3，2026-09-19）---------------------------------
+     旧档可能没有 giftBox（或只有一半），先补成两个数组再谈别的。 */
+  function normalizeGiftBox() {
+    if (!state.giftBox || typeof state.giftBox !== 'object') {
+      state.giftBox = { pictures: [], specialtys: [] };
+      return true;
+    }
+    let changed = false;
+    if (!Array.isArray(state.giftBox.pictures)) { state.giftBox.pictures = []; changed = true; }
+    if (!Array.isArray(state.giftBox.specialtys)) { state.giftBox.specialtys = []; changed = true; }
+    state.giftBox.specialtys = state.giftBox.specialtys
+      .filter((s) => s && ITEM_BY_ID.has(Number(s.item_id)) && Number(s.count) > 0);
+    state.giftBox.pictures = state.giftBox.pictures
+      .filter((p) => p && TV_PICTURE_IDS.has(Number(p.pic_id)));
+    return changed;
+  }
+
+  /* 【并入他的 V3】把邮件/礼物带来的明信片放进待收桶。探访来源走 albumPendingVisit
+     （客户端在 album_load_new 的 visted_pic 里收，而且领奖后不会立刻再弹一次
+     "保存照片"）；其余走普通待收桶。已经拥有过的同款不再重复发。 */
+  function queuePostcardPictures(pictures, opts) {
+    if (!Array.isArray(state.albumPending)) state.albumPending = [];
+    if (!Array.isArray(state.albumPendingVisit)) state.albumPendingVisit = [];
+    const visit = !!(opts && opts.visit);
+    const sender = opts && opts.sender != null ? Number(opts.sender) : -1;
+    const owned = ownedPictureIds();
+    const ids = (Array.isArray(pictures) ? pictures : [])
+      .map((p) => Number(p && typeof p === 'object' ? p.pic_id : p))
+      .filter((id) => Number.isFinite(id) && id >= 0 && !!pictureLayers[String(id)]);
+    let added = 0;
+    for (const pic of ids) {
+      if (owned.has(pic)) continue;
+      state.pictureSeq = (state.pictureSeq || 0) + 1;
+      const row = { id: state.pictureSeq, pic_id: pic, read: 0, new: 1 };
+      if (visit) row.visit = true;
+      if (sender >= 0) row.sender = sender;
+      (visit ? state.albumPendingVisit : state.albumPending).push(row);
+      owned.add(pic);
+      added += 1;
+    }
+    return added;
+  }
+
+  function addGiftItem(list, itemId, count) {
+    const id = Number(itemId);
+    const n = Math.max(0, Number(count) || 0);
+    if (!(n > 0) || !ITEM_BY_ID.has(id)) return;
+    const row = list.find((x) => Number(x.item_id) === id);
+    if (row) row.count = Number(row.count) + n;
+    else list.push({ item_id: id, count: n });
+  }
+
+  /* 出发时从礼物盒里挑 1–3 件带走（明信片按张、特产按个）。返回 null = 这次不带。 */
+  function takeGiftBoxVisitGifts(t) {
+    const box = state.giftBox || { pictures: [], specialtys: [] };
+    if (!Array.isArray(box.pictures)) box.pictures = [];
+    if (!Array.isArray(box.specialtys)) box.specialtys = [];
+    const choices = [];
+    box.pictures.forEach((p, i) => { if (p) choices.push({ kind: 'picture', index: i }); });
+    box.specialtys.forEach((s, i) => {
+      const count = Math.max(0, Number(s && s.count) || 0);
+      for (let n = 0; n < count; n++) choices.push({ kind: 'specialty', index: i });
+    });
+    if (!choices.length) return null;
+    if (Math.random() * 100 >= GIFTBOX_VISIT_CHANCE) return null;
+    const max = Math.max(1, Math.min(Number(GIFTBOX_VISIT_MAX_SEND) || 3, choices.length));
+    const want = randInt(1, max);
+    const carried = { pictures: [], specialtys: [], at: Number(t || nowSec()) };
+    for (let n = 0; n < want && choices.length; n++) {
+      const pickAt = randInt(0, choices.length - 1);
+      const pick = choices.splice(pickAt, 1)[0];
+      if (pick.kind === 'picture') {
+        const pic = box.pictures.splice(pick.index, 1)[0];
+        if (pic) carried.pictures.push(pic);
+        for (const c of choices) if (c.kind === 'picture' && c.index > pick.index) c.index--;
+      } else {
+        const row = box.specialtys[pick.index];
+        if (row && Number(row.count) > 0) {
+          carried.specialtys.push({ item_id: Number(row.item_id), count: 1 });
+          row.count = Number(row.count) - 1;
+          if (row.count <= 0) {
+            box.specialtys.splice(pick.index, 1);
+            for (const c of choices) if (c.kind === 'specialty' && c.index > pick.index) c.index--;
+          }
+        }
+      }
+    }
+    return (carried.pictures.length || carried.specialtys.length) ? carried : null;
+  }
+
+  /* 回来时的回礼：一位伙伴 + 三叶草 + 可能抽奖券 + 可能礼物 + 1–2 张该伙伴的明信片
+     （优先给还没收集过的）。 */
+  function rollGiftBoxVisitReply(carried) {
+    if (!carried) return null;
+    const pics = Array.isArray(carried.pictures) ? carried.pictures : [];
+    const specs = Array.isArray(carried.specialtys) ? carried.specialtys : [];
+    if (!pics.length && !specs.length) return null;
+    const sent = pics.length + specs.length;
+    const owned = ownedPictureIds();
+    const friendPools = { 0: [], 1: [], 2: [] };
+    GIFTBOX_VISIT_PICTURE_IDS.forEach((id) => {
+      const friend = TV_PIC_FRIEND[Number(id)];
+      if (friendPools[friend]) friendPools[friend].push(id);
+    });
+    const freshFriends = Object.keys(friendPools)
+      .filter((friend) => friendPools[friend].some((id) => !owned.has(Number(id))));
+    const friendId = Number(freshFriends.length
+      ? freshFriends[randInt(0, freshFriends.length - 1)]
+      : randInt(0, 2));
+    const friendPool = friendPools[friendId] || [];
+    const freshVisitPics = friendPool.filter((id) => !owned.has(Number(id)));
+    const pool = freshVisitPics.length ? freshVisitPics : friendPool;
+    const pictures = [];
+    const wantPics = Math.min(pool.length, sent >= 2 && Math.random() < 0.45 ? 2 : 1);
+    while (pictures.length < wantPics && pool.length) {
+      const id = pool[randInt(0, pool.length - 1)];
+      if (pictures.indexOf(id) === -1) pictures.push(id);
+      else break;
+    }
+    const items = [];
+    if (GIFTBOX_VISIT_RETURN_ITEMS.length && Math.random() < 0.65) {
+      addGiftItem(items, GIFTBOX_VISIT_RETURN_ITEMS[randInt(0, GIFTBOX_VISIT_RETURN_ITEMS.length - 1)], 1);
+    }
+    if (!pictures.length && !items.length && GIFTBOX_VISIT_RETURN_ITEMS.length) {
+      addGiftItem(items, GIFTBOX_VISIT_RETURN_ITEMS[randInt(0, GIFTBOX_VISIT_RETURN_ITEMS.length - 1)], 1);
+    }
+    return {
+      friendId,
+      clover: randInt(50, 300),
+      ticket: Math.random() < 0.35 ? randInt(1, 2) : 0,
+      items,
+      pictures,
     };
   }
 
@@ -70700,6 +71008,142 @@ function craftDone(kind, row) {
   return kind === 'stamp' ? s >= 3 : s > 3;
 }
 
+/* ==========================================================================
+   V36-WORKSHOP-MOOD 家具工坊：心情与压力（并入他的 V3）
+   这些函数放在模块级，是因为手工品结算（advanceCraft）也要用到安抚。
+   ========================================================================== */
+function normalizeFurnitureMood() {
+  if (!state.furniture) state.furniture = defaultState().furniture;
+  const stress = Math.max(0, Number(state.furniture.moodStress) || 0);
+  state.furniture.moodStress = stress;
+  state.furniture.mood = stress >= FURNITURE_MESS_STRESS ? FURNITURE_MOOD.VERY_ANGRY
+    : stress >= 18 ? FURNITURE_MOOD.ANGRY
+    : stress >= 8 ? FURNITURE_MOOD.CALM
+    : stress >= 3 ? FURNITURE_MOOD.HAPPY
+    : FURNITURE_MOOD.VERY_HAPPY;
+  return state.furniture.mood;
+}
+
+function furnitureMood() {
+  return normalizeFurnitureMood();
+}
+
+/** 心情差到工作台乱掉：客户端此时画的是"罢工"图，也不接受工作台编辑。 */
+function furnitureMoodBlocked() {
+  return normalizeFurnitureMood() === FURNITURE_MOOD.VERY_ANGRY;
+}
+
+function stressFurnitureMood(n) {
+  if (!state.furniture) return;
+  state.furniture.moodStress = Math.max(0, (Number(state.furniture.moodStress) || 0) + Number(n || 0));
+  normalizeFurnitureMood();
+}
+
+function sootheFurnitureMood(n, kind) {
+  if (!state.furniture) return false;
+  const before = furnitureMoodBlocked();
+  state.furniture.moodStress = Math.max(0, (Number(state.furniture.moodStress) || 0) - Number(n || 0));
+  if (kind === 'trip') state.furniture.moodRecoverTrips = (Number(state.furniture.moodRecoverTrips) || 0) + 1;
+  if (kind === 'craft') state.furniture.moodRecoverCrafts = (Number(state.furniture.moodRecoverCrafts) || 0) + 1;
+  normalizeFurnitureMood();
+  return before && !furnitureMoodBlocked();
+}
+
+function furnitureNameOf(furnitureId) {
+  const def = FURNITURE_BY_ID.get(Number(furnitureId));
+  return def && def.name ? String(def.name) : String(furnitureId);
+}
+
+function scheduleNextFurnitureAutoReplace(t) {
+  const minSec = Math.max(60, Number(FURNITURE_AUTO_REPLACE_MIN_SEC) || 1800);
+  const maxSec = Math.max(minSec, Number(FURNITURE_AUTO_REPLACE_MAX_SEC) || minSec);
+  state.furniture.nextAutoReplaceAt = Number(t || nowSec()) + randInt(minSec, maxSec);
+}
+
+function scheduleNextFurnitureAutoCraft(t) {
+  const minSec = Math.max(0, Number(FURNITURE_AUTO_CRAFT_MIN_SEC) || 0);
+  const maxSec = Math.max(minSec, Number(FURNITURE_AUTO_CRAFT_MAX_SEC) || minSec);
+  state.furniture.nextAutoCraftAt = Number(t || nowSec()) + (maxSec > 0 ? randInt(minSec, maxSec) : 0);
+}
+
+/** 摆放中的家具 -> 可替换成的**同类型**其他款式（已拥有、且不是当前这件）。 */
+function autoFurnitureReplaceCandidates() {
+  const ownedByType = new Map();
+  for (const id of state.furniture.owned || []) {
+    const fid = Number(id);
+    const def = FURNITURE_BY_ID.get(fid);
+    if (!def) continue;
+    const type = Number(def.type);
+    if (!ownedByType.has(type)) ownedByType.set(type, []);
+    ownedByType.get(type).push(fid);
+  }
+  const out = [];
+  for (const placed of state.furniture.placed || []) {
+    const type = Number(placed && placed.type);
+    const current = Number(placed && placed.id);
+    const choices = (ownedByType.get(type) || [])
+      .filter((id) => id > 0 && id !== current)
+      .sort((a, b) => a - b);
+    if (choices.length) out.push({ type, current, choices });
+  }
+  return out;
+}
+
+function autoReplaceOneFurniture(t, forced) {
+  if (!forced) {
+    if (state.frog && state.frog.status !== 0) return { changed: false, reason: '蛙蛙不在家' };
+    if (state.furniture.craft) return { changed: false, reason: '蛙蛙正在做家具' };
+    if (furnitureMoodBlocked()) return { changed: false, reason: '工作台乱了，蛙蛙没有心情换家具' };
+  }
+  const candidates = autoFurnitureReplaceCandidates();
+  if (!candidates.length) return { changed: false, reason: '没有可替换的同类型家具款式' };
+  const pick = candidates[randInt(0, candidates.length - 1)];
+  const nextId = pick.choices[randInt(0, pick.choices.length - 1)];
+  state.furniture.placed = (state.furniture.placed || []).filter((p) => Number(p.type) !== pick.type);
+  state.furniture.placed.push({ type: pick.type, id: nextId });
+  if ((state.furniture.replaceFur || []).indexOf(pick.type) === -1) {
+    state.furniture.replaceFur.push(pick.type);
+  }
+  state.furniture.autoReplaceCount = (Number(state.furniture.autoReplaceCount) || 0) + 1;
+  state.furniture.autoReplaceLastAt = Number(t || nowSec());
+  return {
+    changed: true,
+    type: pick.type,
+    from: pick.current,
+    to: nextId,
+    fromName: furnitureNameOf(pick.current),
+    toName: furnitureNameOf(nextId),
+  };
+}
+
+/** 旧档补齐心情字段（缺字段的档从 0 压力、平静开始）。 */
+function normalizeFurnitureAutoFields() {
+  const F = state.furniture;
+  if (!F) return false;
+  let changed = false;
+  for (const [k, v] of [["moodStress", 0], ["moodRecoverTrips", 0], ["moodRecoverCrafts", 0],
+    ["nextAutoCraftAt", 0], ["nextAutoReplaceAt", 0], ["autoReplaceCount", 0], ["autoReplaceLastAt", 0]]) {
+    if (!Number.isFinite(Number(F[k]))) { F[k] = v; changed = true; }
+  }
+  normalizeFurnitureMood();
+  return changed;
+}
+
+/** 【并入他的 V3】从这趟奖励的照片里挑出"一张都还没拥有过"的那些（用于旅行中先寄回来）。 */
+function freshPostcardIds(pictures) {
+  const owned = ownedPictureIds();
+  const out = [];
+  const add = (raw) => {
+    const pic = Number(raw && typeof raw === 'object' ? raw.pic_id : raw);
+    if (!Number.isFinite(pic) || pic < 0) return;
+    if (owned.has(pic) || out.indexOf(pic) !== -1) return;
+    out.push(pic);
+    owned.add(pic);
+  };
+  (Array.isArray(pictures) ? pictures : []).forEach(add);
+  return out;
+}
+
 function advanceCraft(t) {
   const c = state.craft || (state.craft = { wishes: [], stamps: [], pending: [], seq: 0 });
   if (!Array.isArray(c.wishes)) c.wishes = [];
@@ -70785,8 +71229,10 @@ function advanceCraft(t) {
       w.paper = papers.length ? pick(papers[papers.length - 1]) : 0;
       w.make_time = t;                       // finished now
       stampWish(w, t);                       // + the seal and the DATE the card shows
+      /* 【并入他的 V3】手工品(祈愿物)完成 = 安抚一次。 */
+      sootheFurnitureMood(FURNITURE_HANDCRAFT_RELIEF, 'craft');
     } else {
-      w.make_time = t + CRAFT_STAGE_SEC;
+      w.make_time = t + CRAFT_WISH_STAGE_SEC;
     }
     changed = true;
   }
@@ -70798,7 +71244,11 @@ function advanceCraft(t) {
   for (const s of c.stamps) {
     if (!canCraft || Number(s.state) >= CRAFT_STAMP_MAX || !reserveMaterial(s, HANDCRAFT_MATERIAL_ID) || t < s.time) continue;
     s.state = Number(s.state) + 1;
-    s.time = Number(s.state) >= CRAFT_STAMP_MAX ? t : t + CRAFT_STAGE_SEC;
+    s.time = Number(s.state) >= CRAFT_STAMP_MAX ? t : t + CRAFT_STAMP_STAGE_SEC;
+    /* 【并入他的 V3】印章做完也算一次手工安抚。 */
+    if (Number(s.state) >= CRAFT_STAMP_MAX) {
+      sootheFurnitureMood(FURNITURE_HANDCRAFT_RELIEF, 'craft');
+    }
     changed = true;
   }
 
@@ -70836,7 +71286,7 @@ function advanceCraft(t) {
       body: '',
       paper: '',
       content: noteIds.length ? Number(noteIds[randInt(0, noteIds.length - 1)]) : 0,
-      make_time: t + CRAFT_STAGE_SEC,
+      make_time: t + CRAFT_WISH_STAGE_SEC,
       u_id: c.seq,
       materialPaid: true,
     });
@@ -70848,7 +71298,7 @@ function advanceCraft(t) {
     c.stamps.push({
       id: Number(stampIds[randInt(0, stampIds.length - 1)]),
       state: 1,
-      time: t + CRAFT_STAGE_SEC,
+      time: t + CRAFT_STAMP_STAGE_SEC,
       u_id: c.seq,
       materialPaid: true,
     });
@@ -71625,6 +72075,15 @@ function mdPayload(s) {
 
   // Repair misplaced slots from older saves before the client paints them by index.
   // Clear all wrong slots first, so swapped food/tools can return to their own kinds.
+  /* A0 (merge): a slot holding an id Item.json does not know cannot be repaired anywhere --
+     drop it here, before the type repair below collects it as "misplaced". */
+  for (const [from, types] of [['bag', BAG_SLOT_TYPE], ['desk', DESK_SLOT_TYPE]]) {
+    const list = state.items[from];
+    list.forEach((id, slot) => {
+      if (id !== -1 && !ITEM_BY_ID.has(Number(id))) list[slot] = -1;
+    });
+  }
+
   const misplaced = [];
   for (const [from, types] of [['bag', BAG_SLOT_TYPE], ['desk', DESK_SLOT_TYPE]]) {
     const list = state.items[from];
@@ -71636,6 +72095,190 @@ function mdPayload(s) {
     });
   }
   for (const row of misplaced) placeBack(row.id, row.slot, row.from);
+
+  /* ==========================================================================
+     MERGE: additions grafted from the V3 handover line. Nothing here replaces a
+     V3.1 behaviour -- these only run once, on state that is already broken, and
+     every one of them is idempotent. Audit: work/logs/merge_*.txt, STATUS §三十.
+     ========================================================================== */
+
+  /** House-only count (V3's helper name; getHaveItem() also counts slot presence). */
+  function getHouseOnlyItemCount(itemId) {
+    const row = (state.items.house || []).find((x) => Number(x.item_id) === Number(itemId));
+    return Number(row && row.count) || 0;
+  }
+
+  const PICTURE_ID_SET = new Set(PICTURE_IDS.map((v) => Number(v)));
+
+  /** A postcard row is legitimate when the Picture TABLE knows its pic_id. */
+  function realPictureId(raw) {
+    const id = Number(raw && typeof raw === 'object' ? raw.pic_id : raw);
+    if (!Number.isFinite(id) || id < 0) return -1;
+    return PICTURE_ID_SET.has(id) ? id : -1;
+  }
+
+  /* A1a: postcard buckets. Repairs a missing row id and an unknown pic_id; NEVER drops a row
+     whose art happens to be absent -- the client degrades that to an empty cell, while deleting
+     the row would lose a picture the player really owns (V3 dropped those). */
+  function normalizePictureBucket(name) {
+    const src = Array.isArray(state[name]) ? state[name] : [];
+    const out = [];
+    let changed = !Array.isArray(state[name]);
+    for (const raw of src) {
+      const picId = realPictureId(raw);
+      if (picId < 0) { changed = true; continue; }
+      const obj = raw && typeof raw === 'object' ? Object.assign({}, raw) : {};
+      if (!(Number(obj.id) > 0)) {
+        state.pictureSeq = (state.pictureSeq || 0) + 1;
+        obj.id = state.pictureSeq;
+        changed = true;
+      }
+      if (Number(obj.pic_id) !== picId) { obj.pic_id = picId; changed = true; }
+      out.push(obj);
+    }
+    if (changed) state[name] = out;
+    return changed;
+  }
+
+  /* A1b: mail rows. MailItemView.fillItems() reads resource.clover_point / ticket /
+     reward_gacha with no guard and MailData's merge is "target non-null wins", so an explicit
+     `resource: null` reaches it and throws. V3 filled the shape; this is that fix. */
+  function normalizeMails() {
+    let changed = false;
+    const mails = Array.isArray(state.mails) ? state.mails : [];
+    for (const mail of mails) {
+      if (!mail || typeof mail !== 'object') continue;
+      if (!mail.resource || typeof mail.resource !== 'object') {
+        mail.resource = {};
+        changed = true;
+      }
+      const r = mail.resource;
+      for (const k of ['clover_point', 'ticket', 'reward_gacha']) {
+        const want = Number(r[k]) || 0;
+        if (Number(r[k]) !== want) { r[k] = want; changed = true; }
+      }
+      if (typeof r.ads_id !== 'string') { r.ads_id = ''; changed = true; }
+      if (typeof r.share_id !== 'string') { r.share_id = ''; changed = true; }
+      const items = Array.isArray(mail.items) ? mail.items : [];
+      const cleanItems = [];
+      for (const it of items) {
+        const itemId = Number(it && it.item_id);
+        if (!ITEM_BY_ID.has(itemId)) { changed = true; continue; }
+        cleanItems.push({ item_id: itemId, count: Math.max(1, Number(it.count) || 1) });
+      }
+      if (JSON.stringify(items) !== JSON.stringify(cleanItems)) changed = true;
+      mail.items = cleanItems;
+      const pics = Array.isArray(mail.pictures) ? mail.pictures : [];
+      const cleanPics = [];
+      for (const raw of pics) {
+        const picId = realPictureId(raw);
+        if (picId < 0) { changed = true; continue; }
+        const obj = raw && typeof raw === 'object' ? Object.assign({}, raw) : {};
+        if (Number(obj.pic_id) !== picId) { obj.pic_id = picId; changed = true; }
+        cleanPics.push(obj);
+      }
+      if (JSON.stringify(pics) !== JSON.stringify(cleanPics)) changed = true;
+      mail.pictures = cleanPics;
+      if (mail.read === undefined) { mail.read = false; changed = true; }
+    }
+    return changed;
+  }
+
+  /* A2: the one-time slot debit. Older saves (before packing moved a real unit) kept the
+     packed item in the house too, so the house counted it twice. Whether a save already went
+     through the per-operation accounting CANNOT be told from the loaded state -- the 3.1
+     loadState fills `furniture.shopDay`/`shopDailyBought` in for every old save -- so
+     loadState records what the RAW save looked like on state.__legacySlotAccounting. */
+  const LEGACY_SLOT_DEBIT = true;
+
+  function debitPackedSlotsOnce() {
+    const legacy = state.__legacySlotAccounting === true;
+    delete state.__legacySlotAccounting;           // transient: never persisted
+    if (state.items.packedSlotsDebited) return false;
+    if (!LEGACY_SLOT_DEBIT || !legacy) {
+      state.items.packedSlotsDebited = true;       // already accounted per packing operation
+      return false;
+    }
+    let changed = false;
+    const debit = (id) => {
+      const itemId = Number(id);
+      if (!(itemId >= 0) || !ITEM_BY_ID.has(itemId)) return;
+      if (getHouseOnlyItemCount(itemId) <= 0) return;
+      addHouseItem(itemId, -1);
+      changed = true;
+    };
+    (state.items.bag || []).forEach(debit);
+    (state.items.desk || []).forEach(debit);
+    state.items.packedSlotsDebited = true;
+    return changed;
+  }
+
+  /* A3: specialtys that only ever lived in state.specialtys never reached the house (and so
+     never reached the 图鉴). Idempotent: its own flag, and it only tops the house count UP to
+     what the save already records. */
+  function migrateTripSpecialtysToHouse() {
+    if (state.tripSpecialtysInHouse) return false;
+    let changed = false;
+    for (const row of state.specialtys || []) {
+      const id = Number(row && row.item_id);
+      const count = Math.max(0, Number(row && row.count) || 0);
+      const def = ITEM_BY_ID.get(id);
+      if (!def || Number(def.type) !== ITEM_TYPE_SPECIALTY || count <= 0) continue;
+      if (getHouseOnlyItemCount(id) < count) {
+        addHouseItem(id, count - getHouseOnlyItemCount(id));
+        changed = true;
+      }
+      if (Array.isArray(state.handbook && state.handbook.specialtys)
+          && state.handbook.specialtys.indexOf(id) === -1) {
+        state.handbook.specialtys.push(id);
+        changed = true;
+      }
+    }
+    state.tripSpecialtysInHouse = true;
+    return changed;
+  }
+
+  /* 【并入他的 V3，2026-09-19】开局行李：只在第一次（preparationSeeded 之前）补，
+     之后完全不动。判定口径照他的：便当/特产看"家里有没有这一类"，护身符/工具看
+     "总共有没有"（背包/桌子上也算）。 */
+  function seedPreparationInventory() {
+    if (state.items.preparationSeeded) return false;
+    const top = (ids, count) => {
+      for (const raw of ids) {
+        const id = Number(raw);
+        if (!ITEM_BY_ID.has(id) || getHouseOnlyItemCount(id) > 0) continue;
+        addHouseItem(id, count);
+      }
+    };
+    const haveType = (type) => gamedata.items.some((it) => Number(it.type) === type
+      && getHaveItem(Number(it.id)) > 0);
+    const houseType = (type) => gamedata.items.some((it) => Number(it.type) === type
+      && getHouseOnlyItemCount(Number(it.id)) > 0);
+    if (!houseType(ITEM_TYPE_LUNCHBOX)) top(STARTER_LUNCH_IDS, 3);
+    if (!haveType(ITEM_TYPE_AMULET)) top(STARTER_AMULET_IDS, 1);
+    if (!haveType(ITEM_TYPE_TOOLS)) top(STARTER_TOOL_IDS, 1);
+    if (!houseType(ITEM_TYPE_SPECIALTY)) top(STARTER_SPECIALTY_IDS, 2);
+    state.items.preparationSeeded = true;
+    return true;
+  }
+
+  /* ---- the one call site: after V3.1's own slot repair, before anything reads the state --- */
+  try {
+    const graft = [];
+    if (normalizePictureBucket('pictures')) graft.push('pictures');
+    if (normalizePictureBucket('albumPending')) graft.push('albumPending');
+    if (normalizeMails()) graft.push('mails');
+    if (migrateTripSpecialtysToHouse()) graft.push('specialtys');
+    if (normalizeGiftBox()) graft.push('giftBox');
+    if (normalizeFurnitureAutoFields()) graft.push('furnitureMood');
+    if (seedPreparationInventory()) graft.push('prepSeeded');
+    if (debitPackedSlotsOnce()) graft.push('slotDebit');
+    if (graft.length && verbose) {
+      console.log('[engine] V3 additions applied: ' + graft.join(', '));
+    }
+  } catch (e) {
+    console.warn('[engine] V3 addition failed (save left untouched): ' + (e && e.message));
+  }
 
   function returnsFromTrip(id) {
     const item = ITEM_BY_ID.get(id);
@@ -71823,17 +72466,27 @@ function mdPayload(s) {
   }
 
   /** A departure requires food in a food slot, in the bag or on the desk. */
+  /* 【并入他的 V3】口径改成他的：背包里有**任何**东西就算准备好；桌子上放着
+     便当/护身符/工具也算。它现在只决定 waiting_for_bag 这个提示，不再决定能不能
+     出门（能不能走看 tick() 里那次 50% 掷骰，空背包走的是放浪）。 */
   function tripPrepared() {
-    return isType(state.items.bag[0], ITEM_TYPE_LUNCHBOX)
-      || state.items.desk.slice(0, 2).some(id => isType(id, ITEM_TYPE_LUNCHBOX));
+    if ((state.items.bag || []).some((id) => id !== -1 && id !== null && id !== undefined)) {
+      return true;
+    }
+    return (state.items.desk || []).some((id) => isType(id, ITEM_TYPE_LUNCHBOX)
+      || isType(id, ITEM_TYPE_AMULET) || isType(id, ITEM_TYPE_TOOLS));
   }
 
   function departFrog(ctx, t) {
-    if (!tripPrepared()) return null;
+    /* 【并入他的 V3】不再要求"先准备"：掷骰中了就能走；没便当的那一趟按放浪
+       结算（DRIFT 短窗口，不带照片/特产回来）。 */
     state.travel.waitingForBag = false;
     // Provisions are decided (and consumed) at DEPARTURE: the stray-or-not outcome
     // depends on whether a lunch box was packed, so it cannot be deferred.
     state.travel.plan = provisionTrip();
+    /* 【并入他的 V3】礼物盒来访：带着礼物出门，回来由伙伴寄回礼。 */
+    const visitGifts = takeGiftBoxVisitGifts(t);
+    if (visitGifts) state.travel.plan.giftBoxVisit = visitGifts;
     state.frog.status = 1;                       // 1 = away (Tabikaeru.Game.isHome)
     state.frog.motion = 0;
     state.travel.departAt = t;
@@ -71852,8 +72505,22 @@ function mdPayload(s) {
       window = Math.round(window * (1 + tvPacePct(carried) / 100));
       if (tvTicketArea(carried)) window = Math.round(window * 0.6);
     }
-    state.travel.returnAt = t + Math.max(20, window);
+    state.travel.returnAt = t + Math.min(Math.max(20, window), TRAVEL_HARD_MAX_SEC);
     state.travel.nextDepartAt = 0;
+    /* 【并入他的 V3】他在这时就掷好整趟奖励，所以才能"旅行中先寄一张照片回家"。
+       我们原先只在回家时掷，故先补这一步；回家时优先用这里掷好的结果。 */
+    state.travel.rewards = rollTripRewards(state.travel.plan);
+    const freshPics = freshPostcardIds((state.travel.rewards && state.travel.rewards.pictures) || []);
+    state.travel.postcardPics = freshPics;
+    state.travel.postcardSent = !freshPics.length;
+    if (freshPics.length) {
+      const dur = Math.max(20, state.travel.returnAt - state.travel.departAt);
+      const earliest = state.travel.departAt + Math.max(10, Math.floor(dur * 0.25));
+      const latest = state.travel.departAt + Math.max(10, Math.floor(dur * 0.75));
+      state.travel.postcardAt = randInt(earliest, Math.max(earliest, latest));
+    } else {
+      state.travel.postcardAt = 0;
+    }
     state.travel.tripCount = (state.travel.tripCount || 0) + 1;
     // 扭蛋任务 5 出趟远门 ("go on a trip") -- this is an internal function, not a
     // protocol command, so the central dispatch hook cannot see it.
@@ -71867,8 +72534,22 @@ function mdPayload(s) {
     const ev = makeEvent(EV_GO_TRAVEL, [0, 1]);
     ctx.push('client_load_role', rolePayload());
     ctx.push('item_load_items', handlers.item_load_items());
+    /* 礼物盒被拿走了几件，客户端那份列表要跟着变。 */
+    if (visitGifts) ctx.push('travel_load_gift', giftBoxPayload());
     ctx.push('notify_new_event', { event: ev });
     return ev;
+  }
+
+  /* 【并入他的 V3】旅行中先寄一张：把这趟里"还没拥有过"的照片先入待收并推
+     album_load_new（客户端会弹"收到新照片"）。*/ 
+  function deliverTravelPostcard(ctx) {
+    const pics = (state.travel && state.travel.postcardPics) || [];
+    if (!pics.length || state.travel.postcardSent) return false;
+    state.travel.postcardSent = true;
+    const added = queuePostcardPictures(pics);
+    save();
+    if (added > 0) ctx.push('album_load_new', handlers.album_load_new());
+    return added > 0;
   }
 
   function returnFrog(ctx, t) {
@@ -71877,7 +72558,10 @@ function mdPayload(s) {
       for (const row of rows || []) if (craftDone(kind, row)) row.stored = true;
     }
     const plan = state.travel.plan || null;
-    const r = rollTripRewards(plan);
+    /* 【并入他的 V3】奖励在出发时已经掷好；老档（本次之前的行程）没有这个字段，
+       就按老办法在回家时掷，行为与 V3.5 一致。 */
+    const r = state.travel.rewards || rollTripRewards(plan);
+    const deliveredMidTrip = (state.travel.postcardPics || []).slice();
     state.frog.status = 0;                       // home again
     state.items.bagCompleted = 0;
     state.clover += r.clover;
@@ -71967,6 +72651,8 @@ function mdPayload(s) {
       // would leave album_save_new / album_delete_new with nothing to act on.
       // Each trip awards a physical copy, even if this template is already owned.
       // Dynamic-photo making also needs multiple copies of the same postcard.
+      /* 旅行中已经先寄回来的那几张不再重复入待收（同一趟只给一份）。 */
+      if (deliveredMidTrip.indexOf(Number(pic)) !== -1 && state.travel.postcardSent) continue;
       state.pictureSeq = (state.pictureSeq || 0) + 1;
       state.albumPending.push({ id: state.pictureSeq, pic_id: pic, read: 0, new: 1 });
     }
@@ -71976,10 +72662,33 @@ function mdPayload(s) {
     const flower = rollDecoration();
     // ...and a story for a travel partner (see rollStory)
     const story = rollStory();
+    /* 【并入他的 V3】一趟旅行回来 = 最大的那次安抚（他把这个数设成 5）。 */
+    const moodRecovered = sootheFurnitureMood(FURNITURE_TRIP_RELIEF, 'trip');
+    /* 【并入他的 V3】礼物盒来访的回礼：由一位旅行伙伴寄来（明信片 + 三叶草 + 可能有券/礼物）。 */
+    const giftBoxVisitReply = rollGiftBoxVisitReply(plan && plan.giftBoxVisit);
+    let giftBoxVisitMail = null;
+    if (giftBoxVisitReply) {
+      giftBoxVisitMail = makeMail({
+        type: 3,
+        title: '拜访回礼',
+        message: '旅友寄来了回礼。',
+        senderCharaId: giftBoxVisitReply.friendId,
+        clover: giftBoxVisitReply.clover,
+        ticket: giftBoxVisitReply.ticket,
+        items: giftBoxVisitReply.items,
+        pictures: giftBoxVisitReply.pictures,
+      });
+      state.mails.push(giftBoxVisitMail);
+      trimMails();
+    }
 
     state.travel.departAt = 0;
     state.travel.returnAt = 0;
     state.travel.plan = null;
+    state.travel.rewards = null;
+    state.travel.postcardAt = 0;
+    state.travel.postcardPics = [];
+    state.travel.postcardSent = false;
     state.travel.nextDepartAt = t + randInt(TRAVEL_IDLE_MIN, TRAVEL_IDLE_MAX);
     // track how long the trip actually took: two achievements key off it
     if (plan && plan.at) {
@@ -72000,6 +72709,10 @@ function mdPayload(s) {
     ctx.push('item_load_handbook', handlers.item_load_handbook());
     ctx.push('travel_load_gift', giftBoxPayload());
     ctx.push('notify_new_event', { event: ev });
+    if (giftBoxVisitMail) {
+      ctx.push('notify_new_mail', { mail: giftBoxVisitMail });
+      ctx.push('mail_load', state.mails);
+    }
     /* A new 旅行笔记 does not pop anything: evt_type=15 only makes the client
        re-request `travel_load_note` (Result.eventSystem case NewNote). We push the
        event AND the payload so the note list is right either way. */
@@ -72034,18 +72747,30 @@ function mdPayload(s) {
         state.travel.nextDepartAt = t + randInt(TRAVEL_IDLE_MIN, TRAVEL_IDLE_MAX);
         save();
       } else if (t >= state.travel.nextDepartAt) {
-        // No food, no departure; tools and amulets alone cannot start a trip.
-        if (tripPrepared()) {
+        /* 【并入他的 V3，2026-09-19】到点掷一次骰：50% 才真的出门。
+           掷中就走（背包空着也走，那趟是放浪）；没掷中就把下一次检查推到 3–5 小时后。 */
+        const departChance = Math.max(0, Math.min(100, Number(TRAVEL_DEPART_CHANCE) || 0));
+        const departRoll = Math.random() * 100;
+        if (departRoll < departChance) {
           departFrog(ctx, t);
         } else {
-          state.travel.waitingForBag = true;
+          state.travel.waitingForBag = !tripPrepared();
           state.travel.nextDepartAt = t
             + randInt(TRAVEL_WAIT_UNPREPARED_MIN, TRAVEL_WAIT_UNPREPARED_MAX);
+          state.travel.lastDepartRoll = departRoll;
+          state.travel.lastDepartRollAt = t;
           save();
         }
       }
-    } else if (t >= state.travel.returnAt) {
-      returnFrog(ctx, t);
+    } else {
+      /* 【并入他的 V3】行程中段先把一张新照片寄回来。 */
+      if (state.travel.postcardAt && !state.travel.postcardSent
+          && t >= state.travel.postcardAt) {
+        deliverTravelPostcard(ctx);
+      }
+      if (t >= state.travel.returnAt) {
+        returnFrog(ctx, t);
+      }
     }
     tickGuest(ctx, t);
     maybeVisitor(ctx);
@@ -72055,6 +72780,11 @@ function mdPayload(s) {
     checkAchievements(ctx);
     /* 工作台制作到点结算（离线也算：finishAt 是绝对时间，开机后第一拍就会结算） */
     craftTick(ctx, t);
+    /* 【并入他的 V3】蛙蛙自己换家具：每 8–12 小时检查一次、35% 才动手。 */
+    maybeAutoReplaceFurniture(ctx, t);
+    /* 【并入他的 V3】材料齐了却还没开工时，按 35% 概率自己开工
+       （检查间隔默认每拍；设 FROG_FURNITURE_AUTO_CRAFT_MIN_SEC=10800 就是他的 3 小时）。 */
+    autoCraftCheck(ctx, t);
     if (advanceCraft(t)) {
       save();
       ctx.push('item_load_items', handlers.item_load_items());
@@ -72166,6 +72896,7 @@ function mdPayload(s) {
       mail = makeMail({
         title: '小伙伴的回礼', message: '谢谢你的招待！这是送给你的小礼物。',
         senderCharaId: g.id, clover: g.pendingGift.clover,
+        ticket: g.pendingGift.ticket || 0,
         items: g.pendingGift.items || [],
       });
       state.mails.push(mail);
@@ -72488,11 +73219,11 @@ function mdPayload(s) {
       phase: A.phase || 0,
       item_num: A.itemNum || 0,
       exp: A.exp || 0,
-      exp_pic: (A.expPic || []).slice(),
+      exp_pic: (A.expPic || []).map(withLayers),
       pic_list: (A.picList || []).map((p) => ({
         id: p.id,
         put_num: p.putNum || 0,
-        pictures: (p.pictures || []).slice(),
+        pictures: (p.pictures || []).map(withLayers),
       })),
     };
   }
@@ -72638,7 +73369,13 @@ function mdPayload(s) {
          which the client turns into Reload.JSError, i.e. 呱呱，吃坏肚子了. The
          client has NO completion flag on a task, so a finished task must simply
          LEAVE the list (the server decides that; the UI only shows the first two). */
-      reward_list: (C.rewardList || []).map((r) => Number(r)),
+      /* 只把当前 capsuleData.reward 还认识的奖励 id 发出去（取自 V3.3.1 的修复）：
+         旧表有 30 个键，旧存档抽到的 108/109/110/209/311 这些已被删掉的 id 会让客户端的
+         capsuleData.get("reward")[id] 拿到 undefined，接着读 `.type` 直接抛错 ——
+         表现就是"扭蛋机打不开"。发送侧过滤 + 下面读档侧清理，两头都堵住。 */
+      reward_list: (C.rewardList || [])
+        .map((r) => Number(r))
+        .filter((r) => CAPSULE_REWARD[String(r)]),
       task_list: capsuleOpenTasks().map((t) => Number(t.id)),
       patch_num: C.patchNum || 0,
     };
@@ -72650,6 +73387,12 @@ function mdPayload(s) {
    *  allowance (a unit test caught that). */
   function refreshCapsule(t) {
     const C = state.capsule;
+    /* 旧存档里可能留着当前表已经删掉的抽奖奖励 id（108/109/110/209/311）：它们只是历史
+       （东西早发过了），读档时清干净，免得客户端渲染扭蛋页时抛错。取自 V3.3.1 的修复。 */
+    if (Array.isArray(C.rewardList)) {
+      const valid = C.rewardList.filter((r) => CAPSULE_REWARD[String(Number(r))]);
+      if (valid.length !== C.rewardList.length) { C.rewardList = valid; }
+    }
     C.endTime = t + CAPSULE_DAYS * 86400;
     if (!C.started) {
       C.started = 1;
@@ -72980,6 +73723,7 @@ function mdPayload(s) {
     const got = Math.random() * (cloverWeight + fourWeight) < cloverWeight ? 'clover' : 'four_leaf';
 
     let clover = 0;
+    let ticket = 0;
     const giftItems = [];
     if (got === 'four_leaf') {
       giftItems.push({ item_id: FOUR_LEAF_CLOVER_ID, count: 1 });
@@ -72992,8 +73736,28 @@ function mdPayload(s) {
         GUEST_CLOVER_POW * ((100 + feeling) / 100) * (active / 1800)
         * (Number(debuff) || 1) / 15);
       clover = Math.max(1, clover + Number(DEF('FRIEND_GIFTBOUNUS_CLOVER', 0)));
+      /* 【并入他的 V3】把三叶草夹进他的 50–300（可用 env 改）。 */
+      const cloMin = Number(process.env.FROG_GUEST_CLOVER_MIN || 50);
+      const cloMax = Math.max(cloMin, Number(process.env.FROG_GUEST_CLOVER_MAX || 300));
+      clover = Math.max(cloMin, Math.min(cloMax, Math.floor(clover)));
     }
-    return { got, clover, items: giftItems, feeling, rare };
+    /* 【并入他的 V3】回礼不只有三叶草：特产 / 博物馆门票 / 花种按"是否喜欢"两档概率发。 */
+    const maybeGiftItem = (pct, pool) => {
+      if (!Array.isArray(pool) || !pool.length) return;
+      if (Math.random() * 100 >= pct) return;
+      giftItems.push({ item_id: Number(pool[randInt(0, pool.length - 1)]), count: 1 });
+    };
+    maybeGiftItem(rare ? 45 : 18, SPECIALTY_IDS);
+    maybeGiftItem(rare ? 28 : 8, TV_MUSEUM_TICKETS);
+    maybeGiftItem(rare ? 35 : 12, GUEST_FLOWER_REWARD_IDS);
+    /* 额外抽奖券：他的 35%% 概率，最多 FRIEND_GIFTBOUNUS_TICKET_MAX(3) 张。 */
+    const maxBonusTickets = Number(DEF('FRIEND_GIFTBOUNUS_TICKET_MAX', 3));
+    if ((Number(state.guestBonusTickets) || 0) < maxBonusTickets
+        && Math.random() * 100 < Number(process.env.FROG_GUEST_BONUS_TICKET_CHANCE || 35)) {
+      ticket += Number(DEF('FRIEND_GIFTBOUNUS_TICKET', 1));
+      state.guestBonusTickets = (Number(state.guestBonusTickets) || 0) + 1;
+    }
+    return { got, clover, ticket, items: giftItems, feeling, rare };
   }
 
   /* ------------------------------------------------------- raffle */
@@ -73094,8 +73858,17 @@ function mdPayload(s) {
       const count = addHouseItem(itemId, Number(it.count) || 1);
       pushItemUpdate(ctx, itemId, count);
     }
+    /* 【并入他的 V3】邮件里的明信片以前**被吞掉**（这里只发三叶草/券/扭蛋/物品）。
+       现在按来源入待收桶：标题是「拜访回礼」的走探访桶（客户端用 visted_pic 收，
+       领奖后不再多弹一次"保存照片"），其余走普通待收桶并推 album_load_new。 */
+    const visitMail = String(mail.title || '') === '拜访回礼';
+    const addedPictures = queuePostcardPictures(mail.pictures || [], {
+      visit: visitMail,
+      sender: visitMail ? Number(mail.senderCharaId) : -1,
+    });
     state.mails.splice(i, 1);
     save();
+    if (addedPictures > 0 && !visitMail) ctx.push('album_load_new', handlers.album_load_new());
     ctx.push('mail_load', state.mails);
     return true;
   }
@@ -73474,6 +74247,12 @@ function mdPayload(s) {
     if (info === '获得所有特产食材') {
       return (s) => FARM_SPECIALTY_IDS.length > 0
         && FARM_SPECIALTY_IDS.every((id) => ((s.handbook && s.handbook.specialtys) || []).indexOf(id) !== -1);
+    }
+    /* 典藏（博物馆）数量: the museum grants into the same handbook list the 图鉴 uses, so
+       these four rows (典藏 4/8/12/20) are pure bookkeeping -- they simply had no rule. */
+    if ((m = /^获得(\d+)个典藏/.exec(info))) {
+      const n = Number(m[1]);
+      return (s) => (((s.handbook && s.handbook.collections) || []).length) >= n;
     }
     if ((m = /^(.+?)超过(\d+)个$/.exec(info))) {
       // resolved against the real Item table; no ids hard-coded. Rows whose label
@@ -74040,7 +74819,9 @@ function mdPayload(s) {
   const FROGMOTIONNUM = (defineData.maps && defineData.maps.FrogMotionNum) || {};
   /* How long one at-home activity lasts. Not recoverable from any table, so this
      is our choice; override with FROG_MOTION_SEC. */
-  const FROG_MOTION_SEC = Number(process.env.FROG_MOTION_SEC || 45);
+  /* 【并入他的 V3】在家动作每 10 分钟换一次（他口述是"45 分钟"，但他代码与实测
+     都是 10 分钟 = 600 s；用户 2026-09-19 定：按他代码来）。 */
+  const FROG_MOTION_SEC = Number(process.env.FROG_MOTION_SEC || 10 * 60);
 
   function refreshFrogMotion(t) {
     if (state.frog.status !== 0) return false;          // only while at home
@@ -74096,7 +74877,11 @@ function mdPayload(s) {
     'unlock_pictures - 解锁全部明信片',
     'unlock_all - 解锁全部图鉴(纪念品/特产) + 博物馆图鉴 + 全部百科',
     'unlock_museum - 只解锁博物馆图鉴（大冒险已关闭，用它代替）',
+        'unlock_map - 解锁全部足迹（离线版自制足迹页的 33 个省区）',
+        'unlock_achieve - 解锁全部称号（成就；引擎判不了的会如实说明）',
+        'anim_kit - 动态照片材料补给（相框/存储券/三种显影液 + 可动明信片各 5 份）',
     'all_furniture - 获得全部家具',
+        'clear_furniture - 删除所有家具（清空持有与场内摆放；素风格默认家具也不再自动补回）',
     'expand_album - 扩容相册到上限（拿到全部「相册扩容」，页数 30 → '
       + (ALBUM_BASE_PAGES + ALBUM_EXPANSION_SLOTS) + '，可放 '
       + ((ALBUM_BASE_PAGES + ALBUM_EXPANSION_SLOTS) * ALBUM_PAGE_SIZE) + ' 张）',
@@ -74104,6 +74889,8 @@ function mdPayload(s) {
     'bench_state - 看工作台（是否锁定/台面图纸/还差什么材料）',
     'craft_start 家具ID - 开始制作（图纸+材料一并备齐，制作中工作台锁定）',
     'craft_finish - 立刻完成当前制作',
+    'furniture_mood - 看家具心情/压力（>=27 时工作台乱掉、暂停新制作）',
+    'furniture_auto - 看自动换家具/自动开工的排期（furniture_auto force 立刻换一件）',
     'file_pending - 把"新照片"全部归档进相册（容量 '
       + ((ALBUM_BASE_PAGES + ALBUM_EXPANSION_SLOTS) * ALBUM_PAGE_SIZE) + ' 张）',
     'harvest_all / clear_clovers - 三叶草地全熟 / 全清',
@@ -74226,6 +75013,9 @@ function mdPayload(s) {
 
       /* 获得全部家具 */
       case 'all_furniture': {
+        /* `clear_furniture` 会置 plainDefaultsOff 让"素风格默认家具"不再自动回来；
+           既然这里要"获得全部家具"，把标记清掉，一切照旧。 */
+        state.furniture.plainDefaultsOff = false;
         const f = unlockFurniture();
         save(); refresh();
         return ok('家具已全部解锁：新增 ' + f.furniture + ' 件，共 ' + f.total + ' 件');
@@ -74279,6 +75069,37 @@ function mdPayload(s) {
           + '，' + Math.round(CRAFT_SECONDS / 60) + ' 分钟后完成（工作台已锁定）');
       }
 
+      case 'furniture_mood': {
+        const names = { 1: '很高兴', 2: '开心', 3: '平静', 4: '生气', 5: '非常生气/工作台乱' };
+        const mood = normalizeFurnitureMood();
+        return ok('家具心情：' + (names[mood] || mood)
+          + '；压力=' + (Number(state.furniture.moodStress) || 0) + '/' + FURNITURE_MESS_STRESS
+          + '；工作台=' + (furnitureMoodBlocked() ? '乱了，暂停新制作' : '正常')
+          + '；旅行安抚 ' + (Number(state.furniture.moodRecoverTrips) || 0) + ' 次'
+          + '、手工安抚 ' + (Number(state.furniture.moodRecoverCrafts) || 0) + ' 次');
+      }
+
+      case 'furniture_auto': {
+        const force = (parts[0] || '').toLowerCase() === 'force';
+        const now = nowSec();
+        if (force) {
+          const r = autoReplaceOneFurniture(now, true);
+          save(); refresh();
+          return r.changed
+            ? ok('已换：' + r.fromName + ' → ' + r.toName + '（类型 ' + r.type + '）')
+            : bad('没换：' + r.reason);
+        }
+        const cands = autoFurnitureReplaceCandidates();
+        const left = (k, v) => (Number(v) > now ? Math.round((Number(v) - now) / 60) + ' 分钟后' : '现在');
+        return ok('自动开工：' + left('craft', state.furniture.nextAutoCraftAt)
+          + '检查一次，概率 ' + FURNITURE_AUTO_CRAFT_CHANCE + '%'
+          + '（默认每拍查；设 FROG_FURNITURE_AUTO_CRAFT_MIN_SEC=10800 就是他的 3 小时）'
+          + '；自动换家具：' + left('replace', state.furniture.nextAutoReplaceAt)
+          + '检查一次，概率 ' + FURNITURE_AUTO_REPLACE_CHANCE + '%'
+          + '；已换 ' + (Number(state.furniture.autoReplaceCount) || 0) + ' 次'
+          + '；可换的类型 ' + cands.length + ' 个');
+      }
+
       case 'craft_finish': {
         if (!state.furniture.craft) return bad('工作台现在没有在做的活');
         const fid = state.furniture.craft.furnitureId;
@@ -74289,11 +75110,97 @@ function mdPayload(s) {
           : '结算失败');
       }
 
+      /* 删除所有家具（指令台用，不做按钮）。
+         清三处：持有 `owned`、场内摆放 `placed`、轮换中的 `replaceFur`。
+         另外置 `plainDefaultsOff`：素风格(style===1)那 27 件是
+           · defaultState 给新档的默认持有，· loadState 每次读档都并回 owned，
+           · furniture_load_furniture 的 put_fur 还会无条件注入给客户端画房间
+         —— 不标记的话删完一重启就回来，房间里也还看得见。工作台上的材料/图纸不动。 */
+      case 'clear_furniture': {
+        const F = state.furniture;
+        const hadOwned = (F.owned || []).length;
+        const hadPlaced = (F.placed || []).length;
+        F.owned = [];
+        F.placed = [];
+        F.replaceFur = [];
+        F.plainDefaultsOff = true;
+        save(); refresh();
+        return ok('家具：已删除 ' + hadOwned + ' 件（含场内摆放 ' + hadPlaced
+          + ' 处）；素风格默认家具也不再自动补回（用 all_furniture 可全部恢复）');
+      }
+
       case 'unlock_museum': {
         const m = unlockMuseum();
         save(); refresh();
         return ok('博物馆图鉴：新增明信片 ' + m.pictures + ' 张、藏品 ' + m.collections + ' 件');
       }
+
+      /* ---- 3.4 落下的三条命令，由我们这条线补回（见 docs/修复记录-4.0.md）---- */
+      /* 解锁全部足迹：离线版自制「足迹页」(map.html) 按 state.acquireProvinces 标已认识， */
+      /* 这里把访客表里的 33 个省区一次性发全，不发明任何地理数据。 */
+      /* 解锁全部称号：按 ACHIEVE_RULES 逐条判定，没有规则的行如实说明。 */
+      /* 动态照片材料：正式服靠「家具店买耗材 + 反复旅行攒同款明信片」，离线凑不齐， */
+      /* 所以这条命令把 9001/9002/8002/8003/8004 与可动明信片副本一起给。 */
+      case 'unlock_map': {
+        if (!Array.isArray(state.acquireProvinces)) state.acquireProvinces = [];
+        const all = VISITOR_PROVINCES.slice();
+        let added = 0;
+        for (const key of all) {
+          const row = VISITOR_TABLE[key] || {};
+          /* the page matches on the row's own province string, the visitor path pushes
+             `v.province`, and `build_map_data.py` falls back to the table key -- accept all
+             three so the page can never show a province as 未认识 after this command. */
+          for (const v of [row.Province, row.province, key]) {
+            if (v === undefined || v === null || v === '') continue;
+            if (state.acquireProvinces.indexOf(v) === -1) {
+              state.acquireProvinces.push(v);
+              added += 1;
+            }
+          }
+        }
+        save(); refresh();
+        return ok('足迹地图：已认识 ' + VISITOR_PROVINCES.length + ' / ' + VISITOR_PROVINCES.length
+          + ' 个省区（本次新增 ' + added + '）');
+      }
+
+      case 'unlock_achieve': {
+        if (!Array.isArray(state.achieves)) state.achieves = [];
+        let added = 0;
+        let noRule = 0;
+        for (const r of ACHIEVE_RULES) {
+          if (!r.test) { noRule += 1; continue; }
+          if (state.achieves.indexOf(r.id) !== -1) continue;
+          state.achieves.push(r.id);
+          state.curAchieve = r.id;
+          added += 1;
+        }
+        save(); refresh();
+        return ok('称号：已获得 ' + state.achieves.length + ' / ' + ACHIEVE_RULES.length
+          + '（本次新增 ' + added + '）；另有 ' + noRule + ' 条引擎没有判定规则（官方特殊行、'
+          + '条件里的物品已从本版删除、或条件无法离线判定）');
+      }
+
+      case 'anim_kit': {
+        const KIT = [9001, 9002, 8002, 8003, 8004];
+        const HAVE = [1, 5, 5, 5, 5];
+        const got = [];
+        for (let i = 0; i < KIT.length; i += 1) {
+          for (let k = 0; k < HAVE[i]; k += 1) addHouseItem(KIT[i], 1);
+          got.push(KIT[i] + 'x' + HAVE[i]);
+        }
+        let pics = 0;
+        for (const picId of Object.keys(ANIM_PIC_MAP)) {
+          for (let k = 0; k < ANIM_PAGE_SLOTS; k += 1) {
+            state.pictureSeq = (state.pictureSeq || 0) + 1;
+            state.pictures.push({ id: state.pictureSeq, pic_id: Number(picId), read: 0, new: 1 });
+            pics += 1;
+          }
+        }
+        save(); refresh();
+        return ok('动态照片材料：' + got.join(' ') + '；可动明信片各 ' + ANIM_PAGE_SLOTS
+          + ' 份（共 ' + pics + ' 张）；相册现有 ' + state.pictures.length + ' 张');
+      }
+
 
       case 'unlock_pictures': {
         /* A full unlock puts ~351 photos in, far past the 30-page base, so grant the
@@ -74429,9 +75336,10 @@ function mdPayload(s) {
       refreshClovers(nowSec());
       refreshWeather();                 // real season / time-of-day before first push
       ensureTutorialMails();
-      /* 大冒险 is off, and it was the only way to earn museum postcards -- so the museum
-         图鉴 is unlocked instead (once; `museumUnlocked` records it). */
-      if (!MUSEUM_DAY_ENABLED && !state.museumUnlocked) unlockMuseum();
+      seedPreparationInventory();   /* 开局行李（并入他的 V3）：登录时兜一次底 */
+      /* 大冒险 is off；博物馆图鉴**不再**开局白送（见 AUTO_UNLOCK_MUSEUM 的说明），
+         需要时由面板的「解锁博物馆图鉴」按钮 / 指令台 `unlock_museum` 手动补。 */
+      if (AUTO_UNLOCK_MUSEUM && !MUSEUM_DAY_ENABLED && !state.museumUnlocked) unlockMuseum();
       /* 生日蛋糕 task 1 「登录游戏」 counts a session, not every command. */
       pcTaskProgress(1, 1);
       save();
@@ -74967,8 +75875,15 @@ function mdPayload(s) {
 
     album_save_new: (d) => {
       const id = Number(d && d.id);
-      const pend = state.albumPending || [];
-      const i = pend.findIndex((p) => p.id === id);
+      /* 【并入他的 V3】待收照片有**两个**桶：albumPending 与 albumPendingVisit
+         （探访礼物的明信片走后者，客户端用 album_load_new.visted_pic 收）。
+         只查前者会让探访明信片永远存不进相册（回 76 = 错误的新照片 id）。 */
+      let pend = state.albumPending || [];
+      let i = pend.findIndex((p) => p.id === id);
+      if (i === -1) {
+        pend = state.albumPendingVisit || [];
+        i = pend.findIndex((p) => p.id === id);
+      }
       if (i === -1) return { code: 76 };   // 76 = 删除错误的新照片id
       if (state.pictures.length >= albumCapacity()) {
         // 75 is the code the client treats as "album full": it drops the pending
@@ -75021,15 +75936,21 @@ function mdPayload(s) {
       merchantStatusSeen = state.furniture.shopDay + '/' + (shop.start_time < now && now < shop.leave_time);
       return {
         shop,
-        mood: 0,
-        bench_lock: state.furniture.benchLock ? 1 : 0,
+        /* 【并入他的 V3】mood 以前恒为 0；客户端只在 ==5(very_angry) 时把工作台画成
+           "罢工"，bench_lock 也要把"心情太差"算进去（工作台此时不接受编辑）。 */
+        mood: furnitureMood(),
+        bench_lock: (state.furniture.benchLock
+          || (!state.furniture.craft && furnitureMoodBlocked())) ? 1 : 0,
         bench: (state.furniture.bench || []).slice(0, 10),
         replace_fur: state.furniture.replaceFur || [],
         // The room skin includes the default furniture, but its animations and
         // sleep skins also need these entries in the model. Custom pieces win.
+        /* 素风格那批是"房间皮肤自带"的默认家具；`clear_furniture` 之后要真的空场，
+           所以这个注入也要跳过（否则房间里照样看得见 27 件）。 */
         put_fur: Array.from(new Map([
-          ...Array.from(FURNITURE_BY_ID.values()).filter(r => Number(r.style) === 1)
-            .map(r => [Number(r.type), { type: Number(r.type), id: Number(r.id) }]),
+          ...(state.furniture.plainDefaultsOff ? []
+            : Array.from(FURNITURE_BY_ID.values()).filter(r => Number(r.style) === 1)
+              .map(r => [Number(r.type), { type: Number(r.type), id: Number(r.id) }])),
           ...(state.furniture.placed || []).map(r => [r.type, r]),
         ]).values()),
         has_fur: state.furniture.owned || [],
@@ -75205,6 +76126,8 @@ function mdPayload(s) {
       if (state.furniture.replaceFur.indexOf(type) === -1) {
         state.furniture.replaceFur.push(type);
       }
+      /* 【并入他的 V3】换一件家具 = 一次压力（他把这个数设成 1）。 */
+      stressFurnitureMood(FURNITURE_REPLACE_STRESS);
       save();
       return { code: 0 };
     },
@@ -76222,6 +77145,13 @@ function mdPayload(s) {
         A.collected = (A.collected || 0) + A.itemNum;
         A.itemNum = 0;
         save();
+      /* 存储券的持有数必须主动推给客户端：展示页那行「持有 N 个」是
+         `ItemModel.getHouseItemCount(9002) + data.item_num`，引擎改了 9002 而不推，
+         界面就一直显示旧数字，只有重启（重新请求 item_load_items）才更新
+         —— 2026-09-19 玩家反馈。item_load_items 是全量、item_update 是单项增量，
+         客户端 item_update 按"与当前数量的差值"增减，所以两个一起推不会翻倍。 */
+      try { ctx.push('item_load_items', handlers.item_load_items()); } catch (e) { /* 推送失败不影响本步 */ }
+      ctx.push('item_update', { item: { item_id: ANIM_STORAGE_ITEM, count: getHaveItem(ANIM_STORAGE_ITEM) } });
       }
       return { code: 0 };
     },
@@ -76265,6 +77195,13 @@ function mdPayload(s) {
       page.putNum = (page.putNum || 0) + 1;
       while (page.pictures.length < page.putNum) page.pictures.push({ id: 0, pic_id: 0, layers: [] });
       save();
+      /* 存储券的持有数必须主动推给客户端：展示页那行「持有 N 个」是
+         `ItemModel.getHouseItemCount(9002) + data.item_num`，引擎改了 9002 而不推，
+         界面就一直显示旧数字，只有重启（重新请求 item_load_items）才更新
+         —— 2026-09-19 玩家反馈。item_load_items 是全量、item_update 是单项增量，
+         客户端 item_update 按"与当前数量的差值"增减，所以两个一起推不会翻倍。 */
+      try { ctx.push('item_load_items', handlers.item_load_items()); } catch (e) { /* 推送失败不影响本步 */ }
+      ctx.push('item_update', { item: { item_id: ANIM_STORAGE_ITEM, count: getHaveItem(ANIM_STORAGE_ITEM) } });
       return { code: 0 };
     },
 
@@ -77501,9 +78438,12 @@ function mdPayload(s) {
     state.travel = Object.assign(fresh.travel, obj.travel || {});
     state.furniture = Object.assign({}, fresh.furniture, obj.furniture || {});
     state.furniture.compost = Object.assign({}, fresh.furniture.compost, (obj.furniture || {}).compost || {});
-    state.furniture.owned = Array.from(new Set([
-      ...(Array.isArray(state.furniture.owned) ? state.furniture.owned : []), ...PLAIN_FURNITURE_IDS,
-    ]));
+    /* 导入存档同理：`clear_furniture` 之后的档不该被重新塞回素风格默认家具 */
+    if (!state.furniture.plainDefaultsOff) {
+      state.furniture.owned = Array.from(new Set([
+        ...(Array.isArray(state.furniture.owned) ? state.furniture.owned : []), ...PLAIN_FURNITURE_IDS,
+      ]));
+    }
     if (!Array.isArray(state.clovers) || state.clovers.length !== CLOVER_SLOTS) state.clovers = makeClovers();
     state.__saveReport = makeSaveReport();
     state.__saveReport.action = 'import';

@@ -151,6 +151,53 @@ for weather_table in ('SeasonCover', 'SeasonSpine', 'SeasonPartical'):
     ))
 
 
+
+# ---------------------------------------------------------------------------
+# V3.6：吸收 V3.3.1.apk.1 的 5 处修复 + 修掉「连点翻页键 -> 商品消失/空白页」的 7 处夹取。
+# 前者那 5 行与 .clean 基线逐行比对过，差异就是下面这些片段；后者是在 main.min.js 里
+# 核对 PageGroupScroller / PageGroup / PageCursorsBar 三个分页组件后加的边界夹取：
+# 页码越界会让 getPageScrollH() 取到 contentWidth（内容尾部之外），视口停在内容右侧 = 整页空白。
+CLIENT_PATCHES_V36 = [
+    ('bench red dot always off (V3.3.1)',
+     't.prototype.updateRedot=function(){if(this.isOpen()){var e=!1;if(this.getBenchTools().filter(function(e){return-1!=e}).length<1&&(e=!0),5==this.getBenchItems().filter(function(e){return-1==e}).length){var t=this.getModel(ItemModel).getHouseItemsByType(Tabikaeru.DataType.ItemType.FURNITURE_ITEM);t.length>=2&&(e=!0)}e?Tabikaeru.RedotManager.instance().setRedotValue(Tabikaeru.RedotType.FURNITURE_BENCH,1):Tabikaeru.RedotManager.instance().setRedotValue(Tabikaeru.RedotType.FURNITURE_BENCH,0)}else Tabikaeru.RedotManager.instance().setRedotValue(Tabikaeru.RedotType.FURNITURE_BENCH,0)}',
+     't.prototype.updateRedot=function(){Tabikaeru.RedotManager.instance().setRedotValue(Tabikaeru.RedotType.FURNITURE_BENCH,0)}'),
+    ('guide-task red dots always off (V3.3.1)',
+     'Tabikaeru.RedotManager.instance().setRedotValue(this.redotMap[r],t[r]||0)}',
+     'Tabikaeru.RedotManager.instance().setRedotValue(this.redotMap[r],0)}'),
+    ('travel-note red dot always off (V3.3.1)',
+     't.prototype.updateRedot=function(){for(var e=0,t=0,i=this.travelNodeList;t<i.length;t++){var n=i[t];0==n.read&&e++}Tabikaeru.RedotManager.instance().setRedotValue(Tabikaeru.RedotType.NEW_NOTE,e)}',
+     't.prototype.updateRedot=function(){Tabikaeru.RedotManager.instance().setRedotValue(Tabikaeru.RedotType.NEW_NOTE,0)}'),
+    ('furniture shop list drops rows FurnitureShopDB does not know (V3.3.1)',
+     'this.updateClover();for(var e={},t=Tabikaeru.DataManager.instance().FurnitureShopDB,i=0,n=this.shopItems;i<n.length;i++){var r=n[i],o=t.get(r.shop_id);e[r.shop_id]=o}',
+     'this.updateClover();var t=Tabikaeru.DataManager.instance().FurnitureShopDB;this.shopItems=this.shopItems.filter(function(r){return!!t.get(r.shop_id)});for(var e={},i=0,n=this.shopItems;i<n.length;i++){var r=n[i],o=t.get(r.shop_id);e[r.shop_id]=o}'),
+    ('foldMenu keeps the menu open when a popup/notice is tapped (V3.3.1)',
+     't.prototype.foldMenu=function(e){var t=this;this.stage&&this.stage.removeEventListener(',
+     't.prototype.foldMenu=function(e){if(e&&e.target){var _dm=core.DisplayManage.getInstance();if(_dm.windowLayer&&_dm.windowLayer.contains(e.target))return;if(_dm.noticeLayer&&_dm.noticeLayer.contains(e.target))return;if(_dm.getPopupLayer){var _pl=_dm.getPopupLayer();if(_pl&&_pl.contains(e.target))return}}var t=this;this.stage&&this.stage.removeEventListener('),
+    ('paging: clamp PageGroupScroller page index on next',
+     't.prototype.onNext=function(){this.selectedIndex+=1}',
+     't.prototype.onNext=function(){/*V35-PAGING-FIX*/this.selectedIndex=Math.min(this.selectedIndex+1,Math.max(0,this.numPages-1))}'),
+    ('paging: clamp PageGroupScroller page index on prev',
+     't.prototype.onPrev=function(){this.selectedIndex-=1}',
+     't.prototype.onPrev=function(){/*V35-PAGING-FIX*/this.selectedIndex=Math.max(0,this.selectedIndex-1)}'),
+    ('paging: keep the viewport inside the content (never scroll past the end)',
+     'return e instanceof eui.Group&&e.layout.horizontalGap&&(t+=e.layout.horizontalGap*this._curPageIndex),t}',
+     'e instanceof eui.Group&&e.layout.horizontalGap&&(t+=e.layout.horizontalGap*this._curPageIndex);/*V35-PAGING-FIX*/var i=Math.max(0,this.viewport.contentWidth-this.viewport.width);return Math.max(0,Math.min(i,t))}'),
+    ('paging: clamp PageGroup page index on prev',
+     't.prototype.onPrev=function(){this.curPageIndex-=1}',
+     't.prototype.onPrev=function(){/*V35-PAGING-FIX*/this.curPageIndex=Math.max(0,this.curPageIndex-1)}'),
+    ('paging: clamp PageGroup page index on next',
+     't.prototype.onNext=function(){this.curPageIndex+=1}',
+     't.prototype.onNext=function(){/*V35-PAGING-FIX*/this.curPageIndex=Math.min(this.curPageIndex+1,Math.max(0,this.numPages-1))}'),
+    ('paging: clamp PageCursorsBar scroll on next',
+     't>=e+2*i&&(this.viewport.scrollH+=this.viewport.parent.width)',
+     't>=e+2*i&&(this.viewport.scrollH=Math.max(0,Math.min(t-i,/*V35-PAGING-FIX*/this.viewport.scrollH+this.viewport.parent.width)))'),
+    ('paging: clamp PageCursorsBar scroll on prev',
+     '(this.viewport.scrollH-=this.viewport.parent.width)',
+     '(/*V35-PAGING-FIX*/this.viewport.scrollH=Math.max(0,this.viewport.scrollH-this.viewport.parent.width))'),
+]
+PATCHES.extend(CLIENT_PATCHES_V36)
+
+
 def main():
     if not os.path.exists(CLEAN):
         print(f"missing pristine baseline: {CLEAN}")
