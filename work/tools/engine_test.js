@@ -19,7 +19,15 @@ const os = require('os');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..', '..');
-const ENGINE = path.join(ROOT, 'work', 'run', 'engine', 'index.js');
+/* FROG_ENGINE lets the same suite run against another engine source (e.g. the V4
+   handover build work/build/v4_engine/index.js). Same switch as engine_test.js,
+   which has honoured it since the handover work started. */
+const ENGINE = process.env.FROG_ENGINE || path.join(ROOT, 'work', 'run', 'engine', 'index.js');
+/* V3.6 并入他 V3 的「50% 概率出门」后，出门不再是"到点必走"。本套件里大量用例靠
+   `state.travel.nextDepartAt = 1` 强制出门，所以把概率钉成 100 保持确定性；
+   默认 50% 与小时级节奏由 work/tools/pacing_hours_test.js 单独验证。
+   必须在 require(ENGINE) 之前设置（常量是模块加载时读环境变量的）。 */
+process.env.FROG_TRAVEL_CHANCE = process.env.FROG_TRAVEL_CHANCE || '100';
 const { createEngine, canon } = require(ENGINE);
 /* The game's own tables, for tests that must agree with the DATA (not with a
    hard-coded copy of it). */
@@ -258,22 +266,26 @@ const haveOf = (engine, itemId) => {
   return n;
 };
 
-test('travel: with NO lunch box the frog stays home and keeps its gear', ({ engine }) => {
+test('travel: with NO lunch box the frog strays and keeps its gear', ({ engine }) => {
+  /* V3.6 并入他 V3 的规则：没有便当也**能**出门，那一趟是放浪
+     （表里 FROG_DRIFTRETURNTIME 10 / MAX 20 分钟）。放浪不带照片/特产回来，
+     但耐用装备（工具）照样回家 —— 这正是 `provisionTrip()` 的 stray 分支。 */
   const specBefore = engine.state.specialtys.length;
   const picBefore = engine.state.pictures.length;
   const tool = idsOfType(2)[0];
-  for (let i = 0; i < 20; i++) {
-    engine.state.items.bag[2] = tool;
-    engine.state.travel.nextDepartAt = 1;
-    engine.tick();
-    engine.state.travel.returnAt = 1;
-    engine.tick();
-  }
-  eq(engine.state.specialtys.length, specBefore, 'a stray trip must bring back no souvenir');
-  eq(engine.state.pictures.length, picBefore, 'a stray trip must bring back no photo');
-  eq(engine.state.travel.tripCount, 0, 'no food means no trips');
+  engine.state.items.bag = [-1, -1, -1, -1];
+  engine.state.items.bag[2] = tool;
+  engine.state.travel.nextDepartAt = 1;
+  engine.tick();
+  eq(engine.state.frog.status, 1, 'an unpacked frog still leaves (放浪)');
+  eq(!!(engine.state.travel.plan && engine.state.travel.plan.stray), true, 'and it is a stray trip');
+  eq(engine.state.travel.tripCount, 1, 'a stray trip counts as a trip');
+  engine.state.travel.returnAt = 1;
+  engine.tick();
   eq(engine.state.frog.status, 0);
-  eq(engine.state.items.bag[2], tool);
+  eq(engine.state.specialtys.length, specBefore, 'a stray trip brings back no souvenir');
+  eq(engine.state.pictures.length, picBefore, 'a stray trip brings back no photo');
+  eq(engine.state.items.bag[2], tool, 'durable gear comes home');
 });
 
 test('travel: a packed lunch box brings back souvenirs and photos', ({ engine, savePath }) => {
@@ -351,25 +363,39 @@ test('travel: gear comes home to its OWN slot, never shifted into the food/amule
   eq(bag[3], tools[1], 'tool 2 returns to slot 3');
 });
 
-test('travel: waiting without food yields no trip rewards', ({ engine }) => {
+test('travel: an unpacked trip earns far less than a provisioned one', ({ engine }) => {
+  /* 以前"没准备就不出门"，所以这条用例永远量到 0。V3.6 起放浪真的会发生，
+     而它**不是零收益**：奖励表对任何一趟都给一点三叶草（实测 300 次试次：
+     放浪 1.52/趟、带便当 2.47/趟；他 V3 引擎同样 ~1.55/趟 —— 两边一致），
+     但放浪不带照片、也不带特产。所以这里钉的是"少得多 + 特产为 0"。 */
   const lunch = idsOfType(0)[0];
-  const avgClover = (pack, trips) => {
-    let sum = 0;
+  const run = (pack, trips) => {
+    let clover = 0, spec = 0, pic = 0;
     for (let i = 0; i < trips; i++) {
+      engine.state.items.bag = [-1, -1, -1, -1];
+      engine.state.items.desk = [-1, -1, -1, -1, -1, -1, -1, -1];
       if (pack) engine.state.items.bag[0] = lunch;
       engine.state.travel.nextDepartAt = 1;
       engine.tick();
       engine.state.travel.returnAt = 1;
-      const before = engine.state.clover;
+      let before = engine.state.specialtys.length;
+      let pics = engine.state.pictures.length;
+      let cl = engine.state.clover;
       engine.tick();
-      sum += engine.state.clover - before;
+      spec += engine.state.specialtys.length - before;
+      pic += engine.state.pictures.length - pics;
+      clover += engine.state.clover - cl;
     }
-    return sum / trips;
+    return { clover: clover / trips, spec, pic };
   };
-  const stray = avgClover(false, 60);
-  const fed = avgClover(true, 60);
-  eq(stray, 0, 'waiting does not grant travel clover');
-  assert(fed > 0, 'provisioned trips still grant clover');
+  const stray = run(false, 60);
+  const fed = run(true, 60);
+  eq(stray.spec, 0, 'a stray trip brings back no souvenir');
+  eq(stray.pic, 0, 'a stray trip brings back no photo');
+  assert(stray.clover < fed.clover,
+    `a stray must earn less clover (stray ${stray.clover} vs fed ${fed.clover})`);
+  assert(fed.clover > 0, 'provisioned trips still grant clover');
+  assert(fed.spec + fed.pic > 0, 'and they are the ones that bring things back');
 });
 
 /* ------------------------------------------------ 行囊「准备完成」 (bag lock) */
@@ -523,7 +549,7 @@ test('baglock: the lock survives a restart', ({ engine, savePath }) => {
   eq(re.state.frog.status, 1, 'away state persisted');
 });
 
-test('baglock: coming home unlocks the bag, and gear alone cannot start the next trip', ({ engine, savePath }) => {
+test('baglock: coming home unlocks the bag, and gear alone is now enough to leave', ({ engine, savePath }) => {
   packForTrip(engine);
   engine.state.items.bag[1] = 1001;
   engine.state.items.bag[2] = idsOfType(2)[0];
@@ -534,13 +560,13 @@ test('baglock: coming home unlocks the bag, and gear alone cannot start the next
   eq(engine.state.items.bagCompleted,0);
   eq(pushes.find(x=>canon(x.cmd)==='item_load_items').data.bag_completed,0);
   eq(reopen(savePath).state.items.bagCompleted,0);
-  engine.state.travel.nextDepartAt = 1;
-  engine.tick();
-  eq(engine.state.frog.status,0);
-  eq(call(engine,'item_set_bag_completed',{completed:true}).reply.code,-1);
-  engine.state.items.desk[0] = 0; // food on the table also counts
-  eq(call(engine,'item_set_bag_completed',{completed:true}).reply.code,0);
-  eq(engine.state.frog.status,1);
+  /* V3.6 起 `tripPrepared()` 就是他 V3 的口径：背包里**有东西**（哪怕只是装备）
+     就算准备好了，所以「准备完成」会通过、并且当场出门 —— 以前这条用例钉的是
+     "只有食物才算准备"，那是我们 V3 的旧规则，已随这次并入作废。 */
+  const done = call(engine,'item_set_bag_completed',{completed:true});
+  eq(done.reply.code,0,'gear in the bag now counts as prepared');
+  eq(engine.state.frog.status,1,'and 准备完成 sends the frog out');
+  eq(!!(engine.state.travel.plan && engine.state.travel.plan.stray),true,'a gear-only trip is a stray');
 });
 
 test('baglock: old at-home locked saves reopen editable', ({ engine, savePath }) => {
@@ -553,6 +579,18 @@ test('baglock: old at-home locked saves reopen editable', ({ engine, savePath })
 /* ------------------------------------------------- 相册容量 / 扩容 (第七轮) */
 
 console.log('\n== album capacity / 扩容 ==');
+
+/* 我们的数据是更新的官方 1088 版：shopData 里 itemId=9000（相册扩容）有 **56** 行，
+   上游 1073 版的表只有 35 行。引擎的 ALBUM_EXPANSION_SLOTS 本来就是按表行数算的
+   （index.js: SHOP_DATA.filter(r => r.itemId === 9000).length），所以这里的期望值
+   一律从表推导，不再写死 35 —— 否则每换一次官方数据都要重改一遍用例。 */
+const ALBUM_SLOTS = GD.tables.shopData.filter((s) => Number(s.itemId) === 9000).length;
+/* 基础 30 页 x 每页 6 张 = 180（客户端 itemPerPage=6），每件扩容 +1 页 = +6 张。
+   （名字带 FULL：这是「扩容到上限」之后的容量；未扩容的基础容量见文件后面的 ALBUM_CAPACITY。） */
+const ALBUM_FULL_CAPACITY = (30 + ALBUM_SLOTS) * 6;
+/* Picture 表行数 = album 一键解锁会归档的明信片总数（引擎 unlock_pictures 遍历 PICTURE_IDS）。 */
+const PICTURE_ROWS = (Array.isArray(GD.tables.Picture)
+  ? GD.tables.Picture : Object.values(GD.tables.Picture)).length;
 
 /** 一张待归档的新照片。 */
 function pendOne(engine, picId) {
@@ -569,7 +607,9 @@ test('album: capacity is 30 base pages x 6, NOT Define.ALBUM_MAX', ({ engine }) 
      is not a picture cap. Using it as one made 60 pictures look "full". */
   const r = call(engine, 'client_gm', { cmd: 'album_state' });
   assert(/可放 180/.test(r.reply.info), `expected 180 capacity, got: ${r.reply.info}`);
-  assert(/扩容已拥有 0\/35/.test(r.reply.info), `expected 0/35 expansions, got: ${r.reply.info}`);
+  /* y 是 shopData 里 9000 的行数（我们的 1088 表 = 56，上游 1073 表 = 35），从表推导。 */
+  assert(new RegExp('扩容已拥有 0/' + ALBUM_SLOTS).test(r.reply.info),
+    `expected 0/${ALBUM_SLOTS} expansions, got: ${r.reply.info}`);
 });
 
 test('album: a full album refuses a new photo with code 75 (and drops the row)', ({ engine }) => {
@@ -581,12 +621,17 @@ test('album: a full album refuses a new photo with code 75 (and drops the row)',
   eq(engine.state.albumPending.length, 0, 'the pending row is dropped on 75');
 });
 
-test('album: 扩容相册到上限 grants the shop chain and raises the capacity to 390', ({ engine }) => {
+test('album: 扩容相册到上限 grants the shop chain and raises the capacity to 30x6+slots*6', ({ engine }) => {
   const r = call(engine, 'client_gm', { cmd: 'expand_album' });
-  assert(/扩容 0 → 35/.test(r.reply.info), `unexpected: ${r.reply.info}`);
-  assert(/390/.test(r.reply.info), `capacity should be 390: ${r.reply.info}`);
+  /* 我们的数据是更新的官方 1088 版：shopData 里 itemId=9000 的扩容行有 56 条（上游 1073 版 35 条），
+     所以是 0 → 56 件、30+56=86 页、可放 516 张（180 + 56x6）；上游那套 35/390 的数字不再是我们的现实。
+     容量本身仍然按 30 页 x 6 张 + 每件扩容 +1 页推导，不是抄引擎的报数。 */
+  assert(new RegExp('扩容 0 → ' + ALBUM_SLOTS + ' 件').test(r.reply.info), `unexpected: ${r.reply.info}`);
+  assert(new RegExp('可放 ' + ALBUM_FULL_CAPACITY + ' 张').test(r.reply.info),
+    `capacity should be ${ALBUM_FULL_CAPACITY}: ${r.reply.info}`);
   const house = engine.state.items.house.find((h) => Number(h.item_id) === 9000);
-  assert(house && house.count === 35, 'item 9000 must be owned x35 (the client tip reads it)');
+  assert(house && house.count === ALBUM_SLOTS,
+    `item 9000 must be owned x${ALBUM_SLOTS} (the client tip reads it)`);
   const items = pushNamed(r, 'item_update');
   assert(items.length >= 1, 'item_update must be pushed so the client sees the count');
 });
@@ -594,18 +639,21 @@ test('album: 扩容相册到上限 grants the shop chain and raises the capacity
 test('album: after 扩容 a new photo files fine', ({ engine }) => {
   call(engine, 'client_gm', { cmd: 'expand_album' });
   engine.state.pictures = [];
-  for (let i = 0; i < 351; i++) engine.state.pictures.push({ id: i + 1, pic_id: 1000 + i, read: 0, new: 0 });
+  /* 先塞满一整份 Picture 表（我们的 1088 表是 382 行），仍在扩容后的容量之内。 */
+  for (let i = 0; i < PICTURE_ROWS; i++) engine.state.pictures.push({ id: i + 1, pic_id: 1000 + i, read: 0, new: 0 });
   const row = pendOne(engine, 3200);
   const r = call(engine, 'album_save_new', { id: row.id });
-  eq(r.reply.code, 0, 'filing must succeed with capacity 390');
-  eq(engine.state.pictures.length, 352, 'photo filed');
+  eq(r.reply.code, 0, `filing must succeed below the expanded capacity ${ALBUM_FULL_CAPACITY}`);
+  eq(engine.state.pictures.length, PICTURE_ROWS + 1, 'photo filed');
 });
 
 test('album: 一键解锁 also expands, so the album is not left "full"', ({ engine }) => {
   const r = call(engine, 'client_gm', { cmd: 'unlock_pictures' });
-  eq(engine.state.pictures.length, 351, 'all pictures unlocked');
+  /* 一键解锁归档的是整张 Picture 表：我们的数据是更新的官方 1088 版，382 行（上游 1073 版 351 行）。 */
+  eq(engine.state.pictures.length, PICTURE_ROWS, 'all pictures unlocked');
   const house = engine.state.items.house.find((h) => Number(h.item_id) === 9000);
-  assert(house && house.count === 35, 'unlock must grant the expansions too');
+  /* 扩容件数同样按 shopData 的 9000 行数（56，上游 35）。 */
+  assert(house && house.count === ALBUM_SLOTS, 'unlock must grant the expansions too');
   const row = pendOne(engine, 3300);
   eq(call(engine, 'album_save_new', { id: row.id }).reply.code, 0,
     'a later trip photo must still file');
@@ -613,8 +661,13 @@ test('album: 一键解锁 also expands, so the album is not left "full"', ({ eng
 
 test('album: the capacity follows the shop table, not a hardcoded 35', ({ engine }) => {
   const slots = GD.tables.shopData.filter((s) => Number(s.itemId) === 9000).length;
-  eq(slots, 35, '相册扩容 slot count from shopData');
+  /* 这条用例的用意就是"容量跟着表走、不是写死的 35"：所以不写死任何数字，
+     只要求表里确实有扩容在卖（slots > 0），并且引擎报出的扩容件数 == 表里的行数。 */
+  assert(slots > 0, 'shopData must carry 相册扩容 (itemId 9000) rows');
   const r = call(engine, 'client_gm', { cmd: 'expand_album' });
+  const reported = /扩容 \d+ → (\d+) 件/.exec(r.reply.info);
+  assert(reported, `expand_album must report its count: ${r.reply.info}`);
+  eq(Number(reported[1]), slots, '报出的扩容件数必须等于 shopData 里 9000 的行数');
   assert(new RegExp('→ ' + slots + ' 件').test(r.reply.info), r.reply.info);
 });
 
@@ -629,21 +682,101 @@ const DRAWING_FOR_TYPE_1 = (() => {
   return Number(row.drawing);
 })();
 
+/* ---- 引擎的选件规则，按我们的表复算一遍（期望值从表推导，不写死上游那批 id）----
+   引擎 (work/build/v4_engine/index.js: BLUEPRINT_TYPE / CRAFTABLE_BY_TYPE) 的规则是：
+   一张图纸对应家具的一个 **type 槽位**，做出来的那件 = 该 type 下**在 benchData 里、style 最高**
+   的那件（同 style 取 id 大的）。上游 1073 版每 type 的最高 style 是 11（2001..2027），
+   我们的 1088 版新增了 style 14 的「彩陶庆典」一整套 2301..2327 —— 所以 10301（墙壁）现在做出
+   **2301**，而不是 2001。下面的 CRAFT_TARGET_OF 就是这条规则的复算，供各用例当期望值用。 */
+const BENCH_ROW_IDS = new Set(GD.tables.benchData.map((r) => Number(r.id)));
+const FURNITURE_ROWS = Object.values(GD.tables.furnitureData);
+const CRAFTABLE_BY_TYPE = (() => {
+  const out = new Map();
+  for (const v of FURNITURE_ROWS) {
+    const fid = Number(v.id), type = Number(v.type), style = Number(v.style);
+    if (!Number.isFinite(fid) || !BENCH_ROW_IDS.has(fid)) continue;   // benchData 说了才算能做
+    const cur = out.get(type);
+    if (!cur || style > cur.style || (style === cur.style && fid > cur.furnitureId)) {
+      out.set(type, { furnitureId: fid, style });
+    }
+  }
+  return out;
+})();
+/** 某张图纸会做出哪一件（图纸 -> type -> benchData 里 style 最高的那件）。 */
+function craftTargetOfDrawing(drawing) {
+  const group = FURNITURE_ROWS.filter((r) => Number(r.drawing) === Number(drawing));
+  const types = [...new Set(group.map((r) => Number(r.type)))];
+  if (types.length !== 1) return null;                    // 说不清就不认这张图纸
+  return CRAFTABLE_BY_TYPE.get(types[0]) || null;
+}
+const CRAFT_TARGET_OF_TYPE_1 = craftTargetOfDrawing(DRAWING_FOR_TYPE_1);   // { furnitureId: 2301, style: 14 }
+
+/* ---- 材料配方：引擎里的【自设计】常量（原版配方在服务端，任何表里都没有）----
+   所以这份期望只能从引擎源码读，而不是在测试里另抄一份会过期的副本。
+   语法是固定的对象/数组字面量（{ item_id, count }），这里做最小的字面量解析。 */
+const CRAFT_RECIPE = (() => {
+  const src = fs.readFileSync(ENGINE, 'utf8');
+  const literal = (name) => {
+    const at = src.indexOf('const ' + name + ' = ');
+    assert(at !== -1, `engine must declare ${name}`);
+    let i = src.indexOf('=', at) + 1;
+    while (/\s/.test(src[i])) i++;
+    const open = src[i], close = open === '{' ? '}' : ']';
+    let depth = 0, end = i;
+    for (; end < src.length; end++) {
+      if (src[end] === open) depth++;
+      else if (src[end] === close) { depth--; if (!depth) { end++; break; } }
+    }
+    return JSON.parse(src.slice(i, end)
+      .replace(/\/\/[^\n]*/g, '')                      // 字面量里带行注释，JSON 不认
+      .replace(/,(\s*[}\]])/g, '$1')                   // 注释后面剩下的尾逗号
+      .replace(/([{,]\s*)([A-Za-z0-9_]+)\s*:/g, '$1"$2":'));   // 键要加引号（含 style 数字键）
+  };
+  const byStyle = literal('CRAFT_MATERIALS_BY_STYLE');
+  const dflt = literal('CRAFT_DEFAULT_MATERIALS');
+  /** 一件家具的配方：按 style 查表，没有就走默认（与引擎 craftMaterialsFor 一致）。 */
+  const forFurniture = (furnitureId) => {
+    const def = FURNITURE_ROWS.find((r) => Number(r.id) === Number(furnitureId));
+    assert(def, `furniture ${furnitureId} must exist in furnitureData`);
+    return byStyle[String(Number(def.style))] || dflt;
+  };
+  /** 客户端读的 mate_list：数组里**每份一个元素**。 */
+  const mateListFor = (furnitureId) => forFurniture(furnitureId)
+    .reduce((acc, m) => acc.concat(new Array(m.count).fill(m.item_id)), []);
+  return { byStyle, dflt, forFurniture, mateListFor };
+})();
+const CRAFT_TARGET_ID = CRAFT_TARGET_OF_TYPE_1.furnitureId;              // 2301
+const CRAFT_RECIPE_FOR_TARGET = CRAFT_RECIPE.forFurniture(CRAFT_TARGET_ID);   // style 14 -> 默认配方
+
 test('craft: 图纸 + 材料 -> 自动开工（玩家路径：把图纸放进台面就开工）', ({ engine }) => {
-  const mats = [{ item_id: 10001, count: 2 }, { item_id: 10005, count: 1 }];
+  /* 材料按**推导出的配方**备齐（2301 是 style 14，引擎没给它专门配方，走默认 10001x2）；
+     另外多放一份不在配方里的粗布，用来验证"只扣配方里的材料"。 */
+  const mats = CRAFT_RECIPE_FOR_TARGET.map((m) => ({ item_id: m.item_id, count: m.count }));
+  /* 多放一份**不在本表配方里**的材料，用来验证"只扣配方里的材料"。哪一种是"不在配方里"的
+     由本地表决定：1088 表里 2301（style 14）的配方是 10001x2，粗布 10005 不在里面；
+     1073 表里目标是 2001（style 11），它的配方恰恰含 10005 —— 写死就会假红。 */
+  const SPARE_MATERIAL_ID = [10001, 10002, 10003, 10004, 10005, 10006, 10007]
+    .find((id) => !CRAFT_RECIPE_FOR_TARGET.some((m) => Number(m.item_id) === id));
   engine.state.items.house = [{ item_id: DRAWING_FOR_TYPE_1, count: 1 }]
-    .concat(mats.map((m) => ({ item_id: m.item_id, count: m.count })));
+    .concat(mats.map((m) => ({ item_id: m.item_id, count: m.count })))
+    .concat([{ item_id: SPARE_MATERIAL_ID, count: 1 }]);
   /* 5–9 号是"物品位"（客户端的 setBenchItem 用的也是这几个位） */
   const r = call(engine, 'furniture_putin_bench', { pos: 6, id: DRAWING_FOR_TYPE_1 });
   eq(r.reply.code, 0, '图纸放上台面');
   eq(r.reply.crafting, 1, '材料齐了应当自动开工');
   const craft = engine.state.furniture.craft;
-  assert(craft && craft.furnitureId === 2001, `应当做 2001，得到 ${craft && craft.furnitureId}`);
+  /* 我们的数据是更新的官方 1088 版：10301 这组"墙壁"里 benchData 内 style 最高的是 2301
+     （墙壁·彩陶庆典 style 14）；上游 1073 版没有 2301，最高是 2001（style 11）。 */
+  assert(craft && craft.furnitureId === CRAFT_TARGET_ID,
+    `应当做 ${CRAFT_TARGET_ID}，得到 ${craft && craft.furnitureId}`);
   eq(engine.state.furniture.benchLock, 1, '制作中工作台锁定');
   /* 材料当场扣掉、图纸被用掉 */
   const have = (id) => (engine.state.items.house.find((h) => h.item_id === id) || {}).count || 0;
-  eq(have(10001), 0, '松木扣 2');
-  eq(have(10005), 0, '粗布扣 1');
+  for (const m of CRAFT_RECIPE_FOR_TARGET) {
+    eq(have(m.item_id), 0, `配方材料 ${m.item_id} 应当当场扣掉 ${m.count}`);
+  }
+  /* 那份不在配方里的材料不该被扣（具体是哪种由本地表算，见上面的 SPARE_MATERIAL_ID）。 */
+  eq(have(SPARE_MATERIAL_ID), 1, '非配方材料不该被消耗');
   eq(engine.state.furniture.bench[5], -1, '图纸从台面消失');
 });
 
@@ -661,7 +794,10 @@ test('craft: mate_list 报出还需要的材料（客户端按它算缺口）', 
   engine.state.items.house = [{ item_id: DRAWING_FOR_TYPE_1, count: 1 }];
   call(engine, 'furniture_putin_bench', { pos: 6, id: DRAWING_FOR_TYPE_1 });
   const lf = call(engine, 'furniture_load_furniture', {}).reply;
-  eq(JSON.stringify(lf.mate_list), JSON.stringify([10001, 10001, 10005]),
+  /* 我们的数据是更新的官方 1088 版：10301 做的是 2301（style 14，走默认配方 10001x2），
+     所以清单是 [10001,10001]；上游 1073 版做 2001（style 11），配方 10001x2 + 10005x1 = 三个元素。
+     期望值直接由推导出的配方展开，免得再被数据版本绊倒。 */
+  eq(JSON.stringify(lf.mate_list), JSON.stringify(CRAFT_RECIPE.mateListFor(CRAFT_TARGET_ID)),
     'mate_list 是"每份一个元素"的材料清单');
 });
 
@@ -688,20 +824,26 @@ test('craft: 到点结算入门，含离线追赶（并推 FurnitureFinish 21）
   assert(names.includes('notify_new_event'), '要推 FurnitureFinish 事件');
   const ev = pushes.find((p) => canon(p.cmd) === 'notify_new_event');
   eq(ev.data.event.evt_type, 21, 'FurnitureFinish = 21（客户端的枚举值）');
-  eq(ev.data.event.evt_value[0], 2001, '事件里带家具 id');
-  assert((engine.state.furniture.owned || []).indexOf(2001) !== -1, '家具入库');
+  /* 入库的是推导出的那件（我们的 1088 表：图纸 10301 -> 2301；上游 1073 表是 2001）。 */
+  eq(ev.data.event.evt_value[0], CRAFT_TARGET_ID, '事件里带家具 id');
+  assert((engine.state.furniture.owned || []).indexOf(CRAFT_TARGET_ID) !== -1, '家具入库');
   eq(engine.state.furniture.benchLock, 0, '结算后解锁');
   eq(!!engine.state.furniture.craft, false, '制作槽清空');
 });
 
 test('craft: 图纸 -> type -> 风格最高的那件（参考包 benchData 的规律）', ({ engine }) => {
-  /* 一张图纸对应一整个 type 槽位（同组里有 style 2..11 和 101 多件）；"能做哪一件"由
-     benchData 决定，而参考包新增的 27 行正是**每 type 里在 benchData 中 style 最高**的那件。
-     所以 10301 -> 2001（style 11），而不是同组里 style 101 的 10103（它不在 benchData 里）。 */
+  /* 一张图纸对应一整个 type 槽位（同组里有 style 2..14 和 101 多件）；"能做哪一件"由
+     benchData 决定，规则是**每 type 里在 benchData 中 style 最高**的那件。
+     我们的数据是更新的官方 1088 版：10301 这组"墙壁"有 15 件，benchData 里 style 最高的是
+     2301（彩陶庆典，style **14**）—— 上游 1073 版到 2001（style 11）为止、没有 2301。
+     所以 10301 -> 2301，而不是同组里 style 101 的 10103（它不在 benchData 里）。 */
   const benchIds = new Set(GD.tables.benchData.map((r) => Number(r.id)));
   const rows = Object.values(GD.tables.furnitureData).filter((r) => Number(r.drawing) === DRAWING_FOR_TYPE_1);
   const candidates = rows.filter((r) => benchIds.has(Number(r.id)));
-  eq(Math.max(...candidates.map((r) => Number(r.style))), 11, 'benchData 候选里最高 style');
+  /* 候选里最高 style 是多少**由本地表决定**（1088 表里是 2301「彩陶庆典」style 14，
+     1073 表里到 2001 style 11 为止），所以这里不写死数字，只钉『候选非空』，
+     以及下面『引擎选的就是候选里 style 最高的那件』。 */
+  assert(candidates.length > 0, 'benchData 里应当有这张图纸能做的件');
   const style101 = rows.find((r) => Number(r.style) === 101);
   assert(style101 && !benchIds.has(Number(style101.id)),
     'style 101 的那件（' + (style101 && style101.id) + '）不在 benchData 里 —— 它不属于工作台可做');
@@ -709,12 +851,24 @@ test('craft: 图纸 -> type -> 风格最高的那件（参考包 benchData 的�
     { item_id: DRAWING_FOR_TYPE_1, count: 1 }, { item_id: 10001, count: 2 }, { item_id: 10005, count: 1 },
   ];
   call(engine, 'furniture_putin_bench', { pos: 6, id: DRAWING_FOR_TYPE_1 });
-  eq(engine.state.furniture.craft.furnitureId, 2001, '做出 benchData 里 style 最高的 2001');
+  /* 期望值由同一条规则从表里复算：候选里 style 最高的那件（不是写死 2001）。 */
+  eq(engine.state.furniture.craft.furnitureId, CRAFT_TARGET_OF_TYPE_1.furnitureId,
+    `做出 benchData 里 style 最高的 ${CRAFT_TARGET_OF_TYPE_1.furnitureId}`);
 });
 
 test('craft: 每种可做 type 都能由一件图纸打出来（27 种全通）', ({ engine }) => {
+  /* 引擎的 craft_start 只接受"该 type 在 benchData 里 style 最高的那件"（其它 id 会被拒），
+     所以这里按表推导每个 type 的目标件：上游那批 2001/2010/2025/2027 在 1088 表里对应的是
+     2301/2310/2325/2327（style 14 的「彩陶庆典」整套）。 */
+  const targets = [2001, 2010, 2025, 2027].map((fid) => {
+    const row = FURNITURE_ROWS.find((r) => Number(r.id) === fid);
+    assert(row, `furniture ${fid} must exist in furnitureData`);
+    const t = craftTargetOfDrawing(row.drawing);
+    assert(t, `drawing ${row.drawing} must resolve to a craftable type`);
+    return t.furnitureId;
+  });
   let made = 0;
-  for (const fid of [2001, 2010, 2025, 2027]) {
+  for (const fid of targets) {
     engine.state.furniture.craft = null;
     engine.state.furniture.benchLock = 0;
     engine.state.furniture.bench = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1];
@@ -724,7 +878,7 @@ test('craft: 每种可做 type 都能由一件图纸打出来（27 种全通）'
     assert((engine.state.furniture.owned || []).indexOf(fid) !== -1, `${fid} 应当入库`);
     made++;
   }
-  eq(made, 4, '四件都做出来了');
+  eq(made, targets.length, '四件都做出来了');
 });
 
 test('craft: 制作中/完成状态能持久化', ({ engine, savePath }) => {
@@ -955,6 +1109,10 @@ test('clover: a four-leaf slot yields the ITEM, not plain clover', ({ engine }) 
   // client harvestClover(): element==1 -> addHouseItem(Define.FourLeafCloverID,1),
   // and addHouseItem is an empty stub, so this must arrive as an item_update.
   const cloverBefore = engine.state.clover;
+  const houseBefore = (() => {
+    const h = engine.state.items.house.find((x) => Number(x.item_id) === 1000);
+    return h ? Number(h.count) : 0;
+  })();
   engine.state.clovers[0].element = 1;
   engine.state.clovers[0].last_harvest = 0;          // ready
   const r = call(engine, 'clover_harvest', { clover_id: 1 });
@@ -963,8 +1121,11 @@ test('clover: a four-leaf slot yields the ITEM, not plain clover', ({ engine }) 
   const up = pushNamed(r, 'item_update');
   assert(up.length === 1, 'a four-leaf clover needs an item_update push');
   eq(up[0].data.item.item_id, 1000, 'FourLeafCloverID');
+  /* 按增量校验：V3.6 的开局行李本来就会送 1 个四叶草（他 V3 的 STARTER_AMULET_IDS 头两个
+     就是 1000 四叶草 / 1001 玉佩），绝对计数会假红。 */
   const house = engine.state.items.house.find((h) => h.item_id === 1000);
-  assert(house && house.count === 1, 'the four-leaf clover should be in the house');
+  assert(house && Number(house.count) === houseBefore + 1,
+    `the four-leaf clover should be in the house (want ${houseBefore + 1}, got ${house && house.count})`);
 });
 
 test('clover: reply always carries clover_id so the client can clear its pending list', ({ engine }) => {
@@ -1368,10 +1529,15 @@ test('feedback23: old paid visits and unfed visits do not receive duplicate gift
 test('feedback23: stale neighbour zero feed cannot consume food for neighbour one', ({engine})=>{
   const now=Math.floor(Date.now()/1000),itemId=ROW_IDS[0];
   engine.state.guest={id:1,confirmed:true,served:false,pos:0,startAt:now,expire_time:now+1200};
-  engine.state.items.house.push({item_id:itemId,count:1});
+  /* 开局行李（V3.6）可能已经送过这种特产，所以按**增量**判断"没有被消耗"。 */
+  const row=engine.state.items.house.find((h)=>Number(h.item_id)===Number(itemId));
+  const before=row?Number(row.count):0;
+  if(!row) engine.state.items.house.push({item_id:itemId,count:1});
+  const offered=row?before:1;
   call(engine,'guest_serve',{id:0,item_id:itemId});
   eq(engine.state.guest.served,false);
-  eq(haveOf(engine,itemId),1);
+  const after=(()=>{const h=engine.state.items.house.find((x)=>Number(x.item_id)===Number(itemId));return h?Number(h.count):0;})();
+  eq(after,offered,'a refused feed consumes nothing');
 });
 
 test('feedback23: fed neighbours keep their visit and mail one gift on departure', ({engine,savePath})=>{
@@ -1446,7 +1612,13 @@ test('visitor: serving a specialty feeds the taste table and pays out', ({ engin
   for (let i = 0; i < taste.length; i++) if (taste[i] >= 80) { idx = i; break; }
   assert(idx >= 0, 'no liked specialty in the taste vector');
   const itemId = ROW_IDS[idx];
-  engine.state.items.house.push({ item_id: itemId, count: 1 });
+  /* 开局行李（V3.6）可能已经送过这种特产，所以按**增量**校验"被吃掉了"。 */
+  const countOf = () => {
+    const h = engine.state.items.house.find((x) => Number(x.item_id) === Number(itemId));
+    return h ? Number(h.count) : 0;
+  };
+  if (countOf() === 0) engine.state.items.house.push({ item_id: itemId, count: 1 });
+  const offered = countOf();
 
   const cloverBefore = engine.state.clover;
   const r = call(engine, 'guest_serve', { id: g.id, item_id: itemId });
@@ -1462,7 +1634,8 @@ test('visitor: serving a specialty feeds the taste table and pays out', ({ engin
   engine.tick();
   eq(engine.state.guest, null, 'the visitor leaves once the visit ends');
   const house = engine.state.items.house.find((h) => h.item_id === itemId);
-  assert(!house, 'the offered specialty is consumed');
+  assert(!house || Number(house.count) === offered - 1,
+    `the offered specialty is consumed (want ${offered - 1}, got ${house && house.count})`);
   const mail=engine.state.mails.find(m=>m.title==='小伙伴的回礼');
   assert(mail,'the thank-you gift arrives by mail');
   call(engine,'mail_open',{id:mail.id});
@@ -1911,7 +2084,11 @@ test('achievements: owning 10 of a named item unlocks its badge', ({ engine }) =
   assert(row, 'expected at least one "X超过10个" row');
   const itemName = /^(.+?)超过10个$/.exec(row.info)[1];
   const itemId = GD.items.find((i) => i.name === itemName).id;
-  engine.state.items.house.push({ item_id: itemId, count: 10 });
+  /* 别直接 push：开局行李（V3.6）已经送过同 id 时会留下两行同 id（引擎只读第一行），
+     于是这条用例会假红。有行就改数量。 */
+  const rowInHouse = engine.state.items.house.find((h) => Number(h.item_id) === Number(itemId));
+  if (rowInHouse) rowInHouse.count = 10;
+  else engine.state.items.house.push({ item_id: itemId, count: 10 });
   engine.tick();
   assert(engine.state.achieves.indexOf(row.id) !== -1,
     `"${row.info}" (id ${row.id}) should unlock at 10`);
@@ -2141,7 +2318,13 @@ test('flowerpot: the payload has all three fields and a real pot', ({ engine }) 
   eq(r.reply.show_list.length, 1, 'the table has exactly one pot');
   const pot = GD.tables.flowerpotData.flowerpot[String(r.reply.show_list[0].id)];
   assert(pot, `pot id ${r.reply.show_list[0].id} must exist in flowerpotData`);
-  eq(r.reply.show_list[0].type, pot.type, 'type must match the table');
+  /* 查过引擎：show_list 是**写死的槽位常量** `{ type: 1, id: FLOWERPOT_ID }`
+     （index.js: furniture_load_flowerpot；harvest 也只接受 type 1），而 flowerpotData 的两行花盆
+     （23001 陶瓷花盆 / 23002 迎春花盆）只有 desc/id/name/pic/pos_list，**没有 type 列** ——
+     所以这个期望不可能来自表。表里有列就按列走，没有就按引擎给默认花盆的槽位常量 1，
+     两者不等时这条用例仍然会红。 */
+  const expectedType = Object.prototype.hasOwnProperty.call(pot, 'type') ? pot.type : 1;
+  eq(r.reply.show_list[0].type, expectedType, 'type must match the table (else the pot-slot default 1)');
 });
 
 test('flowerpot: slots match the pot pos_list, and get auto-planted', ({ engine }) => {
@@ -2472,15 +2655,47 @@ test('layers: every layer actually intersects the 500x350 canvas', () => {
   eq(out.length, 0, `layers that never touch the frame: ${out.slice(0, 5)}`);
 
   // Frog coverage, stated as the relationship rather than a magic number:
-  // 207 of the 349 Picture rows carry a non-empty `frogPose`; the rest name no
-  // frog at all (for those the frog is painted into the scene art itself --
-  // e.g. `tw_kending1`, `help_bh`). Of the 207, a known 7 point at art the
-  // client does not ship, so 200 get a frog layer.
+  // every Picture row that NAMES a frog must get a frog layer. The gap below is
+  // measured on OUR tables, not the upstream ones.
+  //
+  // 我们的数据是更新的官方 1088 版，缺口是 **14**（上游 1073 版是 7），原因已查清，**不是**"图缺失"：
+  //   · 这份 picture-layers.json 是合并产物：另一条线（member32）的 343 条记录用 `role` 标注姿势层
+  //     （主青蛙 role=qw），我们自己的 build_picture_layers.py 另出的 **33 条**记录用旧方案的
+  //     `scale` 标注姿势层（该脚本不写 role）。33 = 376 - 343。
+  //   · 这 33 条里有 14 条带 `scale` 姿势层的，正是"另一条线没覆盖到的行"：
+  //     其中 2 条（2039 haerbin4 / 2076 hainan4）另一条线根本没出记录，另 12 条
+  //     （2151/2152/2153 neimenggu1-3、2155/2156/2157 xinjiang1-3、2158 chongqing3、
+  //      2159 qingdao3、2160 guizhou7、2161 xian4、2162 zhengzhou1、2163 beijing6）
+  //     是 1088 表新增的 Goal 行，上游 351 行表里没有。
+  //   · 所以 `frogs`（只数 role==='qw'）比"点了青蛙的行数"少 14 —— 少的这 14 行其实**都画了青蛙**，
+  //     只是用的是 `scale` 标记。每一条都能在 LAYERS 里查到对应的 scale 层（下面第 2 个断言把它钉死）。
   const withPose = PICTURE_TABLE.filter((r) => String(r.frogPose || '').trim()).length;
   assert(frogs <= withPose, `drew ${frogs} frogs but only ${withPose} rows name one`);
-  assert(withPose - frogs <= 10,
-    `${withPose - frogs} poses unresolved - the known gap is 7; it grew`);
+  assert(withPose - frogs <= 14,
+    `${withPose - frogs} poses unresolved - our data's known gap is 14 (7 upstream + the rows only our ` +
+    `own builder covers); it grew`);
   assert(frogs >= 200, `expected >=200 frogs, got ${frogs}`);
+  /* 更严的那条（新增，不是放宽）：点名的每一行都必须真的拿到一个青蛙层 —— 两种标记都认，
+     role `qw`（3.3 方案的记录）或 `scale`（我们自己 builder 的旧方案记录）。缺口必须是 0。 */
+  const poseRows = PICTURE_TABLE.filter((r) => String(r.frogPose || '').trim());
+  const drawn = (r) => {
+    const rec = LAYERS[String(r.id)];
+    if (!rec) return false;
+    return (rec.layers || []).some((l) => l.role === 'qw' || l.scale);
+  };
+  /* 两种情况要分开看（实测：1073 的表/layers 是 351 行对 343 条记录，缺的是 2076 hainan4；
+     我们合并的 1088 版是 382 对 376，全覆盖）：
+       · 有 layer 记录却没画青蛙层 = **真 bug**，必须为 0；
+       · 表里有、picture-layers.json 里根本没这条记录 = **数据版本差异**（那份文件是跟着
+         它自己那版表生成的），如实报告条数，不让它把真 bug 淹掉。 */
+  const coveredNoFrog = poseRows.filter((r) => LAYERS[String(r.id)] && !drawn(r));
+  const uncovered = poseRows.filter((r) => !LAYERS[String(r.id)]);
+  eq(coveredNoFrog.length, 0,
+    'rows that DO have a layer record must carry a frog layer (role qw or scale): ' +
+    coveredNoFrog.map((r) => r.id).slice(0, 5));
+  assert(uncovered.length <= 2,
+    `${uncovered.length} Picture rows have no layer record at all (data-version gap; ` +
+    `1088 tables are fully covered): ` + uncovered.map((r) => r.id).slice(0, 5));
 });
 
 test('layers: characters retain their species and one companion per photograph', () => {
@@ -2538,12 +2753,23 @@ test('layers: album_load hands the client composed layers, not a bare id', () =>
   }
 });
 
-test('layers: a picture missing from the table degrades to no layers, not a crash', () => {
+test('layers: a picture missing from the table degrades to an EMPTY layer list', () => {
+  /* 这条原先断言 `layers === undefined`（"没有 layers 键"）。2026-09-19 的反馈证明
+     undefined 恰恰是客户端的崩溃条件：客户端合成一张明信片时会无条件遍历它 ——
+       Tabikaeru.loadPicture(pic) / getPictureTexture(pic)
+         function i(e){ if(e){ for (var i="",n=0,r=e.layers; n<r.length; n++){…} } }
+         function r(e,i){ for (var n="",r=0,o=e.layers; r<o.length; r++){…} }
+     于是"开存储槽位 -> 放照片 -> 重启 -> 再打开这张动态照片"会抛
+     `Cannot read properties of undefined (reading 'length')` = 吃坏肚子
+     （复现与对照见 work/tools/anim_slot_layers_test.js）。
+     现在 withLayers() 永远给一个数组：表里没有这张就 `[]`，渲染成空白 ——
+     语义上仍然是"没有图层"，但任何调用路径都不会抛错（官方 7 张空图层模板本来就是空白）。 */
   const { engine } = newEngine();
   engine.state.pictures = [{ id: 1, pic_id: 999999, read: 0, new: 1 }];
   const r = call(engine, 'album_load', { start: 1 });
   eq(r.reply.pictures.length, 1, 'the row should still be delivered');
-  eq(r.reply.pictures[0].layers, undefined, 'unknown pic_id => no layers key');
+  eq(Array.isArray(r.reply.pictures[0].layers), true, 'unknown pic_id => an EMPTY array');
+  eq(r.reply.pictures[0].layers.length, 0, 'and it must be empty, not invented');
 });
 
 test('layers: layers are derived from pic_id, never stored in the save', () => {
@@ -4472,9 +4698,11 @@ test('values: the recovered originals the engine reads are the table\'s numbers'
   eq(def.CloverDestroyTime, 0.6, 'clover withering is a real rule in the table');
 });
 
-test('values: offline pacing stays short so a sitting is playable', ({ engine }) => {
-  // the whole point of the shortened defaults: a fresh player should see the frog
-  // leave and come back without waiting hours
+test('values: offline pacing is hours-scale (his V3 tuning, now the default)', ({ engine }) => {
+  /* V3.6：并入他 V3 的节奏并设为默认 —— 一趟 2–8.5 小时（硬上限 72 小时），
+     在家 3–5 小时后掷一次骰（50% 才出门）。想回到"一次游玩能看完"的短节奏，
+     用 FROG_TRAVEL_MIN/MAX、FROG_IDLE_*、FROG_WAIT_*、FROG_TRAVEL_CHANCE 覆盖；
+     FROG_FAITHFUL=1 是原版恢复值（60 分钟起）。 */
   const GDx = JSON.parse(fs.readFileSync(
     path.join(ROOT, 'work', 'run', 'engine', 'data', 'gamedata.json'), 'utf8'));
   const lunch = GDx.items.find((i) => i.type === 0).id;
@@ -4482,22 +4710,27 @@ test('values: offline pacing stays short so a sitting is playable', ({ engine })
   engine.state.travel.nextDepartAt = 1;
   engine.tick();
   const w = engine.state.travel.returnAt - engine.state.travel.departAt;
-  /* 12..40 minutes: players reported the old 90-240 s as "a bit fast". Faithful mode
-     (FROG_FAITHFUL=1) still gives the recovered 60 min..6 h. */
-  assert(w >= 12 * 60 && w <= 40 * 60,
-    `offline travel window ${w}s must stay inside 12..40 min (faithful mode is opt-in via FROG_FAITHFUL=1)`);
+  assert(w >= 120 * 60 && w <= 72 * 3600,
+    `offline travel window ${w}s must sit inside 2 h..72 h (short pacing is opt-in via env)`);
 });
 
-test('travel: tools on the desk cannot substitute for food', ({ engine }) => {
+test('travel: gear on the desk cannot substitute for food, but it no longer blocks the trip', ({ engine }) => {
+  /* V3.6：出门不再要求"先准备"，所以桌上只有工具时蛙照样会走 —— 那一趟是放浪，
+     工具会被带上（carried）并回家，但没有便当就没有照片/特产。 */
   engine.state.items.bag = [-1, -1, -1, -1];
   engine.state.items.desk[4] = idsOfType(2)[0];
   engine.state.travel.plan = null;
   engine.state.travel.nextDepartAt = 1;
   engine.tick();
-  eq(engine.state.travel.plan, null);
-  eq(engine.state.frog.status, 0);
-  eq(call(engine,'item_set_bag_completed',{completed:true}).reply.code,-1);
-  eq(engine.state.items.bagCompleted,0);
+  eq(engine.state.frog.status, 1, 'the frog leaves (as a stray)');
+  assert(engine.state.travel.plan && engine.state.travel.plan.stray === true,
+    'and the plan is a stray: no lunch means no photos');
+  eq(engine.state.travel.plan.lunch, -1, 'no lunch box was packed');
+  /* 「准备完成」在桌上有工具时也算准备好（他 V3 的 tripPrepared：任何背包物品，或桌上
+     便当/护身符/工具），所以回 code 0；蛙已经在外，于是不会重复出发。 */
+  const done = call(engine,'item_set_bag_completed',{completed:true});
+  eq(done.reply.code, 0, 'a tool on the desk counts as prepared (his rule)');
+  eq(engine.state.items.bagCompleted, 1, 'and the bag lock is set');
 });
 
 /** What the engine's defaultState() produces for the 20 clover slots. */
@@ -5422,8 +5655,21 @@ test('museumday: the event is switched OFF, and the museum 图鉴 replaces it', 
   eq(r.end_time, 0, 'a closed window is what hides the 大冒险 entry');
   eq(r.cur_museum, 0, 'and no museum is in progress');
 
-  /* The museum postcards used to come from that event only, so boot must grant them. */
+  /* 2026-09-19 玩家要求取消"开局白送博物馆图鉴/明信片"：登录不再自动发放。博物馆内容本来
+     就能正常玩出来（门票在许愿池换，博物馆行程必定带回该馆目的地照，纪念品/典藏随旅行回来），
+     需要时用存档编辑器面板的「解锁博物馆图鉴」按钮 —— 它发的就是这个 unlock_museum，
+     与旧的开局自动解锁调的是同一个函数 unlockMuseum()，效果完全一致（引擎里由
+     AUTO_UNLOCK_MUSEUM 开关控制，改 true 即恢复旧行为）。 */
   call(engine, 'hall_enter_game', {});
+  const before = call(engine, 'museum_load', {}).reply.museum_list;
+  for (const m of before) {
+    eq(m.pic_list.length, 0, `museum ${m.id} must NOT be pre-owned after boot`);
+    eq(m.collections.length, 0, 'and no museum collectibles either');
+  }
+  eq(engine.state.museumUnlocked, undefined, 'boot no longer records a grant');
+
+  eq(call(engine, 'client_gm', { cmd: 'unlock_museum' }).reply.succeed, true,
+    'the editor button (unlock_museum) must still work');
   const list = call(engine, 'museum_load', {}).reply.museum_list;
   for (const m of list) {
     assert(m.pic_list.length > 0, `museum ${m.id} must report its postcards as owned`);
@@ -5438,7 +5684,7 @@ test('museumday: the event is switched OFF, and the museum 图鉴 replaces it', 
         `postcard ${pic} must actually be in the album, not just reported`);
     }
   }
-  eq(engine.state.museumUnlocked, true, 'and the grant is recorded so it happens once');
+  eq(engine.state.museumUnlocked, true, 'and the manual grant is recorded');
 });
 
 test('museumday: museumday_load carries EVERY key the model touches', ({ engine }) => {
@@ -6067,7 +6313,13 @@ test('editor: an edit is pushed to the client, so no restart is needed', ({ engi
   }
 
   const enc = pushNamed(r, 'encyclopedia_load')[0].data;
-  eq(enc.show_sub.length, 23, 'the pushed 百科 payload must be the real one');
+  /* show_sub 是"每个已解锁物种一行"，unlock_all 下就等于 encyclopedia.list 里出现的 species id 个数
+     （引擎 encySpeciesIds() = 按 long_id 顺序去重的 row.id）。我们的数据是更新的官方 1088 版：
+     encyclopedia 是嵌套表 {desc, list}，list 有 241 行、**24** 个不同物种（上游 1073 版是 23 个），
+     所以这里从表推导，不再写死 23。 */
+  const encyclopediaSpecies = new Set(
+    Object.values(GD.tables.encyclopedia.list).map((e) => Number(e.id)));
+  eq(enc.show_sub.length, encyclopediaSpecies.size, 'the pushed 百科 payload must be the real one');
   const hand = pushNamed(r, 'item_load_handbook')[0].data;
   assert(hand.collections.length > 0 && hand.specialtys.length > 0, 'the 图鉴 lists');
   const fur = pushNamed(r, 'furniture_load_furniture')[0].data;
@@ -6432,16 +6684,16 @@ test('travel: the frog picks up what the DESK offers, and it comes back to the d
   eq(bag.filter((x) => x !== -1).length, 0, 'and nothing was pushed into the bag');
 });
 
-test('travel: a desk with NOTHING usable still keeps the frog at home', ({ engine }) => {
-  /* The 「没准备就不出门」 rule is ours (【自设计】), and it must survive the desk
-     change: an empty bag + an empty desk means the frog waits rather than leaving
-     on a 放浪 trip that brings nothing back. */
+test('travel: a desk with NOTHING usable no longer keeps the frog at home', ({ engine }) => {
+  /* V3.6：出门由 tick() 里那次掷骰决定（默认 50%），不再由「有没有准备」决定 ——
+     空背包 + 空桌子也会走，那一趟是放浪。`waitingForBag` 只表示"这一次没掷中"。
+     本套件把概率钉成 100（见文件头），所以这里必定出门、且它不是等待状态。 */
   engine.state.items.bag = [-1, -1, -1, -1];
   engine.state.items.desk = [-1, -1, -1, -1, -1, -1, -1, -1];
   engine.state.travel.nextDepartAt = 1;
   engine.tick();
-  eq(engine.state.frog.status, 0, 'the frog stays home');
-  eq(engine.state.travel.waitingForBag, true, 'and the state says it is waiting for provisions');
+  eq(engine.state.frog.status, 1, 'the frog leaves (as a stray)');
+  eq(engine.state.travel.waitingForBag, false, 'and it is not "waiting for provisions"');
 });
 
 test('craft: a save made by an OLD build is healed (date + seal + stamp state clamp)', ({ engine }) => {
@@ -6878,6 +7130,9 @@ test('room: bedtime and morning interrupt motion timers, crafts use workshop act
   try {
     engine.state.items.bag = [-1,-1,-1,-1];
     engine.state.items.desk = Array(8).fill(-1);
+    /* V3.6：空背包也能出门（放浪），而这段用例整段都在考查"在家的动作"，
+       所以把出门检查推到很远的将来，保证蛙一直在家。 */
+    engine.state.travel.nextDepartAt = time / 1000 + 999999;
     engine.tick();
     assert(engine.state.frog.motion < 5);
     engine.state.frog.motionNextAt = time / 1000 + 999999;
@@ -6964,9 +7219,11 @@ test('feedback54: an owned postcard can arrive again with a new handle', ({ engi
 });
 
 test('feedback54: ordinary trips push earned photos without a client request', ({engine})=>{
-  call(engine,'hall_enter_game',{}); // only the starter museum photos are filed
+  call(engine,'hall_enter_game',{});
+  /* 2026-09-19 起开局不再白送博物馆明信片，所以这时相册是空的；本用例测的是
+     "普通旅行会主动推送新照片"，与相册初始内容无关，因此这里期待空相册。 */
   const museums=new Set(engine.state.pictures.map(p=>p.pic_id));
-  assert(museums.size>0);
+  eq(museums.size,0,'a fresh boot files no postcards any more');
   const lunch=idsOfType(0).find(id=>effectSum(id,'HP')>0);
   const random=Math.random;let seed=123456789,earned=0;
   Math.random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};

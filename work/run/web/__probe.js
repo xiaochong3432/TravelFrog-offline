@@ -173,8 +173,98 @@
     var engine = null;
     var activeSock = null;
 
+    /* ---- LEGACY_SAVE_ADOPT --------------------------------------------------------
+       One-time adoption of a save left in the PREVIOUS origin's store.
+
+       localStorage is scoped to scheme://host:PORT, so an earlier build of this app that
+       served the page from http://127.0.0.1:18763 kept its save in a different store than
+       this one (http://127.0.0.1:18763).  Upgrading therefore looks like "my frog is
+       gone".  Only a document running on the OLD origin can read that store, so we embed
+       __migrate.html from it and take what it posts back.
+
+       Rules, deliberately conservative:
+         · only when THIS origin has no save   -> a live save is never overwritten;
+         · only frog.* keys are copied         -> no stray keys travel between builds;
+         · a successful adoption is remembered -> the probe runs once, not every launch;
+         · a timeout is NOT remembered         -> if the old port was busy that launch, the
+                                                  next launch tries again.
+       The whole thing is best-effort: any failure just means "start as before". */
+    var LEGACY_SAVE_ORIGIN = 'http://127.0.0.1:18763';
+    var LEGACY_PROBE_KEY = 'frog.offline.legacyAdopt.18763';
+    var legacyProbe = 'idle';            // idle | probing | done
+
+    function legacyAdoptWanted() {
+        try {
+            if (localStorage.getItem(LEGACY_PROBE_KEY)) return false;   // already settled
+            return !localStorage.getItem('frog.offline.save');          // keep a live save
+        } catch (e) {
+            return false;                   // storage unavailable: do not interfere
+        }
+    }
+
+    function startLegacyAdoption() {
+        if (legacyProbe !== 'idle') return;
+        legacyProbe = 'probing';
+        if (!legacyAdoptWanted()) {
+            legacyProbe = 'done';
+            return;
+        }
+        var settled = false;
+        var frame = null;
+
+        function settle(remember, count, why) {
+            if (settled) return;
+            settled = true;
+            legacyProbe = 'done';
+            if (remember) {
+                try { localStorage.setItem(LEGACY_PROBE_KEY, count + ' keys (' + why + ')'); } catch (e) { }
+            }
+            if (frame && frame.parentNode) {
+                try { frame.parentNode.removeChild(frame); } catch (e) { }
+            }
+            push('[migrate]', ['legacy store ' + LEGACY_SAVE_ORIGIN + ': ' + why
+                + (count ? (', adopted ' + count + ' key(s)') : '')]);
+        }
+
+        window.addEventListener('message', function (ev) {
+            if (ev.origin !== LEGACY_SAVE_ORIGIN) return;
+            var d = ev.data;
+            if (!d || !d.frogMigrate) return;
+            var obj = {};
+            try { obj = JSON.parse(d.data || '{}'); } catch (e) { obj = {}; }
+            var got = 0;
+            for (var k in obj) {
+                if (!Object.prototype.hasOwnProperty.call(obj, k)) continue;
+                if (k.indexOf('frog.') !== 0 || k === LEGACY_PROBE_KEY) continue;
+                try {
+                    if (!localStorage.getItem(k)) { localStorage.setItem(k, obj[k]); got++; }
+                } catch (e) { /* quota: stop quietly, the save we have is still there */ }
+            }
+            settle(true, got, got ? 'adopted' : 'nothing to adopt');
+        });
+
+        try {
+            frame = document.createElement('iframe');
+            frame.style.cssText = 'position:absolute;width:0;height:0;border:0;visibility:hidden';
+            frame.src = LEGACY_SAVE_ORIGIN + '/__migrate.html';
+            document.body.appendChild(frame);
+        } catch (e) {
+            settle(false, 0, 'probe could not start');
+            return;
+        }
+        /* No report means the old port is not answering (not our app any more, or it is
+           busy).  Do not remember that: the next launch may well be able to ask. */
+        setTimeout(function () { settle(false, 0, 'no answer'); }, 1500);
+    }
+
     function installLoopback() {
         if (engine) return true;
+        /* Hold the engine (and therefore the save read) back for at most one watchdog
+           tick while the one-time legacy-store adoption finishes. See LEGACY_SAVE_ADOPT. */
+        if (legacyProbe !== 'done') {
+            startLegacyAdoption();
+            return false;
+        }
         // ?transport=ws forces Route A (talk to the local WS server) even when the
         // in-page engine bundle is present - handy for A/B comparison.
         if (/[?&]transport=ws\b/.test(Q)) return false;
@@ -226,6 +316,15 @@
                 push('[offlineB-error]', ['dispatch ' + msg.cmd + ': ' + (e && e.stack || e)]);
                 return;
             }
+            /* 推送必须先于回复投递：客户端的回复回调会**重新读模型**再刷新界面，例如
+               动态照片制作页用显影液后是
+                 req_use_item(a, new core.Action(function(){ s = ItemModel.getHouseItemCount(a);
+                                                            n.text = String(s); … }))
+               —— 只有 `item_load_items` 先落到 ItemModel，回调里读到的才是扣完的数量。
+               反过来（先回复、后推送）就会出现"用了显影液数量不马上减少，要再用一次或
+               退出重进才显示少 1 个"（2026-09-19 玩家反馈）。 */
+            var ps = out.pushes || [];
+            for (var i = 0; i < ps.length; i++) deliver(this, { cmd: ps[i].cmd, data: ps[i].data });
             if (msg.session != null) {
                 deliver(this, { session: msg.session, data: out.reply || {} });
             } else if (out.reply !== undefined) {
@@ -234,8 +333,6 @@
                     data: out.reply,
                 });
             }
-            var ps = out.pushes || [];
-            for (var i = 0; i < ps.length; i++) deliver(this, { cmd: ps[i].cmd, data: ps[i].data });
         };
 
         // broadcast time-driven pushes (clover regrowth, frog depart/return)
@@ -1241,6 +1338,82 @@
     /* 装得越早越好：客户端脚本是后加载的，这个守卫不依赖 core/DisplayManage。 */
     installSilentVideoGuard();
 
+    /* 动态照片自检用的流水：记录客户端发出的 animpicture 协议与引擎的回复。
+       必须在玩家操作**之前**装好，所以放在外壳启动阶段。只记录、不改行为。 */
+    function installAnimTracer() {
+        /* 可以被反复调用：SocketManage / engine 都来自后加载的客户端脚本，外壳启动时它们还没有。
+           两个 hook 各自用标记位保证只装一次，这样 1 秒一次的重试循环里调用它是安全的。 */
+        if (!window.__animTrace) window.__animTrace = { sent: [], replies: [] };
+        var keep = 12;
+        try {
+            var SM = core.SocketManage.getInstance();
+            if (SM && SM.send && !SM.__animTraceHooked) {
+                SM.__animTraceHooked = true;
+                window.__animTrace.hookedSend = true;
+                var oSend = SM.send;
+                SM.send = function (cmd) {
+                    try {
+                        if (/animpicture/.test(String(cmd))) {
+                            var args = Array.prototype.slice.call(arguments, 1);
+                            var data = null;
+                            for (var i = 0; i < args.length; i++) {
+                                var a = args[i];
+                                if (a && typeof a.apply === 'function' && typeof a !== 'number') continue;
+                                data = a;
+                            }
+                            window.__animTrace.sent.push(String(cmd) + ' ← ' + JSON.stringify(data));
+                            while (window.__animTrace.sent.length > keep) window.__animTrace.sent.shift();
+                        }
+                    } catch (e) { /* 记录失败不影响游戏 */ }
+                    return oSend.apply(this, arguments);
+                };
+            }
+        } catch (e) { /* SocketManage 还没建好就算了 */ }
+        try {
+            var eng = window.__engine;
+            if (eng && eng.dispatch && !eng.__animTraceHooked) {
+                eng.__animTraceHooked = true;
+                window.__animTrace.hookedEngine = true;
+                var oDisp = eng.dispatch.bind(eng);
+                eng.dispatch = function (cmd, data) {
+                    var r = oDisp(cmd, data);
+                    try {
+                        if (/animpicture/.test(String(cmd))) {
+                            var rep = r && r.reply;
+                            window.__animTrace.replies.push(String(cmd) + ' → ' + JSON.stringify(rep));
+                            while (window.__animTrace.replies.length > keep) window.__animTrace.replies.shift();
+                            /* "点了没反应"变成"有提示"：客户端对非 0 的回复是静默的 */
+                            var bad = (rep && rep.code !== undefined && rep.code !== 0)
+                                || (rep && rep.phase !== undefined && rep.phase < 0);
+                            if (bad && window.GuideHelpView) {
+                                /* 用"人话"说明原因，后面再附原文，方便玩家回传 */
+                                var human = null;
+                                if (/animpicture_use_item/.test(String(cmd)) && rep && rep.phase === -1) {
+                                    human = '家里这种显影液已经用完了\n面板 →「动态照片材料」可以一次补齐';
+                                } else if (/animpicture_add_pic/.test(String(cmd))) {
+                                    human = '没找到可以加进去的同款明信片\n'
+                                        + '（同一张卡要有多份才行：面板 →「动态照片材料」会给每张 5 份）';
+                                } else if (/animpicture_open_album/.test(String(cmd))) {
+                                    human = '开照片格子需要「照片存储开启物」\n'
+                                        + '（游戏商店 500 三叶草买，或用面板补）';
+                                }
+                                try {
+                                    GuideHelpView.getInstance().show(
+                                        (human || '离线版：这一步被引擎拒绝了')
+                                        + '\n[原文 ' + cmd + ' ' + JSON.stringify(rep) + ']',
+                                        null, core.DisplayManage.getInstance().getNoticeLayer());
+                                } catch (e2) { /* 提示失败就算了 */ }
+                            }
+                        }
+                    } catch (e) { /* 同上 */ }
+                    return r;
+                };
+            }
+        } catch (e) { /* engine 还没建好就算了 */ }
+        return !!(window.__animTrace.hookedSend || window.__animTrace.hookedEngine);
+    }
+
+
     /* ------------------------------------- 5. diagnostics (opt-in) */
     installDiagnostics();
 
@@ -1363,6 +1536,20 @@
             function () { gm('unlock_museum'); },
         ]);
 
+        /* The offline build's own 足迹页 (map.html) marks a province 已认识 when its id is in
+           the save's acquireProvinces, so this grants all 33 the game's visitors table knows. */
+        row(['解锁全部足迹', '足迹状态'], [
+            function () { gm('unlock_map'); },
+            mapState,
+        ]);
+
+        /* 称号（成就）。The engine already evaluates每个 Achieve 行的条件文本 while you play;
+           this just hands over every row whose rule exists, and says how many it cannot judge. */
+        row(['解锁全部称号', '称号状态'], [
+            function () { gm('unlock_achieve'); },
+            achieveState,
+        ]);
+
         /* 相册容量是「30 页 + 已拥有的相册扩容」x 每页 6 张：客户端的扩容提示读的正是
            你拥有多少个 9000（"保留照片的页数+N"）。商店那条链一共 35 个，所以满扩容 =
            65 页 / 390 张 —— 一次「解锁全部明信片」放进来 351 张之后，不扩容的话相册就
@@ -1370,6 +1557,15 @@
         row(['扩容相册到上限', '相册用量'], [
             function () { gm('expand_album'); },
             function () { gm('album_state'); },
+        ]);
+
+        /* 动态照片（制作会动的明信片）。正式服这套玩法的材料是"家具店买 + 反复旅行攒同款明信片"，
+           离线一个都凑不齐：动态相框 9001（页数）、照片存储开启物 9002（一张动态页一张存储券）、
+           三种显影液 8002/8003/8004（家具店 500/1000/1500 三叶草）。另外给 6 张可动明信片各 5 份：
+           一页最多放 5 张同款，而相册默认每种只有一张，选作底片的那张还会被消耗掉。 */
+        row(['动态照片材料', '动态照片怎么玩'], [
+            function () { gm('anim_kit'); },
+            animHelp,
         ]);
 
         row(['三叶草 +1000', '抽奖券 +10'], [
@@ -1414,8 +1610,56 @@
         nameLine.appendChild(nameBtn);
         panel.appendChild(nameLine);
 
+        function achieveState() {
+            var e = window.__engine;
+            if (!e || !e.state || !Array.isArray(e.state.achieves)) {
+                note('当前拿不到引擎状态（本地引擎未启动）。');
+                return;
+            }
+            /* Names come from the client's own Achieve table, so the read-out matches what the
+               game shows. */
+            var db = null;
+            try { db = Tabikaeru.DataManager.instance().AchieveDB; } catch (err) { }
+            var names = [];
+            for (var i = 0; i < e.state.achieves.length; i++) {
+                var id = e.state.achieves[i];
+                var row = null;
+                try { row = db ? db.get(String(id)) : null; } catch (err) { row = null; }
+                names.push(row && row.name ? row.name : ('#' + id));
+            }
+            note('称号：已获得 ' + e.state.achieves.length + ' 个；当前显示 '
+                + (names.length ? names[names.length - 1] : '（无）')
+                + '\n获得的称号（最近 12 个）：\n' + names.slice(-12).join('、'));
+        }
+
+        function mapState() {
+            var s = {};
+            try { s = JSON.parse(window.localStorage.getItem('frog.offline.save') || '{}'); } catch (e) { }
+            var got = (s.acquireProvinces || []).length;
+            note('足迹地图：已认识 ' + got + ' 个省区（共 33 个，来自游戏自带 visitors 表）。\n'
+                + '没认识的省区在足迹页上显示为灰色，点地图右上角的「足迹」即可查看。');
+        }
+
         function usingLocalEngine() {
             return !!window.FrogEngine && !!window.__installLoopback && window.__loopbackActive;
+        }
+        /* 动态照片的玩法说明。客户端把这条流程藏得很深（制作 -> 选卡片 -> 选照片 -> 加照片 ->
+           用显影液），而且有几处"没东西就安静地不动"，所以这里把顺序和材料说清楚。 */
+        function animHelp() {
+            note([
+                '动态照片（在 小仓库 → 动态照片 里）：',
+                '1) 点「制作」→ 选一张**可动明信片**（只有 6 张能做：100 / 104 / 2000 / 3063 / 3064 / 3102，',
+                '   卡片上会盖一个小标记的表示还不能做 —— 因为相册里没有那张照片）；',
+                '2) 再点相册按钮挑那张照片当底片（它会被消耗掉，这是正常的）；',
+                '3) 在制作页点「加照片」放同款照片（最多 5 张；没有同款就会提示"相册里找不到有关联的照片"）；',
+                '4) 点右下角那三瓶**显影液**（单色 / 双色 / 多色）：一次分别长 1 / 2 / 3 层动画；',
+                '   家里没有显影液时点它不会有任何反应 —— 正式服要从家具店买（500 / 1000 / 1500 三叶草），',
+                '   离线版点面板上的「动态照片材料」一次给齐。',
+                '5) 一整页动画长满后就做完了，会返还一个「照片存储开启物」；',
+                '   动态页上还想多放照片，要花「照片存储开启物」开格子（一页最多 4 格）。',
+                '',
+                '如果某一步没反应：先点「动态照片材料」把材料补齐再试。',
+            ].join('\n'));
         }
 
         /* 存档安全状态：把引擎自报的存档健康度摊开给玩家看。旧代码的毛病不是
@@ -1752,6 +1996,9 @@
         try { installOfflinePay(); } catch (e) { }
         try { installOfflineChannel(); } catch (e) { }
         try { installOfflineAds(); } catch (e) { }
+        /* 这两个要等客户端脚本加载完（SocketManage / engine / SpineView 都是后加载的），
+           所以放在这个 1 秒一次的重试里，装上了就自己幂等返回。 */
+        try { installAnimTracer(); } catch (e) { }
         var scene = null;
         try { scene = findMainOutView(); } catch (e) { }
         if (scene) {
