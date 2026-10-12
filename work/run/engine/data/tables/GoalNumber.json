@@ -31,7 +31,7 @@
  },
  {
   "id": 7,
-  "name": "苏州",
+  "name": "江苏",
   "tag": "g_suzhou"
  },
  {
@@ -163,6 +163,16 @@
   "id": 33,
   "name": "河北",
   "tag": "g_hebei"
+ },
+ {
+  "id": 34,
+  "name": "内蒙古",
+  "tag": "g_neimenggu"
+ },
+ {
+  "id": 35,
+  "name": "新疆",
+  "tag": "g_xinjiang"
  },
  {
   "id": 100,

@@ -2063,6 +2063,20 @@
     "name": "河北美食家"
    },
    {
+    "info": "沙果超过10个",
+    "description": "要成为美食家，得吃下十个酸溜溜~",
+    "is_special": "",
+    "id": 101,
+    "name": "内蒙美食家"
+   },
+   {
+    "info": "馕超过10个",
+    "description": "十个馕，可以吃几顿呢~",
+    "is_special": "",
+    "id": 102,
+    "name": "新疆美食家"
+   },
+   {
     "info": "通过道具解锁",
     "description": "与画笔一起带来的神奇力量~",
     "is_special": 1,
@@ -2149,7 +2163,9 @@
     4101,
     4102,
     4103,
-    4104
+    4104,
+    3039,
+    3040
    ],
    "data": [
     {
@@ -2222,6 +2238,8 @@
       10,
       10,
       10,
+      20,
+      30,
       20
      ],
      "id": 0
@@ -2296,7 +2314,9 @@
       10,
       10,
       10,
-      60
+      60,
+      10,
+      80
      ],
      "id": 1
     },
@@ -2369,6 +2389,8 @@
       30,
       80,
       80,
+      80,
+      20,
       80,
       20
      ],
@@ -3120,6 +3142,30 @@
     "name": "衡水内画",
     "place": "华北地区",
     "type": 1
+   },
+   {
+    "id": 62,
+    "img": {
+     "index": "collection_77",
+     "src": "Icon/collection"
+    },
+    "info": "群马奔腾悠远深沉 醉美了世代的草原人",
+    "info2": "",
+    "name": "马头琴",
+    "place": "西北地区",
+    "type": 1
+   },
+   {
+    "id": 63,
+    "img": {
+     "index": "collection_79",
+     "src": "Icon/collection"
+    },
+    "info": "因产于昆仑山 也被称为昆山之玉",
+    "info2": "",
+    "name": "和田玉",
+    "place": "西北地区",
+    "type": 1
    }
   ],
   "GiftData": {
@@ -3210,7 +3256,7 @@
    },
    {
     "id": 7,
-    "name": "苏州",
+    "name": "江苏",
     "tag": "g_suzhou"
    },
    {
@@ -3342,6 +3388,16 @@
     "id": 33,
     "name": "河北",
     "tag": "g_hebei"
+   },
+   {
+    "id": 34,
+    "name": "内蒙古",
+    "tag": "g_neimenggu"
+   },
+   {
+    "id": 35,
+    "name": "新疆",
+    "tag": "g_xinjiang"
    },
    {
     "id": 100,
@@ -3863,7 +3919,7 @@
    {
     "info": "无风自寒小寒天 枣泥核桃三冬暖",
     "sub_type": "",
-    "name": "枣泥核桃糖",
+    "name": "核桃枣泥糕",
     "img": {
      "index": "goods_64",
      "src": "Icon/goods"
@@ -4169,6 +4225,20 @@
     "id": 56
    },
    {
+    "info": "满怀心意的蛋糕 和伙伴们一起分享吧",
+    "sub_type": "",
+    "name": "庆典蛋糕",
+    "img": {
+     "index": "goods_98",
+     "src": "Icon/goods"
+    },
+    "price": 100,
+    "own_num": "",
+    "spend": 1,
+    "type": 0,
+    "id": 57
+   },
+   {
     "info": "古代宫廷美食的味道 吃一口就想进京",
     "sub_type": "",
     "name": "枣花酥",
@@ -4309,7 +4379,7 @@
     "id": 110
    },
    {
-    "info": "云南",
+    "info": "鲜奶烹调成扇子的形状 吃一口就想入滇",
     "sub_type": "",
     "name": "乳扇",
     "img": {
@@ -4323,7 +4393,7 @@
     "id": 111
    },
    {
-    "info": "海南",
+    "info": "一口椰子的香浓和甜美 仿佛置身于琼",
     "sub_type": "",
     "name": "椰子糕",
     "img": {
@@ -4337,7 +4407,7 @@
     "id": 112
    },
    {
-    "info": "湖北",
+    "info": "九次过罗的细腻面粉 吃一口就想入鄂",
     "sub_type": "",
     "name": "九黄饼",
     "img": {
@@ -4351,7 +4421,7 @@
     "id": 113
    },
    {
-    "info": "湖南",
+    "info": "酷似灯芯的柔软糕点 吃一口就想赴湘",
     "sub_type": "",
     "name": "灯芯糕",
     "img": {
@@ -4365,7 +4435,7 @@
     "id": 114
    },
    {
-    "info": "陕西",
+    "info": "酥脆的外皮包含着丰富的馅料 吃一口就想赴陕",
     "sub_type": "",
     "name": "锅盔",
     "img": {
@@ -4379,7 +4449,7 @@
     "id": 115
    },
    {
-    "info": "河南",
+    "info": "清香南瓜和细腻豆沙的完美结合 吃一口就想归豫",
     "sub_type": "",
     "name": "南瓜豆沙糕",
     "img": {
@@ -4393,9 +4463,9 @@
     "id": 116
    },
    {
-    "info": "甘肃",
+    "info": "仿若小圈的香脆炸物 吃一口就想入陇",
     "sub_type": "",
-    "name": "八仙糕",
+    "name": "酥圈圈",
     "img": {
      "index": "goods_mdd_17",
      "src": "Icon/goods"
@@ -4407,7 +4477,7 @@
     "id": 117
    },
    {
-    "info": "西藏",
+    "info": "青稞独特的香味包含其中 吃一口就想入藏",
     "sub_type": "",
     "name": "糌粑",
     "img": {
@@ -4421,7 +4491,7 @@
     "id": 118
    },
    {
-    "info": "上海",
+    "info": "酷似梅花的香甜糕点 吃一口就想赴沪",
     "sub_type": "",
     "name": "梅花糕",
     "img": {
@@ -4435,7 +4505,7 @@
     "id": 119
    },
    {
-    "info": "香港",
+    "info": "口感酥脆的松软面包 吃一口就想赴港",
     "sub_type": "",
     "name": "菠萝包",
     "img": {
@@ -4449,7 +4519,7 @@
     "id": 120
    },
    {
-    "info": "宁夏",
+    "info": "宁夏枸杞与冰沙饼相结合的健康美食 吃一口就想归宁",
     "sub_type": "",
     "name": "枸杞冰沙饼",
     "img": {
@@ -4463,7 +4533,7 @@
     "id": 121
    },
    {
-    "info": "贵州",
+    "info": "口感软糯甜而不腻 吃一口就想入黔",
     "sub_type": "",
     "name": "碗耳糕",
     "img": {
@@ -4477,7 +4547,7 @@
     "id": 122
    },
    {
-    "info": "福建",
+    "info": "茯苓的独特香味扑鼻而来 吃一口就想赴闽",
     "sub_type": "",
     "name": "茯苓糕",
     "img": {
@@ -4491,7 +4561,7 @@
     "id": 123
    },
    {
-    "info": "江西",
+    "info": "口感酸甜又兼具糯米的软糯 吃一口就想赴赣",
     "sub_type": "",
     "name": "酸枣糕",
     "img": {
@@ -4505,7 +4575,7 @@
     "id": 124
    },
    {
-    "info": "安徽",
+    "info": "融合了清新绿豆味和酥松的外皮 吃一口就想入皖",
     "sub_type": "",
     "name": "大救驾",
     "img": {
@@ -4519,7 +4589,7 @@
     "id": 125
    },
    {
-    "info": "辽宁",
+    "info": "馅料柔滑绵软，葱香浓郁扑鼻 吃一口就想归辽",
     "sub_type": "",
     "name": "葱花缸炉",
     "img": {
@@ -4533,9 +4603,9 @@
     "id": 126
    },
    {
-    "info": "山东",
+    "info": "撒上芝麻的金黄色烧饼 吃一口就想入鲁",
     "sub_type": "",
-    "name": "烧饼",
+    "name": "周村烧饼",
     "img": {
      "index": "goods_mdd_27",
      "src": "Icon/goods"
@@ -4547,7 +4617,7 @@
     "id": 127
    },
    {
-    "info": "山西",
+    "info": "色泽金黄的圆形大饼 看一眼仿佛就置身于晋",
     "sub_type": "",
     "name": "太谷饼",
     "img": {
@@ -4561,7 +4631,7 @@
     "id": 128
    },
    {
-    "info": "吉林",
+    "info": "圆润饱满的金黄粘豆包 尝上一口便想归吉",
     "sub_type": "",
     "name": "粘豆包",
     "img": {
@@ -4575,7 +4645,7 @@
     "id": 129
    },
    {
-    "info": "澳门",
+    "info": "蛋卷的酥脆和内馅相互交融 吃一口就想赴澳",
     "sub_type": "",
     "name": "凤凰卷",
     "img": {
@@ -4589,7 +4659,7 @@
     "id": 130
    },
    {
-    "info": "青海",
+    "info": "传统焜锅烤制出的美味 尝一口就想赴青",
     "sub_type": "",
     "name": "焜锅馍馍",
     "img": {
@@ -4603,7 +4673,7 @@
     "id": 131
    },
    {
-    "info": "河北",
+    "info": "细腻的质地混合着丝丝甜意 尝一口就想入冀",
     "sub_type": "",
     "name": "丝糕",
     "img": {
@@ -4617,7 +4687,7 @@
     "id": 132
    },
    {
-    "info": "新疆",
+    "info": "香气四溢的特色烤包子 吃一口就想赴新",
     "sub_type": "",
     "name": "萨木萨",
     "img": {
@@ -4631,7 +4701,7 @@
     "id": 133
    },
    {
-    "info": "内蒙",
+    "info": "散发着浓郁奶香的金黄果子 尝一口就想入蒙",
     "sub_type": "",
     "name": "蒙古果子",
     "img": {
@@ -6127,6 +6197,34 @@
     "spend": 1,
     "type": 3,
     "id": 3038
+   },
+   {
+    "info": "果味酸涩而收敛 生津止渴消食明目",
+    "sub_type": "",
+    "name": "沙果",
+    "img": {
+     "index": "collection_78",
+     "src": "Icon/collection"
+    },
+    "price": 0,
+    "own_num": "",
+    "spend": 1,
+    "type": 3,
+    "id": 3039
+   },
+   {
+    "info": "宁可三日无肉 不可一日无馕",
+    "sub_type": "",
+    "name": "馕",
+    "img": {
+     "index": "collection_80",
+     "src": "Icon/collection"
+    },
+    "price": 0,
+    "own_num": "",
+    "spend": 1,
+    "type": 3,
+    "id": 3040
    },
    {
     "info": "散发着油润光泽的大米 配什么菜都很有食欲",
@@ -7711,6 +7809,20 @@
     "id": 10601
    },
    {
+    "info": "配置需求 花盆暂时不制作 ",
+    "sub_type": 5,
+    "name": "花盆制作样式",
+    "img": {
+     "index": "icon_tuzhi_701",
+     "src": "Icon/furniture"
+    },
+    "price": "",
+    "own_num": 1,
+    "spend": 0,
+    "type": 13,
+    "id": 10701
+   },
+   {
     "info": "快速溶解释放一些肥力 肥效较短",
     "sub_type": 1,
     "name": "一号水溶肥",
@@ -7958,7 +8070,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 200000
    },
@@ -7972,7 +8084,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 200001
    },
@@ -7986,7 +8098,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 200002
    },
@@ -8000,7 +8112,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 200003
    },
@@ -8014,7 +8126,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 200004
    },
@@ -8028,7 +8140,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 200005
    },
@@ -8042,7 +8154,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 200006
    },
@@ -8056,7 +8168,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 200007
    },
@@ -8070,7 +8182,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 200008
    },
@@ -8084,7 +8196,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 200009
    },
@@ -8098,7 +8210,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 200010
    },
@@ -8112,7 +8224,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 200011
    },
@@ -8126,7 +8238,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 200012
    },
@@ -8140,7 +8252,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 200013
    },
@@ -8154,7 +8266,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 200014
    },
@@ -8168,7 +8280,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 200015
    },
@@ -8182,7 +8294,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 200016
    },
@@ -8196,7 +8308,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 0,
     "type": 14,
     "id": 201001
    },
@@ -8210,7 +8322,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 0,
     "type": 14,
     "id": 201002
    },
@@ -8224,7 +8336,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 0,
     "type": 14,
     "id": 201003
    },
@@ -8238,7 +8350,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 0,
     "type": 14,
     "id": 201004
    },
@@ -8252,7 +8364,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 0,
     "type": 14,
     "id": 201005
    },
@@ -8266,7 +8378,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 0,
     "type": 14,
     "id": 201006
    },
@@ -8280,7 +8392,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 0,
     "type": 14,
     "id": 201007
    },
@@ -8294,9 +8406,23 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 0,
     "type": 14,
     "id": 201008
+   },
+   {
+    "info": "花开富贵 迎接一年好顺景",
+    "sub_type": 6,
+    "name": "迎春花盆",
+    "img": {
+     "index": "zakka_flowerpot_2",
+     "src": "Icon/furniture"
+    },
+    "price": "",
+    "own_num": "",
+    "spend": 0,
+    "type": 14,
+    "id": 201009
    },
    {
     "info": "樟目/蜡梅科/蜡梅属 香气似梅捻蜡所成",
@@ -8451,6 +8577,20 @@
     "spend": 1,
     "type": 14,
     "id": 202111
+   },
+   {
+    "info": "百合目/石蒜科/君子兰属 文雅俊秀有君子风姿",
+    "sub_type": 6,
+    "name": "君子兰",
+    "img": {
+     "index": "icon_liwu_junzilan",
+     "src": "icon/courtyard"
+    },
+    "price": "",
+    "own_num": "",
+    "spend": 1,
+    "type": 14,
+    "id": 202112
    },
    {
     "info": "金虎尾目/堇菜科/堇菜属 粉白色系角堇",
@@ -8742,7 +8882,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 203001
    },
@@ -8756,7 +8896,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 203002
    },
@@ -8770,7 +8910,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 203003
    },
@@ -8784,7 +8924,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 203004
    },
@@ -8798,7 +8938,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 203005
    },
@@ -8812,7 +8952,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 203006
    },
@@ -8826,7 +8966,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 203007
    },
@@ -8840,7 +8980,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 203011
    },
@@ -8854,7 +8994,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 203012
    },
@@ -8868,7 +9008,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 203013
    },
@@ -8882,7 +9022,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 203014
    },
@@ -8896,7 +9036,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 203015
    },
@@ -8910,7 +9050,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 203016
    },
@@ -8924,7 +9064,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 203017
    },
@@ -8938,7 +9078,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 203021
    },
@@ -8952,7 +9092,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 203022
    },
@@ -8966,7 +9106,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 203023
    },
@@ -8980,7 +9120,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 203024
    },
@@ -8994,7 +9134,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 203025
    },
@@ -9008,7 +9148,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 203026
    },
@@ -9022,7 +9162,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 203027
    },
@@ -9036,7 +9176,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 204001
    },
@@ -9050,7 +9190,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 204002
    },
@@ -9064,7 +9204,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 205001
    },
@@ -9078,7 +9218,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 205002
    },
@@ -9092,7 +9232,7 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 205003
    },
@@ -9106,23 +9246,65 @@
     },
     "price": "",
     "own_num": "",
-    "spend": "",
+    "spend": 1,
     "type": 14,
     "id": 205004
    },
    {
-    "info": "满怀心意的蛋糕 和伙伴们一起分享吧",
-    "sub_type": "",
-    "name": "庆典蛋糕",
+    "info": "点击屏幕 一切都变得有趣起来",
+    "sub_type": 6,
+    "name": "点击特效·青蛙",
     "img": {
-     "index": "goods_98",
+     "index": "goods_504",
      "src": "Icon/goods"
     },
-    "price": 100,
+    "price": "",
     "own_num": "",
     "spend": 1,
-    "type": 0,
-    "id": 57
+    "type": 14,
+    "id": 205005
+   },
+   {
+    "info": "点击屏幕 一切都变得有趣起来",
+    "sub_type": 6,
+    "name": "点击特效·壁虎",
+    "img": {
+     "index": "goods_505",
+     "src": "Icon/goods"
+    },
+    "price": "",
+    "own_num": "",
+    "spend": 1,
+    "type": 14,
+    "id": 205006
+   },
+   {
+    "info": "点击屏幕 一切都变得有趣起来",
+    "sub_type": 6,
+    "name": "点击特效·刺猬",
+    "img": {
+     "index": "goods_506",
+     "src": "Icon/goods"
+    },
+    "price": "",
+    "own_num": "",
+    "spend": 1,
+    "type": 14,
+    "id": 205007
+   },
+   {
+    "info": "点击屏幕 一切都变得有趣起来",
+    "sub_type": 6,
+    "name": "点击特效·萤火虫",
+    "img": {
+     "index": "goods_507",
+     "src": "Icon/goods"
+    },
+    "price": "",
+    "own_num": "",
+    "spend": 1,
+    "type": 14,
+    "id": 205008
    }
   ],
   "MailEvent": [
@@ -11580,8 +11762,8 @@
      "layers": {
       "1": {
        "cream": 8,
-       "item_id": 204001,
-       "item_num": 1,
+       "item_id": 200001,
+       "item_num": 4,
        "l_name": "蛋糕胚1层",
        "layer": 1,
        "make_pic": "cake_make_1_1_on",
@@ -11590,8 +11772,8 @@
       },
       "2": {
        "cream": 8,
-       "item_id": 204001,
-       "item_num": 1,
+       "item_id": 57,
+       "item_num": 2,
        "l_name": "蛋糕胚2层",
        "layer": 2,
        "make_pic": "cake_make_1_2_on",
@@ -11607,8 +11789,8 @@
      "layers": {
       "1": {
        "cream": 6,
-       "item_id": 204001,
-       "item_num": 1,
+       "item_id": 8001,
+       "item_num": 4,
        "l_name": "装饰2层",
        "layer": 1,
        "make_pic": "cake_make_2_1_on",
@@ -11617,8 +11799,8 @@
       },
       "2": {
        "cream": 6,
-       "item_id": 204001,
-       "item_num": 1,
+       "item_id": 57,
+       "item_num": 2,
        "l_name": "装饰1层",
        "layer": 2,
        "make_pic": "cake_make_2_2_on",
@@ -11628,14 +11810,14 @@
      },
      "name": "装饰",
      "part": 2,
-     "time": 1671379200
+     "time": 1766160000
     },
     "3": {
      "layers": {
       "1": {
        "cream": 5,
-       "item_id": 204001,
-       "item_num": 1,
+       "item_id": 10108,
+       "item_num": 2,
        "l_name": "小房子",
        "layer": 1,
        "make_pic": "cake_make_3_1_on",
@@ -11645,14 +11827,14 @@
      },
      "name": "小房子",
      "part": 3,
-     "time": 1671379200
+     "time": 1766160000
     },
     "4": {
      "layers": {
       "1": {
        "cream": 4,
-       "item_id": 204001,
-       "item_num": 1,
+       "item_id": 5101,
+       "item_num": 2,
        "l_name": "翻糖·青蛙",
        "layer": 1,
        "make_pic": "cake_make_4_1_on",
@@ -11661,8 +11843,8 @@
       },
       "2": {
        "cream": 4,
-       "item_id": 204001,
-       "item_num": 1,
+       "item_id": 57,
+       "item_num": 2,
        "l_name": "翻糖·萤火虫",
        "layer": 2,
        "make_pic": "cake_make_4_2_on",
@@ -11671,8 +11853,8 @@
       },
       "3": {
        "cream": 4,
-       "item_id": 204001,
-       "item_num": 1,
+       "item_id": 20001,
+       "item_num": 2,
        "l_name": "翻糖·乌龟",
        "layer": 3,
        "make_pic": "cake_make_4_3_on",
@@ -11681,8 +11863,8 @@
       },
       "4": {
        "cream": 4,
-       "item_id": 204001,
-       "item_num": 1,
+       "item_id": 57,
+       "item_num": 2,
        "l_name": "翻糖·刺猬",
        "layer": 4,
        "make_pic": "cake_make_4_4_on",
@@ -11691,8 +11873,8 @@
       },
       "5": {
        "cream": 4,
-       "item_id": 204001,
-       "item_num": 1,
+       "item_id": 11001,
+       "item_num": 2,
        "l_name": "翻糖·松鼠",
        "layer": 5,
        "make_pic": "cake_make_4_5_on",
@@ -11701,8 +11883,8 @@
       },
       "6": {
        "cream": 4,
-       "item_id": 204001,
-       "item_num": 1,
+       "item_id": 57,
+       "item_num": 2,
        "l_name": "翻糖·猫头鹰",
        "layer": 6,
        "make_pic": "cake_make_4_6_on",
@@ -11711,8 +11893,8 @@
       },
       "7": {
        "cream": 4,
-       "item_id": 204001,
-       "item_num": 1,
+       "item_id": 5101,
+       "item_num": 2,
        "l_name": "翻糖·壁虎",
        "layer": 7,
        "make_pic": "cake_make_4_7_on",
@@ -11721,8 +11903,8 @@
       },
       "8": {
        "cream": 4,
-       "item_id": 204001,
-       "item_num": 1,
+       "item_id": 57,
+       "item_num": 2,
        "l_name": "翻糖·嘟嘟",
        "layer": 8,
        "make_pic": "cake_make_4_8_on",
@@ -11732,14 +11914,14 @@
      },
      "name": "翻糖",
      "part": 4,
-     "time": 1671984000
+     "time": 1766764800
     },
     "5": {
      "layers": {
       "1": {
        "cream": 3,
-       "item_id": 204001,
-       "item_num": 1,
+       "item_id": 10108,
+       "item_num": 2,
        "l_name": "蜡烛",
        "layer": 1,
        "make_pic": "cake_make_5_1_on",
@@ -11749,16 +11931,16 @@
      },
      "name": "蜡烛",
      "part": 5,
-     "time": 1672588800
+     "time": 1767369600
     }
    },
    "light_reward": {
-    "item_id": 204001,
-    "item_num": 2
+    "item_id": 203004,
+    "item_num": 1
    },
    "share_reward": [
-    14,
-    204001
+    1,
+    57
    ],
    "task_list": {
     "1": {
@@ -12057,7 +12239,8 @@
      "beijing2",
      "beijing3",
      "beijing4",
-     "beijing5"
+     "beijing5",
+     "beijing6"
     ],
     "tagType": "Goal"
    },
@@ -12078,7 +12261,8 @@
     "id": 2002,
     "picNames": [
      "chongqing1",
-     "chongqing2"
+     "chongqing2",
+     "chongqing3"
     ],
     "tagType": "Goal"
    },
@@ -12174,7 +12358,7 @@
     "picNames": [
      "haerbin1",
      "haerbin2",
-     "haerbin3"
+     "haerbin4"
     ],
     "tagType": "Goal"
    },
@@ -12215,7 +12399,8 @@
     "picNames": [
      "luoyang1",
      "luoyang2",
-     "luoyang3"
+     "luoyang3",
+     "zhengzhou1"
     ],
     "tagType": "Goal"
    },
@@ -12225,7 +12410,8 @@
     "picNames": [
      "xian1",
      "xian2",
-     "xian3"
+     "xian3",
+     "xian4"
     ],
     "tagType": "Goal"
    },
@@ -12286,7 +12472,8 @@
     "picNames": [
      "guizhou4",
      "guizhou5",
-     "guizhou6"
+     "guizhou6",
+     "guizhou7"
     ],
     "tagType": "Goal"
    },
@@ -12346,7 +12533,8 @@
     "id": 2028,
     "picNames": [
      "qingdao1",
-     "qingdao2"
+     "qingdao2",
+     "qingdao3"
     ],
     "tagType": "Goal"
    },
@@ -12424,7 +12612,8 @@
      "jilin1",
      "jilin2",
      "jilin3",
-     "jilin4"
+     "jilin4",
+     "haerbin3"
     ],
     "tagType": "Goal"
    },
@@ -12467,6 +12656,26 @@
      "hebei2",
      "hebei3",
      "hebei4"
+    ],
+    "tagType": "Goal"
+   },
+   {
+    "Tag": "g_neimenggu",
+    "id": 2041,
+    "picNames": [
+     "neimenggu1",
+     "neimenggu2",
+     "neimenggu3"
+    ],
+    "tagType": "Goal"
+   },
+   {
+    "Tag": "g_xinjiang",
+    "id": 2042,
+    "picNames": [
+     "xinjiang1",
+     "xinjiang2",
+     "xinjiang3"
     ],
     "tagType": "Goal"
    },
@@ -13355,6 +13564,86 @@
     "tagType": "Unique"
    },
    {
+    "Tag": "u_anniv",
+    "id": 3102,
+    "picNames": [
+     "anniv"
+    ],
+    "tagType": "Unique"
+   },
+   {
+    "Tag": "u_player",
+    "id": 3103,
+    "picNames": [
+     "player"
+    ],
+    "tagType": "Unique"
+   },
+   {
+    "Tag": "u_squirrel",
+    "id": 3104,
+    "picNames": [
+     "squirrel"
+    ],
+    "tagType": "Unique"
+   },
+   {
+    "Tag": "u_dog",
+    "id": 3105,
+    "picNames": [
+     "dog"
+    ],
+    "tagType": "Unique"
+   },
+   {
+    "Tag": "u_denglong",
+    "id": 3106,
+    "picNames": [
+     "denglong"
+    ],
+    "tagType": "Unique"
+   },
+   {
+    "Tag": "u_fengyanlian",
+    "id": 3107,
+    "picNames": [
+     "fengyanlian"
+    ],
+    "tagType": "Unique"
+   },
+   {
+    "Tag": "u_xieweijiao",
+    "id": 3108,
+    "picNames": [
+     "xieweijiao"
+    ],
+    "tagType": "Unique"
+   },
+   {
+    "Tag": "u_xiazhi_1",
+    "id": 3109,
+    "picNames": [
+     "xiazhi_1"
+    ],
+    "tagType": "Unique"
+   },
+   {
+    "Tag": "u_xiazhi_2",
+    "id": 3110,
+    "picNames": [
+     "xiazhi_2"
+    ],
+    "tagType": "Unique"
+   },
+   {
+    "Tag": "u_mid_autumn_2",
+    "id": 3111,
+    "picNames": [
+     "mid_autumn_2"
+    ],
+    "tagType": "Unique"
+   },
+   {
     "Tag": "u_month1_2",
     "id": 3148,
     "picNames": [
@@ -13547,6 +13836,30 @@
     "tagType": "Unique"
    },
    {
+    "Tag": "u_two_month9_3",
+    "id": 3180,
+    "picNames": [
+     "two_month9_3"
+    ],
+    "tagType": "Unique"
+   },
+   {
+    "Tag": "u_two_month10_3",
+    "id": 3181,
+    "picNames": [
+     "two_month10_3"
+    ],
+    "tagType": "Unique"
+   },
+   {
+    "Tag": "u_month11_3",
+    "id": 3182,
+    "picNames": [
+     "month11_3"
+    ],
+    "tagType": "Unique"
+   },
+   {
     "Tag": "u_lanhuateng",
     "id": 3201,
     "picNames": [
@@ -13587,18 +13900,66 @@
     "tagType": "Unique"
    },
    {
-    "Tag": "u_anniv",
-    "id": 3102,
+    "Tag": "u_month12_3",
+    "id": 3206,
     "picNames": [
-     "anniv"
+     "month12_3"
     ],
     "tagType": "Unique"
    },
    {
-    "Tag": "u_player",
-    "id": 3103,
+    "Tag": "u_anniv_2",
+    "id": 3207,
     "picNames": [
-     "player"
+     "anniv_2"
+    ],
+    "tagType": "Unique"
+   },
+   {
+    "Tag": "u_month1_3",
+    "id": 3208,
+    "picNames": [
+     "month1_3"
+    ],
+    "tagType": "Unique"
+   },
+   {
+    "Tag": "u_month2_3",
+    "id": 3209,
+    "picNames": [
+     "month2_3"
+    ],
+    "tagType": "Unique"
+   },
+   {
+    "Tag": "u_month3_3",
+    "id": 3210,
+    "picNames": [
+     "month3_3"
+    ],
+    "tagType": "Unique"
+   },
+   {
+    "Tag": "u_month4_3",
+    "id": 3211,
+    "picNames": [
+     "month4_3"
+    ],
+    "tagType": "Unique"
+   },
+   {
+    "Tag": "u_month5_3",
+    "id": 3212,
+    "picNames": [
+     "month5_3"
+    ],
+    "tagType": "Unique"
+   },
+   {
+    "Tag": "u_month6_3",
+    "id": 3213,
+    "picNames": [
+     "month6_3"
     ],
     "tagType": "Unique"
    }
@@ -13627,6 +13988,7 @@
     "frogPose_s": "rnd_pose_roof1",
     "frontImage": [],
     "id": 100,
+    "location": "",
     "name": "back_n_roof1",
     "priority": true,
     "randomSet": true,
@@ -13679,6 +14041,7 @@
      "flower03"
     ],
     "id": 101,
+    "location": "",
     "name": "back_n_roof2",
     "priority": false,
     "randomSet": true,
@@ -13727,6 +14090,7 @@
     "frogPose_s": "rnd_pose_beach1",
     "frontImage": [],
     "id": 102,
+    "location": "",
     "name": "back_n_beach1",
     "priority": false,
     "randomSet": true,
@@ -13776,6 +14140,7 @@
     "frogPose_s": "rnd_pose_beach2",
     "frontImage": [],
     "id": 103,
+    "location": "",
     "name": "back_n_beach2",
     "priority": false,
     "randomSet": true,
@@ -13827,6 +14192,7 @@
      "flower02"
     ],
     "id": 104,
+    "location": "",
     "name": "back_n_beach3",
     "priority": false,
     "randomSet": true,
@@ -13876,6 +14242,7 @@
     "frogPose_s": "rnd_pose_branch1",
     "frontImage": [],
     "id": 105,
+    "location": "",
     "name": "back_n_branch1",
     "priority": true,
     "randomSet": true,
@@ -13926,6 +14293,7 @@
     "frogPose_s": "rnd_pose_branch2",
     "frontImage": [],
     "id": 106,
+    "location": "",
     "name": "back_n_branch2",
     "priority": false,
     "randomSet": true,
@@ -13980,6 +14348,7 @@
      "bamboo_front01"
     ],
     "id": 107,
+    "location": "",
     "name": "back_n_bamboo1",
     "priority": false,
     "randomSet": false,
@@ -14035,6 +14404,7 @@
      "bamboo_front02"
     ],
     "id": 108,
+    "location": "",
     "name": "back_n_bamboo2",
     "priority": false,
     "randomSet": true,
@@ -14084,6 +14454,7 @@
     "frogPose_s": "rnd_pose_field1",
     "frontImage": [],
     "id": 109,
+    "location": "",
     "name": "back_n_field1",
     "priority": true,
     "randomSet": true,
@@ -14133,6 +14504,7 @@
     "frogPose_s": "rnd_pose_field1",
     "frontImage": [],
     "id": 110,
+    "location": "",
     "name": "back_n_field2",
     "priority": true,
     "randomSet": true,
@@ -14180,6 +14552,7 @@
      "leaf_03"
     ],
     "id": 111,
+    "location": "",
     "name": "back_n_redleaves1",
     "priority": false,
     "randomSet": true,
@@ -14227,6 +14600,7 @@
      "leaf_03"
     ],
     "id": 112,
+    "location": "",
     "name": "back_n_redleaves2",
     "priority": false,
     "randomSet": true,
@@ -14274,6 +14648,7 @@
      "leaf_04"
     ],
     "id": 113,
+    "location": "",
     "name": "back_n_yellowleaves1",
     "priority": false,
     "randomSet": true,
@@ -14321,6 +14696,7 @@
      "leaf_04"
     ],
     "id": 114,
+    "location": "",
     "name": "back_n_yellowleaves2",
     "priority": false,
     "randomSet": true,
@@ -14369,6 +14745,7 @@
      "leaf_05"
     ],
     "id": 115,
+    "location": "",
     "name": "back_n_panda",
     "priority": false,
     "randomSet": false,
@@ -14415,6 +14792,7 @@
     "frogPose_s": "pose_tulou1",
     "frontImage": [],
     "id": 116,
+    "location": "",
     "name": "back_n_tulou1",
     "priority": false,
     "randomSet": false,
@@ -14461,6 +14839,7 @@
     "frogPose_s": "pose_tulou2",
     "frontImage": [],
     "id": 117,
+    "location": "",
     "name": "back_n_tulou2",
     "priority": false,
     "randomSet": false,
@@ -14508,6 +14887,7 @@
     "frogPose_s": "pose_pipa",
     "frontImage": [],
     "id": 118,
+    "location": "",
     "name": "back_n_pipa",
     "priority": false,
     "randomSet": false,
@@ -14555,6 +14935,7 @@
     "frogPose_s": "pose_shizi",
     "frontImage": [],
     "id": 119,
+    "location": "",
     "name": "back_n_shizi",
     "priority": false,
     "randomSet": false,
@@ -14602,6 +14983,7 @@
     "frogPose_s": "pose_lamei",
     "frontImage": [],
     "id": 120,
+    "location": "",
     "name": "back_n_lamei1",
     "priority": false,
     "randomSet": false,
@@ -14649,6 +15031,7 @@
     "frogPose_s": "pose_lamei",
     "frontImage": [],
     "id": 121,
+    "location": "",
     "name": "back_n_lamei2",
     "priority": false,
     "randomSet": false,
@@ -14696,6 +15079,7 @@
     "frogPose_s": "pose_lamei",
     "frontImage": [],
     "id": 122,
+    "location": "",
     "name": "back_n_lamei3",
     "priority": false,
     "randomSet": false,
@@ -14743,6 +15127,7 @@
     "frogPose_s": "pose_lamei",
     "frontImage": [],
     "id": 123,
+    "location": "",
     "name": "back_n_lamei4",
     "priority": false,
     "randomSet": false,
@@ -14788,6 +15173,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 124,
+    "location": "",
     "name": "back_n_sanxia1",
     "priority": false,
     "randomSet": false,
@@ -14833,6 +15219,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 125,
+    "location": "",
     "name": "back_n_sanxia2",
     "priority": false,
     "randomSet": false,
@@ -14879,6 +15266,7 @@
     "frogPose_s": "pose_ibis",
     "frontImage": [],
     "id": 126,
+    "location": "",
     "name": "back_n_ibis",
     "priority": true,
     "randomSet": false,
@@ -14927,6 +15315,7 @@
     "frogPose_s": "pose_rime",
     "frontImage": [],
     "id": 127,
+    "location": "",
     "name": "back_n_rime1",
     "priority": true,
     "randomSet": false,
@@ -14974,6 +15363,7 @@
     "frogPose_s": "pose_rime",
     "frontImage": [],
     "id": 128,
+    "location": "",
     "name": "back_n_rime2",
     "priority": true,
     "randomSet": false,
@@ -15021,6 +15411,7 @@
     "frogPose_s": "pose_rime",
     "frontImage": [],
     "id": 129,
+    "location": "",
     "name": "back_n_rime3",
     "priority": true,
     "randomSet": false,
@@ -15066,6 +15457,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 130,
+    "location": "",
     "name": "n_hhly_lnw",
     "priority": false,
     "randomSet": false,
@@ -15111,6 +15503,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 131,
+    "location": "",
     "name": "n_hhly_smx",
     "priority": false,
     "randomSet": false,
@@ -15160,6 +15553,7 @@
      "lanhuateng_front"
     ],
     "id": 201,
+    "location": "",
     "name": "back_n_lanhuateng",
     "priority": true,
     "randomSet": false,
@@ -15209,6 +15603,7 @@
      "chuisihaitang_front_2"
     ],
     "id": 202,
+    "location": "",
     "name": "back_n_chuisihaitang1",
     "priority": false,
     "randomSet": false,
@@ -15258,6 +15653,7 @@
      "chuisihaitang_front_2"
     ],
     "id": 203,
+    "location": "",
     "name": "back_n_chuisihaitang2",
     "priority": false,
     "randomSet": false,
@@ -15307,6 +15703,7 @@
      "chuisihaitang_front_2"
     ],
     "id": 204,
+    "location": "",
     "name": "back_n_chuisihaitang3",
     "priority": false,
     "randomSet": false,
@@ -15353,6 +15750,7 @@
     "frogPose_s": "pose_mumianhua",
     "frontImage": [],
     "id": 205,
+    "location": "",
     "name": "back_n_mumianhua",
     "priority": false,
     "randomSet": false,
@@ -15404,6 +15802,7 @@
      "fenglingmu_yushui"
     ],
     "id": 206,
+    "location": "",
     "name": "back_n_fenglingmu_h",
     "priority": false,
     "randomSet": false,
@@ -15457,6 +15856,7 @@
      "fenglingmu_yushui"
     ],
     "id": 207,
+    "location": "",
     "name": "back_n_fenglingmu_z",
     "priority": false,
     "randomSet": false,
@@ -15504,6 +15904,7 @@
      "wet0_1"
     ],
     "id": 1000,
+    "location": "",
     "name": "wet",
     "priority": false,
     "randomSet": false,
@@ -15551,6 +15952,7 @@
      "wet1_1"
     ],
     "id": 1001,
+    "location": "",
     "name": "wet1",
     "priority": false,
     "randomSet": false,
@@ -15598,6 +16000,7 @@
      "wet2_1"
     ],
     "id": 1002,
+    "location": "",
     "name": "wet2",
     "priority": false,
     "randomSet": false,
@@ -15645,6 +16048,7 @@
      "wet3_1"
     ],
     "id": 1003,
+    "location": "",
     "name": "wet3",
     "priority": false,
     "randomSet": false,
@@ -15692,6 +16096,7 @@
      "fuza_fw1"
     ],
     "id": 1004,
+    "location": "",
     "name": "fuza",
     "priority": false,
     "randomSet": false,
@@ -15739,6 +16144,7 @@
      "fuza_fw1"
     ],
     "id": 1005,
+    "location": "",
     "name": "fuza1",
     "priority": false,
     "randomSet": false,
@@ -15786,6 +16192,7 @@
      "fuza_fw1"
     ],
     "id": 1006,
+    "location": "",
     "name": "fuza2",
     "priority": false,
     "randomSet": false,
@@ -15833,6 +16240,7 @@
      "fuza_fw1"
     ],
     "id": 1007,
+    "location": "",
     "name": "fuza3",
     "priority": false,
     "randomSet": false,
@@ -15880,6 +16288,7 @@
      "dry_fw"
     ],
     "id": 1008,
+    "location": "",
     "name": "dry",
     "priority": false,
     "randomSet": false,
@@ -15927,6 +16336,7 @@
      "dry_fw"
     ],
     "id": 1009,
+    "location": "",
     "name": "dry1",
     "priority": false,
     "randomSet": false,
@@ -15974,6 +16384,7 @@
      "dry_fw"
     ],
     "id": 1010,
+    "location": "",
     "name": "dry2",
     "priority": false,
     "randomSet": false,
@@ -16021,6 +16432,7 @@
      "dry_fw"
     ],
     "id": 1011,
+    "location": "",
     "name": "dry3",
     "priority": false,
     "randomSet": false,
@@ -16066,6 +16478,7 @@
     "frogPose_s": "pose_gy_0",
     "frontImage": [],
     "id": 1012,
+    "location": "",
     "name": "Town",
     "priority": true,
     "randomSet": false,
@@ -16111,6 +16524,7 @@
     "frogPose_s": "pose_gy_1",
     "frontImage": [],
     "id": 1013,
+    "location": "",
     "name": "Town1",
     "priority": true,
     "randomSet": false,
@@ -16156,6 +16570,7 @@
     "frogPose_s": "pose_gy_2",
     "frontImage": [],
     "id": 1014,
+    "location": "",
     "name": "Town2",
     "priority": true,
     "randomSet": false,
@@ -16201,6 +16616,7 @@
     "frogPose_s": "pose_gy_3",
     "frontImage": [],
     "id": 1015,
+    "location": "",
     "name": "Town3",
     "priority": true,
     "randomSet": false,
@@ -16246,6 +16662,7 @@
     "frogPose_s": "pose_hunsha_0",
     "frontImage": [],
     "id": 1016,
+    "location": "",
     "name": "Town1_0",
     "priority": false,
     "randomSet": false,
@@ -16291,6 +16708,7 @@
     "frogPose_s": "pose_hunsha_1",
     "frontImage": [],
     "id": 1017,
+    "location": "",
     "name": "Town1_1",
     "priority": false,
     "randomSet": false,
@@ -16336,6 +16754,7 @@
     "frogPose_s": "pose_hunsha_2",
     "frontImage": [],
     "id": 1018,
+    "location": "",
     "name": "Town1_2",
     "priority": false,
     "randomSet": false,
@@ -16381,6 +16800,7 @@
     "frogPose_s": "pose_hunsha_3",
     "frontImage": [],
     "id": 1019,
+    "location": "",
     "name": "Town1_3",
     "priority": false,
     "randomSet": false,
@@ -16426,6 +16846,7 @@
     "frogPose_s": "pose_jingmian_0",
     "frontImage": [],
     "id": 1020,
+    "location": "",
     "name": "Town2_0",
     "priority": false,
     "randomSet": false,
@@ -16471,6 +16892,7 @@
     "frogPose_s": "pose_jingmian_1",
     "frontImage": [],
     "id": 1021,
+    "location": "",
     "name": "Town2_1",
     "priority": false,
     "randomSet": false,
@@ -16516,6 +16938,7 @@
     "frogPose_s": "pose_jingmian_2",
     "frontImage": [],
     "id": 1022,
+    "location": "",
     "name": "Town2_2",
     "priority": false,
     "randomSet": false,
@@ -16561,6 +16984,7 @@
     "frogPose_s": "pose_jingmian_3",
     "frontImage": [],
     "id": 1023,
+    "location": "",
     "name": "Town2_3",
     "priority": false,
     "randomSet": false,
@@ -16606,6 +17030,7 @@
     "frogPose_s": "pose_dimian_0",
     "frontImage": [],
     "id": 1024,
+    "location": "",
     "name": "Town3_0",
     "priority": false,
     "randomSet": false,
@@ -16651,6 +17076,7 @@
     "frogPose_s": "pose_dimian_1",
     "frontImage": [],
     "id": 1025,
+    "location": "",
     "name": "Town3_1",
     "priority": false,
     "randomSet": false,
@@ -16696,6 +17122,7 @@
     "frogPose_s": "pose_dimian_2",
     "frontImage": [],
     "id": 1026,
+    "location": "",
     "name": "Town3_2",
     "priority": false,
     "randomSet": false,
@@ -16741,6 +17168,7 @@
     "frogPose_s": "pose_dimian_3",
     "frontImage": [],
     "id": 1027,
+    "location": "",
     "name": "Town3_3",
     "priority": false,
     "randomSet": false,
@@ -16786,6 +17214,7 @@
     "frogPose_s": "pose_beijing1",
     "frontImage": [],
     "id": 2000,
+    "location": "北京·故宫·红墙",
     "name": "beijing1",
     "place": 1,
     "priority": false,
@@ -16833,6 +17262,7 @@
     "frogPose_s": "pose_chengdu1",
     "frontImage": [],
     "id": 2001,
+    "location": "四川·成都·水上麻将",
     "name": "chengdu1",
     "place": 2,
     "priority": true,
@@ -16880,6 +17310,7 @@
     "frogPose_s": "pose_chongqing1",
     "frontImage": [],
     "id": 2002,
+    "location": "重庆·沙坪坝·磁器口",
     "name": "chongqing1",
     "place": 3,
     "priority": false,
@@ -16927,6 +17358,7 @@
     "frogPose_s": "pose_gz_alone",
     "frontImage": [],
     "id": 2003,
+    "location": "广东·广州·早茶",
     "name": "guangzhou1",
     "place": 4,
     "priority": true,
@@ -16974,6 +17406,7 @@
     "frogPose_s": "pose_guilin1",
     "frontImage": [],
     "id": 2004,
+    "location": "广西·桂林·象鼻山",
     "name": "guilin1",
     "place": 5,
     "priority": false,
@@ -17021,6 +17454,7 @@
     "frogPose_s": "pose_hangzhou1",
     "frontImage": [],
     "id": 2005,
+    "location": "浙江·杭州·西湖",
     "name": "hangzhou1",
     "place": 6,
     "priority": false,
@@ -17068,6 +17502,7 @@
     "frogPose_s": "pose_suzhou1",
     "frontImage": [],
     "id": 2006,
+    "location": "江苏·苏州·拙政园",
     "name": "suzhou1",
     "place": 7,
     "priority": false,
@@ -17115,6 +17550,7 @@
     "frogPose_s": "pose_tianjin1",
     "frontImage": [],
     "id": 2007,
+    "location": "天津·和平区·瓷房子",
     "name": "tianjin1",
     "place": 8,
     "priority": true,
@@ -17162,6 +17598,7 @@
     "frogPose_s": "pose_shifen",
     "frontImage": [],
     "id": 2008,
+    "location": "台湾·新北·十分车站",
     "name": "tw_shifen1",
     "place": 9,
     "priority": false,
@@ -17209,6 +17646,7 @@
     "frogPose_s": "pose_kengding",
     "frontImage": [],
     "id": 2009,
+    "location": "台湾·垦丁·帆船石",
     "name": "tw_kending1",
     "place": 10,
     "priority": false,
@@ -17256,6 +17694,7 @@
     "frogPose_s": "pose_beijing2",
     "frontImage": [],
     "id": 2010,
+    "location": "北京·故宫·云龙石阶",
     "name": "beijing2",
     "place": 1,
     "priority": false,
@@ -17303,6 +17742,7 @@
     "frogPose_s": "pose_beijing3",
     "frontImage": [],
     "id": 2011,
+    "location": "北京·天坛·祈年殿",
     "name": "beijing3",
     "place": 1,
     "priority": false,
@@ -17350,6 +17790,7 @@
     "frogPose_s": "pose_beijing4",
     "frontImage": [],
     "id": 2012,
+    "location": "北京·颐和园·琉璃瓦",
     "name": "beijing4",
     "place": 1,
     "priority": false,
@@ -17397,6 +17838,7 @@
     "frogPose_s": "pose_beijing5",
     "frontImage": [],
     "id": 2013,
+    "location": "北京·慕田峪长城",
     "name": "beijing5",
     "place": 1,
     "priority": false,
@@ -17444,6 +17886,7 @@
     "frogPose_s": "pose_chengdu2",
     "frontImage": [],
     "id": 2014,
+    "location": "四川·成都·茶馆",
     "name": "chengdu2",
     "place": 2,
     "priority": false,
@@ -17491,6 +17934,7 @@
     "frogPose_s": "pose_chengdu3",
     "frontImage": [],
     "id": 2015,
+    "location": "四川·成都·都江堰",
     "name": "chengdu3",
     "place": 2,
     "priority": false,
@@ -17538,6 +17982,7 @@
     "frogPose_s": "pose_chengdu4",
     "frontImage": [],
     "id": 2016,
+    "location": "四川·乐山·凌云大佛",
     "name": "chengdu4",
     "place": 2,
     "priority": false,
@@ -17585,6 +18030,7 @@
     "frogPose_s": "pose_chongqing2",
     "frontImage": [],
     "id": 2017,
+    "location": "重庆·南岸区·铜元局站",
     "name": "chongqing2",
     "place": 3,
     "priority": false,
@@ -17632,6 +18078,7 @@
     "frogPose_s": "pose_guangzhou2",
     "frontImage": [],
     "id": 2018,
+    "location": "广东·佛山·醒狮",
     "name": "guangzhou2",
     "place": 4,
     "priority": true,
@@ -17679,6 +18126,7 @@
     "frogPose_s": "pose_guangzhou3",
     "frontImage": [],
     "id": 2019,
+    "location": "广东·佛山·叶问堂",
     "name": "guangzhou3",
     "place": 4,
     "priority": false,
@@ -17726,6 +18174,7 @@
     "frogPose_s": "pose_guilin2",
     "frontImage": [],
     "id": 2020,
+    "location": "广西·桂林·漓江竹筏",
     "name": "guilin2",
     "place": 5,
     "priority": true,
@@ -17773,6 +18222,7 @@
     "frogPose_s": "pose_guilin3",
     "frontImage": [],
     "id": 2021,
+    "location": "广西·桂林·龙脊梯田",
     "name": "guilin3",
     "place": 5,
     "priority": true,
@@ -17820,6 +18270,7 @@
     "frogPose_s": "pose_hangzhou2",
     "frontImage": [],
     "id": 2022,
+    "location": "浙江·杭州·龙井茶园",
     "name": "hangzhou2",
     "place": 6,
     "priority": false,
@@ -17867,6 +18318,7 @@
     "frogPose_s": "pose_hangzhou3",
     "frontImage": [],
     "id": 2023,
+    "location": "浙江·杭州·玉泉鱼跃",
     "name": "hangzhou3",
     "place": 6,
     "priority": true,
@@ -17914,6 +18366,7 @@
     "frogPose_s": "pose_suzhou2",
     "frontImage": [],
     "id": 2024,
+    "location": "江苏·苏州·周庄",
     "name": "suzhou2",
     "place": 7,
     "priority": true,
@@ -17961,6 +18414,7 @@
     "frogPose_s": "pose_suzhou3",
     "frontImage": [],
     "id": 2025,
+    "location": "江苏·苏州·拙政园",
     "name": "suzhou3",
     "place": 7,
     "priority": false,
@@ -18008,6 +18462,7 @@
     "frogPose_s": "pose_tianjin2",
     "frontImage": [],
     "id": 2026,
+    "location": "天津·和平区·瓷房子",
     "name": "tianjin2",
     "place": 8,
     "priority": false,
@@ -18057,6 +18512,7 @@
      "tw_jingan1"
     ],
     "id": 2027,
+    "location": "台湾·新北·静安吊桥",
     "name": "tw_jingan",
     "place": 9,
     "priority": false,
@@ -18104,6 +18560,7 @@
     "frogPose_s": "pose_tw_lanyu",
     "frontImage": [],
     "id": 2028,
+    "location": "台湾·垦丁·兰屿",
     "name": "tw_lanyu",
     "place": 10,
     "priority": false,
@@ -18151,6 +18608,7 @@
     "frogPose_s": "pose_tw_tiandeng",
     "frontImage": [],
     "id": 2029,
+    "location": "台湾·新北·平溪天灯",
     "name": "tw_tiandeng",
     "place": 9,
     "priority": false,
@@ -18198,6 +18656,7 @@
     "frogPose_s": "pose_tw_zuinandian",
     "frontImage": [],
     "id": 2030,
+    "location": "台湾·垦丁·最南点",
     "name": "tw_zuinandian",
     "place": 10,
     "priority": false,
@@ -18245,6 +18704,7 @@
     "frogPose_s": "pose_xianggang1",
     "frontImage": [],
     "id": 2031,
+    "location": "维多利亚港·张保仔帆船",
     "name": "xianggang1",
     "place": 11,
     "priority": false,
@@ -18292,6 +18752,7 @@
     "frogPose_s": "pose_xianggang2",
     "frontImage": [],
     "id": 2032,
+    "location": "香港·怪兽大厦",
     "name": "xianggang2",
     "place": 11,
     "priority": false,
@@ -18339,6 +18800,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 2033,
+    "location": "香港",
     "name": "xianggang3",
     "priority": false,
     "randomSet": false,
@@ -18385,6 +18847,7 @@
     "frogPose_s": "pose_xianggang4",
     "frontImage": [],
     "id": 2034,
+    "location": "香港·嘉咸街",
     "name": "xianggang4",
     "place": 11,
     "priority": false,
@@ -18432,6 +18895,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 2035,
+    "location": "香港",
     "name": "xianggang5",
     "priority": false,
     "randomSet": false,
@@ -18478,6 +18942,7 @@
     "frogPose_s": "pose_haerbin1",
     "frontImage": [],
     "id": 2036,
+    "location": "黑龙江·哈尔滨·太阳岛",
     "name": "haerbin1",
     "place": 12,
     "priority": false,
@@ -18525,6 +18990,7 @@
     "frogPose_s": "pose_haerbin2",
     "frontImage": [],
     "id": 2037,
+    "location": "哈尔滨·索菲亚大教堂",
     "name": "haerbin2",
     "place": 12,
     "priority": false,
@@ -18572,8 +19038,9 @@
     "frogPose_s": "pose_haerbin3",
     "frontImage": [],
     "id": 2038,
+    "location": "吉林·长白山·元蘑",
     "name": "haerbin3",
-    "place": 12,
+    "place": 30,
     "priority": false,
     "randomSet": false,
     "share": 1,
@@ -18608,39 +19075,41 @@
     ],
     "effect": "",
     "frogPos": {
-     "x": 0,
-     "y": 0
+     "x": 45,
+     "y": -131
     },
     "frogPos_s": {
-     "x": 0,
-     "y": 0
+     "x": 45,
+     "y": -131
     },
-    "frogPose": "",
-    "frogPose_s": "",
+    "frogPose": "pose_g_haerbin_4",
+    "frogPose_s": "pose_g_haerbin_4",
     "frontImage": [],
     "id": 2039,
+    "location": "哈尔滨·龙腾福山雪雕",
     "name": "haerbin4",
+    "place": 12,
     "priority": false,
     "randomSet": false,
     "share": 1,
     "travelerPos": [
      {
-      "x": 0,
-      "y": 0
+      "x": 12,
+      "y": -120
      },
      {
-      "x": 0,
-      "y": 0
+      "x": 12,
+      "y": -123
      },
      {
-      "x": 0,
-      "y": 0
+      "x": 15,
+      "y": -104
      }
     ],
     "travelerPose": [
-     "",
-     "",
-     ""
+     "pose_g_haerbin_4",
+     "pose_g_haerbin_4",
+     "pose_g_haerbin_4"
     ],
     "type": "Goal",
     "view": {
@@ -18665,6 +19134,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 2040,
+    "location": "吉林·长白山",
     "name": "changbaishan1",
     "priority": false,
     "randomSet": false,
@@ -18711,6 +19181,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 2041,
+    "location": "吉林·长白山",
     "name": "changbaishan2",
     "priority": false,
     "randomSet": false,
@@ -18757,6 +19228,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 2042,
+    "location": "吉林·长白山",
     "name": "changbaishan3",
     "priority": false,
     "randomSet": false,
@@ -18803,6 +19275,7 @@
     "frogPose_s": "pose_zhangjiajie1",
     "frontImage": [],
     "id": 2043,
+    "location": "湖南·张家界·通天大道",
     "name": "zhangjiajie1",
     "priority": false,
     "randomSet": false,
@@ -18849,6 +19322,7 @@
     "frogPose_s": "pose_zhangjiajie2",
     "frontImage": [],
     "id": 2044,
+    "location": "湖南·张家界·通天大道",
     "name": "zhangjiajie2",
     "place": 13,
     "priority": false,
@@ -18896,6 +19370,7 @@
     "frogPose_s": "pose_zhangjiajie3",
     "frontImage": [],
     "id": 2045,
+    "location": "湖南·张家界·天子山",
     "name": "zhangjiajie3",
     "place": 13,
     "priority": false,
@@ -18943,6 +19418,7 @@
     "frogPose_s": "pose_zhangjiajie4",
     "frontImage": [],
     "id": 2046,
+    "location": "湖南·凤凰古城",
     "name": "zhangjiajie4",
     "place": 13,
     "priority": false,
@@ -18990,6 +19466,7 @@
     "frogPose_s": "pose_wuhan1",
     "frontImage": [],
     "id": 2047,
+    "location": "湖北·武汉·荻海絮语",
     "name": "wuhan1",
     "place": 14,
     "priority": false,
@@ -19037,6 +19514,7 @@
     "frogPose_s": "pose_wuhan2",
     "frontImage": [],
     "id": 2048,
+    "location": "湖北·武汉·长江大桥",
     "name": "wuhan2",
     "place": 14,
     "priority": true,
@@ -19084,6 +19562,7 @@
     "frogPose_s": "pose_wuhan3",
     "frontImage": [],
     "id": 2049,
+    "location": "湖北·武汉·长江大桥",
     "name": "wuhan3",
     "place": 14,
     "priority": false,
@@ -19131,6 +19610,7 @@
     "frogPose_s": "pose_wuhan4",
     "frontImage": [],
     "id": 2050,
+    "location": "湖北·武汉·东湖公园",
     "name": "wuhan4",
     "place": 14,
     "priority": false,
@@ -19178,6 +19658,7 @@
     "frogPose_s": "pose_luoyang1",
     "frontImage": [],
     "id": 2051,
+    "location": "河南·洛阳·龙门石窟",
     "name": "luoyang1",
     "place": 15,
     "priority": false,
@@ -19225,6 +19706,7 @@
     "frogPose_s": "pose_luoyang2",
     "frontImage": [],
     "id": 2052,
+    "location": "河南·洛阳·定鼎门",
     "name": "luoyang2",
     "place": 15,
     "priority": false,
@@ -19272,6 +19754,7 @@
     "frogPose_s": "pose_luoyang3",
     "frontImage": [],
     "id": 2053,
+    "location": "河南·洛阳·牡丹",
     "name": "luoyang3",
     "place": 15,
     "priority": false,
@@ -19319,6 +19802,7 @@
     "frogPose_s": "pose_xian1",
     "frontImage": [],
     "id": 2054,
+    "location": "陕西·西安·兵马俑",
     "name": "xian1",
     "place": 16,
     "priority": false,
@@ -19366,6 +19850,7 @@
     "frogPose_s": "pose_xian2",
     "frontImage": [],
     "id": 2055,
+    "location": "陕西·西安·大雁塔",
     "name": "xian2",
     "place": 16,
     "priority": false,
@@ -19413,6 +19898,7 @@
     "frogPose_s": "pose_xian3",
     "frontImage": [],
     "id": 2056,
+    "location": "陕西·西安·窗花",
     "name": "xian3",
     "place": 16,
     "priority": false,
@@ -19460,6 +19946,7 @@
     "frogPose_s": "pose_jiuquan1",
     "frontImage": [],
     "id": 2057,
+    "location": "甘肃·敦煌·莫高窟",
     "name": "jiuquan1",
     "place": 17,
     "priority": false,
@@ -19507,6 +19994,7 @@
     "frogPose_s": "pose_jiuquan2",
     "frontImage": [],
     "id": 2058,
+    "location": "甘肃·敦煌·阳关",
     "name": "jiuquan2",
     "priority": false,
     "randomSet": false,
@@ -19553,6 +20041,7 @@
     "frogPose_s": "pose_jiuquan3",
     "frontImage": [],
     "id": 2059,
+    "location": "甘肃·敦煌·月牙泉",
     "name": "jiuquan3",
     "place": 17,
     "priority": false,
@@ -19602,6 +20091,7 @@
      "g_yunnan1-front"
     ],
     "id": 2060,
+    "location": "云南·大理·崇圣寺三塔",
     "name": "yunnan1",
     "place": 18,
     "priority": false,
@@ -19649,6 +20139,7 @@
     "frogPose_s": "pose_yunnan2",
     "frontImage": [],
     "id": 2061,
+    "location": "云南·大理·红龙井",
     "name": "yunnan2",
     "place": 18,
     "priority": false,
@@ -19696,6 +20187,7 @@
     "frogPose_s": "pose_yunnan3",
     "frontImage": [],
     "id": 2062,
+    "location": "云南·大理·崇圣寺三塔",
     "name": "yunnan3",
     "priority": false,
     "randomSet": false,
@@ -19742,6 +20234,7 @@
     "frogPose_s": "pose_yunnan4",
     "frontImage": [],
     "id": 2063,
+    "location": "云南·大理·小普陀",
     "name": "yunnan4",
     "priority": false,
     "randomSet": false,
@@ -19788,6 +20281,7 @@
     "frogPose_s": "pose_lasa1",
     "frontImage": [],
     "id": 2064,
+    "location": "西藏·拉萨·布达拉宫",
     "name": "lasa1",
     "place": 19,
     "priority": false,
@@ -19835,6 +20329,7 @@
     "frogPose_s": "pose_lasa2",
     "frontImage": [],
     "id": 2065,
+    "location": "西藏·拉萨·色拉寺",
     "name": "lasa2",
     "place": 19,
     "priority": false,
@@ -19882,6 +20377,7 @@
     "frogPose_s": "pose_lasa3",
     "frontImage": [],
     "id": 2066,
+    "location": "西藏·拉萨·哲蚌寺",
     "name": "lasa3",
     "place": 19,
     "priority": false,
@@ -19929,6 +20425,7 @@
     "frogPose_s": "pose_lasa4",
     "frontImage": [],
     "id": 2067,
+    "location": "西藏·拉萨·经幡",
     "name": "lasa4",
     "priority": false,
     "randomSet": false,
@@ -19975,6 +20472,7 @@
     "frogPose_s": "pose_lasa5",
     "frontImage": [],
     "id": 2068,
+    "location": "西藏·拉萨·经幡",
     "name": "lasa5",
     "place": 19,
     "priority": false,
@@ -20022,6 +20520,7 @@
     "frogPose_s": "pose_shanghai1",
     "frontImage": [],
     "id": 2069,
+    "location": "上海·黄浦区·外滩",
     "name": "shanghai1",
     "place": 20,
     "priority": false,
@@ -20069,6 +20568,7 @@
     "frogPose_s": "pose_shanghai2",
     "frontImage": [],
     "id": 2070,
+    "location": "上海·石库门里弄",
     "name": "shanghai2",
     "priority": false,
     "randomSet": false,
@@ -20115,6 +20615,7 @@
     "frogPose_s": "pose_shanghai3",
     "frontImage": [],
     "id": 2071,
+    "location": "上海·徐汇区·武康大楼",
     "name": "shanghai3",
     "place": 20,
     "priority": false,
@@ -20162,6 +20663,7 @@
     "frogPose_s": "pose_shanghai4",
     "frontImage": [],
     "id": 2072,
+    "location": "上海·石库门里弄",
     "name": "shanghai4",
     "place": 20,
     "priority": false,
@@ -20209,6 +20711,7 @@
     "frogPose_s": "pose_hainan1",
     "frontImage": [],
     "id": 2073,
+    "location": "海南·亚龙湾·靡它灯塔",
     "name": "hainan1",
     "place": 21,
     "priority": false,
@@ -20256,6 +20759,7 @@
     "frogPose_s": "pose_hainan2",
     "frontImage": [],
     "id": 2074,
+    "location": "海南·三亚·天涯海角",
     "name": "hainan2",
     "place": 21,
     "priority": false,
@@ -20303,6 +20807,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 2075,
+    "location": "海南",
     "name": "hainan3",
     "priority": false,
     "randomSet": false,
@@ -20351,6 +20856,7 @@
      "g_hainan_front"
     ],
     "id": 2076,
+    "location": "海南",
     "name": "hainan4",
     "priority": true,
     "randomSet": false,
@@ -20397,6 +20903,7 @@
     "frogPose_s": "pose_chengdu5",
     "frontImage": [],
     "id": 2077,
+    "location": "四川·成都·杜甫草堂",
     "name": "chengdu5",
     "place": 2,
     "priority": true,
@@ -20446,6 +20953,7 @@
      "g_hainan_front2"
     ],
     "id": 2078,
+    "location": "三亚·南山海上观音",
     "name": "hainan5",
     "place": 21,
     "priority": true,
@@ -20493,6 +21001,7 @@
     "frogPose_s": "pose_jiuquan4",
     "frontImage": [],
     "id": 2079,
+    "location": "甘肃·敦煌·阳关",
     "name": "jiuquan4",
     "place": 17,
     "priority": false,
@@ -20540,6 +21049,7 @@
     "frogPose_s": "pose_yunnan5",
     "frontImage": [],
     "id": 2080,
+    "location": "云南·大理·小普陀",
     "name": "yunnan5",
     "place": 18,
     "priority": false,
@@ -20587,6 +21097,7 @@
     "frogPose_s": "pose_guizhou1",
     "frontImage": [],
     "id": 2081,
+    "location": "贵州·黔东南·肇兴侗寨",
     "name": "guizhou1",
     "priority": false,
     "randomSet": false,
@@ -20633,6 +21144,7 @@
     "frogPose_s": "pose_guizhou2",
     "frontImage": [],
     "id": 2082,
+    "location": "贵州·凯里·麻塘革家寨",
     "name": "guizhou2",
     "priority": false,
     "randomSet": false,
@@ -20679,6 +21191,7 @@
     "frogPose_s": "pose_guizhou3",
     "frontImage": [],
     "id": 2083,
+    "location": "贵州贵阳·花溪夜郎谷",
     "name": "guizhou3",
     "priority": false,
     "randomSet": false,
@@ -20725,6 +21238,7 @@
     "frogPose_s": "pose_ningxia1",
     "frontImage": [],
     "id": 2084,
+    "location": "宁夏·银川·水洞沟",
     "name": "ningxia1",
     "priority": false,
     "randomSet": false,
@@ -20771,6 +21285,7 @@
     "frogPose_s": "pose_ningxia2",
     "frontImage": [],
     "id": 2085,
+    "location": "宁夏·银川·龙门客栈",
     "name": "ningxia2",
     "priority": true,
     "randomSet": false,
@@ -20817,6 +21332,7 @@
     "frogPose_s": "pose_ningxia3",
     "frontImage": [],
     "id": 2086,
+    "location": "宁夏·银川·宁夏博物馆",
     "name": "ningxia3",
     "priority": false,
     "randomSet": false,
@@ -20863,6 +21379,7 @@
     "frogPose_s": "pose_fujian1",
     "frontImage": [],
     "id": 2087,
+    "location": "福建·平潭·石头厝",
     "name": "fujian1",
     "place": 24,
     "priority": false,
@@ -20910,6 +21427,7 @@
     "frogPose_s": "pose_fujian2",
     "frontImage": [],
     "id": 2088,
+    "location": "福建·漳州·云水谣",
     "name": "fujian2",
     "place": 24,
     "priority": false,
@@ -20957,6 +21475,7 @@
     "frogPose_s": "pose_jiangxi1",
     "frontImage": [],
     "id": 2089,
+    "location": "江西·景德镇·瓷宫",
     "name": "jiangxi1",
     "place": 25,
     "priority": false,
@@ -21004,6 +21523,7 @@
     "frogPose_s": "pose_jiangxi2",
     "frontImage": [],
     "id": 2090,
+    "location": "江西·南昌·滕王阁",
     "name": "jiangxi2",
     "place": 25,
     "priority": false,
@@ -21051,6 +21571,7 @@
     "frogPose_s": "pose_jiangxi3",
     "frontImage": [],
     "id": 2091,
+    "location": "江西·婺源·篁岭",
     "name": "jiangxi3",
     "place": 25,
     "priority": false,
@@ -21098,6 +21619,7 @@
     "frogPose_s": "pose_guizhou4",
     "frontImage": [],
     "id": 2092,
+    "location": "贵州·黔东南·肇兴侗寨",
     "name": "guizhou4",
     "place": 22,
     "priority": false,
@@ -21145,6 +21667,7 @@
     "frogPose_s": "pose_guizhou5",
     "frontImage": [],
     "id": 2093,
+    "location": "贵州·凯里·麻塘革家寨",
     "name": "guizhou5",
     "place": 22,
     "priority": false,
@@ -21192,6 +21715,7 @@
     "frogPose_s": "pose_guizhou6",
     "frontImage": [],
     "id": 2094,
+    "location": "贵州贵阳·花溪夜郎谷",
     "name": "guizhou6",
     "place": 22,
     "priority": false,
@@ -21239,6 +21763,7 @@
     "frogPose_s": "pose_ningxia4",
     "frontImage": [],
     "id": 2095,
+    "location": "宁夏·银川·宁夏博物馆",
     "name": "ningxia4",
     "place": 23,
     "priority": false,
@@ -21286,6 +21811,7 @@
     "frogPose_s": "pose_ningxia5",
     "frontImage": [],
     "id": 2096,
+    "location": "宁夏·银川·龙门客栈",
     "name": "ningxia5",
     "place": 23,
     "priority": true,
@@ -21333,6 +21859,7 @@
     "frogPose_s": "pose_ningxia6",
     "frontImage": [],
     "id": 2097,
+    "location": "宁夏·银川·水洞沟",
     "name": "ningxia6",
     "place": 23,
     "priority": false,
@@ -21380,6 +21907,7 @@
     "frogPose_s": "pose_anhui1",
     "frontImage": [],
     "id": 2098,
+    "location": "安徽·黄山·宏村",
     "name": "anhui1",
     "place": 26,
     "priority": false,
@@ -21427,6 +21955,7 @@
     "frogPose_s": "pose_anhui2",
     "frontImage": [],
     "id": 2099,
+    "location": "安徽·黄山·西递",
     "name": "anhui2",
     "place": 26,
     "priority": false,
@@ -21474,6 +22003,7 @@
     "frogPose_s": "pose_anhui3",
     "frontImage": [],
     "id": 2100,
+    "location": "安徽·合肥·迎客松",
     "name": "anhui3",
     "place": 26,
     "priority": false,
@@ -21521,6 +22051,7 @@
     "frogPose_s": "pose_jiangmen1",
     "frontImage": [],
     "id": 2101,
+    "location": "广东·江门·民居",
     "name": "jiangmen1",
     "place": 4,
     "priority": false,
@@ -21568,6 +22099,7 @@
     "frogPose_s": "pose_jiangmen2",
     "frontImage": [],
     "id": 2102,
+    "location": "广东·江门·碉楼",
     "name": "jiangmen2",
     "place": 4,
     "priority": false,
@@ -21615,6 +22147,7 @@
     "frogPose_s": "pose_liaoning1",
     "frontImage": [],
     "id": 2103,
+    "location": "辽宁·大连·星海广场",
     "name": "liaoning1",
     "place": 27,
     "priority": false,
@@ -21662,6 +22195,7 @@
     "frogPose_s": "pose_liaoning2",
     "frontImage": [],
     "id": 2104,
+    "location": "辽宁·盘锦·红海滩",
     "name": "liaoning2",
     "place": 27,
     "priority": false,
@@ -21709,6 +22243,7 @@
     "frogPose_s": "pose_qingdao1",
     "frontImage": [],
     "id": 2105,
+    "location": "山东·青岛·琴屿飘灯",
     "name": "qingdao1",
     "place": 28,
     "priority": false,
@@ -21756,6 +22291,7 @@
     "frogPose_s": "pose_qingdao2",
     "frontImage": [],
     "id": 2106,
+    "location": "山东·青岛·五四广场",
     "name": "qingdao2",
     "place": 28,
     "priority": false,
@@ -21803,6 +22339,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 2107,
+    "location": "三峡风景区·巫山",
     "name": "sanxia1",
     "priority": false,
     "randomSet": false,
@@ -21849,6 +22386,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 2108,
+    "location": "三峡风景区·三峡大坝",
     "name": "sanxia2",
     "priority": false,
     "randomSet": false,
@@ -21895,6 +22433,7 @@
     "frogPose_s": "pose_bwg_jiangxi1",
     "frontImage": [],
     "id": 2109,
+    "location": "南昌·江西省博物馆",
     "name": "bwg_jiangxi1",
     "place": 100,
     "priority": false,
@@ -21942,6 +22481,7 @@
     "frogPose_s": "pose_bwg_jiangxi2",
     "frontImage": [],
     "id": 2110,
+    "location": "南昌·江西省博物馆",
     "name": "bwg_jiangxi2",
     "place": 100,
     "priority": false,
@@ -21989,6 +22529,7 @@
     "frogPose_s": "pose_bwg_shandong1",
     "frontImage": [],
     "id": 2111,
+    "location": "山东·济南·山东博物馆",
     "name": "bwg_shandong1",
     "place": 101,
     "priority": false,
@@ -22036,6 +22577,7 @@
     "frogPose_s": "pose_bwg_shandong2",
     "frontImage": [],
     "id": 2112,
+    "location": "山东·济南·山东博物馆",
     "name": "bwg_shandong2",
     "place": 101,
     "priority": false,
@@ -22083,6 +22625,7 @@
     "frogPose_s": "pose_bwg_nanyuewang1",
     "frontImage": [],
     "id": 2113,
+    "location": "广州·南越王博物院",
     "name": "bwg_nanyuewang1",
     "place": 102,
     "priority": false,
@@ -22130,6 +22673,7 @@
     "frogPose_s": "pose_bwg_nanyuewang2",
     "frontImage": [],
     "id": 2114,
+    "location": "广州·南越王博物院",
     "name": "bwg_nanyuewang2",
     "place": 102,
     "priority": false,
@@ -22177,6 +22721,7 @@
     "frogPose_s": "pose_bwg_wuwenhua1",
     "frontImage": [],
     "id": 2115,
+    "location": "江苏·苏州·宝带桥",
     "name": "bwg_wuwenhua1",
     "place": 103,
     "priority": false,
@@ -22224,6 +22769,7 @@
     "frogPose_s": "pose_bwg_wuwenhua2",
     "frontImage": [],
     "id": 2116,
+    "location": "江苏·苏州·木渎古镇",
     "name": "bwg_wuwenhua2",
     "place": 103,
     "priority": false,
@@ -22271,6 +22817,7 @@
     "frogPose_s": "pose_fujian3",
     "frontImage": [],
     "id": 2117,
+    "location": "福建·漳州·东山岛",
     "name": "fujian3",
     "place": 24,
     "priority": false,
@@ -22318,6 +22865,7 @@
     "frogPose_s": "pose_fujian4",
     "frontImage": [],
     "id": 2118,
+    "location": "福建·漳州·东山岛",
     "name": "fujian4",
     "place": 24,
     "priority": false,
@@ -22365,6 +22913,7 @@
     "frogPose_s": "pose_bwg_shanxi1",
     "frontImage": [],
     "id": 2119,
+    "location": "山西·太原",
     "name": "bwg_shanxi1",
     "place": 104,
     "priority": false,
@@ -22412,6 +22961,7 @@
     "frogPose_s": "pose_bwg_shanxi2",
     "frontImage": [],
     "id": 2120,
+    "location": "山西·太原",
     "name": "bwg_shanxi2",
     "place": 104,
     "priority": false,
@@ -22459,6 +23009,7 @@
     "frogPose_s": "pose_ld_guqin",
     "frontImage": [],
     "id": 2121,
+    "location": "广州·大音希声古琴展",
     "name": "ld_guqin",
     "place": 4,
     "priority": false,
@@ -22506,6 +23057,7 @@
     "frogPose_s": "pose_g_shanxi_1",
     "frontImage": [],
     "id": 2122,
+    "location": "山西·晋中·平遥古城",
     "name": "shanxi1",
     "place": 29,
     "priority": false,
@@ -22553,6 +23105,7 @@
     "frogPose_s": "pose_g_shanxi_2",
     "frontImage": [],
     "id": 2123,
+    "location": "山西·忻州·五台山",
     "name": "shanxi2",
     "place": 29,
     "priority": false,
@@ -22600,6 +23153,7 @@
     "frogPose_s": "pose_g_shanxi_3",
     "frontImage": [],
     "id": 2124,
+    "location": "山西·大同·悬空寺",
     "name": "shanxi3",
     "place": 29,
     "priority": false,
@@ -22647,6 +23201,7 @@
     "frogPose_s": "pose_g_shanxi_4",
     "frontImage": [],
     "id": 2125,
+    "location": "山西·大同·云冈石窟",
     "name": "shanxi4",
     "place": 29,
     "priority": false,
@@ -22694,6 +23249,7 @@
     "frogPose_s": "pose_g_jilin_1",
     "frontImage": [],
     "id": 2126,
+    "location": "吉林·长白山·天池",
     "name": "jilin1",
     "place": 30,
     "priority": true,
@@ -22741,6 +23297,7 @@
     "frogPose_s": "pose_g_jilin_2",
     "frontImage": [],
     "id": 2127,
+    "location": "吉林·长白山·松花江",
     "name": "jilin2",
     "place": 30,
     "priority": false,
@@ -22788,6 +23345,7 @@
     "frogPose_s": "pose_g_jilin_3",
     "frontImage": [],
     "id": 2128,
+    "location": "吉林·长白山·滑雪",
     "name": "jilin3",
     "place": 30,
     "priority": false,
@@ -22835,6 +23393,7 @@
     "frogPose_s": "pose_g_jilin_4",
     "frontImage": [],
     "id": 2129,
+    "location": "吉林·长白山·温泉",
     "name": "jilin4",
     "place": 30,
     "priority": false,
@@ -22882,6 +23441,7 @@
     "frogPose_s": "pose_g_aomen_1",
     "frontImage": [],
     "id": 2130,
+    "location": "澳门·大三巴",
     "name": "aomen1",
     "place": 31,
     "priority": true,
@@ -22929,6 +23489,7 @@
     "frogPose_s": "pose_g_aomen_2",
     "frontImage": [],
     "id": 2131,
+    "location": "澳门·观音像",
     "name": "aomen2",
     "place": 31,
     "priority": true,
@@ -22976,6 +23537,7 @@
     "frogPose_s": "pose_g_aomen_3",
     "frontImage": [],
     "id": 2132,
+    "location": "澳门·大炮台",
     "name": "aomen3",
     "place": 31,
     "priority": true,
@@ -23023,6 +23585,7 @@
     "frogPose_s": "pose_g_aomen_4",
     "frontImage": [],
     "id": 2133,
+    "location": "澳门·国货公司",
     "name": "aomen4",
     "place": 31,
     "priority": true,
@@ -23070,6 +23633,7 @@
     "frogPose_s": "pose_g_qinghai_1",
     "frontImage": [],
     "id": 2134,
+    "location": "青海·海西·茶卡盐湖",
     "name": "qinghai1",
     "place": 32,
     "priority": true,
@@ -23117,6 +23681,7 @@
     "frogPose_s": "pose_g_qinghai_2",
     "frontImage": [],
     "id": 2135,
+    "location": "青海·海西·翡翠湖",
     "name": "qinghai2",
     "place": 32,
     "priority": true,
@@ -23164,6 +23729,7 @@
     "frogPose_s": "pose_g_qinghai_3",
     "frontImage": [],
     "id": 2136,
+    "location": "青海·海西·火星营地",
     "name": "qinghai3",
     "place": 32,
     "priority": true,
@@ -23211,6 +23777,7 @@
     "frogPose_s": "pose_g_qinghai_4",
     "frontImage": [],
     "id": 2137,
+    "location": "青海·西宁·青海湖",
     "name": "qinghai4",
     "place": 32,
     "priority": true,
@@ -23258,6 +23825,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 2138,
+    "location": "黄河流域·壶口瀑布",
     "name": "g_hhly_hkpp",
     "priority": false,
     "randomSet": false,
@@ -23304,6 +23872,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 2139,
+    "location": "黄河流域·小浪底",
     "name": "g_hhly_xld",
     "priority": false,
     "randomSet": false,
@@ -23350,6 +23919,7 @@
     "frogPose_s": "pose_g_hebei_1",
     "frontImage": [],
     "id": 2140,
+    "location": "河北·秦皇岛·老龙头",
     "name": "hebei1",
     "place": 33,
     "priority": false,
@@ -23397,6 +23967,7 @@
     "frogPose_s": "pose_g_hebei_2",
     "frontImage": [],
     "id": 2141,
+    "location": "河北·秦皇岛·山海关",
     "name": "hebei2",
     "place": 33,
     "priority": false,
@@ -23444,6 +24015,7 @@
     "frogPose_s": "pose_g_hebei_3",
     "frontImage": [],
     "id": 2142,
+    "location": "河北·打铁花",
     "name": "hebei3",
     "place": 33,
     "priority": false,
@@ -23491,6 +24063,7 @@
     "frogPose_s": "pose_g_hebei_4",
     "frontImage": [],
     "id": 2143,
+    "location": "河北·承德山庄",
     "name": "hebei4",
     "place": 33,
     "priority": false,
@@ -23538,6 +24111,7 @@
     "frogPose_s": "pose_suzhou4",
     "frontImage": [],
     "id": 2144,
+    "location": "江苏·南京·石象路",
     "name": "suzhou4",
     "place": 7,
     "priority": false,
@@ -23585,6 +24159,7 @@
     "frogPose_s": "pose_liaoning3",
     "frontImage": [],
     "id": 2145,
+    "location": "辽宁·沈阳故宫·日晷",
     "name": "liaoning3",
     "place": 27,
     "priority": false,
@@ -23632,6 +24207,7 @@
     "frogPose_s": "pose_g_shanxi_5",
     "frontImage": [],
     "id": 2146,
+    "location": "山西·太原",
     "name": "shanxi5",
     "place": 29,
     "priority": false,
@@ -23679,6 +24255,7 @@
     "frogPose_s": "pose_g_shanxi_6",
     "frontImage": [],
     "id": 2147,
+    "location": "山西·太原",
     "name": "shanxi6",
     "place": 29,
     "priority": false,
@@ -23726,6 +24303,7 @@
     "frogPose_s": "pose_g_guangzhou_4",
     "frontImage": [],
     "id": 2148,
+    "location": "广东·广州·文明路",
     "name": "guangzhou4",
     "place": 4,
     "priority": true,
@@ -23773,6 +24351,7 @@
     "frogPose_s": "pose_g_guangzhou_5",
     "frontImage": [],
     "id": 2149,
+    "location": "广东·广州·文明路",
     "name": "guangzhou5",
     "place": 4,
     "priority": false,
@@ -23820,6 +24399,7 @@
     "frogPose_s": "pose_g_guangzhou_6",
     "frontImage": [],
     "id": 2150,
+    "location": "广东·广州",
     "name": "guangzhou6",
     "place": 4,
     "priority": false,
@@ -23852,6 +24432,582 @@
    },
    {
     "backImage": [
+     "back_g_neimenggu1"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": 154,
+     "y": -145
+    },
+    "frogPos_s": {
+     "x": 154,
+     "y": -145
+    },
+    "frogPose": "pose_g_neimenggu_1",
+    "frogPose_s": "pose_g_neimenggu_1",
+    "frontImage": [],
+    "id": 2151,
+    "location": "内蒙·根河·敖鲁古雅",
+    "name": "neimenggu1",
+    "place": 34,
+    "priority": false,
+    "randomSet": false,
+    "share": 1,
+    "travelerPos": [
+     {
+      "x": 195,
+      "y": -140
+     },
+     {
+      "x": 174,
+      "y": -139
+     },
+     {
+      "x": 133,
+      "y": -114
+     }
+    ],
+    "travelerPose": [
+     "pose_g_neimenggu_1",
+     "pose_g_neimenggu_1",
+     "pose_g_neimenggu_1"
+    ],
+    "type": "Goal",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_g_neimenggu2"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": 166,
+     "y": -146
+    },
+    "frogPos_s": {
+     "x": 166,
+     "y": -146
+    },
+    "frogPose": "pose_g_neimenggu_2",
+    "frogPose_s": "pose_g_neimenggu_2",
+    "frontImage": [],
+    "id": 2152,
+    "location": "内蒙·那达慕大会",
+    "name": "neimenggu2",
+    "place": 34,
+    "priority": false,
+    "randomSet": false,
+    "share": 1,
+    "travelerPos": [
+     {
+      "x": 151,
+      "y": -151
+     },
+     {
+      "x": 206,
+      "y": -162
+     },
+     {
+      "x": 197,
+      "y": -141
+     }
+    ],
+    "travelerPose": [
+     "pose_g_neimenggu_2",
+     "pose_g_neimenggu_2",
+     "pose_g_neimenggu_2"
+    ],
+    "type": "Goal",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_g_neimenggu3"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": 132,
+     "y": -26
+    },
+    "frogPos_s": {
+     "x": 132,
+     "y": -26
+    },
+    "frogPose": "pose_g_neimenggu_3",
+    "frogPose_s": "pose_g_neimenggu_3",
+    "frontImage": [],
+    "id": 2153,
+    "location": "内蒙·莫尔格勒河",
+    "name": "neimenggu3",
+    "place": 34,
+    "priority": true,
+    "randomSet": false,
+    "share": 1,
+    "travelerPos": [
+     {
+      "x": 138,
+      "y": -9
+     },
+     {
+      "x": 116,
+      "y": -8
+     },
+     {
+      "x": 176,
+      "y": -10
+     }
+    ],
+    "travelerPose": [
+     "pose_g_neimenggu_3",
+     "pose_g_neimenggu_3",
+     "pose_g_neimenggu_3"
+    ],
+    "type": "Goal",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_g_xinjiang1"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": 18,
+     "y": -126
+    },
+    "frogPos_s": {
+     "x": 18,
+     "y": -126
+    },
+    "frogPose": "pose_g_xinjiang_1",
+    "frogPose_s": "pose_g_xinjiang_1",
+    "frontImage": [],
+    "id": 2155,
+    "location": "新疆·布尔津县·禾木村",
+    "name": "xinjiang1",
+    "place": 35,
+    "priority": false,
+    "randomSet": false,
+    "share": 1,
+    "travelerPos": [
+     {
+      "x": -32,
+      "y": -126
+     },
+     {
+      "x": 61,
+      "y": -122
+     },
+     {
+      "x": -34,
+      "y": -109
+     }
+    ],
+    "travelerPose": [
+     "pose_g_xinjiang_1",
+     "pose_g_xinjiang_1",
+     "pose_g_xinjiang_1"
+    ],
+    "type": "Goal",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_g_xinjiang2"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": 108,
+     "y": -44
+    },
+    "frogPos_s": {
+     "x": 108,
+     "y": -44
+    },
+    "frogPose": "pose_g_xinjiang_2",
+    "frogPose_s": "pose_g_xinjiang_2",
+    "frontImage": [],
+    "id": 2156,
+    "location": "新疆·吐鲁番葡萄",
+    "name": "xinjiang2",
+    "place": 35,
+    "priority": false,
+    "randomSet": false,
+    "share": 1,
+    "travelerPos": [
+     {
+      "x": 174,
+      "y": -113
+     },
+     {
+      "x": 174,
+      "y": -107
+     },
+     {
+      "x": 133,
+      "y": -29
+     }
+    ],
+    "travelerPose": [
+     "pose_g_xinjiang_2",
+     "pose_g_xinjiang_2",
+     "pose_g_xinjiang_2"
+    ],
+    "type": "Goal",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_g_xinjiang3"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": 206,
+     "y": -148
+    },
+    "frogPos_s": {
+     "x": 206,
+     "y": -148
+    },
+    "frogPose": "pose_g_xinjiang_3",
+    "frogPose_s": "pose_g_xinjiang_3",
+    "frontImage": [],
+    "id": 2157,
+    "location": "新疆·库木塔格沙漠",
+    "name": "xinjiang3",
+    "place": 35,
+    "priority": false,
+    "randomSet": false,
+    "share": 1,
+    "travelerPos": [
+     {
+      "x": 176,
+      "y": -153
+     },
+     {
+      "x": 176,
+      "y": -154
+     },
+     {
+      "x": 158,
+      "y": -135
+     }
+    ],
+    "travelerPose": [
+     "pose_g_xinjiang_3",
+     "pose_g_xinjiang_3",
+     "pose_g_xinjiang_3"
+    ],
+    "type": "Goal",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_g_chongqing3"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": -89,
+     "y": -80
+    },
+    "frogPos_s": {
+     "x": -96,
+     "y": -79
+    },
+    "frogPose": "pose_g_chongqing_3",
+    "frogPose_s": "pose_g_chongqing_3",
+    "frontImage": [],
+    "id": 2158,
+    "location": "重庆·宁厂古镇",
+    "name": "chongqing3",
+    "place": 3,
+    "priority": false,
+    "randomSet": false,
+    "share": 1,
+    "travelerPos": [
+     {
+      "x": 117,
+      "y": -66
+     },
+     {
+      "x": 134,
+      "y": -55
+     },
+     {
+      "x": 118,
+      "y": -66
+     }
+    ],
+    "travelerPose": [
+     "pose_g_chongqing_3",
+     "pose_g_chongqing_3",
+     "pose_g_chongqing_3"
+    ],
+    "type": "Goal",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_g_qingdao3"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": 115,
+     "y": -132
+    },
+    "frogPos_s": {
+     "x": 115,
+     "y": -132
+    },
+    "frogPose": "pose_g_qingdao_3",
+    "frogPose_s": "pose_g_qingdao_3",
+    "frontImage": [],
+    "id": 2159,
+    "location": "青岛·八大关",
+    "name": "qingdao3",
+    "place": 28,
+    "priority": false,
+    "randomSet": false,
+    "share": 1,
+    "travelerPos": [
+     {
+      "x": 194,
+      "y": -132
+     },
+     {
+      "x": 186,
+      "y": -123
+     },
+     {
+      "x": 192,
+      "y": -105
+     }
+    ],
+    "travelerPose": [
+     "pose_g_qingdao_3",
+     "pose_g_qingdao_3",
+     "pose_g_qingdao_3"
+    ],
+    "type": "Goal",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_g_guizhou7"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": 143,
+     "y": -108
+    },
+    "frogPos_s": {
+     "x": 143,
+     "y": -108
+    },
+    "frogPose": "pose_g_guizhou7",
+    "frogPose_s": "pose_g_guizhou7",
+    "frontImage": [],
+    "id": 2160,
+    "location": "贵州·黄果树瀑布",
+    "name": "guizhou7",
+    "place": 22,
+    "priority": false,
+    "randomSet": false,
+    "share": 1,
+    "travelerPos": [
+     {
+      "x": 179,
+      "y": -94
+     },
+     {
+      "x": 178,
+      "y": -91
+     },
+     {
+      "x": 168,
+      "y": -85
+     }
+    ],
+    "travelerPose": [
+     "pose_g_guizhou7",
+     "pose_g_guizhou7",
+     "pose_g_guizhou7"
+    ],
+    "type": "Goal",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_g_xian4"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": 148,
+     "y": -98
+    },
+    "frogPos_s": {
+     "x": 148,
+     "y": -98
+    },
+    "frogPose": "pose_g_xian4",
+    "frogPose_s": "pose_g_xian4",
+    "frontImage": [],
+    "id": 2161,
+    "location": "陕西·汉中·天坑",
+    "name": "xian4",
+    "place": 16,
+    "priority": false,
+    "randomSet": false,
+    "share": 1,
+    "travelerPos": [
+     {
+      "x": 171,
+      "y": -91
+     },
+     {
+      "x": 173,
+      "y": -86
+     },
+     {
+      "x": 151,
+      "y": -47
+     }
+    ],
+    "travelerPose": [
+     "pose_g_xian4",
+     "pose_g_xian4",
+     "pose_g_xian4"
+    ],
+    "type": "Goal",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_g_zhengzhou1"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": -193,
+     "y": -141
+    },
+    "frogPos_s": {
+     "x": -193,
+     "y": -141
+    },
+    "frogPose": "pose_g_zhengzhou1",
+    "frogPose_s": "pose_g_zhengzhou1",
+    "frontImage": [],
+    "id": 2162,
+    "location": "河南·郑州·少林寺塔林",
+    "name": "zhengzhou1",
+    "place": 15,
+    "priority": false,
+    "randomSet": false,
+    "share": 1,
+    "travelerPos": [
+     {
+      "x": -177,
+      "y": -160
+     },
+     {
+      "x": -169,
+      "y": -158
+     },
+     {
+      "x": -220,
+      "y": -124
+     }
+    ],
+    "travelerPose": [
+     "pose_g_zhengzhou1",
+     "pose_g_zhengzhou1",
+     "pose_g_zhengzhou1"
+    ],
+    "type": "Goal",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_g_beijing6"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": -228,
+     "y": -145
+    },
+    "frogPos_s": {
+     "x": -228,
+     "y": -145
+    },
+    "frogPose": "pose_g_beijing6",
+    "frogPose_s": "pose_g_beijing6",
+    "frontImage": [],
+    "id": 2163,
+    "location": "北京·京剧",
+    "name": "beijing6",
+    "place": 1,
+    "priority": false,
+    "randomSet": false,
+    "share": 1,
+    "travelerPos": [
+     {
+      "x": -221,
+      "y": -98
+     },
+     {
+      "x": -216,
+      "y": -113
+     },
+     {
+      "x": -218,
+      "y": -88
+     }
+    ],
+    "travelerPose": [
+     "pose_g_beijing6",
+     "pose_g_beijing6",
+     "pose_g_beijing6"
+    ],
+    "type": "Goal",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
      "back_u_help_bh"
     ],
     "effect": "",
@@ -23867,6 +25023,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3000,
+    "location": "",
     "name": "help_bh",
     "priority": false,
     "randomSet": false,
@@ -23913,6 +25070,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3001,
+    "location": "",
     "name": "help_cw",
     "priority": false,
     "randomSet": false,
@@ -23959,6 +25117,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3002,
+    "location": "",
     "name": "help_yhc",
     "priority": false,
     "randomSet": false,
@@ -24005,6 +25164,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3003,
+    "location": "",
     "name": "lost_bh",
     "priority": false,
     "randomSet": false,
@@ -24051,6 +25211,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3004,
+    "location": "",
     "name": "lost_cw",
     "priority": false,
     "randomSet": false,
@@ -24097,6 +25258,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3005,
+    "location": "",
     "name": "lost_yhc",
     "priority": false,
     "randomSet": false,
@@ -24143,6 +25305,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3006,
+    "location": "",
     "name": "rest_bh",
     "priority": false,
     "randomSet": false,
@@ -24189,6 +25352,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3007,
+    "location": "",
     "name": "rest_cw",
     "priority": false,
     "randomSet": false,
@@ -24235,6 +25399,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3008,
+    "location": "",
     "name": "rest_yhc",
     "priority": false,
     "randomSet": false,
@@ -24281,6 +25446,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3009,
+    "location": "",
     "name": "show_bh",
     "priority": false,
     "randomSet": false,
@@ -24327,6 +25493,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3010,
+    "location": "",
     "name": "show_cw",
     "priority": false,
     "randomSet": false,
@@ -24373,6 +25540,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3011,
+    "location": "",
     "name": "show_yhc",
     "priority": false,
     "randomSet": false,
@@ -24419,6 +25587,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3012,
+    "location": "",
     "name": "rnd1",
     "priority": false,
     "randomSet": false,
@@ -24465,6 +25634,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3013,
+    "location": "",
     "name": "rnd2",
     "priority": true,
     "randomSet": false,
@@ -24511,6 +25681,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3014,
+    "location": "",
     "name": "rnd3",
     "priority": true,
     "randomSet": false,
@@ -24557,6 +25728,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3015,
+    "location": "",
     "name": "rnd4",
     "priority": true,
     "randomSet": false,
@@ -24603,6 +25775,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3016,
+    "location": "",
     "name": "rnd5",
     "priority": true,
     "randomSet": false,
@@ -24649,6 +25822,7 @@
     "frogPose_s": "pose_u_plant",
     "frontImage": [],
     "id": 3017,
+    "location": "",
     "name": "plant_combo",
     "priority": true,
     "randomSet": false,
@@ -24695,6 +25869,7 @@
     "frogPose_s": "pose_u_roof",
     "frontImage": [],
     "id": 3018,
+    "location": "",
     "name": "roof_combo",
     "priority": true,
     "randomSet": false,
@@ -24741,6 +25916,7 @@
     "frogPose_s": "pose_u_tea",
     "frontImage": [],
     "id": 3019,
+    "location": "",
     "name": "tea_combo",
     "priority": false,
     "randomSet": false,
@@ -24787,6 +25963,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3020,
+    "location": "",
     "name": "ofo",
     "priority": false,
     "randomSet": false,
@@ -24833,6 +26010,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3021,
+    "location": "",
     "name": "dyc",
     "priority": false,
     "randomSet": false,
@@ -24879,6 +26057,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3022,
+    "location": "",
     "name": "jiangtun",
     "priority": false,
     "randomSet": false,
@@ -24925,6 +26104,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3023,
+    "location": "",
     "name": "szy",
     "priority": false,
     "randomSet": false,
@@ -24971,6 +26151,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3024,
+    "location": "",
     "name": "duanwu",
     "priority": false,
     "randomSet": false,
@@ -25017,6 +26198,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3025,
+    "location": "",
     "name": "lkq",
     "priority": false,
     "randomSet": false,
@@ -25063,6 +26245,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3026,
+    "location": "",
     "name": "hjh",
     "priority": false,
     "randomSet": false,
@@ -25109,6 +26292,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3027,
+    "location": "",
     "name": "jsh",
     "priority": false,
     "randomSet": false,
@@ -25155,6 +26339,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3028,
+    "location": "",
     "name": "csj",
     "priority": false,
     "randomSet": false,
@@ -25201,6 +26386,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3029,
+    "location": "",
     "name": "streetlight",
     "priority": false,
     "randomSet": false,
@@ -25247,6 +26433,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3030,
+    "location": "",
     "name": "moon",
     "priority": false,
     "randomSet": false,
@@ -25293,6 +26480,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3031,
+    "location": "",
     "name": "xixi",
     "priority": false,
     "randomSet": false,
@@ -25339,6 +26527,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3032,
+    "location": "",
     "name": "pumpkin",
     "priority": false,
     "randomSet": false,
@@ -25385,6 +26574,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3033,
+    "location": "",
     "name": "lotus",
     "priority": false,
     "randomSet": false,
@@ -25431,6 +26621,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3034,
+    "location": "",
     "name": "lamei",
     "priority": false,
     "randomSet": false,
@@ -25477,6 +26668,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3035,
+    "location": "",
     "name": "huabei",
     "priority": false,
     "randomSet": false,
@@ -25523,6 +26715,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3036,
+    "location": "",
     "name": "owl",
     "priority": false,
     "randomSet": false,
@@ -25569,6 +26762,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3037,
+    "location": "",
     "name": "rabbit",
     "priority": false,
     "randomSet": false,
@@ -25615,6 +26809,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3038,
+    "location": "",
     "name": "swan",
     "priority": false,
     "randomSet": false,
@@ -25661,6 +26856,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3039,
+    "location": "",
     "name": "climb",
     "priority": false,
     "randomSet": false,
@@ -25707,6 +26903,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3040,
+    "location": "",
     "name": "eave",
     "priority": false,
     "randomSet": false,
@@ -25753,6 +26950,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3041,
+    "location": "",
     "name": "forage",
     "priority": false,
     "randomSet": false,
@@ -25799,6 +26997,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3042,
+    "location": "",
     "name": "leaf",
     "priority": false,
     "randomSet": false,
@@ -25845,6 +27044,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3043,
+    "location": "",
     "name": "light",
     "priority": false,
     "randomSet": false,
@@ -25891,6 +27091,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3044,
+    "location": "",
     "name": "mushroom",
     "priority": false,
     "randomSet": false,
@@ -25937,6 +27138,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3045,
+    "location": "",
     "name": "feishu",
     "priority": false,
     "randomSet": false,
@@ -25983,6 +27185,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3046,
+    "location": "",
     "name": "wuxiakou",
     "priority": false,
     "randomSet": false,
@@ -26029,6 +27232,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3047,
+    "location": "",
     "name": "baidicheng",
     "priority": false,
     "randomSet": false,
@@ -26075,6 +27279,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3048,
+    "location": "",
     "name": "month1",
     "priority": false,
     "randomSet": false,
@@ -26121,6 +27326,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3049,
+    "location": "",
     "name": "month2",
     "priority": false,
     "randomSet": false,
@@ -26167,6 +27373,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3050,
+    "location": "",
     "name": "month3",
     "priority": false,
     "randomSet": false,
@@ -26213,6 +27420,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3051,
+    "location": "",
     "name": "month4",
     "priority": false,
     "randomSet": false,
@@ -26259,6 +27467,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3052,
+    "location": "",
     "name": "month5",
     "priority": false,
     "randomSet": false,
@@ -26305,6 +27514,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3053,
+    "location": "",
     "name": "month6",
     "priority": false,
     "randomSet": false,
@@ -26351,6 +27561,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3054,
+    "location": "",
     "name": "month7",
     "priority": false,
     "randomSet": false,
@@ -26397,6 +27608,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3055,
+    "location": "",
     "name": "month8",
     "priority": false,
     "randomSet": false,
@@ -26443,6 +27655,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3056,
+    "location": "",
     "name": "month9",
     "priority": false,
     "randomSet": false,
@@ -26489,6 +27702,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3057,
+    "location": "",
     "name": "month10",
     "priority": false,
     "randomSet": false,
@@ -26535,6 +27749,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3058,
+    "location": "",
     "name": "month11",
     "priority": false,
     "randomSet": false,
@@ -26581,6 +27796,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3059,
+    "location": "",
     "name": "month12",
     "priority": false,
     "randomSet": false,
@@ -26627,6 +27843,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3060,
+    "location": "",
     "name": "yoga",
     "priority": false,
     "randomSet": false,
@@ -26673,6 +27890,7 @@
     "frogPose_s": "pose_u_maple",
     "frontImage": [],
     "id": 3061,
+    "location": "",
     "name": "maple",
     "priority": false,
     "randomSet": false,
@@ -26719,6 +27937,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3062,
+    "location": "",
     "name": "alipay",
     "priority": false,
     "randomSet": false,
@@ -26765,6 +27984,7 @@
     "frogPose_s": "pose_bwg_jiangxi",
     "frontImage": [],
     "id": 3063,
+    "location": "",
     "name": "bwg_jiangxi",
     "place": 100,
     "priority": false,
@@ -26812,6 +28032,7 @@
     "frogPose_s": "pose_bwg_shandong",
     "frontImage": [],
     "id": 3064,
+    "location": "",
     "name": "bwg_shandong",
     "place": 101,
     "priority": false,
@@ -26859,6 +28080,7 @@
     "frogPose_s": "pose_bwg_nanyuewang",
     "frontImage": [],
     "id": 3065,
+    "location": "",
     "name": "bwg_nanyuewang",
     "place": 102,
     "priority": true,
@@ -26906,6 +28128,7 @@
     "frogPose_s": "pose_bwg_wuwenhua",
     "frontImage": [],
     "id": 3066,
+    "location": "",
     "name": "bwg_wuwenhua",
     "place": 103,
     "priority": true,
@@ -26953,6 +28176,7 @@
     "frogPose_s": "pose_bwg_shanxi",
     "frontImage": [],
     "id": 3067,
+    "location": "",
     "name": "bwg_shanxi",
     "place": 104,
     "priority": true,
@@ -27000,6 +28224,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3068,
+    "location": "",
     "name": "two_month1",
     "priority": false,
     "randomSet": false,
@@ -27046,6 +28271,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3069,
+    "location": "",
     "name": "two_month2",
     "priority": false,
     "randomSet": false,
@@ -27092,6 +28318,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3070,
+    "location": "",
     "name": "two_month3",
     "priority": false,
     "randomSet": false,
@@ -27138,6 +28365,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3071,
+    "location": "",
     "name": "two_month4",
     "priority": false,
     "randomSet": false,
@@ -27184,6 +28412,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3072,
+    "location": "",
     "name": "two_month5",
     "priority": false,
     "randomSet": false,
@@ -27230,6 +28459,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3073,
+    "location": "",
     "name": "two_month6",
     "priority": false,
     "randomSet": false,
@@ -27276,6 +28506,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3074,
+    "location": "",
     "name": "two_month7",
     "priority": false,
     "randomSet": false,
@@ -27322,6 +28553,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3075,
+    "location": "",
     "name": "two_month8",
     "priority": false,
     "randomSet": false,
@@ -27368,6 +28600,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3076,
+    "location": "",
     "name": "two_month9",
     "priority": false,
     "randomSet": false,
@@ -27414,6 +28647,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3077,
+    "location": "",
     "name": "two_month10",
     "priority": false,
     "randomSet": false,
@@ -27460,6 +28694,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3078,
+    "location": "",
     "name": "two_month11",
     "priority": false,
     "randomSet": false,
@@ -27506,6 +28741,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3079,
+    "location": "",
     "name": "two_month12",
     "priority": false,
     "randomSet": false,
@@ -27552,6 +28788,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3080,
+    "location": "",
     "name": "mid_autumn",
     "priority": false,
     "randomSet": false,
@@ -27598,6 +28835,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3081,
+    "location": "",
     "name": "sugar_maple",
     "priority": false,
     "randomSet": false,
@@ -27644,6 +28882,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3082,
+    "location": "",
     "name": "lost_bh_ly",
     "priority": false,
     "randomSet": false,
@@ -27690,6 +28929,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3083,
+    "location": "",
     "name": "lost_cw_dn",
     "priority": false,
     "randomSet": false,
@@ -27736,6 +28976,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3084,
+    "location": "",
     "name": "lost_yhc_xf",
     "priority": false,
     "randomSet": false,
@@ -27782,6 +29023,7 @@
     "frogPose_s": "pose_yuanyang",
     "frontImage": [],
     "id": 3085,
+    "location": "",
     "name": "yuanyang",
     "priority": true,
     "randomSet": false,
@@ -27828,6 +29070,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3086,
+    "location": "",
     "name": "chunjie_tu",
     "priority": false,
     "randomSet": false,
@@ -27874,6 +29117,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3087,
+    "location": "",
     "name": "huazhu",
     "priority": false,
     "randomSet": false,
@@ -27920,6 +29164,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3088,
+    "location": "",
     "name": "tadpole",
     "priority": false,
     "randomSet": false,
@@ -27966,6 +29211,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3089,
+    "location": "",
     "name": "yhcwsq",
     "priority": false,
     "randomSet": false,
@@ -28012,6 +29258,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3090,
+    "location": "",
     "name": "u_hhly_ljx",
     "priority": false,
     "randomSet": false,
@@ -28058,6 +29305,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3091,
+    "location": "",
     "name": "u_hhly_sjy",
     "priority": false,
     "randomSet": false,
@@ -28104,6 +29352,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3092,
+    "location": "",
     "name": "linkage_szgd1",
     "priority": false,
     "randomSet": false,
@@ -28150,6 +29399,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3093,
+    "location": "",
     "name": "linkage_szgd2",
     "priority": false,
     "randomSet": false,
@@ -28196,6 +29446,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3094,
+    "location": "",
     "name": "linkage_szgd3",
     "priority": false,
     "randomSet": false,
@@ -28242,6 +29493,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3095,
+    "location": "",
     "name": "linkage_szgd4",
     "priority": false,
     "randomSet": false,
@@ -28288,6 +29540,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3096,
+    "location": "",
     "name": "baiyulan",
     "priority": false,
     "randomSet": false,
@@ -28334,6 +29587,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3097,
+    "location": "",
     "name": "yingchun",
     "priority": false,
     "randomSet": false,
@@ -28380,6 +29634,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3098,
+    "location": "",
     "name": "linkage_szgd5",
     "priority": false,
     "randomSet": false,
@@ -28426,6 +29681,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3099,
+    "location": "",
     "name": "linkage_szgd6",
     "priority": false,
     "randomSet": false,
@@ -28472,6 +29728,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3100,
+    "location": "",
     "name": "linkage_szgd7",
     "priority": false,
     "randomSet": false,
@@ -28505,7 +29762,7 @@
     "backImage": [
      "back_u_snail"
     ],
-    "effect": "ANIMALS",
+    "effect": "",
     "frogPos": {
      "x": 0,
      "y": 0
@@ -28518,10 +29775,481 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3101,
+    "location": "",
     "name": "snail",
     "priority": false,
     "randomSet": false,
     "share": 2,
+    "travelerPos": [
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     }
+    ],
+    "travelerPose": [
+     "",
+     "",
+     ""
+    ],
+    "type": "Unique",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_u_anniv"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPos_s": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPose": "",
+    "frogPose_s": "",
+    "frontImage": [],
+    "id": 3102,
+    "location": "",
+    "name": "anniv",
+    "priority": false,
+    "randomSet": false,
+    "share": 2,
+    "travelerPos": [
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     }
+    ],
+    "travelerPose": [
+     "",
+     "",
+     ""
+    ],
+    "type": "Unique",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_u_player"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPos_s": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPose": "",
+    "frogPose_s": "",
+    "frontImage": [],
+    "id": 3103,
+    "location": "",
+    "name": "player",
+    "priority": false,
+    "randomSet": false,
+    "share": 2,
+    "travelerPos": [
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     }
+    ],
+    "travelerPose": [
+     "",
+     "",
+     ""
+    ],
+    "type": "Unique",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_u_squirrel"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPos_s": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPose": "",
+    "frogPose_s": "",
+    "frontImage": [],
+    "id": 3104,
+    "location": "",
+    "name": "squirrel",
+    "priority": false,
+    "randomSet": false,
+    "share": 2,
+    "travelerPos": [
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     }
+    ],
+    "travelerPose": [
+     "",
+     "",
+     ""
+    ],
+    "type": "Unique",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_u_dog"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPos_s": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPose": "",
+    "frogPose_s": "",
+    "frontImage": [],
+    "id": 3105,
+    "location": "",
+    "name": "dog",
+    "priority": false,
+    "randomSet": false,
+    "share": 2,
+    "travelerPos": [
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     }
+    ],
+    "travelerPose": [
+     "",
+     "",
+     ""
+    ],
+    "type": "Unique",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_u_denglong"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPos_s": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPose": "",
+    "frogPose_s": "",
+    "frontImage": [],
+    "id": 3106,
+    "location": "",
+    "name": "denglong",
+    "priority": false,
+    "randomSet": false,
+    "share": 2,
+    "travelerPos": [
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     }
+    ],
+    "travelerPose": [
+     "",
+     "",
+     ""
+    ],
+    "type": "Unique",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_u_fengyanlian"
+    ],
+    "effect": "FLOWER",
+    "frogPos": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPos_s": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPose": "",
+    "frogPose_s": "",
+    "frontImage": [],
+    "id": 3107,
+    "location": "",
+    "name": "fengyanlian",
+    "priority": false,
+    "randomSet": false,
+    "share": 2,
+    "travelerPos": [
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     }
+    ],
+    "travelerPose": [
+     "",
+     "",
+     ""
+    ],
+    "type": "Unique",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_u_xieweijiao"
+    ],
+    "effect": "FLOWER",
+    "frogPos": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPos_s": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPose": "",
+    "frogPose_s": "",
+    "frontImage": [],
+    "id": 3108,
+    "location": "",
+    "name": "xieweijiao",
+    "priority": false,
+    "randomSet": false,
+    "share": 2,
+    "travelerPos": [
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     }
+    ],
+    "travelerPose": [
+     "",
+     "",
+     ""
+    ],
+    "type": "Unique",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_u_xiazhi_1"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPos_s": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPose": "",
+    "frogPose_s": "",
+    "frontImage": [],
+    "id": 3109,
+    "location": "",
+    "name": "xiazhi_1",
+    "priority": false,
+    "randomSet": false,
+    "share": 3,
+    "travelerPos": [
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     }
+    ],
+    "travelerPose": [
+     "",
+     "",
+     ""
+    ],
+    "type": "Unique",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_u_xiazhi_2"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPos_s": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPose": "",
+    "frogPose_s": "",
+    "frontImage": [],
+    "id": 3110,
+    "location": "",
+    "name": "xiazhi_2",
+    "priority": false,
+    "randomSet": false,
+    "share": 3,
+    "travelerPos": [
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     }
+    ],
+    "travelerPose": [
+     "",
+     "",
+     ""
+    ],
+    "type": "Unique",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_u_mid_autumn_2"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPos_s": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPose": "",
+    "frogPose_s": "",
+    "frontImage": [],
+    "id": 3111,
+    "location": "",
+    "name": "mid_autumn_2",
+    "priority": false,
+    "randomSet": false,
+    "share": 3,
     "travelerPos": [
      {
       "x": 0,
@@ -28564,6 +30292,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3148,
+    "location": "",
     "name": "month1_2",
     "priority": false,
     "randomSet": false,
@@ -28610,6 +30339,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3149,
+    "location": "",
     "name": "month2_2",
     "priority": false,
     "randomSet": false,
@@ -28656,6 +30386,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3150,
+    "location": "",
     "name": "month3_2",
     "priority": false,
     "randomSet": false,
@@ -28702,6 +30433,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3151,
+    "location": "",
     "name": "month4_2",
     "priority": false,
     "randomSet": false,
@@ -28748,6 +30480,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3152,
+    "location": "",
     "name": "month5_2",
     "priority": false,
     "randomSet": false,
@@ -28794,6 +30527,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3153,
+    "location": "",
     "name": "month6_2",
     "priority": false,
     "randomSet": false,
@@ -28840,6 +30574,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3154,
+    "location": "",
     "name": "month7_2",
     "priority": false,
     "randomSet": false,
@@ -28886,6 +30621,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3155,
+    "location": "",
     "name": "month8_2",
     "priority": false,
     "randomSet": false,
@@ -28932,6 +30668,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3156,
+    "location": "",
     "name": "month9_2",
     "priority": false,
     "randomSet": false,
@@ -28978,6 +30715,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3157,
+    "location": "",
     "name": "month10_2",
     "priority": false,
     "randomSet": false,
@@ -29024,6 +30762,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3158,
+    "location": "",
     "name": "month11_2",
     "priority": false,
     "randomSet": false,
@@ -29070,6 +30809,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3159,
+    "location": "",
     "name": "month12_2",
     "priority": false,
     "randomSet": false,
@@ -29116,6 +30856,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3168,
+    "location": "",
     "name": "two_month1_2",
     "priority": false,
     "randomSet": false,
@@ -29162,6 +30903,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3169,
+    "location": "",
     "name": "two_month2_2",
     "priority": false,
     "randomSet": false,
@@ -29208,6 +30950,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3170,
+    "location": "",
     "name": "two_month3_2",
     "priority": false,
     "randomSet": false,
@@ -29254,6 +30997,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3171,
+    "location": "",
     "name": "two_month4_2",
     "priority": false,
     "randomSet": false,
@@ -29300,6 +31044,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3172,
+    "location": "",
     "name": "two_month5_2",
     "priority": false,
     "randomSet": false,
@@ -29346,6 +31091,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3173,
+    "location": "",
     "name": "two_month6_2",
     "priority": false,
     "randomSet": false,
@@ -29392,6 +31138,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3174,
+    "location": "",
     "name": "two_month7_2",
     "priority": false,
     "randomSet": false,
@@ -29438,6 +31185,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3175,
+    "location": "",
     "name": "two_month8_2",
     "priority": false,
     "randomSet": false,
@@ -29484,6 +31232,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3176,
+    "location": "",
     "name": "two_month9_2",
     "priority": false,
     "randomSet": false,
@@ -29530,6 +31279,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3177,
+    "location": "",
     "name": "two_month10_2",
     "priority": false,
     "randomSet": false,
@@ -29576,6 +31326,7 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3178,
+    "location": "",
     "name": "two_month11_2",
     "priority": false,
     "randomSet": false,
@@ -29622,7 +31373,149 @@
     "frogPose_s": "",
     "frontImage": [],
     "id": 3179,
+    "location": "",
     "name": "two_month12_2",
+    "priority": false,
+    "randomSet": false,
+    "share": 3,
+    "travelerPos": [
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     }
+    ],
+    "travelerPose": [
+     "",
+     "",
+     ""
+    ],
+    "type": "Unique",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_u_two_month9_3"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPos_s": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPose": "",
+    "frogPose_s": "",
+    "frontImage": [],
+    "id": 3180,
+    "location": "",
+    "name": "two_month9_3",
+    "priority": false,
+    "randomSet": false,
+    "share": 3,
+    "travelerPos": [
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     }
+    ],
+    "travelerPose": [
+     "",
+     "",
+     ""
+    ],
+    "type": "Unique",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_u_two_month10_3"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPos_s": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPose": "",
+    "frogPose_s": "",
+    "frontImage": [],
+    "id": 3181,
+    "location": "",
+    "name": "two_month10_3",
+    "priority": false,
+    "randomSet": false,
+    "share": 3,
+    "travelerPos": [
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     }
+    ],
+    "travelerPose": [
+     "",
+     "",
+     ""
+    ],
+    "type": "Unique",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_u_month11_3"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPos_s": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPose": "",
+    "frogPose_s": "",
+    "frontImage": [],
+    "id": 3182,
+    "location": "",
+    "name": "month11_3",
     "priority": false,
     "randomSet": false,
     "share": 3,
@@ -29672,6 +31565,7 @@
      "lanhuateng_front"
     ],
     "id": 3201,
+    "location": "",
     "name": "back_u_lanhuateng",
     "priority": true,
     "randomSet": false,
@@ -29723,6 +31617,7 @@
      "chuisihaitang_front"
     ],
     "id": 3202,
+    "location": "",
     "name": "back_u_chuisihaitang",
     "priority": false,
     "randomSet": false,
@@ -29772,6 +31667,7 @@
      "mumianhua_front_1"
     ],
     "id": 3203,
+    "location": "",
     "name": "back_u_mumianhua1",
     "priority": false,
     "randomSet": false,
@@ -29821,6 +31717,7 @@
      "mumianhua_front_2"
     ],
     "id": 3204,
+    "location": "",
     "name": "back_u_mumianhua2",
     "priority": false,
     "randomSet": false,
@@ -29870,6 +31767,7 @@
      "mumianhua_front_3"
     ],
     "id": 3205,
+    "location": "",
     "name": "back_u_mumianhua3",
     "priority": false,
     "randomSet": false,
@@ -29901,7 +31799,7 @@
    },
    {
     "backImage": [
-     "back_u_anniv"
+     "back_u_month12_3"
     ],
     "effect": "",
     "frogPos": {
@@ -29915,8 +31813,56 @@
     "frogPose": "",
     "frogPose_s": "",
     "frontImage": [],
-    "id": 3102,
-    "name": "anniv",
+    "id": 3206,
+    "location": "",
+    "name": "month12_3",
+    "priority": false,
+    "randomSet": false,
+    "share": 3,
+    "travelerPos": [
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     }
+    ],
+    "travelerPose": [
+     "",
+     "",
+     ""
+    ],
+    "type": "Unique",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_u_anniv_2"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPos_s": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPose": "",
+    "frogPose_s": "",
+    "frontImage": [],
+    "id": 3207,
+    "location": "",
+    "name": "anniv_2",
     "priority": false,
     "randomSet": false,
     "share": 2,
@@ -29947,7 +31893,7 @@
    },
    {
     "backImage": [
-     "back_u_player"
+     "back_u_month1_3"
     ],
     "effect": "",
     "frogPos": {
@@ -29961,11 +31907,247 @@
     "frogPose": "",
     "frogPose_s": "",
     "frontImage": [],
-    "id": 3103,
-    "name": "player",
+    "id": 3208,
+    "location": "",
+    "name": "month1_3",
     "priority": false,
     "randomSet": false,
-    "share": 2,
+    "share": 3,
+    "travelerPos": [
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     }
+    ],
+    "travelerPose": [
+     "",
+     "",
+     ""
+    ],
+    "type": "Unique",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_u_month2_3"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPos_s": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPose": "",
+    "frogPose_s": "",
+    "frontImage": [],
+    "id": 3209,
+    "location": "",
+    "name": "month2_3",
+    "priority": false,
+    "randomSet": false,
+    "share": 3,
+    "travelerPos": [
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     }
+    ],
+    "travelerPose": [
+     "",
+     "",
+     ""
+    ],
+    "type": "Unique",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_u_month3_3"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPos_s": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPose": "",
+    "frogPose_s": "",
+    "frontImage": [],
+    "id": 3210,
+    "location": "",
+    "name": "month3_3",
+    "priority": false,
+    "randomSet": false,
+    "share": 3,
+    "travelerPos": [
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     }
+    ],
+    "travelerPose": [
+     "",
+     "",
+     ""
+    ],
+    "type": "Unique",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_u_month4_3"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPos_s": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPose": "",
+    "frogPose_s": "",
+    "frontImage": [],
+    "id": 3211,
+    "location": "",
+    "name": "month4_3",
+    "priority": false,
+    "randomSet": false,
+    "share": 3,
+    "travelerPos": [
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     }
+    ],
+    "travelerPose": [
+     "",
+     "",
+     ""
+    ],
+    "type": "Unique",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_u_month5_3"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPos_s": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPose": "",
+    "frogPose_s": "",
+    "frontImage": [],
+    "id": 3212,
+    "location": "",
+    "name": "month5_3",
+    "priority": false,
+    "randomSet": false,
+    "share": 3,
+    "travelerPos": [
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     },
+     {
+      "x": 0,
+      "y": 0
+     }
+    ],
+    "travelerPose": [
+     "",
+     "",
+     ""
+    ],
+    "type": "Unique",
+    "view": {
+     "x": 0,
+     "y": 0
+    }
+   },
+   {
+    "backImage": [
+     "back_u_month6_3"
+    ],
+    "effect": "",
+    "frogPos": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPos_s": {
+     "x": 0,
+     "y": 0
+    },
+    "frogPose": "",
+    "frogPose_s": "",
+    "frontImage": [],
+    "id": 3213,
+    "location": "",
+    "name": "month6_3",
+    "priority": false,
+    "randomSet": false,
+    "share": 3,
     "travelerPos": [
      {
       "x": 0,
@@ -30586,6 +32768,16 @@
     "itemId": 3038,
     "place": "华北地区",
     "id": 63
+   },
+   {
+    "itemId": 3039,
+    "place": "西北地区",
+    "id": 64
+   },
+   {
+    "itemId": 3040,
+    "place": "西北地区",
+    "id": 65
    }
   ],
   "TravelFriends": {
@@ -32197,36 +34389,43 @@
      "id": 1,
      "phase_list": [
       {
+       "exp": 50,
        "layer": 1,
        "phase": 1,
        "spine": ""
       },
       {
+       "exp": 80,
        "layer": 2,
        "phase": 2,
        "spine": "gif_1_bg1"
       },
       {
+       "exp": 120,
        "layer": 3,
        "phase": 3,
        "spine": "gif_1_bg2"
       },
       {
+       "exp": 150,
        "layer": 4,
        "phase": 4,
        "spine": "gif_1_role_qw"
       },
       {
+       "exp": 180,
        "layer": 5,
        "phase": 5,
        "spine": "gif_1_role_bh"
       },
       {
+       "exp": 220,
        "layer": 6,
        "phase": 6,
        "spine": "gif_1_role_yhc"
       },
       {
+       "exp": 0,
        "layer": 7,
        "phase": 7,
        "spine": "gif_1_role_cw"
@@ -32240,41 +34439,49 @@
      "id": 2,
      "phase_list": [
       {
+       "exp": 40,
        "layer": 1,
        "phase": 1,
        "spine": ""
       },
       {
+       "exp": 60,
        "layer": 2,
        "phase": 2,
        "spine": "gif_2_bg1"
       },
       {
+       "exp": 80,
        "layer": 7,
        "phase": 3,
        "spine": "gif_2_bg2"
       },
       {
+       "exp": 110,
        "layer": 8,
        "phase": 4,
        "spine": "gif_2_fg1"
       },
       {
+       "exp": 140,
        "layer": 3,
        "phase": 5,
        "spine": "gif_2_role_bh"
       },
       {
+       "exp": 170,
        "layer": 4,
        "phase": 6,
        "spine": "gif_2_role_qw"
       },
       {
+       "exp": 200,
        "layer": 5,
        "phase": 7,
        "spine": "gif_2_role_yhc"
       },
       {
+       "exp": 0,
        "layer": 6,
        "phase": 8,
        "spine": "gif_2_role_cw"
@@ -32288,41 +34495,49 @@
      "id": 3,
      "phase_list": [
       {
+       "exp": 50,
        "layer": 1,
        "phase": 1,
        "spine": ""
       },
       {
+       "exp": 80,
        "layer": 2,
        "phase": 2,
        "spine": "gif_3_bg1"
       },
       {
+       "exp": 100,
        "layer": 4,
        "phase": 3,
        "spine": "gif_3_tree"
       },
       {
+       "exp": 140,
        "layer": 3,
        "phase": 4,
        "spine": "gif_3_shidun"
       },
       {
+       "exp": 180,
        "layer": 5,
        "phase": 5,
        "spine": "gif_3_role_qw"
       },
       {
+       "exp": 210,
        "layer": 6,
        "phase": 6,
        "spine": "gif_3_role_yhc"
       },
       {
+       "exp": 240,
        "layer": 7,
        "phase": 7,
        "spine": "gif_3_role_bh"
       },
       {
+       "exp": 0,
        "layer": 8,
        "phase": 8,
        "spine": "gif_3_role_cw"
@@ -32331,12 +34546,177 @@
      "pic_list": [
       2000
      ]
+    },
+    "4": {
+     "id": 4,
+     "phase_list": [
+      {
+       "exp": 0,
+       "layer": 5,
+       "phase": 1,
+       "spine": "gif_4_dg"
+      },
+      {
+       "exp": 100,
+       "layer": 1,
+       "phase": 2,
+       "spine": "gif_4_bg"
+      },
+      {
+       "exp": 150,
+       "layer": 12,
+       "phase": 3,
+       "spine": "gif_4_jt"
+      },
+      {
+       "exp": 200,
+       "layer": 11,
+       "phase": 4,
+       "spine": "gif_4_piaodai"
+      },
+      {
+       "exp": 250,
+       "layer": 10,
+       "phase": 5,
+       "spine": "gif_4_cw"
+      },
+      {
+       "exp": 300,
+       "layer": 9,
+       "phase": 6,
+       "spine": "gif_4_dd"
+      },
+      {
+       "exp": 340,
+       "layer": 8,
+       "phase": 7,
+       "spine": "gif_4_bh"
+      },
+      {
+       "exp": 380,
+       "layer": 7,
+       "phase": 8,
+       "spine": "gif_4_kk"
+      },
+      {
+       "exp": 420,
+       "layer": 6,
+       "phase": 9,
+       "spine": "gif_4_yhc"
+      },
+      {
+       "exp": 460,
+       "layer": 4,
+       "phase": 10,
+       "spine": "gif_4_pp"
+      },
+      {
+       "exp": 500,
+       "layer": 3,
+       "phase": 11,
+       "spine": "gif_4_tt"
+      },
+      {
+       "exp": 0,
+       "layer": 2,
+       "phase": 12,
+       "spine": "gif_4_qw"
+      }
+     ],
+     "pic_list": [
+      3102
+     ]
+    },
+    "5": {
+     "id": 5,
+     "phase_list": [
+      {
+       "exp": 100,
+       "layer": 1,
+       "phase": 1,
+       "spine": ""
+      },
+      {
+       "exp": 200,
+       "layer": 2,
+       "phase": 2,
+       "spine": "gif_5_bg"
+      },
+      {
+       "exp": 300,
+       "layer": 3,
+       "phase": 3,
+       "spine": "gif_5_role_qw"
+      },
+      {
+       "exp": 350,
+       "layer": 4,
+       "phase": 4,
+       "spine": "gif_5_role_bh"
+      },
+      {
+       "exp": 350,
+       "layer": 5,
+       "phase": 5,
+       "spine": "gif_5_role_cw"
+      },
+      {
+       "exp": 0,
+       "layer": 6,
+       "phase": 6,
+       "spine": "gif_5_role_yhc"
+      }
+     ],
+     "pic_list": [
+      3063
+     ]
+    },
+    "6": {
+     "id": 6,
+     "phase_list": [
+      {
+       "exp": 100,
+       "layer": 1,
+       "phase": 1,
+       "spine": ""
+      },
+      {
+       "exp": 350,
+       "layer": 2,
+       "phase": 2,
+       "spine": "gif_6_bg"
+      },
+      {
+       "exp": 500,
+       "layer": 3,
+       "phase": 3,
+       "spine": "gif_6_role_cw"
+      },
+      {
+       "exp": 350,
+       "layer": 4,
+       "phase": 4,
+       "spine": "gif_6_role_bhqw"
+      },
+      {
+       "exp": 0,
+       "layer": 5,
+       "phase": 5,
+       "spine": "gif_6_role_yhc"
+      }
+     ],
+     "pic_list": [
+      3064
+     ]
     }
    },
    "pic_map": {
     "100": 1,
     "104": 2,
-    "2000": 3
+    "2000": 3,
+    "3063": 5,
+    "3064": 6,
+    "3102": 4
    }
   },
   "benchData": [
@@ -33321,6 +35701,438 @@
     "type": 1
    },
    {
+    "id": 2001,
+    "type": 1
+   },
+   {
+    "id": 2002,
+    "type": 1
+   },
+   {
+    "id": 2003,
+    "type": 1
+   },
+   {
+    "id": 2004,
+    "type": 1
+   },
+   {
+    "id": 2005,
+    "type": 1
+   },
+   {
+    "id": 2006,
+    "type": 1
+   },
+   {
+    "id": 2007,
+    "type": 1
+   },
+   {
+    "id": 2008,
+    "type": 1
+   },
+   {
+    "id": 2009,
+    "type": 1
+   },
+   {
+    "id": 2010,
+    "type": 1
+   },
+   {
+    "id": 2011,
+    "type": 1
+   },
+   {
+    "id": 2012,
+    "type": 1
+   },
+   {
+    "id": 2013,
+    "type": 1
+   },
+   {
+    "id": 2014,
+    "type": 1
+   },
+   {
+    "id": 2015,
+    "type": 1
+   },
+   {
+    "id": 2016,
+    "type": 1
+   },
+   {
+    "id": 2017,
+    "type": 1
+   },
+   {
+    "id": 2018,
+    "type": 1
+   },
+   {
+    "id": 2019,
+    "type": 1
+   },
+   {
+    "id": 2020,
+    "type": 1
+   },
+   {
+    "id": 2021,
+    "type": 1
+   },
+   {
+    "id": 2022,
+    "type": 1
+   },
+   {
+    "id": 2023,
+    "type": 1
+   },
+   {
+    "id": 2024,
+    "type": 1
+   },
+   {
+    "id": 2025,
+    "type": 1
+   },
+   {
+    "id": 2026,
+    "type": 1
+   },
+   {
+    "id": 2027,
+    "type": 1
+   },
+   {
+    "id": 2101,
+    "type": 1
+   },
+   {
+    "id": 2102,
+    "type": 1
+   },
+   {
+    "id": 2103,
+    "type": 1
+   },
+   {
+    "id": 2104,
+    "type": 1
+   },
+   {
+    "id": 2105,
+    "type": 1
+   },
+   {
+    "id": 2106,
+    "type": 1
+   },
+   {
+    "id": 2107,
+    "type": 1
+   },
+   {
+    "id": 2108,
+    "type": 1
+   },
+   {
+    "id": 2109,
+    "type": 1
+   },
+   {
+    "id": 2110,
+    "type": 1
+   },
+   {
+    "id": 2111,
+    "type": 1
+   },
+   {
+    "id": 2112,
+    "type": 1
+   },
+   {
+    "id": 2113,
+    "type": 1
+   },
+   {
+    "id": 2114,
+    "type": 1
+   },
+   {
+    "id": 2115,
+    "type": 1
+   },
+   {
+    "id": 2116,
+    "type": 1
+   },
+   {
+    "id": 2117,
+    "type": 1
+   },
+   {
+    "id": 2118,
+    "type": 1
+   },
+   {
+    "id": 2119,
+    "type": 1
+   },
+   {
+    "id": 2120,
+    "type": 1
+   },
+   {
+    "id": 2121,
+    "type": 1
+   },
+   {
+    "id": 2122,
+    "type": 1
+   },
+   {
+    "id": 2123,
+    "type": 1
+   },
+   {
+    "id": 2124,
+    "type": 1
+   },
+   {
+    "id": 2125,
+    "type": 1
+   },
+   {
+    "id": 2126,
+    "type": 1
+   },
+   {
+    "id": 2127,
+    "type": 1
+   },
+   {
+    "id": 2201,
+    "type": 1
+   },
+   {
+    "id": 2202,
+    "type": 1
+   },
+   {
+    "id": 2203,
+    "type": 1
+   },
+   {
+    "id": 2204,
+    "type": 1
+   },
+   {
+    "id": 2205,
+    "type": 1
+   },
+   {
+    "id": 2206,
+    "type": 1
+   },
+   {
+    "id": 2207,
+    "type": 1
+   },
+   {
+    "id": 2208,
+    "type": 1
+   },
+   {
+    "id": 2209,
+    "type": 1
+   },
+   {
+    "id": 2210,
+    "type": 1
+   },
+   {
+    "id": 2211,
+    "type": 1
+   },
+   {
+    "id": 2212,
+    "type": 1
+   },
+   {
+    "id": 2213,
+    "type": 1
+   },
+   {
+    "id": 2214,
+    "type": 1
+   },
+   {
+    "id": 2215,
+    "type": 1
+   },
+   {
+    "id": 2216,
+    "type": 1
+   },
+   {
+    "id": 2217,
+    "type": 1
+   },
+   {
+    "id": 2218,
+    "type": 1
+   },
+   {
+    "id": 2219,
+    "type": 1
+   },
+   {
+    "id": 2220,
+    "type": 1
+   },
+   {
+    "id": 2221,
+    "type": 1
+   },
+   {
+    "id": 2222,
+    "type": 1
+   },
+   {
+    "id": 2223,
+    "type": 1
+   },
+   {
+    "id": 2224,
+    "type": 1
+   },
+   {
+    "id": 2225,
+    "type": 1
+   },
+   {
+    "id": 2226,
+    "type": 1
+   },
+   {
+    "id": 2227,
+    "type": 1
+   },
+   {
+    "id": 2301,
+    "type": 1
+   },
+   {
+    "id": 2302,
+    "type": 1
+   },
+   {
+    "id": 2303,
+    "type": 1
+   },
+   {
+    "id": 2304,
+    "type": 1
+   },
+   {
+    "id": 2305,
+    "type": 1
+   },
+   {
+    "id": 2306,
+    "type": 1
+   },
+   {
+    "id": 2307,
+    "type": 1
+   },
+   {
+    "id": 2308,
+    "type": 1
+   },
+   {
+    "id": 2309,
+    "type": 1
+   },
+   {
+    "id": 2310,
+    "type": 1
+   },
+   {
+    "id": 2311,
+    "type": 1
+   },
+   {
+    "id": 2312,
+    "type": 1
+   },
+   {
+    "id": 2313,
+    "type": 1
+   },
+   {
+    "id": 2314,
+    "type": 1
+   },
+   {
+    "id": 2315,
+    "type": 1
+   },
+   {
+    "id": 2316,
+    "type": 1
+   },
+   {
+    "id": 2317,
+    "type": 1
+   },
+   {
+    "id": 2318,
+    "type": 1
+   },
+   {
+    "id": 2319,
+    "type": 1
+   },
+   {
+    "id": 2320,
+    "type": 1
+   },
+   {
+    "id": 2321,
+    "type": 1
+   },
+   {
+    "id": 2322,
+    "type": 1
+   },
+   {
+    "id": 2323,
+    "type": 1
+   },
+   {
+    "id": 2324,
+    "type": 1
+   },
+   {
+    "id": 2325,
+    "type": 1
+   },
+   {
+    "id": 2326,
+    "type": 1
+   },
+   {
+    "id": 2327,
+    "type": 1
+   },
+   {
     "id": 20011,
     "type": 2
    },
@@ -33521,6 +36333,10 @@
     "type": 3
    },
    {
+    "id": 21051,
+    "type": 3
+   },
+   {
     "id": 22011,
     "type": 4
    },
@@ -33541,112 +36357,8 @@
     "type": 4
    },
    {
-    "id": 2001,
-    "type": 1
-   },
-   {
-    "id": 2002,
-    "type": 1
-   },
-   {
-    "id": 2003,
-    "type": 1
-   },
-   {
-    "id": 2004,
-    "type": 1
-   },
-   {
-    "id": 2005,
-    "type": 1
-   },
-   {
-    "id": 2006,
-    "type": 1
-   },
-   {
-    "id": 2007,
-    "type": 1
-   },
-   {
-    "id": 2008,
-    "type": 1
-   },
-   {
-    "id": 2009,
-    "type": 1
-   },
-   {
-    "id": 2010,
-    "type": 1
-   },
-   {
-    "id": 2011,
-    "type": 1
-   },
-   {
-    "id": 2012,
-    "type": 1
-   },
-   {
-    "id": 2013,
-    "type": 1
-   },
-   {
-    "id": 2014,
-    "type": 1
-   },
-   {
-    "id": 2015,
-    "type": 1
-   },
-   {
-    "id": 2016,
-    "type": 1
-   },
-   {
-    "id": 2017,
-    "type": 1
-   },
-   {
-    "id": 2018,
-    "type": 1
-   },
-   {
-    "id": 2019,
-    "type": 1
-   },
-   {
-    "id": 2020,
-    "type": 1
-   },
-   {
-    "id": 2021,
-    "type": 1
-   },
-   {
-    "id": 2022,
-    "type": 1
-   },
-   {
-    "id": 2023,
-    "type": 1
-   },
-   {
-    "id": 2024,
-    "type": 1
-   },
-   {
-    "id": 2025,
-    "type": 1
-   },
-   {
-    "id": 2026,
-    "type": 1
-   },
-   {
-    "id": 2027,
-    "type": 1
+    "id": 22041,
+    "type": 4
    }
   ],
   "calendarData": {
@@ -41922,6 +44634,3867 @@
      ],
      "id": 3066,
      "pic": "YN1_CW"
+    },
+    "4001": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "祖国的河山真的好美啊，谢谢蛙崽让我看到了真的美丽的景色"
+      }
+     ],
+     "id": 4001,
+     "pic": "g_qinghai4"
+    },
+    "4002": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "我们可以攀登所有 想攀登的高峰"
+      }
+     ],
+     "id": 4002,
+     "pic": "g_qinghai3"
+    },
+    "4003": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "居然去了青海的翡翠湖！我2021去过的地方，真的很美。"
+      }
+     ],
+     "id": 4003,
+     "pic": "g_qinghai2"
+    },
+    "4004": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "现在小青蛙先替我去看看这个世界，而总有一天，我也会亲眼看见的"
+      }
+     ],
+     "id": 4004,
+     "pic": "g_qinghai3"
+    },
+    "4005": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "祝大家新的一年里保持热爱 奔赴山海 让大雁带走每个人的烦恼吧"
+      }
+     ],
+     "id": 4005,
+     "pic": "g_qinghai2"
+    },
+    "4006": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "星光荡开宇宙，本呱闪耀其中。"
+      }
+     ],
+     "id": 4006,
+     "pic": "g_qinghai3"
+    },
+    "4007": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "去拉萨啦，不知道小蛙有没有高反哦！"
+      }
+     ],
+     "id": 4007,
+     "pic": "g_lasa4"
+    },
+    "4008": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "哈哈哈哈小蛙，看了你的笔记，这个画着脚脚的蛇是龙哦！"
+      }
+     ],
+     "id": 4008,
+     "pic": "g_beijing2"
+    },
+    "4009": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "哈哈，给蛙取我异校好朋友的名字，好像天天在一块一样"
+      }
+     ],
+     "id": 4009,
+     "pic": "g_beijing3"
+    },
+    "4010": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "小家伙的笔记上说自己在这里睡着了哈哈哈哈哈呱呱呱呱"
+      }
+     ],
+     "id": 4010,
+     "pic": "g_fujian1"
+    },
+    "4011": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "小家伙在笔记上说这里太热了，想用魔法把太阳变成月亮"
+      }
+     ],
+     "id": 4011,
+     "pic": "g_hainan1"
+    },
+    "4012": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "妈妈以后也会走一走小乖走过的路，看一看小乖看过的风景。"
+      }
+     ],
+     "id": 4012,
+     "pic": "g_hainan1"
+    },
+    "4013": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "愿诸位今后桥都坚固，隧道都光明。光明就在前方，加油。"
+      }
+     ],
+     "id": 4013,
+     "pic": "g_suzhou4"
+    },
+    "4014": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "看到好的风景什么烦恼都忘了୧꒰•̀ᴗ•́꒱୨"
+      }
+     ],
+     "id": 4014,
+     "pic": "g_chengdu3"
+    },
+    "4015": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "小时候自己的愿望就是住在深山野林（完全忘了有蚊子这种东西）"
+      }
+     ],
+     "id": 4015,
+     "pic": "g_haerbin3"
+    },
+    "4016": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "愿所有梦见过远方的人，心有惊雷，生似静湖。"
+      }
+     ],
+     "id": 4016,
+     "pic": "g_guizhou5"
+    },
+    "4017": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "下次，下次一定。青岛，想去很久了，还没去过呢。"
+      }
+     ],
+     "id": 4017,
+     "pic": "g_qingdao1"
+    },
+    "4018": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "希望每天都开开心心 不被任何人所用 做最好的自己."
+      }
+     ],
+     "id": 4018,
+     "pic": "g_qingdao1"
+    },
+    "4019": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "一片草地一片叶，叶上存在不知名。"
+      }
+     ],
+     "id": 4019,
+     "pic": "g_hangzhou2"
+    },
+    "4020": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "我现在还活着。当我吃东西的时候，我就一心一意地吃。"
+      }
+     ],
+     "id": 4020,
+     "pic": "g_xian1"
+    },
+    "4021": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "女孩，出去走走吧，这眼前的风我说了不算，你应独自去吹一吹"
+      }
+     ],
+     "id": 4021,
+     "pic": "g_xianggang2"
+    },
+    "4022": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "如果生活有开关，那和朋友见面就是一键快乐"
+      }
+     ],
+     "id": 4022,
+     "pic": "g_tw_lanyu"
+    },
+    "4023": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "第一张照片，大家第一张照片也是这个吗"
+      }
+     ],
+     "id": 4023,
+     "pic": "g_beijing2"
+    },
+    "4024": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "我的蛙儿子竟然来到了我的家乡，我的天好激动"
+      }
+     ],
+     "id": 4024,
+     "pic": "g_haerbin2"
+    },
+    "4025": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "虽然我们平凡又渺小，但仍然可以耀眼如星辰——青林之初"
+      }
+     ],
+     "id": 4025,
+     "pic": "g_shanghai4"
+    },
+    "4026": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "长大以后也要走一遍蛙蛙走过的路呢！"
+      }
+     ],
+     "id": 4026,
+     "pic": "g_tw_lanyu"
+    },
+    "4027": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "麻雀妈妈问麻雀宝宝：今天扎什么发型？麻雀宝宝说：啾啾"
+      }
+     ],
+     "id": 4027,
+     "pic": "g_tw_lanyu"
+    },
+    "4028": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "不到长城非好汉，我是一个好汉呱。"
+      }
+     ],
+     "id": 4028,
+     "pic": "g_beijing5"
+    },
+    "4029": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "祝陌生人们每天开心，也不知道能不能被看到呢？"
+      }
+     ],
+     "id": 4029,
+     "pic": "g_beijing2"
+    },
+    "4030": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "看山看水独坐，听风听雨高眠。客来客去日日，花开花落年年。"
+      }
+     ],
+     "id": 4030,
+     "pic": "g_hangzhou3"
+    },
+    "4031": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "睡前一定要吃宵夜，这样才不会做饿梦，顺便一提我喜欢吃蛋挞"
+      }
+     ],
+     "id": 4031,
+     "pic": "g_lasa3"
+    },
+    "4032": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "内心丰盈者，独行也如众。"
+      }
+     ],
+     "id": 4032,
+     "pic": "g_guizhou5"
+    },
+    "4033": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "#三周年#这里是你的起点，以后希望是我的终点😊"
+      }
+     ],
+     "id": 4033,
+     "pic": "g_beijing4"
+    },
+    "4034": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "愿世间所有美好都属于你，愿神明偏爱你！"
+      }
+     ],
+     "id": 4034,
+     "pic": "g_tianjin2"
+    },
+    "4035": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "故宫的梅花开了\n“逆风如解意，容易莫摧残”"
+      }
+     ],
+     "id": 4035,
+     "pic": "g_beijing1"
+    },
+    "4036": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "南方的孩子还没见过雪呢，好想去看雪"
+      }
+     ],
+     "id": 4036,
+     "pic": "g_haerbin3"
+    },
+    "4037": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "不要害怕阴影\n这说明他附近有光"
+      }
+     ],
+     "id": 4037,
+     "pic": "g_xian1"
+    },
+    "4038": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "虽然，韶少不为少年留，但无论我们行走多远，归来仍是少年！"
+      }
+     ],
+     "id": 4038,
+     "pic": "g_chongqing1"
+    },
+    "4039": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "愿\n开心 自由\n像风一样 无拘无束"
+      }
+     ],
+     "id": 4039,
+     "pic": "g_beijing1"
+    },
+    "4040": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "春水碧于天，画船听雨眠"
+      }
+     ],
+     "id": 4040,
+     "pic": "g_zhangjiajie4"
+    },
+    "4041": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "蛙蛙在现代当诗人，吟诵大好山河"
+      }
+     ],
+     "id": 4041,
+     "pic": "g_zhangjiajie3"
+    },
+    "4042": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "你上辈子一定是碳酸饮料吧，我一看到你就开心的冒泡"
+      }
+     ],
+     "id": 4042,
+     "pic": "g_guangzhou6"
+    },
+    "4043": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "天天开心，学业有成，有机会想去东北\n😎"
+      }
+     ],
+     "id": 4043,
+     "pic": "g_liaoning2"
+    },
+    "4044": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "背上一把吉他\n我要我要去拉萨\n给心灵放个假"
+      }
+     ],
+     "id": 4044,
+     "pic": "g_lasa2"
+    },
+    "4045": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "烟火起，照人间，喜悦无边，举杯敬此年"
+      }
+     ],
+     "id": 4045,
+     "pic": "g_tw_kending1"
+    },
+    "4046": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "若闻古今天下事\n请君只看洛阳城"
+      }
+     ],
+     "id": 4046,
+     "pic": "g_luoyang1"
+    },
+    "4047": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "多羡慕你可以自由自在的呀  去做自己喜欢做的事"
+      }
+     ],
+     "id": 4047,
+     "pic": "g_qinghai2"
+    },
+    "4048": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "旅行的开始~生活就是既能朝九晚五，又能浪迹天涯。"
+      }
+     ],
+     "id": 4048,
+     "pic": "g_beijing1"
+    },
+    "4049": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "“乘兴而行 兴尽而返 我们下次再见”"
+      }
+     ],
+     "id": 4049,
+     "pic": "g_beijing2"
+    },
+    "4050": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "山不来就我，我便去就山。"
+      }
+     ],
+     "id": 4050,
+     "pic": "g_beijing3"
+    },
+    "4051": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "我这一生如履薄冰，你说我能走到对岸吗？？？"
+      }
+     ],
+     "id": 4051,
+     "pic": "g_fujian3"
+    },
+    "4052": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "去有风的地方，沐新风，过想过的生活"
+      }
+     ],
+     "id": 4052,
+     "pic": "g_yunnan3"
+    },
+    "4053": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "破次元了，我们同一天到达的地方！"
+      }
+     ],
+     "id": 4053,
+     "pic": "g_qingdao1"
+    },
+    "4054": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "重是重逢的重，庆是庆祝的庆~"
+      }
+     ],
+     "id": 4054,
+     "pic": "g_chongqing2"
+    },
+    "4055": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "美好的事物总在一瞬间"
+      }
+     ],
+     "id": 4055,
+     "pic": "g_hebei3"
+    },
+    "4056": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "寥寥好友傍身亦是湖面缕缕微光，或更胜嫣然春意。"
+      }
+     ],
+     "id": 4056,
+     "pic": "g_hangzhou1"
+    },
+    "4057": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "你是否还缺一场义无反顾"
+      }
+     ],
+     "id": 4057,
+     "pic": "g_qingdao2"
+    },
+    "4058": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "最爱湖东行不足，绿杨阴里白沙堤"
+      }
+     ],
+     "id": 4058,
+     "pic": "g_hangzhou2"
+    },
+    "4059": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "总有一天，我要把蛙蛙的足迹在现实中实现。"
+      }
+     ],
+     "id": 4059,
+     "pic": "g_beijing5"
+    },
+    "4060": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "蓝天大海永远能缓解所有烦躁"
+      }
+     ],
+     "id": 4060,
+     "pic": "g_qingdao1"
+    },
+    "4061": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "白茶清欢无别事 我在等风也等你."
+      }
+     ],
+     "id": 4061,
+     "pic": "g_xianggang4"
+    },
+    "4062": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "因为生活值得，所以频繁记录"
+      }
+     ],
+     "id": 4062,
+     "pic": "g_fujian3"
+    },
+    "4063": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "环顾望旧乡，长路漫浩浩"
+      }
+     ],
+     "id": 4063,
+     "pic": "g_beijing1"
+    },
+    "4064": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "要做晓色里远行的人，路漫漫最好，我可以不断地出发。"
+      }
+     ],
+     "id": 4064,
+     "pic": "g_chengdu5"
+    },
+    "4065": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "咏春·小绿\n绝技：桩子一靠，倒头睡觉。"
+      }
+     ],
+     "id": 4065,
+     "pic": "g_guangzhou3"
+    },
+    "4066": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "难怪\n春迟迟不来\n是我把大雪一读再读"
+      }
+     ],
+     "id": 4066,
+     "pic": "g_shanxi1"
+    },
+    "4067": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "轻舟短悼西湖好\n杭州很好 向往之地"
+      }
+     ],
+     "id": 4067,
+     "pic": "g_hangzhou1"
+    },
+    "4068": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "生活如果有开关，那和朋友见面就是一键快乐"
+      }
+     ],
+     "id": 4068,
+     "pic": "g_beijing4"
+    },
+    "4069": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "海内存知己 天涯若比邻 汾酒好好喝 还有刀削面🍜"
+      }
+     ],
+     "id": 4069,
+     "pic": "g_shanxi1"
+    },
+    "4070": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "携吾梦遨游，助吾梦提名。"
+      }
+     ],
+     "id": 4070,
+     "pic": "g_liaoning1"
+    },
+    "4071": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "读万卷书，行万里路。"
+      }
+     ],
+     "id": 4071,
+     "pic": "g_luoyang3"
+    },
+    "4072": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "一起来看流星雨，许一个美好的愿望叭"
+      }
+     ],
+     "id": 4072,
+     "pic": "g_fujian4"
+    },
+    "4073": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "蛙蛙又要出去陪妈妈闯荡世界喽！"
+      }
+     ],
+     "id": 4073,
+     "pic": "g_tianjin1"
+    },
+    "4074": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "很高兴认识你\n祝 平安喜乐"
+      }
+     ],
+     "id": 4074,
+     "pic": "g_xian2"
+    },
+    "4075": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "人生是旷野 而不是轨道 \n期待西藏 未来见！"
+      }
+     ],
+     "id": 4075,
+     "pic": "g_lasa2"
+    },
+    "4076": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "神圣的火花指尖触及，温暖的灵魂终将相遇。"
+      }
+     ],
+     "id": 4076,
+     "pic": "g_beijing5"
+    },
+    "4077": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "处处花开 时时向阳"
+      }
+     ],
+     "id": 4077,
+     "pic": "g_beijing5"
+    },
+    "4078": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "放天灯许愿\n祝看到的人平安喜乐，一切顺遂"
+      }
+     ],
+     "id": 4078,
+     "pic": "g_tw_tiandeng"
+    },
+    "4079": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "满怀希望就会所向披靡！"
+      }
+     ],
+     "id": 4079,
+     "pic": "g_beijing1"
+    },
+    "4080": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "许个愿吧✨\n愿风带走人间苦难"
+      }
+     ],
+     "id": 4080,
+     "pic": "g_tw_tiandeng"
+    },
+    "4081": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "绿遍山原白满川，子规声里雨如烟。"
+      }
+     ],
+     "id": 4081,
+     "pic": "g_chengdu5"
+    },
+    "4082": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "人生就是要走走停停，停停走走，随时保持好心情哦"
+      }
+     ],
+     "id": 4082,
+     "pic": "g_hainan5"
+    },
+    "4083": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "一切都好，惟愿更自制自律。\n预祝新年胜往岁。"
+      }
+     ],
+     "id": 4083,
+     "pic": "g_chongqing1"
+    },
+    "4084": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "看清晨 看日落 度过的日常 都是很温暖的好梦"
+      }
+     ],
+     "id": 4084,
+     "pic": "g_chongqing1"
+    },
+    "4085": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "一旦学会破罐破摔，你就会发现世界豁然开朗。"
+      }
+     ],
+     "id": 4085,
+     "pic": "g_chengdu4"
+    },
+    "4086": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "我想我该是自由的，不该是为爱的痴迷者。"
+      }
+     ],
+     "id": 4086,
+     "pic": "g_yunnan2"
+    },
+    "4087": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "山中何事？松花酿酒，春水煎茶"
+      }
+     ],
+     "id": 4087,
+     "pic": "g_hangzhou2"
+    },
+    "4088": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "永远不要忘记自己有光，\n也永远不要忘记自己有梦。"
+      }
+     ],
+     "id": 4088,
+     "pic": "g_wuhan4"
+    },
+    "4089": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "呱呱你好可爱呀\n希望你永远不会流浪。"
+      }
+     ],
+     "id": 4089,
+     "pic": "g_beijing5"
+    },
+    "4090": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "古往今来，纵横交错。\n我们在此相遇＃三周年"
+      }
+     ],
+     "id": 4090,
+     "pic": "g_luoyang1"
+    },
+    "4091": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "生活总会给你另一个机会，这个机会叫明天#三周年"
+      }
+     ],
+     "id": 4091,
+     "pic": "g_qinghai2"
+    },
+    "4092": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "“是非在己，誉毁由人，得失不论”"
+      }
+     ],
+     "id": 4092,
+     "pic": "g_beijing2"
+    },
+    "4093": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "烦恼的一天又开始啦！"
+      }
+     ],
+     "id": 4093,
+     "pic": "g_aomen4"
+    },
+    "4094": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "#三周年\n错过了落日余晖，还可以静待满天繁星"
+      }
+     ],
+     "id": 4094,
+     "pic": "g_qinghai3"
+    },
+    "4095": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "最难的事情永远在我们想象中，而非现实生活里。"
+      }
+     ],
+     "id": 4095,
+     "pic": "g_qinghai4"
+    },
+    "4096": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "诗和远方都需要一步一步接近"
+      }
+     ],
+     "id": 4096,
+     "pic": "g_xianggang2"
+    },
+    "4097": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "前路存知己，明珠莫暗投"
+      }
+     ],
+     "id": 4097,
+     "pic": "g_hangzhou1"
+    },
+    "4098": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "游山玩水的蛙儿子与起早贪黑的老母亲。"
+      }
+     ],
+     "id": 4098,
+     "pic": "g_hebei2"
+    },
+    "4099": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "我想认真的走过每一个地方，看一看不同的风景"
+      }
+     ],
+     "id": 4099,
+     "pic": "g_jiangxi1"
+    },
+    "4100": {
+     "author": "——来自23年12月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "#三周年有蛙蛙的陪伴我很开心，愿年年岁岁有今朝。"
+      }
+     ],
+     "id": 4100,
+     "pic": "g_hangzhou2"
+    },
+    "4101": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "把烦心事都丢掉，腾出地方来装鲜花。"
+      }
+     ],
+     "id": 4101,
+     "pic": "g_xian2"
+    },
+    "4102": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "想出去旅游，不想上班，为什么不能突然暴富😭"
+      }
+     ],
+     "id": 4102,
+     "pic": "g_beijing3"
+    },
+    "4103": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "今日且行风雨，大好河山，尽在不期而遇之中"
+      }
+     ],
+     "id": 4103,
+     "pic": "g_beijing5"
+    },
+    "4104": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "我会越来越好的，希望大家也是。一起心想事成，事事如意"
+      }
+     ],
+     "id": 4104,
+     "pic": "g_ningxia6"
+    },
+    "4105": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "妈妈，人生是旷野( ง `ω´ )۶"
+      }
+     ],
+     "id": 4105,
+     "pic": "g_beijing3"
+    },
+    "4106": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "照镜子都是爱你的形状❤️❤️"
+      }
+     ],
+     "id": 4106,
+     "pic": "g_fujian3"
+    },
+    "4107": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "花不一定是为了花店而开，我一定是为你而来。"
+      }
+     ],
+     "id": 4107,
+     "pic": "g_hainan5"
+    },
+    "4108": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "空轨进楼奇观，惟重庆莫属呱🚠"
+      }
+     ],
+     "id": 4108,
+     "pic": "g_chongqing2"
+    },
+    "4109": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "“把向往的生活地方 都变成走过的路🚆”"
+      }
+     ],
+     "id": 4109,
+     "pic": "g_jiangxi2"
+    },
+    "4110": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "听风抚过楼角 于栏间仰望大地."
+      }
+     ],
+     "id": 4110,
+     "pic": "g_shanxi3"
+    },
+    "4111": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "愿这经幡保佑你平安。"
+      }
+     ],
+     "id": 4111,
+     "pic": "g_lasa4"
+    },
+    "4112": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "有一天我也会像蛙蛙一样走遍全中国！"
+      }
+     ],
+     "id": 4112,
+     "pic": "g_qingdao2"
+    },
+    "4113": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "我在远处梦想是当个大侠!"
+      }
+     ],
+     "id": 4113,
+     "pic": "g_jiuquan1"
+    },
+    "4114": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "一步一拳功夫意念要专心，靠手取中线标准熟记方得真"
+      }
+     ],
+     "id": 4114,
+     "pic": "g_guangzhou3"
+    },
+    "4115": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "带着我的梦想去远行吧！"
+      }
+     ],
+     "id": 4115,
+     "pic": "g_fujian1"
+    },
+    "4116": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "你好 陌生人 祝你心想事成"
+      }
+     ],
+     "id": 4116,
+     "pic": "g_anhui3"
+    },
+    "4117": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "呱生匆忙，别错过秋天的落叶🍂"
+      }
+     ],
+     "id": 4117,
+     "pic": "g_suzhou4"
+    },
+    "4118": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "我们仰望着同一片天空，却看着不同的地方。"
+      }
+     ],
+     "id": 4118,
+     "pic": "g_guilin2"
+    },
+    "4119": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "呱呱永远不会忘记在长城山脚下看到的特别好看的晚霞"
+      }
+     ],
+     "id": 4119,
+     "pic": "g_beijing5"
+    },
+    "4120": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "💛在未知的途中遇见未知的自己"
+      }
+     ],
+     "id": 4120,
+     "pic": "g_beijing5"
+    },
+    "4121": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "风和日丽，躺在石头上晒太阳☀️"
+      }
+     ],
+     "id": 4121,
+     "pic": "g_chengdu4"
+    },
+    "4122": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "生活有进退，输什么也不能输心情"
+      }
+     ],
+     "id": 4122,
+     "pic": "g_tianjin1"
+    },
+    "4123": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "希望今年可以成为自己想成为的人。"
+      }
+     ],
+     "id": 4123,
+     "pic": "g_jiuquan3"
+    },
+    "4124": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "我始终希望能与你一路同行。"
+      }
+     ],
+     "id": 4124,
+     "pic": "g_qinghai3"
+    },
+    "4125": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "生活很美好，希望每个人都所愿皆所得(⑉°з°)-♡"
+      }
+     ],
+     "id": 4125,
+     "pic": "g_jiangmen2"
+    },
+    "4126": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "我希望 万事顺遂。\n我更希望上岸"
+      }
+     ],
+     "id": 4126,
+     "pic": "g_hainan5"
+    },
+    "4127": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "希望你能和过去的自己说再见"
+      }
+     ],
+     "id": 4127,
+     "pic": "g_chengdu3"
+    },
+    "4128": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "哇，好壮阔，一片冰心在玉壶的感觉😌"
+      }
+     ],
+     "id": 4128,
+     "pic": "g_jilin1"
+    },
+    "4129": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "等一个自然而然的夏天♪"
+      }
+     ],
+     "id": 4129,
+     "pic": "g_qingdao1"
+    },
+    "4130": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "亲爱的旅人～水上的列车就快到站～"
+      }
+     ],
+     "id": 4130,
+     "pic": "g_qinghai1"
+    },
+    "4131": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "又要到周末啦～超级开心，"
+      }
+     ],
+     "id": 4131,
+     "pic": "g_beijing5"
+    },
+    "4132": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "雪花不飘我不飘，青岛不倒我不倒。"
+      }
+     ],
+     "id": 4132,
+     "pic": "g_qingdao1"
+    },
+    "4133": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "把玫瑰藏于盛夏，把海棠藏于深秋。꒰ *•ɷ•* ꒱"
+      }
+     ],
+     "id": 4133,
+     "pic": "g_hebei3"
+    },
+    "4134": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "去更远的地方，认识更多有趣的人吧！"
+      }
+     ],
+     "id": 4134,
+     "pic": "g_lasa3"
+    },
+    "4135": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "给自己一点时间，别害怕重新开始"
+      }
+     ],
+     "id": 4135,
+     "pic": "g_aomen3"
+    },
+    "4136": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "无论什么天气，都要学会拨开心里的乌云"
+      }
+     ],
+     "id": 4136,
+     "pic": "g_luoyang3"
+    },
+    "4137": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "好大的一条锦鲤，愿大家都心想事成"
+      }
+     ],
+     "id": 4137,
+     "pic": "g_hangzhou3"
+    },
+    "4138": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "我要拍下这世间美景。"
+      }
+     ],
+     "id": 4138,
+     "pic": "g_beijing4"
+    },
+    "4139": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "侧身枕畔低回看，身与雷峰塔顶齐"
+      }
+     ],
+     "id": 4139,
+     "pic": "g_yunnan1"
+    },
+    "4140": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "抬起头在更热烈的风里相遇吧"
+      }
+     ],
+     "id": 4140,
+     "pic": "g_chengdu5"
+    },
+    "4141": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "愿你所有的美好与期待，都能如约而至，蛙蛙要一直快乐下去啊"
+      }
+     ],
+     "id": 4141,
+     "pic": "g_hebei3"
+    },
+    "4142": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "今天的天空是一条蓝色的小溪，高山是它的痕迹。"
+      }
+     ],
+     "id": 4142,
+     "pic": "g_beijing5"
+    },
+    "4143": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "新年快乐！把霉运都留在2023，2024顺顺利利"
+      }
+     ],
+     "id": 4143,
+     "pic": "g_fujian3"
+    },
+    "4144": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "新的一年，希望有新的开始🎉"
+      }
+     ],
+     "id": 4144,
+     "pic": "g_qinghai2"
+    },
+    "4145": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "新年的愿望悄悄写在这里吧，要永远开心，永远被爱，永远幸福！"
+      }
+     ],
+     "id": 4145,
+     "pic": "g_shanxi1"
+    },
+    "4146": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "新年快乐呀，新的一年祝大家身体健康万事如意心想事成！"
+      }
+     ],
+     "id": 4146,
+     "pic": "g_tw_shifen1"
+    },
+    "4147": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "“新的一年我们都要成为更好的人”"
+      }
+     ],
+     "id": 4147,
+     "pic": "g_tw_zuinandian"
+    },
+    "4148": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "生命如暗室 不妨我明写春诗"
+      }
+     ],
+     "id": 4148,
+     "pic": "g_wuhan1"
+    },
+    "4149": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "新的一年：逆风如解意，税后十个亿"
+      }
+     ],
+     "id": 4149,
+     "pic": "g_yunnan4"
+    },
+    "4150": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "人生漫漫亦灿灿，蛙亦在其中也。"
+      }
+     ],
+     "id": 4150,
+     "pic": "g_liaoning1"
+    },
+    "4151": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "乐观和爱才是生活的解药❤️"
+      }
+     ],
+     "id": 4151,
+     "pic": "g_xianggang1"
+    },
+    "4152": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "当然要拍照记录啦，又不是每天都可以看烟花📸"
+      }
+     ],
+     "id": 4152,
+     "pic": "g_hebei3"
+    },
+    "4153": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "蛙蛙，希望你以后不被任何事左右心情，每天都轻松惬意。"
+      }
+     ],
+     "id": 4153,
+     "pic": "g_hainan5"
+    },
+    "4154": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "希望新的一年能有新的进展。"
+      }
+     ],
+     "id": 4154,
+     "pic": "g_xian3"
+    },
+    "4155": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "带着我的眼睛去更多的地方"
+      }
+     ],
+     "id": 4155,
+     "pic": "g_beijing1"
+    },
+    "4156": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "旅行是书写关于自己的故事"
+      }
+     ],
+     "id": 4156,
+     "pic": "g_beijing4"
+    },
+    "4157": {
+     "author": "——来自1月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "现在的尔滨很火，滑雪，吃铁锅炖大鹅，看雪雕"
+      }
+     ],
+     "id": 4157,
+     "pic": "g_haerbin2"
+    },
+    "4158": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "岁回律转，夏至阳生。新的一年祝诸位称心如意！"
+      }
+     ],
+     "id": 4158,
+     "pic": "g_luoyang1"
+    },
+    "4159": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "没有谁是一座孤岛，每本书都是一个世界。"
+      }
+     ],
+     "id": 4159,
+     "pic": "g_wuhan1"
+    },
+    "4160": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "风景真美 我家的蛙仔会继续探索更美丽的地方"
+      }
+     ],
+     "id": 4160,
+     "pic": "g_beijing1"
+    },
+    "4161": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "我们眼里不大的景观，其实蛙崽的眼里是一条大河呢。"
+      }
+     ],
+     "id": 4161,
+     "pic": "g_yunnan2"
+    },
+    "4162": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "我与明月饮一杯，清辉无冤怜光去。"
+      }
+     ],
+     "id": 4162,
+     "pic": "g_hangzhou2"
+    },
+    "4163": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "高楼直冲云霄霓虹闪耀，生活忙碌不能睡懒觉。"
+      }
+     ],
+     "id": 4163,
+     "pic": "g_shanghai2"
+    },
+    "4164": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "山水之间，少年少女的心事便胜过了所有的风景"
+      }
+     ],
+     "id": 4164,
+     "pic": "g_yunnan2"
+    },
+    "4165": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "向星空许个愿🙏⭐️\n愿所愿皆所得"
+      }
+     ],
+     "id": 4165,
+     "pic": "g_qinghai3"
+    },
+    "4166": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "我乖宝宝的第一步！走出大山！成功！！！"
+      }
+     ],
+     "id": 4166,
+     "pic": "g_beijing5"
+    },
+    "4167": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "🌇『 夕阳总会落在你肩上 你也会快乐一场 』ʚ💗ིྀɞ"
+      }
+     ],
+     "id": 4167,
+     "pic": "g_fujian1"
+    },
+    "4168": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "愿新的一年  仍有阳光满路   温暖如初"
+      }
+     ],
+     "id": 4168,
+     "pic": "g_suzhou3"
+    },
+    "4169": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "自己走的路很長.但又要自己走下去.因只有自己才可相信"
+      }
+     ],
+     "id": 4169,
+     "pic": "g_beijing3"
+    },
+    "4170": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "有机会，我也要自己去看看这烟雨"
+      }
+     ],
+     "id": 4170,
+     "pic": "g_suzhou2"
+    },
+    "4171": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "新年快乐！\n暴富暴瘦不暴躁！\n脱贫脱单不脱发！"
+      }
+     ],
+     "id": 4171,
+     "pic": "g_wuhan3"
+    },
+    "4172": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "听说每架飞机起飞和下落的时候都要绕着这个南海观音转一圈哦"
+      }
+     ],
+     "id": 4172,
+     "pic": "g_hainan5"
+    },
+    "4173": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "冰天雪地人心热，\n盛世龙腾伴君行。\n  大美哈尔滨"
+      }
+     ],
+     "id": 4173,
+     "pic": "g_haerbin4"
+    },
+    "4174": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "为什么阿姨从不流汗 因为阿姨怕留下姨汗"
+      }
+     ],
+     "id": 4174,
+     "pic": "g_zhangjiajie4"
+    },
+    "4175": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "蛙蛙和我一起旅行～\n有蛙蛙陪真好 嘿嘿罒ω罒"
+      }
+     ],
+     "id": 4175,
+     "pic": "g_chengdu1"
+    },
+    "4176": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "“草在结它的种子，风在摇它的叶”希望蛙蛙可以一直陪着我"
+      }
+     ],
+     "id": 4176,
+     "pic": "g_beijing4"
+    },
+    "4177": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "好好学习，天天向上，\n以后我也去看你看过的风景"
+      }
+     ],
+     "id": 4177,
+     "pic": "g_jilin1"
+    },
+    "4178": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "我心中不会有黄昏，有你在，永远像初春的清晨"
+      }
+     ],
+     "id": 4178,
+     "pic": "g_qingdao2"
+    },
+    "4179": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "阳光透过雕栏屏投下的影子让人恍若隔世，去年夏天才去过呀！"
+      }
+     ],
+     "id": 4179,
+     "pic": "g_suzhou3"
+    },
+    "4180": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "桃花开了\n让我想起家乡的那棵桃花树…那时爷爷奶奶还在身边。"
+      }
+     ],
+     "id": 4180,
+     "pic": "g_beijing1"
+    },
+    "4181": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "新的一年，好开心😊。希望你能有主角人生"
+      }
+     ],
+     "id": 4181,
+     "pic": "g_hebei3"
+    },
+    "4182": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "是一个百去不厌的城市，有各种糯唧唧吃到撑"
+      }
+     ],
+     "id": 4182,
+     "pic": "g_suzhou3"
+    },
+    "4183": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "去西部看了耶！\n这里的星空真的很美。"
+      }
+     ],
+     "id": 4183,
+     "pic": "g_qinghai3"
+    },
+    "4184": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "云南景色真美啊，今天就要上班了，不想起床😂"
+      }
+     ],
+     "id": 4184,
+     "pic": "g_yunnan4"
+    },
+    "4185": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "杭州里的“万千世界”在每个季节都崭露出它们不同姿态之美"
+      }
+     ],
+     "id": 4185,
+     "pic": "g_hangzhou3"
+    },
+    "4186": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "困于方寸那就把梦想交给蛙娃哇哇哇 广袤大地星辰大海细雨残阳"
+      }
+     ],
+     "id": 4186,
+     "pic": "g_hainan1"
+    },
+    "4187": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "去的我的家乡诶，这里是伊通河嘛"
+      }
+     ],
+     "id": 4187,
+     "pic": "g_jilin2"
+    },
+    "4188": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "今年一定要去一次西藏，去布达拉宫，去雪山之巅💗"
+      }
+     ],
+     "id": 4188,
+     "pic": "g_lasa3"
+    },
+    "4189": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "慢慢走，不迷路\n本来就是慢慢的一个人\n不要怕，继续走"
+      }
+     ],
+     "id": 4189,
+     "pic": "g_haerbin3"
+    },
+    "4190": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "再多看看吧，人间总是值得走一趟的"
+      }
+     ],
+     "id": 4190,
+     "pic": "g_tw_kending1"
+    },
+    "4191": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "呱，这个倒数第9个城市，还有8个没有打卡\n期待我的蛙环游全国"
+      }
+     ],
+     "id": 4191,
+     "pic": "g_xinjiang1"
+    },
+    "4192": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "春天所有的美好相遇都在门外发生，别宅着啦，出来玩吧！"
+      }
+     ],
+     "id": 4192,
+     "pic": "g_tw_kending1"
+    },
+    "4193": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "是打火花吗！！是吧\n太惊艳了ヽ(爱´∀‘爱)ノ"
+      }
+     ],
+     "id": 4193,
+     "pic": "g_hebei3"
+    },
+    "4194": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "希望能成为像小蛙那样说走就走的旅行家"
+      }
+     ],
+     "id": 4194,
+     "pic": "g_guangzhou2"
+    },
+    "4195": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "和旅友一起去冒险，真的很激动(｡･㉨･｡)ﾉ♡ 好惊险哦😻"
+      }
+     ],
+     "id": 4195,
+     "pic": "g_beijing4"
+    },
+    "4196": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "尊嘟好好看，不敢想你们本地人有多幸福"
+      }
+     ],
+     "id": 4196,
+     "pic": "g_yunnan3"
+    },
+    "4197": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "我靠着稻草人，吹着风，唱着歌，睡着了"
+      }
+     ],
+     "id": 4197,
+     "pic": "g_suzhou4"
+    },
+    "4198": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "这张图像20块钱后面图，只要再把镜头拿远点就好了"
+      }
+     ],
+     "id": 4198,
+     "pic": "g_guilin2"
+    },
+    "4199": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "希望余生都是这种静静看风景的日子🍀"
+      }
+     ],
+     "id": 4199,
+     "pic": "g_beijing5"
+    },
+    "4200": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "这个景点可真特别，桌椅都泡水里的。我的蛙儿子真的太可爱了。"
+      }
+     ],
+     "id": 4200,
+     "pic": "g_chengdu1"
+    },
+    "4201": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "辽阔的自由，无边的美景，心有梦想，路在脚下。"
+      }
+     ],
+     "id": 4201,
+     "pic": "g_neimenggu1"
+    },
+    "4202": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "灿尼在宁夏~\n遇见了石头做的大叔，一直扛着大楼一定很累吧。"
+      }
+     ],
+     "id": 4202,
+     "pic": "g_ningxia3"
+    },
+    "4203": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "色拉大乘寺\n人间何所以，观风与月舒。"
+      }
+     ],
+     "id": 4203,
+     "pic": "g_lasa2"
+    },
+    "4204": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "三花的第六站：广州！\n看起来是老式的房间，喜欢～"
+      }
+     ],
+     "id": 4204,
+     "pic": "g_guangzhou6"
+    },
+    "4205": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "以前很喜欢的歌🎵🎵🎵🎵\n《去垦丁淋场雨再走开》"
+      }
+     ],
+     "id": 4205,
+     "pic": "g_tw_kending1"
+    },
+    "4206": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "哇 这里的夜晚有流星划过 耶 五彩的是星星吗⭐✨✨✨✨"
+      }
+     ],
+     "id": 4206,
+     "pic": "g_qinghai3"
+    },
+    "4207": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "噢噢噢哦哦 下雪的内蒙更美不胜收 和小伙伴一起去 好开心蛙！"
+      }
+     ],
+     "id": 4207,
+     "pic": "g_neimenggu1"
+    },
+    "4208": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "青海可真大 ！蛙蛙在牛的背上，不知道是什么牛呢。"
+      }
+     ],
+     "id": 4208,
+     "pic": "g_qinghai4"
+    },
+    "4209": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "这里好梦幻！谢谢蛙蛙带我来看风景，想旅游的地方又多了一个嘿嘿"
+      }
+     ],
+     "id": 4209,
+     "pic": "g_liaoning2"
+    },
+    "4210": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "好多奇妙的石头呱呱，我的小呱好悠闲，我给你的睡垫呢？"
+      }
+     ],
+     "id": 4210,
+     "pic": "g_chengdu4"
+    },
+    "4211": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "今年哈尔滨很火，2025年也想去看看，去早市！"
+      }
+     ],
+     "id": 4211,
+     "pic": "g_haerbin1"
+    },
+    "4212": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "凤凰古城诶，妈妈就在旁边读书，下次带你拍苗族服饰照片哦崽崽～"
+      }
+     ],
+     "id": 4212,
+     "pic": "g_zhangjiajie4"
+    },
+    "4213": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "哇!这里好像城堡呀！\n(*´I`*)太酷了!!!"
+      }
+     ],
+     "id": 4213,
+     "pic": "g_haerbin2"
+    },
+    "4214": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "宁夏的风景真好，真的我非常喜欢那里。"
+      }
+     ],
+     "id": 4214,
+     "pic": "g_ningxia2"
+    },
+    "4215": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "神明把黑暗中跳动的心脏称为月亮(◕ᴗ◕✿)"
+      }
+     ],
+     "id": 4215,
+     "pic": "g_luoyang2"
+    },
+    "4216": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "在武汉吹吹风好像也不错(*๓´╰╯`๓)♡"
+      }
+     ],
+     "id": 4216,
+     "pic": "g_wuhan1"
+    },
+    "4217": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "是我的故乡捏\n“举头望明月，低头思故乡。”"
+      }
+     ],
+     "id": 4217,
+     "pic": "g_suzhou3"
+    },
+    "4218": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "小暑至，荷花香，愿今夏，光阴静，万事安✨"
+      }
+     ],
+     "id": 4218,
+     "pic": "g_hainan5"
+    },
+    "4219": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "乖乖跟小鹿的合影！\n第一次看雪！"
+      }
+     ],
+     "id": 4219,
+     "pic": "g_neimenggu1"
+    },
+    "4220": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "青稞！！！！！很喜欢这种粮食好像亲自去看看"
+      }
+     ],
+     "id": 4220,
+     "pic": "g_ningxia3"
+    },
+    "4221": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "和小伙伴在海边散步，吹吹海风，也是个不错的选择(◍＞◡＜◍)"
+      }
+     ],
+     "id": 4221,
+     "pic": "g_qingdao1"
+    },
+    "4222": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "🛩抵达重庆站\n   我要旅游全世界🐟"
+      }
+     ],
+     "id": 4222,
+     "pic": "g_chongqing1"
+    },
+    "4223": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "喜欢这里所有的人和事，我以后也要在天津生活一直下去。"
+      }
+     ],
+     "id": 4223,
+     "pic": "g_tianjin1"
+    },
+    "4224": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "宫殿是真的好看，要是真的可以去看看就好了"
+      }
+     ],
+     "id": 4224,
+     "pic": "g_hebei2"
+    },
+    "4225": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "2.21不敢想坐在木桶里多有氛围多惬意"
+      }
+     ],
+     "id": 4225,
+     "pic": "g_jilin4"
+    },
+    "4226": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "原来内蒙古的草原这么大，谢谢蛙蛙带我看，宝宝好乖好可爱⚈₃⚈"
+      }
+     ],
+     "id": 4226,
+     "pic": "g_neimenggu3"
+    },
+    "4227": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "愿我的烦恼随灯一起飞走\n没想到大学了，还要受物理的折磨呀:（"
+      }
+     ],
+     "id": 4227,
+     "pic": "g_tw_shifen1"
+    },
+    "4228": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "赏花赏月赏花灯，月圆汤圆愿梦圆！"
+      }
+     ],
+     "id": 4228,
+     "pic": "g_beijing1"
+    },
+    "4229": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "落霞与孤鹜齐飞，秋水共长天一色。今天我是文化蛙🐸"
+      }
+     ],
+     "id": 4229,
+     "pic": "g_jiangxi2"
+    },
+    "4230": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "第十六站：福州\n美丽的“爱心湖”"
+      }
+     ],
+     "id": 4230,
+     "pic": "g_fujian3"
+    },
+    "4231": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "我也好想坐在大鸟的身上飞啊，这是自由的感觉~"
+      }
+     ],
+     "id": 4231,
+     "pic": "g_qinghai2"
+    },
+    "4232": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "好想钻进海里，想变成一条会潜水的鲸鱼。"
+      }
+     ],
+     "id": 4232,
+     "pic": "g_qingdao1"
+    },
+    "4233": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "好漂亮啊！\n春天已至，遥祝安好，盼与君见❤"
+      }
+     ],
+     "id": 4233,
+     "pic": "g_liaoning2"
+    },
+    "4234": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "是个适合慢慢走的城市，大三巴牌坊很美！蛋挞好吃！呱！"
+      }
+     ],
+     "id": 4234,
+     "pic": "g_aomen1"
+    },
+    "4235": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "想去内蒙吃烤全羊好馋好馋好馋！！"
+      }
+     ],
+     "id": 4235,
+     "pic": "g_neimenggu3"
+    },
+    "4236": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "哎呦，好喜欢这种，绿色的梯田哎"
+      }
+     ],
+     "id": 4236,
+     "pic": "g_guilin3"
+    },
+    "4237": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "布达拉宫好壮丽 小蛙也很可爱 好想去啊"
+      }
+     ],
+     "id": 4237,
+     "pic": "g_lasa1"
+    },
+    "4238": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "哇塞，好漂亮的窗花，乖儿砸和好朋友玩的开心哦，麻麻在家等你"
+      }
+     ],
+     "id": 4238,
+     "pic": "g_xian3"
+    },
+    "4239": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "好美的古建筑！这是山西的哪个名胜景区呀"
+      }
+     ],
+     "id": 4239,
+     "pic": "g_shanxi3"
+    },
+    "4240": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "西湖的水~我的泪~~~傍晚的杭州美！"
+      }
+     ],
+     "id": 4240,
+     "pic": "g_hangzhou1"
+    },
+    "4241": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "又一次来到飞天电车城！这次和刺刺一起！"
+      }
+     ],
+     "id": 4241,
+     "pic": "g_chongqing2"
+    },
+    "4242": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "好想去牡丹园下面捡牡丹粽子呀。"
+      }
+     ],
+     "id": 4242,
+     "pic": "g_luoyang3"
+    },
+    "4243": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "远看大瓶子，近看瓶子大。\n瓶子真是大，真是大瓶子。"
+      }
+     ],
+     "id": 4243,
+     "pic": "g_shanxi2"
+    },
+    "4244": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "📷香港是一座可以活在电影中的城市"
+      }
+     ],
+     "id": 4244,
+     "pic": "g_xianggang4"
+    },
+    "4245": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "好美啊～长长的河流～可爱的小蛙～"
+      }
+     ],
+     "id": 4245,
+     "pic": "g_chengdu3"
+    },
+    "4246": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "新年快乐🎆\n本命年也快乐🎉\n我很希望你每一天都快乐着"
+      }
+     ],
+     "id": 4246,
+     "pic": "g_jilin1"
+    },
+    "4247": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "好漂亮，石头路吗？\n不想吃韭菜馅饺子(T＿T)"
+      }
+     ],
+     "id": 4247,
+     "pic": "g_anhui2"
+    },
+    "4248": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "娃娃子去看冰雕啦！还是大龙！龙年大吉，新年快乐😆"
+      }
+     ],
+     "id": 4248,
+     "pic": "g_haerbin4"
+    },
+    "4249": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "这是武汉大桥吧？深圳湾那儿也有一个跨海大桥 拍落日的好地方"
+      }
+     ],
+     "id": 4249,
+     "pic": "g_wuhan2"
+    },
+    "4250": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "经幡好有感觉哦，小心点，别被风吹跑了"
+      }
+     ],
+     "id": 4250,
+     "pic": "g_lasa4"
+    },
+    "4251": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "我猜是杜甫草堂！和蛙蛙一样的地方打卡！开心"
+      }
+     ],
+     "id": 4251,
+     "pic": "g_chengdu5"
+    },
+    "4252": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "小蛙和我一起游天津\n这里应该是瓷房子"
+      }
+     ],
+     "id": 4252,
+     "pic": "g_tianjin1"
+    },
+    "4253": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "当看到这个辣椒的时候，就猜到了是自己的家乡"
+      }
+     ],
+     "id": 4253,
+     "pic": "g_jiangxi3"
+    },
+    "4254": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "仿佛听到了高空的鸟鸣，旷远的风声，浑厚悠久的钟声。"
+      }
+     ],
+     "id": 4254,
+     "pic": "g_lasa3"
+    },
+    "4255": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "蛙蛙：梯田是滑滑梯嘛，能不能滑下去"
+      }
+     ],
+     "id": 4255,
+     "pic": "g_guilin3"
+    },
+    "4256": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "阳光好好。葡萄看起来好好吃🤤"
+      }
+     ],
+     "id": 4256,
+     "pic": "g_xinjiang2"
+    },
+    "4257": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "呱呱替我去了最想去的苏州，感谢我的呱呱～\n烟雨蒙蒙的江南水乡"
+      }
+     ],
+     "id": 4257,
+     "pic": "g_suzhou1"
+    },
+    "4258": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "好美也好远的夕阳，希望以后我也有机会去亲眼看一看"
+      }
+     ],
+     "id": 4258,
+     "pic": "g_xinjiang3"
+    },
+    "4259": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "每颗星星都是一个星球，时而闪烁，时而绚烂，总是存在。"
+      }
+     ],
+     "id": 4259,
+     "pic": "g_qinghai3"
+    },
+    "4260": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "总要去亲自看看吧，看看他们走过的路，吹吹他们吹过的风。"
+      }
+     ],
+     "id": 4260,
+     "pic": "g_lasa3"
+    },
+    "4261": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "青海湖很漂亮，梦中情湖，去了美梦成真！"
+      }
+     ],
+     "id": 4261,
+     "pic": "g_qinghai4"
+    },
+    "4262": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "这个浮雕是真的好看啊，好喜欢这个大龙🐉，好威风"
+      }
+     ],
+     "id": 4262,
+     "pic": "g_beijing2"
+    },
+    "4263": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "北京天坛唉，乖乖下次记得正脸拍照奥～"
+      }
+     ],
+     "id": 4263,
+     "pic": "g_beijing3"
+    },
+    "4264": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "来广州的第一站是鲁迅纪念馆的卧室书桌，第二站是佛山的醒狮。"
+      }
+     ],
+     "id": 4264,
+     "pic": "g_guangzhou2"
+    },
+    "4265": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "山城一条又一条了路串联起了这座美丽的城市"
+      }
+     ],
+     "id": 4265,
+     "pic": "g_chongqing2"
+    },
+    "4266": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "没有比脚更长的路\n没有比人更高的山"
+      }
+     ],
+     "id": 4266,
+     "pic": "g_chengdu3"
+    },
+    "4267": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "这个湖真美，拍下来给我妈妈看嘻嘻嘻"
+      }
+     ],
+     "id": 4267,
+     "pic": "g_fujian3"
+    },
+    "4268": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "山前山后各有风景 有风无风都很自由"
+      }
+     ],
+     "id": 4268,
+     "pic": "g_suzhou3"
+    },
+    "4269": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "这是长白山的景色吗？好美，一尘不染，希望心灵永远纯粹富有童真"
+      }
+     ],
+     "id": 4269,
+     "pic": "g_jilin1"
+    },
+    "4270": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "秋天～丰收的季节，有些时候的秋天是很美，小青蛙也很可爱"
+      }
+     ],
+     "id": 4270,
+     "pic": "g_suzhou4"
+    },
+    "4271": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "哇，好高的轨道，好长的列车呀！我真想上去坐一坐，呱。"
+      }
+     ],
+     "id": 4271,
+     "pic": "g_chongqing2"
+    },
+    "4272": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "一瞬间绽放的火树银花～真是美不胜收≡ω≡"
+      }
+     ],
+     "id": 4272,
+     "pic": "g_hebei3"
+    },
+    "4273": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "好漂亮啊，跟着小青蛙看世界，烦恼都被吹散了♥️♥️"
+      }
+     ],
+     "id": 4273,
+     "pic": "g_shanghai1"
+    },
+    "4274": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "好蓝的湖，青色的天空，蓝色层次渐变。"
+      }
+     ],
+     "id": 4274,
+     "pic": "g_qinghai1"
+    },
+    "4275": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "彩云之南，我心的方向～\n好想去云南采菌子😆"
+      }
+     ],
+     "id": 4275,
+     "pic": "g_yunnan3"
+    },
+    "4276": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "外面在放烟花 好漂亮好漂亮 希望永远能这么和平 大家新年快乐"
+      }
+     ],
+     "id": 4276,
+     "pic": "g_tianjin2"
+    },
+    "4277": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "去海边抓大怪物咯～麻麻酱很爱吃"
+      }
+     ],
+     "id": 4277,
+     "pic": "g_qingdao1"
+    },
+    "4278": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "非常喜欢苏州园林，特别美的江南风景，蛙蛙和我都去啦！"
+      }
+     ],
+     "id": 4278,
+     "pic": "g_suzhou1"
+    },
+    "4279": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "蛙儿子去了去过的地方，引起了深深地回忆"
+      }
+     ],
+     "id": 4279,
+     "pic": "g_hangzhou1"
+    },
+    "4280": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "天呐好绝的镜像创意TT……！宝宝你好会拍照✅"
+      }
+     ],
+     "id": 4280,
+     "pic": "g_fujian3"
+    },
+    "4281": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "好耐無見🇭🇰 最紧要噶系開心"
+      }
+     ],
+     "id": 4281,
+     "pic": "g_xianggang1"
+    },
+    "4282": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "宝宝可是去过景德镇的蛙呢～(￣▽￣～)~"
+      }
+     ],
+     "id": 4282,
+     "pic": "g_jiangxi1"
+    },
+    "4283": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "哇！这里是龙门石窟吗！下个月也要去了嘿嘿！"
+      }
+     ],
+     "id": 4283,
+     "pic": "g_luoyang1"
+    },
+    "4284": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "江西风景，如此之美，蛙蛙一去，几天没回😭😭😭"
+      }
+     ],
+     "id": 4284,
+     "pic": "g_jiangxi3"
+    },
+    "4285": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "应该是祈年殿叭\n保佑我期末不挂(^з^)-♡"
+      }
+     ],
+     "id": 4285,
+     "pic": "g_beijing3"
+    },
+    "4286": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "好澄澈的湖水啊。。。人间仙境👍"
+      }
+     ],
+     "id": 4286,
+     "pic": "g_yunnan3"
+    },
+    "4287": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "酒泉的月牙泉，一直没有钱出去玩，今年暑假攒攒钱好啦"
+      }
+     ],
+     "id": 4287,
+     "pic": "g_jiuquan3"
+    },
+    "4288": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "这就是所谓的山路十八弯吗？难不成……我是巴音布鲁克的王！"
+      }
+     ],
+     "id": 4288,
+     "pic": "g_zhangjiajie1"
+    },
+    "4289": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "一眼就看出来是红海滩啦！喜欢家乡辽宁❤️"
+      }
+     ],
+     "id": 4289,
+     "pic": "g_liaoning2"
+    },
+    "4290": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "娃崽坐上了千与千寻的火车，我都好羡慕😍"
+      }
+     ],
+     "id": 4290,
+     "pic": "g_qinghai1"
+    },
+    "4291": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "第一次见到海洋，妈妈说要好好珍惜它。"
+      }
+     ],
+     "id": 4291,
+     "pic": "g_hainan1"
+    },
+    "4292": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "第七站∶宁夏\n春天了，树木也开始发芽🌱了"
+      }
+     ],
+     "id": 4292,
+     "pic": "g_ningxia6"
+    },
+    "4293": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "蛙：没有雨伞 被淋得睁不开眼睛了"
+      }
+     ],
+     "id": 4293,
+     "pic": "g_suzhou2"
+    },
+    "4294": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "虽然我困是一隅之地，但是崽可以替我看遍万里风景"
+      }
+     ],
+     "id": 4294,
+     "pic": "g_beijing1"
+    },
+    "4295": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "姑苏台上蛙鸣曙，\n古坊柳云烟雨中。 \n——阿暮妈妈"
+      }
+     ],
+     "id": 4295,
+     "pic": "g_suzhou2"
+    },
+    "4296": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "安徽好漂亮喔😯这里是宏村吗 一定一定"
+      }
+     ],
+     "id": 4296,
+     "pic": "g_anhui1"
+    },
+    "4297": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "是乐山大佛的头顶嘛！我还没去过成都呢，薄荷出息了"
+      }
+     ],
+     "id": 4297,
+     "pic": "g_chengdu4"
+    },
+    "4298": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "“你说青山是我的底色，我说晦涩才是我的平仄 。”"
+      }
+     ],
+     "id": 4298,
+     "pic": "g_anhui1"
+    },
+    "4299": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "清清的水漾漾呱～绿绿的荷叶遮遮呱～"
+      }
+     ],
+     "id": 4299,
+     "pic": "g_hangzhou3"
+    },
+    "4300": {
+     "author": "——来自2&3月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "福建~蛙蛙超会找角度，又是美好的一天"
+      }
+     ],
+     "id": 4300,
+     "pic": "g_fujian3"
+    },
+    "4301": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "今天蛙宝宝在沙漠中看到绿洲啦姨姨们好看吗？"
+      }
+     ],
+     "id": 4301,
+     "pic": "g_jiuquan3"
+    },
+    "4302": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "心中滴紫荆花，凭爱开花，同处一家😍"
+      }
+     ],
+     "id": 4302,
+     "pic": "g_xianggang2"
+    },
+    "4303": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "人们总认为没走的那条路上开满了鲜花。"
+      }
+     ],
+     "id": 4303,
+     "pic": "g_xianggang2"
+    },
+    "4304": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "麻麻一下就想到了《文化苦旅》里的那篇牌坊"
+      }
+     ],
+     "id": 4304,
+     "pic": "g_anhui2"
+    },
+    "4305": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "一起向快乐出发！“也许再穿过一条烦恼的河流，明天就能够到达”"
+      }
+     ],
+     "id": 4305,
+     "pic": "g_aomen3"
+    },
+    "4306": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "今天18岁啦，祝我自己生日快乐(*ฅ́˘ฅ̀*)♡︎"
+      }
+     ],
+     "id": 4306,
+     "pic": "g_beijing4"
+    },
+    "4307": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "三月的雄狮悄然离去，伴着小提琴声，四月来了。"
+      }
+     ],
+     "id": 4307,
+     "pic": "g_beijing1"
+    },
+    "4308": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "世界那么大，来都来了，不去闯一趟未免太可惜了"
+      }
+     ],
+     "id": 4308,
+     "pic": "g_beijing1"
+    },
+    "4309": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "不到长城非好汉。很高兴认识大家。"
+      }
+     ],
+     "id": 4309,
+     "pic": "g_beijing5"
+    },
+    "4310": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "照片的意义在于把时间变成永恒，你说呢。"
+      }
+     ],
+     "id": 4310,
+     "pic": "g_beijing5"
+    },
+    "4311": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "人有各自的月亮 拍下幸福的瞬间 我也站在幸福里"
+      }
+     ],
+     "id": 4311,
+     "pic": "g_beijing3"
+    },
+    "4312": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "拿出镜子，我就可以邀请我自己陪我看海。"
+      }
+     ],
+     "id": 4312,
+     "pic": "g_fujian3"
+    },
+    "4313": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "平安无忧，健康喜乐。我会等着你归家的，小葵。"
+      }
+     ],
+     "id": 4313,
+     "pic": "g_guilin1"
+    },
+    "4314": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "努力攀登上更高的山 看更美的风景"
+      }
+     ],
+     "id": 4314,
+     "pic": "g_haerbin3"
+    },
+    "4315": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "愿你的生活没有暴雪只有晴，后会有期❤️"
+      }
+     ],
+     "id": 4315,
+     "pic": "g_haerbin4"
+    },
+    "4316": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "君不见长松卧壑困风霜，时来屹立扶明堂。\n———《读书》陆游"
+      }
+     ],
+     "id": 4316,
+     "pic": "g_hainan2"
+    },
+    "4317": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "✅完成蛙主的人生追求之一（蛙主羡慕值Max）"
+      }
+     ],
+     "id": 4317,
+     "pic": "g_hainan2"
+    },
+    "4318": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "快到清明啦，宝宝到杭州看满山茶园，是不是也想喝雨前龙井呢"
+      }
+     ],
+     "id": 4318,
+     "pic": "g_hangzhou2"
+    },
+    "4319": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "年年的旅途与我的脚印有了重合。!(^O^)y"
+      }
+     ],
+     "id": 4319,
+     "pic": "g_hangzhou1"
+    },
+    "4320": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "给妈摘一片九溪的西湖龙井，用虎跑的泉水泡茶🍵"
+      }
+     ],
+     "id": 4320,
+     "pic": "g_hangzhou2"
+    },
+    "4321": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "好美的打铁花，想和爱的人一起去看。"
+      }
+     ],
+     "id": 4321,
+     "pic": "g_hebei3"
+    },
+    "4322": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "耶！蛙蛙到我的省份了！长白山天池！离我很久😉"
+      }
+     ],
+     "id": 4322,
+     "pic": "g_jilin1"
+    },
+    "4323": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "黄昏 放学后 好朋友 兜风 超级幸福"
+      }
+     ],
+     "id": 4323,
+     "pic": "g_jilin1"
+    },
+    "4324": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "超级喜欢这个滕王阁💗我已经去南昌4次了！！"
+      }
+     ],
+     "id": 4324,
+     "pic": "g_jiangxi2"
+    },
+    "4325": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "蛙蛙替我回了家诶，这一看就是瓷都呢！"
+      }
+     ],
+     "id": 4325,
+     "pic": "g_jiangxi1"
+    },
+    "4326": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "从前有一颗糖，它走呀走，走到了南极，变成了冰糖。"
+      }
+     ],
+     "id": 4326,
+     "pic": "g_jiuquan3"
+    },
+    "4327": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "哇 我的蛙蛙去了我想去的地方 太棒啦"
+      }
+     ],
+     "id": 4327,
+     "pic": "g_lasa1"
+    },
+    "4328": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "信仰是心中的绿洲。——哈里尔·纪伯伦"
+      }
+     ],
+     "id": 4328,
+     "pic": "g_lasa4"
+    },
+    "4329": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "我17岁的时候也是自己一个人去的拉萨，没想到蛙蛙跟我一样勇敢"
+      }
+     ],
+     "id": 4329,
+     "pic": "g_lasa3"
+    },
+    "4330": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "愿终有一日可以在广阔天地间遨游不受任何的枷锁。"
+      }
+     ],
+     "id": 4330,
+     "pic": "g_liaoning2"
+    },
+    "4331": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "这客栈住进去会是什么感觉啊(๑•̌.•̑๑)ˀ̣ˀ̣"
+      }
+     ],
+     "id": 4331,
+     "pic": "g_ningxia5"
+    },
+    "4332": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "不要着急，最美好的事物都发生在远方"
+      }
+     ],
+     "id": 4332,
+     "pic": "g_ningxia5"
+    },
+    "4333": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "你被黑暗敲打，恰恰说明你是光明本身"
+      }
+     ],
+     "id": 4333,
+     "pic": "g_ningxia6"
+    },
+    "4334": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "希望我也能像这些帆船一样，乘风破浪"
+      }
+     ],
+     "id": 4334,
+     "pic": "g_qingdao2"
+    },
+    "4335": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "🦋ྀི美梦皆有迹寻 夏日必有回音"
+      }
+     ],
+     "id": 4335,
+     "pic": "g_qinghai1"
+    },
+    "4336": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "我和小伙伴在牦牛背上看蓝天，蓝天好美。"
+      }
+     ],
+     "id": 4336,
+     "pic": "g_qinghai4"
+    },
+    "4337": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "世人皆如满天星，而你却如皎皎洁月，众星捧月，唯你耀眼"
+      }
+     ],
+     "id": 4337,
+     "pic": "g_qinghai3"
+    },
+    "4338": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "青海好美 乘着大雁感受自由飞翔"
+      }
+     ],
+     "id": 4338,
+     "pic": "g_qinghai2"
+    },
+    "4339": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "真想去没有天花板的地方大口呼吸啊 最好都是晴天"
+      }
+     ],
+     "id": 4339,
+     "pic": "g_qinghai2"
+    },
+    "4340": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "好像千与千寻里的画面呢。单向车程的终点会遇见汤婆婆和无脸男吗"
+      }
+     ],
+     "id": 4340,
+     "pic": "g_qinghai1"
+    },
+    "4341": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "好多孔明燈哦！蛙蛙曲奇和他的好朋友祝大家萬事順意！"
+      }
+     ],
+     "id": 4341,
+     "pic": "g_tw_tiandeng"
+    },
+    "4342": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "若你困于无风之地\n等待\n就是最好的答案"
+      }
+     ],
+     "id": 4342,
+     "pic": "g_suzhou2"
+    },
+    "4343": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "好喜欢睡觉时外而下着蒙蒙细雨的氛围(~‾▿‾)~"
+      }
+     ],
+     "id": 4343,
+     "pic": "g_suzhou1"
+    },
+    "4344": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "还记得我去苏州的时候 现在蛙蛙也去了同样的地方 好开心❤️"
+      }
+     ],
+     "id": 4344,
+     "pic": "g_suzhou1"
+    },
+    "4345": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "只要坚持，每个困难都能克服我。"
+      }
+     ],
+     "id": 4345,
+     "pic": "g_tianjin2"
+    },
+    "4346": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "哇哇哇，我都还没看到兵马俑有你先看上了？是不是非常壮观？"
+      }
+     ],
+     "id": 4346,
+     "pic": "g_xian3"
+    },
+    "4347": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "这是你走的最远的城市了，如果黄金日落如此壮观不负此行"
+      }
+     ],
+     "id": 4347,
+     "pic": "g_xinjiang3"
+    },
+    "4348": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "崇圣寺啊 真会选地方 去彩虹之南旅游"
+      }
+     ],
+     "id": 4348,
+     "pic": "g_yunnan3"
+    },
+    "4349": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "花开满树是美景，我在对岸，看花看景。"
+      }
+     ],
+     "id": 4349,
+     "pic": "g_yunnan2"
+    },
+    "4350": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "我也好想去啊，但是谢谢儿子带我去看了，你就是我，我就是你"
+      }
+     ],
+     "id": 4350,
+     "pic": "g_zhangjiajie3"
+    },
+    "4351": {
+     "author": "——来自4月的漂流瓶",
+     "desc_list": [
+      {
+       "align": "left",
+       "desc": "蛙蛙去旅行啦，我在准备下个月的考试，希望护考能过。"
+      }
+     ],
+     "id": 4351,
+     "pic": "g_zhangjiajie2"
     }
    }
   },
@@ -41929,7 +48502,7 @@
    "fast_consume": 30,
    "num_reward": {
     "12": {
-     "item_id": 54,
+     "item_id": 56,
      "item_num": 1,
      "num": 12,
      "pic": "capsule_state_4"
@@ -41941,7 +48514,7 @@
      "pic": "capsule_state_2"
     },
     "7": {
-     "item_id": 54,
+     "item_id": 1011,
      "item_num": 1,
      "num": 7,
      "pic": "capsule_state_3"
@@ -41961,79 +48534,61 @@
      "type": 1
     },
     "103": {
-     "id": 1000,
-     "num": 1,
+     "id": 200000,
+     "num": 10,
      "reward_id": 103,
      "type": 1
     },
     "104": {
-     "id": 10001,
+     "id": 8001,
      "num": 1,
      "reward_id": 104,
      "type": 1
     },
     "105": {
-     "id": 10002,
+     "id": 10001,
      "num": 1,
      "reward_id": 105,
      "type": 1
     },
     "106": {
-     "id": 10003,
+     "id": 10002,
      "num": 1,
      "reward_id": 106,
      "type": 1
     },
     "107": {
-     "id": 10004,
+     "id": 10003,
      "num": 1,
      "reward_id": 107,
      "type": 1
     },
-    "108": {
-     "id": 10005,
-     "num": 1,
-     "reward_id": 108,
-     "type": 1
-    },
-    "109": {
-     "id": 10006,
-     "num": 1,
-     "reward_id": 109,
-     "type": 1
-    },
-    "110": {
-     "id": 10007,
-     "num": 1,
-     "reward_id": 110,
-     "type": 1
-    },
     "201": {
-     "id": 200000,
-     "num": 20,
+     "id": 2,
+     "num": 1,
      "reward_id": 201,
      "type": 2
     },
     "202": {
-     "id": 8001,
+     "id": 1000,
      "num": 1,
      "reward_id": 202,
      "type": 2
     },
     "203": {
-     "id": 2,
+     "id": 8501,
      "num": 1,
      "reward_id": 203,
      "type": 2
     },
     "204": {
-     "id": 3,
+     "id": 8502,
      "num": 1,
      "reward_id": 204,
      "type": 2
     },
     "205": {
-     "id": 19,
+     "id": 8503,
      "num": 1,
      "reward_id": 205,
      "type": 2
@@ -42045,21 +48600,15 @@
      "type": 2
     },
     "207": {
-     "id": 5103,
+     "id": 20001,
      "num": 1,
      "reward_id": 207,
      "type": 2
     },
     "208": {
-     "id": 20001,
-     "num": 1,
-     "reward_id": 208,
-     "type": 2
-    },
-    "209": {
      "id": 20004,
      "num": 1,
-     "reward_id": 209,
+     "reward_id": 208,
      "type": 2
     },
     "301": {
@@ -42075,57 +48624,51 @@
      "type": 3
     },
     "303": {
-     "id": 202108,
+     "id": 202109,
      "num": 1,
      "reward_id": 303,
      "type": 3
     },
     "304": {
-     "id": 202110,
+     "id": 11001,
      "num": 1,
      "reward_id": 304,
      "type": 3
     },
     "305": {
-     "id": 202111,
+     "id": 121,
      "num": 1,
      "reward_id": 305,
      "type": 3
     },
     "306": {
-     "id": 20002,
+     "id": 124,
      "num": 1,
      "reward_id": 306,
      "type": 3
     },
     "307": {
-     "id": 20005,
+     "id": 8002,
      "num": 1,
      "reward_id": 307,
      "type": 3
     },
     "308": {
-     "id": 8002,
+     "id": 1010,
      "num": 1,
      "reward_id": 308,
      "type": 3
     },
     "309": {
-     "id": 11001,
+     "id": 1015,
      "num": 1,
      "reward_id": 309,
      "type": 3
     },
     "310": {
-     "id": 54,
-     "num": 1,
-     "reward_id": 310,
-     "type": 3
-    },
-    "311": {
      "id": 20111,
      "num": 1,
-     "reward_id": 311,
+     "reward_id": 310,
      "type": 3
     }
    },
@@ -42277,6 +48820,13 @@
     "id": 21041,
     "name": "露营堆堆",
     "res": "dfx_2104"
+   },
+   "21051": {
+    "bg": "bg_dfx_2105",
+    "desc": "多出来的正丹纸 有了新的用途",
+    "id": 21051,
+    "name": "迎春堆堆",
+    "res": "dfx_2105"
    }
   },
   "cookingData": {
@@ -43140,6 +49690,22 @@
      "",
      ""
     ]
+   },
+   "106": {
+    "achieve": "",
+    "desc": "采一曰君子之兰 居室便有了君子之风",
+    "desc_handbook": "百合目/石蒜科/君子兰属 文雅俊秀有君子风姿",
+    "icon": "icon_liwu_junzilan",
+    "id": 106,
+    "name": "君子兰",
+    "pic": [
+     "chahua_liwu_junzilan_1",
+     "chahua_liwu_junzilan_2"
+    ],
+    "pic_growth": [
+     "",
+     ""
+    ]
    }
   },
   "drawingCollectData": {
@@ -43843,6 +50409,13 @@
      "2": "多年生草本球根植物",
      "3": "原产地北半球温带",
      "4": "花语：幸福终将到来"
+    },
+    "109": {
+     "1": "百合目-石蒜科-君子兰属",
+     "2": "多年生草本植物",
+     "3": "原产于非洲南部亚热带森林中",
+     "4": "寓意：有才而不骄 得志而不傲",
+     "5": "长春市市花"
     },
     "201": {
      "1": "伞形目-伞形科-胡萝卜属",
@@ -45809,6 +52382,47 @@
      "sub_name": "蒙大拿",
      "tab": 1
     },
+    "1090101": {
+     "icon": "icon_liwu_junzilan",
+     "id": 109,
+     "long_id": 1090101,
+     "name": "君子兰",
+     "pic_id": 1,
+     "pic_img": "icon_liwu_junzilan",
+     "pic_name": "主图",
+     "pos": [
+      -2,
+      0
+     ],
+     "scale": 0.8,
+     "sub_id": 1,
+     "sub_name": "花园君子兰",
+     "tab": 1
+    },
+    "1090102": {
+     "icon": "icon_liwu_junzilan",
+     "id": 109,
+     "long_id": 1090102,
+     "name": "君子兰",
+     "pic_id": 2,
+     "pic_img": "chahua_liwu_junzilan_1",
+     "pic_name": "插花1",
+     "sub_id": 1,
+     "sub_name": "花园君子兰",
+     "tab": 1
+    },
+    "1090103": {
+     "icon": "icon_liwu_junzilan",
+     "id": 109,
+     "long_id": 1090103,
+     "name": "君子兰",
+     "pic_id": 3,
+     "pic_img": "chahua_liwu_junzilan_2",
+     "pic_name": "插花2",
+     "sub_id": 1,
+     "sub_name": "花园君子兰",
+     "tab": 1
+    },
     "2010101": {
      "icon": "foods_101",
      "id": 201,
@@ -47437,6 +54051,1935 @@
     }
    }
   },
+  "encytravel": {
+   "desc": {
+    "1001": {
+     "1": "可从商店购得",
+     "2": "便宜但是走不远",
+     "3": "吃多了心情很一般"
+    },
+    "1002": {
+     "1": "可从商店购得",
+     "2": "抵达不了太远的远方",
+     "3": "心情好一点但不多"
+    },
+    "1003": {
+     "1": "可从商店购得",
+     "2": "适合一日来回的行程",
+     "3": "心情好一点但不多"
+    },
+    "1004": {
+     "1": "可从商店购得",
+     "2": "走得远也走得快",
+     "3": "心情好多了"
+    },
+    "1005": {
+     "1": "可从商店购得",
+     "2": "大概率可以抵达西部",
+     "3": "心情好多了"
+    },
+    "1006": {
+     "1": "可从商店购得",
+     "2": "有较大概率去往沿海",
+     "3": "心情好多了"
+    },
+    "1007": {
+     "1": "可从商店购得",
+     "2": "大概率前往江南水乡",
+     "3": "心情好多了"
+    },
+    "1008": {
+     "1": "可从商店购得",
+     "2": "有较大概率往北走",
+     "3": "心情好多了"
+    },
+    "1009": {
+     "1": "可从商店购得",
+     "2": "可能会遇到冬天的花",
+     "3": "心情好多了"
+    },
+    "1010": {
+     "1": "可从商店购得",
+     "2": "有较大概率前往山区",
+     "3": "心情好多了"
+    },
+    "1011": {
+     "1": "稀有食物",
+     "2": "可能遇见特定故事",
+     "3": "一吃便心情大好"
+    },
+    "1012": {
+     "1": "稀有食物",
+     "2": "概率获得特定稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1013": {
+     "1": "稀有食物",
+     "2": "概率获得特定稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1014": {
+     "1": "旅行商人概率刷新",
+     "2": "概率获得特定稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1015": {
+     "1": "旅行商人概率刷新",
+     "2": "概率获得秋天稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1016": {
+     "1": "新年活动特有食物",
+     "2": "概率获得特定稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1017": {
+     "1": "森之国度联动",
+     "2": "概率获得特定稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1018": {
+     "1": "周年活动特有食物",
+     "2": "概率获得特定稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1101": {
+     "1": "旅行商人节气限定",
+     "2": "概率获得节气稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1102": {
+     "1": "旅行商人节气限定",
+     "2": "概率获得节气稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1103": {
+     "1": "旅行商人节气限定",
+     "2": "概率获得节气稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1104": {
+     "1": "旅行商人节气限定",
+     "2": "概率获得节气稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1105": {
+     "1": "旅行商人节气限定",
+     "2": "概率获得节气稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1106": {
+     "1": "旅行商人节气限定",
+     "2": "概率获得节气稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1107": {
+     "1": "旅行商人节气限定",
+     "2": "概率获得节气稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1108": {
+     "1": "旅行商人节气限定",
+     "2": "概率获得节气稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1109": {
+     "1": "旅行商人节气限定",
+     "2": "概率获得节气稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1110": {
+     "1": "旅行商人节气限定",
+     "2": "概率获得节气稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1111": {
+     "1": "旅行商人节气限定",
+     "2": "概率获得节气稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1112": {
+     "1": "旅行商人节气限定",
+     "2": "概率获得节气稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1113": {
+     "1": "旅行商人节气限定",
+     "2": "概率获得节气稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1114": {
+     "1": "旅行商人节气限定",
+     "2": "概率获得节气稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1115": {
+     "1": "旅行商人节气限定",
+     "2": "概率获得节气稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1116": {
+     "1": "旅行商人节气限定",
+     "2": "概率获得节气稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1117": {
+     "1": "旅行商人节气限定",
+     "2": "概率获得节气稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1118": {
+     "1": "旅行商人节气限定",
+     "2": "概率获得节气稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1119": {
+     "1": "旅行商人节气限定",
+     "2": "概率获得节气稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1120": {
+     "1": "旅行商人节气限定",
+     "2": "概率获得节气稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1121": {
+     "1": "旅行商人节气限定",
+     "2": "概率获得节气稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1122": {
+     "1": "旅行商人节气限定",
+     "2": "概率获得节气稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1123": {
+     "1": "旅行商人节气限定",
+     "2": "概率获得节气稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1124": {
+     "1": "旅行商人节气限定",
+     "2": "概率获得节气稀有照",
+     "3": "一吃便心情大好"
+    },
+    "1201": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1202": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1203": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1204": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1205": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1206": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1207": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1208": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1209": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1210": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1211": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1212": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1213": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1214": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1215": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1216": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1217": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1218": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1219": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1220": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1221": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1222": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1223": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1224": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1225": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1226": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1227": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1228": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1229": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1230": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1231": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1232": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1233": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1234": {
+     "1": "旅行商人概率刷新",
+     "2": "目的地指向性食物",
+     "3": "一吃便心情大好"
+    },
+    "1901": {
+     "1": "可从兑换券抽奖获得",
+     "2": "遇到伙伴概率增加",
+     "3": "一吃便心情大好"
+    },
+    "1902": {
+     "1": "可从兑换券抽奖获得",
+     "2": "大家都喜欢苹果",
+     "3": "刺猬喜欢菠萝",
+     "4": "萤火虫喜欢草莓",
+     "5": "壁虎喜欢甜椒"
+    },
+    "1903": {
+     "1": "中秋活动特有食物",
+     "2": "中秋纪念品概率提升",
+     "3": "概率获得特定稀有照",
+     "4": "概率获得夜晚稀有照"
+    },
+    "2001": {
+     "1": "庭院三叶草田概率长出",
+     "2": "概率前往未拓展区域",
+     "3": "有效提升心情"
+    },
+    "2002": {
+     "1": "可从商店购得",
+     "2": "概率前往未拓展区域",
+     "3": "有效提升心情"
+    },
+    "2003": {
+     "1": "稀有护身符",
+     "2": "概率前往未拓展区域",
+     "3": "有效提升心情"
+    },
+    "2004": {
+     "1": "旅行商人概率刷新",
+     "2": "提升故事概率"
+    },
+    "2005": {
+     "1": "旅行商人概率刷新",
+     "2": "提升故事概率",
+     "3": "去往南边概率提升"
+    },
+    "2006": {
+     "1": "稀有护身符",
+     "2": "濒危动物照概率提升",
+     "3": "会有好心情"
+    },
+    "2007": {
+     "1": "森之国度联动",
+     "2": "获得联动限定照片",
+     "3": "会有好心情"
+    },
+    "2008": {
+     "1": "旅行商人概率刷新",
+     "2": "配合特殊食物使用",
+     "3": "优先获得未有特定照"
+    },
+    "2101": {
+     "1": "可从兑换券抽奖获得",
+     "2": "绿色向东，白色向西",
+     "3": "红色向南，蓝色向北",
+     "4": "粉铃铛向未知"
+    },
+    "2102": {
+     "1": "可从兑换券抽奖获得",
+     "2": "不同颜色指向四个方向",
+     "3": "绿色向东，白色向西",
+     "4": "红色向南，蓝色向北"
+    },
+    "2103": {
+     "1": "可从兑换券抽奖获得",
+     "2": "提升故事概率",
+     "3": "绿色向东，黄色向西",
+     "4": "红色向南，蓝色向北"
+    },
+    "2104": {
+     "1": "各类活动中概率获得",
+     "2": "前往特定博物馆",
+     "3": "概率获得博物馆照片",
+     "4": "概率获得博物馆纪念品"
+    },
+    "2105": {
+     "1": "手工制作获得",
+     "2": "指向特定河流区域",
+     "3": "概率获得该区域照片"
+    },
+    "2106": {
+     "1": "肥沃的土地概率长出",
+     "2": "概率前往未拓展区域",
+     "3": "赏花系列照片概率提升"
+    },
+    "2107": {
+     "1": "通过合成手工碎片获得",
+     "2": "根据花纹有不同的祝福",
+     "3": "概率获得特殊材料"
+    },
+    "3001": {
+     "1": "可从商店购得",
+     "2": "利于炎热干燥环境中旅行"
+    },
+    "3002": {
+     "1": "可从商店购得",
+     "2": "利于潮湿水域环境中旅行"
+    },
+    "3003": {
+     "1": "可从商店购得",
+     "2": "利于山地复杂环境中旅行"
+    },
+    "3004": {
+     "1": "可从商店购得",
+     "2": "适合普通环境中旅行"
+    }
+   },
+   "list": {
+    "10010001": {
+     "id": 1001,
+     "item_id": 0,
+     "long_id": 10010001,
+     "name": "华夫饼",
+     "sub_id": 1,
+     "sub_name": "奶油华夫饼",
+     "tab": 1
+    },
+    "10020001": {
+     "id": 1002,
+     "item_id": 1,
+     "long_id": 10020001,
+     "name": "可丽饼",
+     "sub_id": 1,
+     "sub_name": "草莓可丽饼",
+     "tab": 1
+    },
+    "10030001": {
+     "id": 1003,
+     "item_id": 2,
+     "long_id": 10030001,
+     "name": "皮塔饼",
+     "sub_id": 1,
+     "sub_name": "沙拉皮塔饼",
+     "tab": 1
+    },
+    "10040001": {
+     "id": 1004,
+     "item_id": 3,
+     "long_id": 10040001,
+     "name": "蛋包饭",
+     "sub_id": 1,
+     "sub_name": "茄汁蛋包饭",
+     "tab": 1
+    },
+    "10050001": {
+     "id": 1005,
+     "item_id": 4,
+     "long_id": 10050001,
+     "name": "烤包子",
+     "sub_id": 1,
+     "sub_name": "香葱烤包子",
+     "tab": 1
+    },
+    "10060001": {
+     "id": 1006,
+     "item_id": 5,
+     "long_id": 10060001,
+     "name": "煎豆腐",
+     "sub_id": 1,
+     "sub_name": "海苔煎豆腐",
+     "tab": 1
+    },
+    "10070001": {
+     "id": 1007,
+     "item_id": 15,
+     "long_id": 10070001,
+     "name": "蒸米糕",
+     "sub_id": 1,
+     "sub_name": "桂花蒸米糕",
+     "tab": 1
+    },
+    "10080001": {
+     "id": 1008,
+     "item_id": 16,
+     "long_id": 10080001,
+     "name": "烙蛋饼",
+     "sub_id": 1,
+     "sub_name": "彩椒烙蛋饼",
+     "tab": 1
+    },
+    "10090001": {
+     "id": 1009,
+     "item_id": 19,
+     "long_id": 10090001,
+     "name": "饺子",
+     "sub_id": 1,
+     "sub_name": "饺子",
+     "tab": 1
+    },
+    "10100001": {
+     "id": 1010,
+     "item_id": 33,
+     "long_id": 10100001,
+     "name": "沙拉",
+     "sub_id": 1,
+     "sub_name": "水果沙拉",
+     "tab": 1
+    },
+    "10110001": {
+     "id": 1011,
+     "item_id": 17,
+     "long_id": 10110001,
+     "name": "棒棒糖",
+     "sub_id": 1,
+     "sub_name": "棒棒糖",
+     "tab": 1
+    },
+    "10120001": {
+     "id": 1012,
+     "item_id": 18,
+     "long_id": 10120001,
+     "name": "鲜果茶",
+     "sub_id": 1,
+     "sub_name": "伴柠伴桔",
+     "tab": 1
+    },
+    "10130001": {
+     "id": 1013,
+     "item_id": 32,
+     "long_id": 10130001,
+     "name": "多士",
+     "sub_id": 1,
+     "sub_name": "蜂蜜厚多士",
+     "tab": 1
+    },
+    "10140001": {
+     "id": 1014,
+     "item_id": 34,
+     "long_id": 10140001,
+     "name": "茶",
+     "sub_id": 1,
+     "sub_name": "知音茶",
+     "tab": 1
+    },
+    "10150001": {
+     "id": 1015,
+     "item_id": 54,
+     "long_id": 10150001,
+     "name": "枫叶糖",
+     "sub_id": 1,
+     "sub_name": "枫叶糖",
+     "tab": 1
+    },
+    "10160001": {
+     "id": 1016,
+     "item_id": 55,
+     "long_id": 10160001,
+     "name": "饺子",
+     "sub_id": 1,
+     "sub_name": "吉祥饺子",
+     "tab": 1
+    },
+    "10170001": {
+     "id": 1017,
+     "item_id": 56,
+     "long_id": 10170001,
+     "name": "森之国度",
+     "sub_id": 1,
+     "sub_name": "小鱼饼干",
+     "tab": 1
+    },
+    "10180001": {
+     "id": 1018,
+     "item_id": 57,
+     "long_id": 10180001,
+     "name": "蛋糕",
+     "sub_id": 1,
+     "sub_name": "庆典蛋糕",
+     "tab": 1
+    },
+    "11010001": {
+     "id": 1101,
+     "item_id": 21,
+     "long_id": 11010001,
+     "name": "立春",
+     "sub_id": 1,
+     "sub_name": "三鲜素春卷",
+     "tab": 1
+    },
+    "11020001": {
+     "id": 1102,
+     "item_id": 36,
+     "long_id": 11020001,
+     "name": "雨水",
+     "sub_id": 1,
+     "sub_name": "泡椒春笋",
+     "tab": 1
+    },
+    "11030001": {
+     "id": 1103,
+     "item_id": 22,
+     "long_id": 11030001,
+     "name": "惊蛰",
+     "sub_id": 1,
+     "sub_name": "银耳炖雪梨",
+     "tab": 1
+    },
+    "11040001": {
+     "id": 1104,
+     "item_id": 37,
+     "long_id": 11040001,
+     "name": "春分",
+     "sub_id": 1,
+     "sub_name": "桃花酥",
+     "tab": 1
+    },
+    "11050001": {
+     "id": 1105,
+     "item_id": 38,
+     "long_id": 11050001,
+     "name": "清明",
+     "sub_id": 1,
+     "sub_name": "艾草青团",
+     "tab": 1
+    },
+    "11060001": {
+     "id": 1106,
+     "item_id": 23,
+     "long_id": 11060001,
+     "name": "谷雨",
+     "sub_id": 1,
+     "sub_name": "香椿拌豆腐",
+     "tab": 1
+    },
+    "11070001": {
+     "id": 1107,
+     "item_id": 39,
+     "long_id": 11070001,
+     "name": "立夏",
+     "sub_id": 1,
+     "sub_name": "立夏饭",
+     "tab": 1
+    },
+    "11080001": {
+     "id": 1108,
+     "item_id": 24,
+     "long_id": 11080001,
+     "name": "小满",
+     "sub_id": 1,
+     "sub_name": "蜜渍枇杷",
+     "tab": 1
+    },
+    "11090001": {
+     "id": 1109,
+     "item_id": 40,
+     "long_id": 11090001,
+     "name": "芒种",
+     "sub_id": 1,
+     "sub_name": "芒种梅",
+     "tab": 1
+    },
+    "11100001": {
+     "id": 1110,
+     "item_id": 25,
+     "long_id": 11100001,
+     "name": "夏至",
+     "sub_id": 1,
+     "sub_name": "蒜蓉蒸丝瓜",
+     "tab": 1
+    },
+    "11110001": {
+     "id": 1111,
+     "item_id": 41,
+     "long_id": 11110001,
+     "name": "小暑",
+     "sub_id": 1,
+     "sub_name": "红豆烧仙草",
+     "tab": 1
+    },
+    "11120001": {
+     "id": 1112,
+     "item_id": 26,
+     "long_id": 11120001,
+     "name": "大暑",
+     "sub_id": 1,
+     "sub_name": "西瓜冰沙",
+     "tab": 1
+    },
+    "11130001": {
+     "id": 1113,
+     "item_id": 27,
+     "long_id": 11130001,
+     "name": "立秋",
+     "sub_id": 1,
+     "sub_name": "地三鲜",
+     "tab": 1
+    },
+    "11140001": {
+     "id": 1114,
+     "item_id": 42,
+     "long_id": 11140001,
+     "name": "处暑",
+     "sub_id": 1,
+     "sub_name": "莲子百合糖水",
+     "tab": 1
+    },
+    "11150001": {
+     "id": 1115,
+     "item_id": 43,
+     "long_id": 11150001,
+     "name": "白露",
+     "sub_id": 1,
+     "sub_name": "桂花糯米藕",
+     "tab": 1
+    },
+    "11160001": {
+     "id": 1116,
+     "item_id": 28,
+     "long_id": 11160001,
+     "name": "秋分",
+     "sub_id": 1,
+     "sub_name": "野苋菜汤",
+     "tab": 1
+    },
+    "11170001": {
+     "id": 1117,
+     "item_id": 44,
+     "long_id": 11170001,
+     "name": "寒露",
+     "sub_id": 1,
+     "sub_name": "冰糖葫芦",
+     "tab": 1
+    },
+    "11180001": {
+     "id": 1118,
+     "item_id": 29,
+     "long_id": 11180001,
+     "name": "霜降",
+     "sub_id": 1,
+     "sub_name": "蓝莓山药泥",
+     "tab": 1
+    },
+    "11190001": {
+     "id": 1119,
+     "item_id": 30,
+     "long_id": 11190001,
+     "name": "立冬",
+     "sub_id": 1,
+     "sub_name": "甘蔗马蹄水",
+     "tab": 1
+    },
+    "11200001": {
+     "id": 1120,
+     "item_id": 45,
+     "long_id": 11200001,
+     "name": "小雪",
+     "sub_id": 1,
+     "sub_name": "红糖糍粑",
+     "tab": 1
+    },
+    "11210001": {
+     "id": 1121,
+     "item_id": 31,
+     "long_id": 11210001,
+     "name": "大雪",
+     "sub_id": 1,
+     "sub_name": "白玉蒸蛋",
+     "tab": 1
+    },
+    "11220001": {
+     "id": 1122,
+     "item_id": 46,
+     "long_id": 11220001,
+     "name": "冬至",
+     "sub_id": 1,
+     "sub_name": "南瓜排叉素饺子",
+     "tab": 1
+    },
+    "11230001": {
+     "id": 1123,
+     "item_id": 35,
+     "long_id": 11230001,
+     "name": "小寒",
+     "sub_id": 1,
+     "sub_name": "核桃枣泥糕",
+     "tab": 1
+    },
+    "11240001": {
+     "id": 1124,
+     "item_id": 20,
+     "long_id": 11240001,
+     "name": "大寒",
+     "sub_id": 1,
+     "sub_name": "腊八粥",
+     "tab": 1
+    },
+    "12010001": {
+     "id": 1201,
+     "item_id": 101,
+     "long_id": 12010001,
+     "name": "枣花酥",
+     "sub_id": 1,
+     "sub_name": "枣花酥",
+     "tab": 1
+    },
+    "12020001": {
+     "id": 1202,
+     "item_id": 102,
+     "long_id": 12020001,
+     "name": "龙眼酥",
+     "sub_id": 1,
+     "sub_name": "龙眼酥",
+     "tab": 1
+    },
+    "12030001": {
+     "id": 1203,
+     "item_id": 103,
+     "long_id": 12030001,
+     "name": "土沱麻饼",
+     "sub_id": 1,
+     "sub_name": "土沱麻饼",
+     "tab": 1
+    },
+    "12040001": {
+     "id": 1204,
+     "item_id": 104,
+     "long_id": 12040001,
+     "name": "糖不甩",
+     "sub_id": 1,
+     "sub_name": "糖不甩",
+     "tab": 1
+    },
+    "12050001": {
+     "id": 1205,
+     "item_id": 105,
+     "long_id": 12050001,
+     "name": "白糤",
+     "sub_id": 1,
+     "sub_name": "白糤",
+     "tab": 1
+    },
+    "12060001": {
+     "id": 1206,
+     "item_id": 106,
+     "long_id": 12060001,
+     "name": "龙井茶糕",
+     "sub_id": 1,
+     "sub_name": "龙井茶糕",
+     "tab": 1
+    },
+    "12070001": {
+     "id": 1207,
+     "item_id": 107,
+     "long_id": 12070001,
+     "name": "车轮饼",
+     "sub_id": 1,
+     "sub_name": "车轮饼",
+     "tab": 1
+    },
+    "12080001": {
+     "id": 1208,
+     "item_id": 108,
+     "long_id": 12080001,
+     "name": "驴打滚",
+     "sub_id": 1,
+     "sub_name": "驴打滚",
+     "tab": 1
+    },
+    "12090001": {
+     "id": 1209,
+     "item_id": 109,
+     "long_id": 12090001,
+     "name": "凤梨酥",
+     "sub_id": 1,
+     "sub_name": "凤梨酥",
+     "tab": 1
+    },
+    "12100001": {
+     "id": 1210,
+     "item_id": 110,
+     "long_id": 12100001,
+     "name": "肇东烤饼",
+     "sub_id": 1,
+     "sub_name": "肇东烤饼",
+     "tab": 1
+    },
+    "12110001": {
+     "id": 1211,
+     "item_id": 111,
+     "long_id": 12110001,
+     "name": "乳扇",
+     "sub_id": 1,
+     "sub_name": "乳扇",
+     "tab": 1
+    },
+    "12120001": {
+     "id": 1212,
+     "item_id": 112,
+     "long_id": 12120001,
+     "name": "椰子糕",
+     "sub_id": 1,
+     "sub_name": "椰子糕",
+     "tab": 1
+    },
+    "12130001": {
+     "id": 1213,
+     "item_id": 113,
+     "long_id": 12130001,
+     "name": "九黄饼",
+     "sub_id": 1,
+     "sub_name": "九黄饼",
+     "tab": 1
+    },
+    "12140001": {
+     "id": 1214,
+     "item_id": 114,
+     "long_id": 12140001,
+     "name": "灯芯糕",
+     "sub_id": 1,
+     "sub_name": "灯芯糕",
+     "tab": 1
+    },
+    "12150001": {
+     "id": 1215,
+     "item_id": 115,
+     "long_id": 12150001,
+     "name": "锅盔",
+     "sub_id": 1,
+     "sub_name": "锅盔",
+     "tab": 1
+    },
+    "12160001": {
+     "id": 1216,
+     "item_id": 116,
+     "long_id": 12160001,
+     "name": "南瓜豆沙糕",
+     "sub_id": 1,
+     "sub_name": "南瓜豆沙糕",
+     "tab": 1
+    },
+    "12170001": {
+     "id": 1217,
+     "item_id": 117,
+     "long_id": 12170001,
+     "name": "酥圈圈",
+     "sub_id": 1,
+     "sub_name": "酥圈圈",
+     "tab": 1
+    },
+    "12180001": {
+     "id": 1218,
+     "item_id": 118,
+     "long_id": 12180001,
+     "name": "糌粑",
+     "sub_id": 1,
+     "sub_name": "糌粑",
+     "tab": 1
+    },
+    "12190001": {
+     "id": 1219,
+     "item_id": 119,
+     "long_id": 12190001,
+     "name": "梅花糕",
+     "sub_id": 1,
+     "sub_name": "梅花糕",
+     "tab": 1
+    },
+    "12200001": {
+     "id": 1220,
+     "item_id": 120,
+     "long_id": 12200001,
+     "name": "菠萝包",
+     "sub_id": 1,
+     "sub_name": "菠萝包",
+     "tab": 1
+    },
+    "12210001": {
+     "id": 1221,
+     "item_id": 121,
+     "long_id": 12210001,
+     "name": "枸杞冰沙饼",
+     "sub_id": 1,
+     "sub_name": "枸杞冰沙饼",
+     "tab": 1
+    },
+    "12220001": {
+     "id": 1222,
+     "item_id": 122,
+     "long_id": 12220001,
+     "name": "碗耳糕",
+     "sub_id": 1,
+     "sub_name": "碗耳糕",
+     "tab": 1
+    },
+    "12230001": {
+     "id": 1223,
+     "item_id": 123,
+     "long_id": 12230001,
+     "name": "茯苓糕",
+     "sub_id": 1,
+     "sub_name": "茯苓糕",
+     "tab": 1
+    },
+    "12240001": {
+     "id": 1224,
+     "item_id": 124,
+     "long_id": 12240001,
+     "name": "酸枣糕",
+     "sub_id": 1,
+     "sub_name": "酸枣糕",
+     "tab": 1
+    },
+    "12250001": {
+     "id": 1225,
+     "item_id": 125,
+     "long_id": 12250001,
+     "name": "大救驾",
+     "sub_id": 1,
+     "sub_name": "大救驾",
+     "tab": 1
+    },
+    "12260001": {
+     "id": 1226,
+     "item_id": 126,
+     "long_id": 12260001,
+     "name": "葱花缸炉",
+     "sub_id": 1,
+     "sub_name": "葱花缸炉",
+     "tab": 1
+    },
+    "12270001": {
+     "id": 1227,
+     "item_id": 127,
+     "long_id": 12270001,
+     "name": "烧饼",
+     "sub_id": 1,
+     "sub_name": "烧饼",
+     "tab": 1
+    },
+    "12280001": {
+     "id": 1228,
+     "item_id": 128,
+     "long_id": 12280001,
+     "name": "太谷饼",
+     "sub_id": 1,
+     "sub_name": "太谷饼",
+     "tab": 1
+    },
+    "12290001": {
+     "id": 1229,
+     "item_id": 129,
+     "long_id": 12290001,
+     "name": "粘豆包",
+     "sub_id": 1,
+     "sub_name": "粘豆包",
+     "tab": 1
+    },
+    "12300001": {
+     "id": 1230,
+     "item_id": 130,
+     "long_id": 12300001,
+     "name": "凤凰卷",
+     "sub_id": 1,
+     "sub_name": "凤凰卷",
+     "tab": 1
+    },
+    "12310001": {
+     "id": 1231,
+     "item_id": 131,
+     "long_id": 12310001,
+     "name": "焜锅馍馍",
+     "sub_id": 1,
+     "sub_name": "焜锅馍馍",
+     "tab": 1
+    },
+    "12320001": {
+     "id": 1232,
+     "item_id": 132,
+     "long_id": 12320001,
+     "name": "丝糕",
+     "sub_id": 1,
+     "sub_name": "丝糕",
+     "tab": 1
+    },
+    "12330001": {
+     "id": 1233,
+     "item_id": 133,
+     "long_id": 12330001,
+     "name": "萨木萨",
+     "sub_id": 1,
+     "sub_name": "萨木萨",
+     "tab": 1
+    },
+    "12340001": {
+     "id": 1234,
+     "item_id": 134,
+     "long_id": 12340001,
+     "name": "蒙古果子",
+     "sub_id": 1,
+     "sub_name": "蒙古果子",
+     "tab": 1
+    },
+    "19010001": {
+     "id": 1901,
+     "item_id": 6,
+     "long_id": 19010001,
+     "name": "花生",
+     "sub_id": 1,
+     "sub_name": "椒盐花生",
+     "tab": 1
+    },
+    "19010002": {
+     "id": 1901,
+     "item_id": 7,
+     "long_id": 19010002,
+     "name": "花生",
+     "sub_id": 2,
+     "sub_name": "芥末花生",
+     "tab": 1
+    },
+    "19010003": {
+     "id": 1901,
+     "item_id": 8,
+     "long_id": 19010003,
+     "name": "花生",
+     "sub_id": 3,
+     "sub_name": "蜂蜜花生",
+     "tab": 1
+    },
+    "19010004": {
+     "id": 1901,
+     "item_id": 9,
+     "long_id": 19010004,
+     "name": "花生",
+     "sub_id": 4,
+     "sub_name": "原味花生",
+     "tab": 1
+    },
+    "19010005": {
+     "id": 1901,
+     "item_id": 10,
+     "long_id": 19010005,
+     "name": "花生",
+     "sub_id": 5,
+     "sub_name": "五香花生",
+     "tab": 1
+    },
+    "19020001": {
+     "id": 1902,
+     "item_id": 11,
+     "long_id": 19020001,
+     "name": "果汁",
+     "sub_id": 1,
+     "sub_name": "菠萝汁",
+     "tab": 1
+    },
+    "19020002": {
+     "id": 1902,
+     "item_id": 12,
+     "long_id": 19020002,
+     "name": "果汁",
+     "sub_id": 2,
+     "sub_name": "草莓汁",
+     "tab": 1
+    },
+    "19020003": {
+     "id": 1902,
+     "item_id": 13,
+     "long_id": 19020003,
+     "name": "果汁",
+     "sub_id": 3,
+     "sub_name": "甜椒汁",
+     "tab": 1
+    },
+    "19020004": {
+     "id": 1902,
+     "item_id": 14,
+     "long_id": 19020004,
+     "name": "果汁",
+     "sub_id": 4,
+     "sub_name": "苹果汁",
+     "tab": 1
+    },
+    "19030001": {
+     "id": 1903,
+     "item_id": 47,
+     "long_id": 19030001,
+     "name": "月饼",
+     "sub_id": 1,
+     "sub_name": "上海芝麻",
+     "tab": 1
+    },
+    "19030002": {
+     "id": 1903,
+     "item_id": 48,
+     "long_id": 19030002,
+     "name": "月饼",
+     "sub_id": 2,
+     "sub_name": "苏式酥皮",
+     "tab": 1
+    },
+    "19030003": {
+     "id": 1903,
+     "item_id": 49,
+     "long_id": 19030003,
+     "name": "月饼",
+     "sub_id": 3,
+     "sub_name": "京式五仁",
+     "tab": 1
+    },
+    "19030004": {
+     "id": 1903,
+     "item_id": 50,
+     "long_id": 19030004,
+     "name": "月饼",
+     "sub_id": 4,
+     "sub_name": "广式莲蓉双黄",
+     "tab": 1
+    },
+    "19030005": {
+     "id": 1903,
+     "item_id": 51,
+     "long_id": 19030005,
+     "name": "月饼",
+     "sub_id": 5,
+     "sub_name": "港式冰皮",
+     "tab": 1
+    },
+    "19030006": {
+     "id": 1903,
+     "item_id": 52,
+     "long_id": 19030006,
+     "name": "月饼",
+     "sub_id": 6,
+     "sub_name": "晋式混糖",
+     "tab": 1
+    },
+    "19030007": {
+     "id": 1903,
+     "item_id": 53,
+     "long_id": 19030007,
+     "name": "月饼",
+     "sub_id": 7,
+     "sub_name": "秦式水晶",
+     "tab": 1
+    },
+    "20010001": {
+     "id": 2001,
+     "item_id": 1000,
+     "long_id": 20010001,
+     "name": "四叶草",
+     "sub_id": 1,
+     "sub_name": "四叶草",
+     "tab": 2
+    },
+    "20020001": {
+     "id": 2002,
+     "item_id": 1001,
+     "long_id": 20020001,
+     "name": "玉佩",
+     "sub_id": 1,
+     "sub_name": "玉佩",
+     "tab": 2
+    },
+    "20030001": {
+     "id": 2003,
+     "item_id": 1011,
+     "long_id": 20030001,
+     "name": "康乃馨",
+     "sub_id": 1,
+     "sub_name": "康乃馨",
+     "tab": 2
+    },
+    "20040001": {
+     "id": 2004,
+     "item_id": 1012,
+     "long_id": 20040001,
+     "name": "小纸船",
+     "sub_id": 1,
+     "sub_name": "小纸船",
+     "tab": 2
+    },
+    "20050001": {
+     "id": 2005,
+     "item_id": 1100,
+     "long_id": 20050001,
+     "name": "心意风铃",
+     "sub_id": 1,
+     "sub_name": "心意风铃",
+     "tab": 2
+    },
+    "20060001": {
+     "id": 2006,
+     "item_id": 1105,
+     "long_id": 20060001,
+     "name": "星星灯",
+     "sub_id": 1,
+     "sub_name": "星星灯",
+     "tab": 2
+    },
+    "20070001": {
+     "id": 2007,
+     "item_id": 1106,
+     "long_id": 20070001,
+     "name": "森之国度",
+     "sub_id": 1,
+     "sub_name": "猫猫信纸",
+     "tab": 2
+    },
+    "20080001": {
+     "id": 2008,
+     "item_id": 1200,
+     "long_id": 20080001,
+     "name": "彩叶幸运草",
+     "sub_id": 1,
+     "sub_name": "彩叶幸运草",
+     "tab": 2
+    },
+    "21010001": {
+     "id": 2101,
+     "item_id": 1002,
+     "long_id": 21010001,
+     "name": "铃铛",
+     "sub_id": 1,
+     "sub_name": "绿色铃铛",
+     "tab": 2
+    },
+    "21010002": {
+     "id": 2101,
+     "item_id": 1003,
+     "long_id": 21010002,
+     "name": "铃铛",
+     "sub_id": 2,
+     "sub_name": "白色铃铛",
+     "tab": 2
+    },
+    "21010003": {
+     "id": 2101,
+     "item_id": 1004,
+     "long_id": 21010003,
+     "name": "铃铛",
+     "sub_id": 3,
+     "sub_name": "红色铃铛",
+     "tab": 2
+    },
+    "21010004": {
+     "id": 2101,
+     "item_id": 1005,
+     "long_id": 21010004,
+     "name": "铃铛",
+     "sub_id": 4,
+     "sub_name": "蓝色铃铛",
+     "tab": 2
+    },
+    "21010005": {
+     "id": 2101,
+     "item_id": 1006,
+     "long_id": 21010005,
+     "name": "铃铛",
+     "sub_id": 5,
+     "sub_name": "桃色铃铛",
+     "tab": 2
+    },
+    "21020001": {
+     "id": 2102,
+     "item_id": 1007,
+     "long_id": 21020001,
+     "name": "千纸鹤",
+     "sub_id": 1,
+     "sub_name": "绿色千纸鹤",
+     "tab": 2
+    },
+    "21020002": {
+     "id": 2102,
+     "item_id": 1008,
+     "long_id": 21020002,
+     "name": "千纸鹤",
+     "sub_id": 2,
+     "sub_name": "白色千纸鹤",
+     "tab": 2
+    },
+    "21020003": {
+     "id": 2102,
+     "item_id": 1009,
+     "long_id": 21020003,
+     "name": "千纸鹤",
+     "sub_id": 3,
+     "sub_name": "红色千纸鹤",
+     "tab": 2
+    },
+    "21020004": {
+     "id": 2102,
+     "item_id": 1010,
+     "long_id": 21020004,
+     "name": "千纸鹤",
+     "sub_id": 4,
+     "sub_name": "蓝色千纸鹤",
+     "tab": 2
+    },
+    "21030001": {
+     "id": 2103,
+     "item_id": 1013,
+     "long_id": 21030001,
+     "name": "帆船",
+     "sub_id": 1,
+     "sub_name": "绿色帆船",
+     "tab": 2
+    },
+    "21030002": {
+     "id": 2103,
+     "item_id": 1014,
+     "long_id": 21030002,
+     "name": "帆船",
+     "sub_id": 2,
+     "sub_name": "黄色帆船",
+     "tab": 2
+    },
+    "21030003": {
+     "id": 2103,
+     "item_id": 1015,
+     "long_id": 21030003,
+     "name": "帆船",
+     "sub_id": 3,
+     "sub_name": "红色帆船",
+     "tab": 2
+    },
+    "21030004": {
+     "id": 2103,
+     "item_id": 1016,
+     "long_id": 21030004,
+     "name": "帆船",
+     "sub_id": 4,
+     "sub_name": "蓝色帆船",
+     "tab": 2
+    },
+    "21040001": {
+     "id": 2104,
+     "item_id": 1104,
+     "long_id": 21040001,
+     "name": "博物馆门票",
+     "sub_id": 1,
+     "sub_name": "博物馆通票",
+     "tab": 2
+    },
+    "21040002": {
+     "id": 2104,
+     "item_id": 1017,
+     "long_id": 21040002,
+     "name": "博物馆门票",
+     "sub_id": 2,
+     "sub_name": "江西省博物馆",
+     "tab": 2
+    },
+    "21040003": {
+     "id": 2104,
+     "item_id": 1018,
+     "long_id": 21040003,
+     "name": "博物馆门票",
+     "sub_id": 3,
+     "sub_name": "山东博物馆",
+     "tab": 2
+    },
+    "21040004": {
+     "id": 2104,
+     "item_id": 1019,
+     "long_id": 21040004,
+     "name": "博物馆门票",
+     "sub_id": 4,
+     "sub_name": "南越王博物院",
+     "tab": 2
+    },
+    "21040005": {
+     "id": 2104,
+     "item_id": 1020,
+     "long_id": 21040005,
+     "name": "博物馆门票",
+     "sub_id": 5,
+     "sub_name": "吴文化博物馆",
+     "tab": 2
+    },
+    "21040006": {
+     "id": 2104,
+     "item_id": 1021,
+     "long_id": 21040006,
+     "name": "博物馆门票",
+     "sub_id": 6,
+     "sub_name": "山西博物院",
+     "tab": 2
+    },
+    "21050001": {
+     "id": 2105,
+     "item_id": 1101,
+     "long_id": 21050001,
+     "name": "路标",
+     "sub_id": 1,
+     "sub_name": "半成品的路标",
+     "tab": 2
+    },
+    "21050002": {
+     "id": 2105,
+     "item_id": 1102,
+     "long_id": 21050002,
+     "name": "路标",
+     "sub_id": 2,
+     "sub_name": "成品的路标",
+     "tab": 2
+    },
+    "21050003": {
+     "id": 2105,
+     "item_id": 1103,
+     "long_id": 21050003,
+     "name": "路标",
+     "sub_id": 3,
+     "sub_name": "完整的路标",
+     "tab": 2
+    },
+    "21060001": {
+     "id": 2106,
+     "item_id": 1201,
+     "long_id": 21060001,
+     "name": "幸运花",
+     "sub_id": 1,
+     "sub_name": "蛋黄",
+     "tab": 2
+    },
+    "21060002": {
+     "id": 2106,
+     "item_id": 1202,
+     "long_id": 21060002,
+     "name": "幸运花",
+     "sub_id": 2,
+     "sub_name": "蜜桃糖果盒",
+     "tab": 2
+    },
+    "21060003": {
+     "id": 2106,
+     "item_id": 1203,
+     "long_id": 21060003,
+     "name": "幸运花",
+     "sub_id": 3,
+     "sub_name": "香芋冰淇淋",
+     "tab": 2
+    },
+    "21060004": {
+     "id": 2106,
+     "item_id": 1204,
+     "long_id": 21060004,
+     "name": "幸运花",
+     "sub_id": 4,
+     "sub_name": "铜红",
+     "tab": 2
+    },
+    "21060005": {
+     "id": 2106,
+     "item_id": 1205,
+     "long_id": 21060005,
+     "name": "幸运花",
+     "sub_id": 5,
+     "sub_name": "杏仁冰淇淋",
+     "tab": 2
+    },
+    "21060006": {
+     "id": 2106,
+     "item_id": 1206,
+     "long_id": 21060006,
+     "name": "幸运花",
+     "sub_id": 6,
+     "sub_name": "银环",
+     "tab": 2
+    },
+    "21060007": {
+     "id": 2106,
+     "item_id": 1207,
+     "long_id": 21060007,
+     "name": "幸运花",
+     "sub_id": 7,
+     "sub_name": "芭乐糖果盒",
+     "tab": 2
+    },
+    "21060008": {
+     "id": 2106,
+     "item_id": 1208,
+     "long_id": 21060008,
+     "name": "幸运花",
+     "sub_id": 8,
+     "sub_name": "西柚冰淇淋",
+     "tab": 2
+    },
+    "21060009": {
+     "id": 2106,
+     "item_id": 1209,
+     "long_id": 21060009,
+     "name": "幸运花",
+     "sub_id": 9,
+     "sub_name": "霞光",
+     "tab": 2
+    },
+    "21060010": {
+     "id": 2106,
+     "item_id": 1210,
+     "long_id": 21060010,
+     "name": "幸运花",
+     "sub_id": 10,
+     "sub_name": "小橘饼",
+     "tab": 2
+    },
+    "21060011": {
+     "id": 2106,
+     "item_id": 1211,
+     "long_id": 21060011,
+     "name": "幸运花",
+     "sub_id": 11,
+     "sub_name": "蝴蝶",
+     "tab": 2
+    },
+    "21060012": {
+     "id": 2106,
+     "item_id": 1212,
+     "long_id": 21060012,
+     "name": "幸运花",
+     "sub_id": 12,
+     "sub_name": "葡萄糖果盒",
+     "tab": 2
+    },
+    "21060013": {
+     "id": 2106,
+     "item_id": 1213,
+     "long_id": 21060013,
+     "name": "幸运花",
+     "sub_id": 13,
+     "sub_name": "奶茶冰淇淋",
+     "tab": 2
+    },
+    "21060014": {
+     "id": 2106,
+     "item_id": 1214,
+     "long_id": 21060014,
+     "name": "幸运花",
+     "sub_id": 14,
+     "sub_name": "阳光",
+     "tab": 2
+    },
+    "21060015": {
+     "id": 2106,
+     "item_id": 1215,
+     "long_id": 21060015,
+     "name": "幸运花",
+     "sub_id": 15,
+     "sub_name": "奶油冰淇淋",
+     "tab": 2
+    },
+    "21070001": {
+     "id": 2107,
+     "item_id": 1300,
+     "long_id": 21070001,
+     "name": "手工护符",
+     "sub_id": 1,
+     "sub_name": "三叶草护符",
+     "tab": 2
+    },
+    "21070002": {
+     "id": 2107,
+     "item_id": 1301,
+     "long_id": 21070002,
+     "name": "手工护符",
+     "sub_id": 2,
+     "sub_name": "微风护符",
+     "tab": 2
+    },
+    "21070003": {
+     "id": 2107,
+     "item_id": 1302,
+     "long_id": 21070003,
+     "name": "手工护符",
+     "sub_id": 3,
+     "sub_name": "岩纹石护符",
+     "tab": 2
+    },
+    "21070004": {
+     "id": 2107,
+     "item_id": 1303,
+     "long_id": 21070004,
+     "name": "手工护符",
+     "sub_id": 4,
+     "sub_name": "正丹纸护符",
+     "tab": 2
+    },
+    "21070005": {
+     "id": 2107,
+     "item_id": 1304,
+     "long_id": 21070005,
+     "name": "手工护符",
+     "sub_id": 5,
+     "sub_name": "棕榈叶护符",
+     "tab": 2
+    },
+    "21070006": {
+     "id": 2107,
+     "item_id": 1305,
+     "long_id": 21070006,
+     "name": "手工护符",
+     "sub_id": 6,
+     "sub_name": "海螺贝护符",
+     "tab": 2
+    },
+    "21070007": {
+     "id": 2107,
+     "item_id": 1306,
+     "long_id": 21070007,
+     "name": "手工护符",
+     "sub_id": 7,
+     "sub_name": "紫檀木护符",
+     "tab": 2
+    },
+    "21070008": {
+     "id": 2107,
+     "item_id": 1307,
+     "long_id": 21070008,
+     "name": "手工护符",
+     "sub_id": 8,
+     "sub_name": "细篷布护符",
+     "tab": 2
+    },
+    "21070009": {
+     "id": 2107,
+     "item_id": 1308,
+     "long_id": 21070009,
+     "name": "手工护符",
+     "sub_id": 9,
+     "sub_name": "秋芦荻护符",
+     "tab": 2
+    },
+    "21070010": {
+     "id": 2107,
+     "item_id": 1309,
+     "long_id": 21070010,
+     "name": "手工护符",
+     "sub_id": 10,
+     "sub_name": "织彩带护符",
+     "tab": 2
+    },
+    "30010001": {
+     "id": 3001,
+     "item_id": 2000,
+     "long_id": 30010001,
+     "name": "水壶",
+     "sub_id": 1,
+     "sub_name": "竹筒",
+     "tab": 3
+    },
+    "30010002": {
+     "id": 3001,
+     "item_id": 2001,
+     "long_id": 30010002,
+     "name": "水壶",
+     "sub_id": 2,
+     "sub_name": "葫芦",
+     "tab": 3
+    },
+    "30010003": {
+     "id": 3001,
+     "item_id": 2002,
+     "long_id": 30010003,
+     "name": "水壶",
+     "sub_id": 3,
+     "sub_name": "金属",
+     "tab": 3
+    },
+    "30020001": {
+     "id": 3002,
+     "item_id": 2003,
+     "long_id": 30020001,
+     "name": "纸伞",
+     "sub_id": 1,
+     "sub_name": "朴素纸伞",
+     "tab": 3
+    },
+    "30020002": {
+     "id": 3002,
+     "item_id": 2004,
+     "long_id": 30020002,
+     "name": "纸伞",
+     "sub_id": 2,
+     "sub_name": "自然纸伞",
+     "tab": 3
+    },
+    "30020003": {
+     "id": 3002,
+     "item_id": 2005,
+     "long_id": 30020003,
+     "name": "纸伞",
+     "sub_id": 3,
+     "sub_name": "水墨纸伞",
+     "tab": 3
+    },
+    "30030001": {
+     "id": 3003,
+     "item_id": 2006,
+     "long_id": 30030001,
+     "name": "睡垫",
+     "sub_id": 1,
+     "sub_name": "简易睡垫",
+     "tab": 3
+    },
+    "30030002": {
+     "id": 3003,
+     "item_id": 2007,
+     "long_id": 30030002,
+     "name": "睡垫",
+     "sub_id": 2,
+     "sub_name": "时尚睡垫",
+     "tab": 3
+    },
+    "30030003": {
+     "id": 3003,
+     "item_id": 2008,
+     "long_id": 30030003,
+     "name": "睡垫",
+     "sub_id": 3,
+     "sub_name": "高级睡垫",
+     "tab": 3
+    },
+    "30040001": {
+     "id": 3004,
+     "item_id": 2009,
+     "long_id": 30040001,
+     "name": "围巾",
+     "sub_id": 1,
+     "sub_name": "纯色",
+     "tab": 3
+    },
+    "30040002": {
+     "id": 3004,
+     "item_id": 2010,
+     "long_id": 30040002,
+     "name": "围巾",
+     "sub_id": 2,
+     "sub_name": "雪花",
+     "tab": 3
+    },
+    "30040003": {
+     "id": 3004,
+     "item_id": 2011,
+     "long_id": 30040003,
+     "name": "围巾",
+     "sub_id": 3,
+     "sub_name": "云纹",
+     "tab": 3
+    }
+   }
+  },
   "flowerData": {
    "1201": {
     "angle": [
@@ -47650,8 +56193,23 @@
        27,
        28
       ]
-     ],
-     "type": 1
+     ]
+    },
+    "23002": {
+     "desc": "贴上红纸的罐罐 种上迎春的小花",
+     "id": 23002,
+     "name": "迎春花盆",
+     "pic": "flowerpot_2_1",
+     "pos_list": [
+      [
+       -37,
+       -45
+      ],
+      [
+       40,
+       14
+      ]
+     ]
     }
    },
    "plant": {
@@ -48015,11 +56573,27 @@
    },
    "1009": {
     "id": 1009,
-    "value": "庆典风格"
+    "value": "庆典·欢聚"
    },
    "1010": {
     "id": 1010,
     "value": "迎春·癸卯"
+   },
+   "1011": {
+    "id": 1011,
+    "value": "庆典·田园"
+   },
+   "1012": {
+    "id": 1012,
+    "value": "迎春·甲辰"
+   },
+   "1013": {
+    "id": 1013,
+    "value": "夏凉风格"
+   },
+   "1014": {
+    "id": 1014,
+    "value": "庆典·彩陶"
    },
    "11": {
     "id": 11,
@@ -48128,10 +56702,6 @@
    "9": {
     "id": 9,
     "value": "床铺"
-   },
-   "1011": {
-    "id": 1011,
-    "value": "庆典·田园"
    }
   },
   "furnitureData": {
@@ -48717,10 +57287,66 @@
     "info": "石壁墙壁 画上星星图案来点缀",
     "name": "墙壁·许愿池",
     "res": [
-     "xw101_3_1"
+     "xw101_3_1",
+     "xw101_3_2",
+     "xw101_3_3"
     ],
     "style": 101,
     "type": 1
+   },
+   "10104": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10302,
+    "icon": {
+     "index": "xw101_4",
+     "src": "Icon/furniture/xw101"
+    },
+    "id": 10104,
+    "info": "看到星星洒落地面 就知道回家了",
+    "name": "地板·许愿池",
+    "res": [
+     "xw101_4_1"
+    ],
+    "style": 101,
+    "type": 2
+   },
+   "10105": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10317,
+    "icon": {
+     "index": "xw101_5",
+     "src": "Icon/furniture/xw101"
+    },
+    "id": 10105,
+    "info": "太喜欢星星 桌子都变成观星台了",
+    "name": "餐桌·许愿池",
+    "res": [
+     "xw101_5_1"
+    ],
+    "style": 101,
+    "type": 17
+   },
+   "10106": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10318,
+    "icon": {
+     "index": "xw101_6",
+     "src": "Icon/furniture/xw101"
+    },
+    "id": 10106,
+    "info": "摘取繁星 做成一把小椅子",
+    "name": "餐椅·许愿池",
+    "res": [
+     "xw101_6_1"
+    ],
+    "style": 101,
+    "type": 18
    },
    "1011": {
     "animation": [
@@ -52550,7 +61176,7 @@
     },
     "id": 1801,
     "info": "泥土的颜色 还有一丝泥土的芬芳",
-    "name": "墙壁·庆典",
+    "name": "墙壁·欢聚庆典",
     "res": [
      "xw8_1_1",
      "xw8_1_2",
@@ -52570,7 +61196,7 @@
     },
     "id": 1802,
     "info": "已经迫不及待 等待下一个春天",
-    "name": "地板·庆典",
+    "name": "地板·欢聚庆典",
     "res": [
      "xw8_2_1"
     ],
@@ -52588,7 +61214,7 @@
     },
     "id": 1803,
     "info": "阁楼的地板 就像蔓延开了的柔软青苔",
-    "name": "阁楼·庆典",
+    "name": "阁楼·欢聚庆典",
     "res": [
      "xw8_3_1",
      "xw8_3_2",
@@ -52608,7 +61234,7 @@
     },
     "id": 1804,
     "info": "用细线串起来的小木墩 有点花园的感觉",
-    "name": "栏杆·庆典",
+    "name": "栏杆·欢聚庆典",
     "res": [
      "xw8_4_1",
      "xw8_4_2",
@@ -52628,7 +61254,7 @@
     },
     "id": 1805,
     "info": "窗台的积雪总会化掉 春天也总会到来",
-    "name": "窗户·庆典",
+    "name": "窗户·欢聚庆典",
     "res": [
      "xw8_5_1",
      "xw8_5_2"
@@ -52647,7 +61273,7 @@
     },
     "id": 1806,
     "info": "小小的仓门背后 有一个大大的世界",
-    "name": "仓门·庆典",
+    "name": "仓门·欢聚庆典",
     "res": [
      "xw8_6_1"
     ],
@@ -52665,7 +61291,7 @@
     },
     "id": 1807,
     "info": "把三叶草挂在 三叶草色的帘子上",
-    "name": "帘幕·庆典",
+    "name": "帘幕·欢聚庆典",
     "res": [
      "xw8_7_1"
     ],
@@ -52683,7 +61309,7 @@
     },
     "id": 1808,
     "info": "把足迹珍藏在相框中 留存路途上的回忆",
-    "name": "地图·庆典",
+    "name": "地图·欢聚庆典",
     "res": [
      "xw8_8_1"
     ],
@@ -52701,7 +61327,7 @@
     },
     "id": 1809,
     "info": "靠在软绵绵的幸运花上 看会书就睡着了",
-    "name": "床铺·庆典",
+    "name": "床铺·欢聚庆典",
     "res": [
      "xw8_9_1"
     ],
@@ -52719,7 +61345,7 @@
     },
     "id": 1810,
     "info": "把池塘装进瓶子里 仿佛闻得到了春天的气息",
-    "name": "花瓶·庆典",
+    "name": "花瓶·欢聚庆典",
     "res": [
      "xw8_10_1",
      "xw8_10_2"
@@ -52738,7 +61364,7 @@
     },
     "id": 1811,
     "info": "把庭院的花事都记录下来 贴在墙上 ",
-    "name": "便签·庆典",
+    "name": "便签·欢聚庆典",
     "res": [
      "xw8_11_1"
     ],
@@ -52756,7 +61382,7 @@
     },
     "id": 1812,
     "info": "旅途的箱子 用来写旅行的笔记",
-    "name": "书桌·庆典",
+    "name": "书桌·欢聚庆典",
     "res": [
      "xw8_12_1"
     ],
@@ -52774,7 +61400,7 @@
     },
     "id": 1813,
     "info": "照着胖胖送来的礼物 做了一个有趣的坐垫",
-    "name": "坐垫·庆典",
+    "name": "坐垫·欢聚庆典",
     "res": [
      "xw8_13_1"
     ],
@@ -52792,7 +61418,7 @@
     },
     "id": 1814,
     "info": "把院子的落叶枯枝清理一下 就可以一起烤火啦",
-    "name": "储柜·庆典",
+    "name": "储柜·欢聚庆典",
     "res": [
      "xw8_14_1"
     ],
@@ -52810,7 +61436,7 @@
     },
     "id": 1815,
     "info": "瓶里流动的是不仅仅是时间 还有大家一起的回忆",
-    "name": "装饰·庆典",
+    "name": "装饰·欢聚庆典",
     "res": [
      "xw8_15_1"
     ],
@@ -52828,7 +61454,7 @@
     },
     "id": 1816,
     "info": "收到的礼物太多 还没来得及拆呢",
-    "name": "箱子·庆典",
+    "name": "箱子·欢聚庆典",
     "res": [
      "xw8_16_1"
     ],
@@ -52846,7 +61472,7 @@
     },
     "id": 1817,
     "info": "把托盘做大一些 蛋糕就可以做大一些",
-    "name": "餐桌·庆典",
+    "name": "餐桌·欢聚庆典",
     "res": [
      "xw8_17_1"
     ],
@@ -52864,7 +61490,7 @@
     },
     "id": 1818,
     "info": "做小了的蛋糕托盘 还可以做椅子",
-    "name": "餐椅·庆典",
+    "name": "餐椅·欢聚庆典",
     "res": [
      "xw8_18_1"
     ],
@@ -52882,7 +61508,7 @@
     },
     "id": 1819,
     "info": "脚下的新绿 就像初春的青苔",
-    "name": "地毯·庆典",
+    "name": "地毯·欢聚庆典",
     "res": [
      "xw8_19_1"
     ],
@@ -52900,7 +61526,7 @@
     },
     "id": 1820,
     "info": "可爱的面包窑 是为做大蛋糕准备的",
-    "name": "厨灶·庆典",
+    "name": "厨灶·欢聚庆典",
     "res": [
      "xw8_20_1"
     ],
@@ -52918,7 +61544,7 @@
     },
     "id": 1821,
     "info": "庭院里的花洒 也用来装点节日的小屋",
-    "name": "厨杂·庆典",
+    "name": "厨杂·欢聚庆典",
     "res": [
      "xw8_21_1"
     ],
@@ -52936,7 +61562,7 @@
     },
     "id": 1822,
     "info": "跳跳把画架都搬来了 是准备画一张全家福吗",
-    "name": "立镜·庆典",
+    "name": "立镜·欢聚庆典",
     "res": [
      "xw8_22_1"
     ],
@@ -52954,7 +61580,7 @@
     },
     "id": 1823,
     "info": "刷上色彩的普通衣架 看起来一点都不普通了",
-    "name": "衣架·庆典",
+    "name": "衣架·欢聚庆典",
     "res": [
      "xw8_23_1"
     ],
@@ -52972,7 +61598,7 @@
     },
     "id": 1824,
     "info": "绿篱装点上地锦 庭院也可以安排上",
-    "name": "屏风·庆典",
+    "name": "屏风·欢聚庆典",
     "res": [
      "xw8_24_1"
     ],
@@ -52991,7 +61617,7 @@
     },
     "id": 1825,
     "info": "不是蛋糕 虽然看起来香甜可口",
-    "name": "照明·庆典",
+    "name": "照明·欢聚庆典",
     "res": [
      "xw8_25_1",
      "xw8_25_2"
@@ -53010,7 +61636,7 @@
     },
     "id": 1826,
     "info": "三叶草日历撕下的那些日子 是一起走过的时光",
-    "name": "衣柜·庆典",
+    "name": "衣柜·欢聚庆典",
     "res": [
      "xw8_26_1"
     ],
@@ -53028,7 +61654,7 @@
     },
     "id": 1827,
     "info": "收到的礼物太多 快要堆不下啦",
-    "name": "储藏·庆典",
+    "name": "储藏·欢聚庆典",
     "res": [
      "xw8_27_1"
     ],
@@ -53532,60 +62158,6 @@
     "style": 10,
     "type": 27
    },
-   "10104": {
-    "animation": [
-     ""
-    ],
-    "drawing": 10302,
-    "icon": {
-     "index": "xw101_4",
-     "src": "Icon/furniture/xw101"
-    },
-    "id": 10104,
-    "info": "看到星星洒落地面 就知道回家了",
-    "name": "地板·许愿池",
-    "res": [
-     "xw101_4_1"
-    ],
-    "style": 101,
-    "type": 2
-   },
-   "10105": {
-    "animation": [
-     ""
-    ],
-    "drawing": 10317,
-    "icon": {
-     "index": "xw101_5",
-     "src": "Icon/furniture/xw101"
-    },
-    "id": 10105,
-    "info": "太喜欢星星 桌子都变成观星台了",
-    "name": "餐桌·许愿池",
-    "res": [
-     "xw101_5_1"
-    ],
-    "style": 101,
-    "type": 17
-   },
-   "10106": {
-    "animation": [
-     ""
-    ],
-    "drawing": 10318,
-    "icon": {
-     "index": "xw101_6",
-     "src": "Icon/furniture/xw101"
-    },
-    "id": 10106,
-    "info": "摘取繁星 做成一把小椅子",
-    "name": "餐椅·许愿池",
-    "res": [
-     "xw101_6_1"
-    ],
-    "style": 101,
-    "type": 18
-   },
    "2001": {
     "animation": [
      ""
@@ -54081,6 +62653,1495 @@
     ],
     "style": 11,
     "type": 27
+   },
+   "2101": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10301,
+    "icon": {
+     "index": "xw11_1",
+     "src": "Icon/furniture/xw11"
+    },
+    "id": 2101,
+    "info": "浅赭色的墙壁上 云朵浮现",
+    "name": "墙壁·甲辰迎春",
+    "res": [
+     "xw11_1_1",
+     "xw11_1_2",
+     "xw11_1_3"
+    ],
+    "style": 12,
+    "type": 1
+   },
+   "2102": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10302,
+    "icon": {
+     "index": "xw11_2",
+     "src": "Icon/furniture/xw11"
+    },
+    "id": 2102,
+    "info": "一踏进家门 仿佛置身于宫殿之中",
+    "name": "地板·甲辰迎春",
+    "res": [
+     "xw11_2_1"
+    ],
+    "style": 12,
+    "type": 2
+   },
+   "2103": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10303,
+    "icon": {
+     "index": "xw11_3",
+     "src": "Icon/furniture/xw11"
+    },
+    "id": 2103,
+    "info": "好不容易获得的木材 涂上彩色的颜料点缀",
+    "name": "阁楼·甲辰迎春",
+    "res": [
+     "xw11_3_1",
+     "xw11_3_2",
+     "xw11_3_3"
+    ],
+    "style": 12,
+    "type": 3
+   },
+   "2104": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10304,
+    "icon": {
+     "index": "xw11_4",
+     "src": "Icon/furniture/xw11"
+    },
+    "id": 2104,
+    "info": "坚固结实的栏杆上 绽放出了花苞",
+    "name": "栏杆·甲辰迎春",
+    "res": [
+     "xw11_4_1",
+     "xw11_4_2",
+     "xw11_4_3"
+    ],
+    "style": 12,
+    "type": 4
+   },
+   "2105": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10305,
+    "icon": {
+     "index": "xw11_5",
+     "src": "Icon/furniture/xw11"
+    },
+    "id": 2105,
+    "info": "窗台上装饰着花朵 显得格外精致",
+    "name": "窗户·甲辰迎春",
+    "res": [
+     "xw11_5_1",
+     "xw11_5_2"
+    ],
+    "style": 12,
+    "type": 5
+   },
+   "2106": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10306,
+    "icon": {
+     "index": "xw11_6",
+     "src": "Icon/furniture/xw11"
+    },
+    "id": 2106,
+    "info": "掀开仓门的帘幕 进入奇妙的世界",
+    "name": "仓门·甲辰迎春",
+    "res": [
+     "xw11_6_1"
+    ],
+    "style": 12,
+    "type": 6
+   },
+   "2107": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10307,
+    "icon": {
+     "index": "xw11_7",
+     "src": "Icon/furniture/xw11"
+    },
+    "id": 2107,
+    "info": "把花朵编织成 一副美丽的画卷",
+    "name": "帘幕·甲辰迎春",
+    "res": [
+     "xw11_7_1"
+    ],
+    "style": 12,
+    "type": 7
+   },
+   "2108": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10308,
+    "icon": {
+     "index": "xw11_8",
+     "src": "Icon/furniture/xw11"
+    },
+    "id": 2108,
+    "info": "用颜料装点地图 记忆也变得多彩起来了呢",
+    "name": "地图·甲辰迎春",
+    "res": [
+     "xw11_8_1"
+    ],
+    "style": 12,
+    "type": 8
+   },
+   "2109": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10309,
+    "icon": {
+     "index": "xw11_9",
+     "src": "Icon/furniture/xw11"
+    },
+    "id": 2109,
+    "info": "仿佛真的 置身于千年前的敦煌壁画中",
+    "name": "床铺·甲辰迎春",
+    "res": [
+     "xw11_9_1"
+    ],
+    "style": 12,
+    "type": 9
+   },
+   "2110": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10310,
+    "icon": {
+     "index": "xw11_10",
+     "src": "Icon/furniture/xw11"
+    },
+    "id": 2110,
+    "info": "陶瓷底部的纹路 仿若水波流转",
+    "name": "花瓶·甲辰迎春",
+    "res": [
+     "xw11_10_1",
+     "xw11_10_2"
+    ],
+    "style": 12,
+    "type": 10
+   },
+   "2111": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10311,
+    "icon": {
+     "index": "xw11_11",
+     "src": "Icon/furniture/xw11"
+    },
+    "id": 2111,
+    "info": "心事记在云朵上 心情也变得轻飘飘的",
+    "name": "便签·甲辰迎春",
+    "res": [
+     "xw11_11_1"
+    ],
+    "style": 12,
+    "type": 11
+   },
+   "2112": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10312,
+    "icon": {
+     "index": "xw11_12",
+     "src": "Icon/furniture/xw11"
+    },
+    "id": 2112,
+    "info": "在古朴的桌子上 笔记都沾染了历史的气息",
+    "name": "书桌·甲辰迎春",
+    "res": [
+     "xw11_12_1"
+    ],
+    "style": 12,
+    "type": 12
+   },
+   "2113": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10313,
+    "icon": {
+     "index": "xw11_13",
+     "src": "Icon/furniture/xw11"
+    },
+    "id": 2113,
+    "info": "坐垫上 也要绣上古老的图案",
+    "name": "坐垫·甲辰迎春",
+    "res": [
+     "xw11_13_1"
+    ],
+    "style": 12,
+    "type": 13
+   },
+   "2114": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10314,
+    "icon": {
+     "index": "xw11_14",
+     "src": "Icon/furniture/xw11"
+    },
+    "id": 2114,
+    "info": "刷上彩色的图案后 柜子变得绚丽起来",
+    "name": "储柜·甲辰迎春",
+    "res": [
+     "xw11_14_1"
+    ],
+    "style": 12,
+    "type": 14
+   },
+   "2115": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10315,
+    "icon": {
+     "index": "xw11_15",
+     "src": "Icon/furniture/xw11"
+    },
+    "id": 2115,
+    "info": "金色的莲花盛开 像一个小太阳",
+    "name": "装饰·甲辰迎春",
+    "res": [
+     "xw11_15_1"
+    ],
+    "style": 12,
+    "type": 15
+   },
+   "2116": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10316,
+    "icon": {
+     "index": "xw11_16",
+     "src": "Icon/furniture/xw11"
+    },
+    "id": 2116,
+    "info": "打开箱子 里面会有什么惊喜呢",
+    "name": "箱子·甲辰迎春",
+    "res": [
+     "xw11_16_1"
+    ],
+    "style": 12,
+    "type": 16
+   },
+   "2117": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10317,
+    "icon": {
+     "index": "xw11_17",
+     "src": "Icon/furniture/xw11"
+    },
+    "id": 2117,
+    "info": "除了吃饭 好像还能用来玩什么",
+    "name": "餐桌·甲辰迎春",
+    "res": [
+     "xw11_17_1"
+    ],
+    "style": 12,
+    "type": 17
+   },
+   "2118": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10318,
+    "icon": {
+     "index": "xw11_18",
+     "src": "Icon/furniture/xw11"
+    },
+    "id": 2118,
+    "info": "坐在木头凳子上 坐姿也变得端正起来",
+    "name": "餐椅·甲辰迎春",
+    "res": [
+     "xw11_18_1"
+    ],
+    "style": 12,
+    "type": 18
+   },
+   "2119": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10319,
+    "icon": {
+     "index": "xw11_19",
+     "src": "Icon/furniture/xw11"
+    },
+    "id": 2119,
+    "info": "一步一朵花 一念一菩提",
+    "name": "地毯·甲辰迎春",
+    "res": [
+     "xw11_19_1"
+    ],
+    "style": 12,
+    "type": 19
+   },
+   "2120": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10320,
+    "icon": {
+     "index": "xw11_20",
+     "src": "Icon/furniture/xw11"
+    },
+    "id": 2120,
+    "info": "设备齐全的厨房 烹饪出丰盛的菜肴",
+    "name": "厨灶·甲辰迎春",
+    "res": [
+     "xw11_20_1"
+    ],
+    "style": 12,
+    "type": 20
+   },
+   "2121": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10321,
+    "icon": {
+     "index": "xw11_21",
+     "src": "Icon/furniture/xw11"
+    },
+    "id": 2121,
+    "info": "心血来潮 做个自画像",
+    "name": "厨杂·甲辰迎春",
+    "res": [
+     "xw11_21_1"
+    ],
+    "style": 12,
+    "type": 21
+   },
+   "2122": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10322,
+    "icon": {
+     "index": "xw11_22",
+     "src": "Icon/furniture/xw11"
+    },
+    "id": 2122,
+    "info": "叫上伙伴们 一起来照大镜子",
+    "name": "立镜·甲辰迎春",
+    "res": [
+     "xw11_22_1"
+    ],
+    "style": 12,
+    "type": 22
+   },
+   "2123": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10323,
+    "icon": {
+     "index": "xw11_23",
+     "src": "Icon/furniture/xw11"
+    },
+    "id": 2123,
+    "info": "加上彩色纹路 衣架也变得华丽起来",
+    "name": "衣架·甲辰迎春",
+    "res": [
+     "xw11_23_1"
+    ],
+    "style": 12,
+    "type": 23
+   },
+   "2124": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10324,
+    "icon": {
+     "index": "xw11_24",
+     "src": "Icon/furniture/xw11"
+    },
+    "id": 2124,
+    "info": "仔细看 屏风上的龙似乎要飞出来",
+    "name": "屏风·甲辰迎春",
+    "res": [
+     "xw11_24_1"
+    ],
+    "style": 12,
+    "type": 24
+   },
+   "2125": {
+    "animation": [
+     "xw0_25_1_ani",
+     "xw11_25_2_ani"
+    ],
+    "drawing": 10325,
+    "icon": {
+     "index": "xw11_25",
+     "src": "Icon/furniture/xw11"
+    },
+    "id": 2125,
+    "info": "一盏花灯 照亮黑暗的角落",
+    "name": "照明·甲辰迎春",
+    "res": [
+     "xw11_25_1",
+     "xw11_25_2"
+    ],
+    "style": 12,
+    "type": 25
+   },
+   "2126": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10326,
+    "icon": {
+     "index": "xw11_26",
+     "src": "Icon/furniture/xw11"
+    },
+    "id": 2126,
+    "info": "又到新年时 一起出发旅行吧",
+    "name": "衣柜·甲辰迎春",
+    "res": [
+     "xw11_26_1"
+    ],
+    "style": 12,
+    "type": 26
+   },
+   "2127": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10327,
+    "icon": {
+     "index": "xw11_27",
+     "src": "Icon/furniture/xw11"
+    },
+    "id": 2127,
+    "info": "多余的木材 肯定会有大作用",
+    "name": "储藏·甲辰迎春",
+    "res": [
+     "xw11_27_1"
+    ],
+    "style": 12,
+    "type": 27
+   },
+   "2201": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10301,
+    "icon": {
+     "index": "xw12_1",
+     "src": "Icon/furniture/xw12"
+    },
+    "id": 2201,
+    "info": "阳光穿透竹叶 映出斑驳光影",
+    "name": "墙壁·夏凉",
+    "res": [
+     "xw12_1_1",
+     "xw12_1_2",
+     "xw12_1_3"
+    ],
+    "style": 13,
+    "type": 1
+   },
+   "2202": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10302,
+    "icon": {
+     "index": "xw12_2",
+     "src": "Icon/furniture/xw12"
+    },
+    "id": 2202,
+    "info": "步入竹林深处 顿感幽静宜人",
+    "name": "地板·夏凉",
+    "res": [
+     "xw12_2_1"
+    ],
+    "style": 13,
+    "type": 2
+   },
+   "2203": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10303,
+    "icon": {
+     "index": "xw12_3",
+     "src": "Icon/furniture/xw12"
+    },
+    "id": 2203,
+    "info": "踏步而上嘎吱声响 犹如古风岁月中的低语",
+    "name": "阁楼·夏凉",
+    "res": [
+     "xw12_3_1",
+     "xw12_3_2",
+     "xw12_3_3"
+    ],
+    "style": 13,
+    "type": 3
+   },
+   "2204": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10304,
+    "icon": {
+     "index": "xw12_4",
+     "src": "Icon/furniture/xw12"
+    },
+    "id": 2204,
+    "info": "剩余之竹用作栏杆 高低错落别有一番风味",
+    "name": "栏杆·夏凉",
+    "res": [
+     "xw12_4_1",
+     "xw12_4_2",
+     "xw12_4_3"
+    ],
+    "style": 13,
+    "type": 4
+   },
+   "2205": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10305,
+    "icon": {
+     "index": "xw12_5",
+     "src": "Icon/furniture/xw12"
+    },
+    "id": 2205,
+    "info": "细长的竹条编织而成 通风的同时又能挡雨",
+    "name": "窗户·夏凉",
+    "res": [
+     "xw12_5_1",
+     "xw12_5_2"
+    ],
+    "style": 13,
+    "type": 5
+   },
+   "2206": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10306,
+    "icon": {
+     "index": "xw12_6",
+     "src": "Icon/furniture/xw12"
+    },
+    "id": 2206,
+    "info": "坚固而清透的仓门 连结着自然的通道",
+    "name": "仓门·夏凉",
+    "res": [
+     "xw12_6_1"
+    ],
+    "style": 13,
+    "type": 6
+   },
+   "2207": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10307,
+    "icon": {
+     "index": "xw12_7",
+     "src": "Icon/furniture/xw12"
+    },
+    "id": 2207,
+    "info": "长短不一的竹管 或许还能吹出笙的声音",
+    "name": "帘幕·夏凉",
+    "res": [
+     "xw12_7_1"
+    ],
+    "style": 13,
+    "type": 7
+   },
+   "2208": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10308,
+    "icon": {
+     "index": "xw12_8",
+     "src": "Icon/furniture/xw12"
+    },
+    "id": 2208,
+    "info": "细细雕刻曾走过的地方 回忆也一一浮现",
+    "name": "地图·夏凉",
+    "res": [
+     "xw12_8_1"
+    ],
+    "style": 13,
+    "type": 8
+   },
+   "2209": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10309,
+    "icon": {
+     "index": "xw12_9",
+     "src": "Icon/furniture/xw12"
+    },
+    "id": 2209,
+    "info": "轻纱笼罩 缓缓沉浸在深沉的梦乡里",
+    "name": "床铺·夏凉",
+    "res": [
+     "xw12_9_1"
+    ],
+    "style": 13,
+    "type": 9
+   },
+   "2210": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10310,
+    "icon": {
+     "index": "xw12_10",
+     "src": "Icon/furniture/xw12"
+    },
+    "id": 2210,
+    "info": "置一透明花瓶 水中映出花朵的倩影",
+    "name": "花瓶·夏凉",
+    "res": [
+     "xw12_10_1",
+     "xw12_10_2"
+    ],
+    "style": 13,
+    "type": 10
+   },
+   "2211": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10311,
+    "icon": {
+     "index": "xw12_11",
+     "src": "Icon/furniture/xw12"
+    },
+    "id": 2211,
+    "info": "竹叶串连成签 仿佛时间的信使",
+    "name": "便签·夏凉",
+    "res": [
+     "xw12_11_1"
+    ],
+    "style": 13,
+    "type": 11
+   },
+   "2212": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10312,
+    "icon": {
+     "index": "xw12_12",
+     "src": "Icon/furniture/xw12"
+    },
+    "id": 2212,
+    "info": "做个小小风车 感受风的形状",
+    "name": "书桌·夏凉",
+    "res": [
+     "xw12_12_1"
+    ],
+    "style": 13,
+    "type": 12
+   },
+   "2213": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10313,
+    "icon": {
+     "index": "xw12_13",
+     "src": "Icon/furniture/xw12"
+    },
+    "id": 2213,
+    "info": "携带轻巧的小马扎 何处不可作为座",
+    "name": "坐垫·夏凉",
+    "res": [
+     "xw12_13_1"
+    ],
+    "style": 13,
+    "type": 13
+   },
+   "2214": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10314,
+    "icon": {
+     "index": "xw12_14",
+     "src": "Icon/furniture/xw12"
+    },
+    "id": 2214,
+    "info": "橱窗开敞 收纳炎热的盛夏",
+    "name": "储柜·夏凉",
+    "res": [
+     "xw12_14_1"
+    ],
+    "style": 13,
+    "type": 14
+   },
+   "2215": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10315,
+    "icon": {
+     "index": "xw12_15",
+     "src": "Icon/furniture/xw12"
+    },
+    "id": 2215,
+    "info": "日常琐记 不时翻出品味",
+    "name": "装饰·夏凉",
+    "res": [
+     "xw12_15_1"
+    ],
+    "style": 13,
+    "type": 15
+   },
+   "2216": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10316,
+    "icon": {
+     "index": "xw12_16",
+     "src": "Icon/furniture/xw12"
+    },
+    "id": 2216,
+    "info": "将竹笋折成信封 寄出夏日的信件",
+    "name": "箱子·夏凉",
+    "res": [
+     "xw12_16_1"
+    ],
+    "style": 13,
+    "type": 16
+   },
+   "2217": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10317,
+    "icon": {
+     "index": "xw12_17",
+     "src": "Icon/furniture/xw12"
+    },
+    "id": 2217,
+    "info": "青青四方小桌 吃饭足矣",
+    "name": "餐桌·夏凉",
+    "res": [
+     "xw12_17_1"
+    ],
+    "style": 13,
+    "type": 17
+   },
+   "2218": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10318,
+    "icon": {
+     "index": "xw12_18",
+     "src": "Icon/furniture/xw12"
+    },
+    "id": 2218,
+    "info": "餐后悠然躺平 岂不自在乐逍遥",
+    "name": "餐椅·夏凉",
+    "res": [
+     "xw12_18_1"
+    ],
+    "style": 13,
+    "type": 18
+   },
+   "2219": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10319,
+    "icon": {
+     "index": "xw12_19",
+     "src": "Icon/furniture/xw12"
+    },
+    "id": 2219,
+    "info": "青绿花朵绣于毯上 家中便有了花园",
+    "name": "地毯·夏凉",
+    "res": [
+     "xw12_19_1"
+    ],
+    "style": 13,
+    "type": 19
+   },
+   "2220": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10320,
+    "icon": {
+     "index": "xw12_20",
+     "src": "Icon/furniture/xw12"
+    },
+    "id": 2220,
+    "info": "西瓜的第一口 最为甘甜",
+    "name": "厨灶·夏凉",
+    "res": [
+     "xw12_20_1"
+    ],
+    "style": 13,
+    "type": 20
+   },
+   "2221": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10321,
+    "icon": {
+     "index": "xw12_21",
+     "src": "Icon/furniture/xw12"
+    },
+    "id": 2221,
+    "info": "竹子编织成一圈 便成了水缸",
+    "name": "厨杂·夏凉",
+    "res": [
+     "xw12_21_1"
+    ],
+    "style": 13,
+    "type": 21
+   },
+   "2222": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10322,
+    "icon": {
+     "index": "xw12_22",
+     "src": "Icon/furniture/xw12"
+    },
+    "id": 2222,
+    "info": "清新的竹香 轻拂过心间",
+    "name": "立镜·夏凉",
+    "res": [
+     "xw12_22_1"
+    ],
+    "style": 13,
+    "type": 22
+   },
+   "2223": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10323,
+    "icon": {
+     "index": "xw12_23",
+     "src": "Icon/furniture/xw12"
+    },
+    "id": 2223,
+    "info": "在屋角静静伫立 稳固异常",
+    "name": "衣架·夏凉",
+    "res": [
+     "xw12_23_1"
+    ],
+    "style": 13,
+    "type": 23
+   },
+   "2224": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10324,
+    "icon": {
+     "index": "xw12_24",
+     "src": "Icon/furniture/xw12"
+    },
+    "id": 2224,
+    "info": "竹叶斑驳于屏风上 依稀可见古时风雅",
+    "name": "屏风·夏凉",
+    "res": [
+     "xw12_24_1"
+    ],
+    "style": 13,
+    "type": 24
+   },
+   "2225": {
+    "animation": [
+     "xw12_25_1_ani",
+     "xw12_25_2_ani"
+    ],
+    "drawing": 10325,
+    "icon": {
+     "index": "xw12_25",
+     "src": "Icon/furniture/xw12"
+    },
+    "id": 2225,
+    "info": "烛光隐匿于竹架之间 透出缕缕清幽",
+    "name": "照明·夏凉",
+    "res": [
+     "xw12_25_1",
+     "xw12_25_2"
+    ],
+    "style": 13,
+    "type": 25
+   },
+   "2226": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10326,
+    "icon": {
+     "index": "xw12_26",
+     "src": "Icon/furniture/xw12"
+    },
+    "id": 2226,
+    "info": "小小网兜 清理池塘的得力助手",
+    "name": "衣柜·夏凉",
+    "res": [
+     "xw12_26_1"
+    ],
+    "style": 13,
+    "type": 26
+   },
+   "2227": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10327,
+    "icon": {
+     "index": "xw12_27",
+     "src": "Icon/furniture/xw12"
+    },
+    "id": 2227,
+    "info": "夏日炎炎 正是果实累累之时",
+    "name": "储藏·夏凉",
+    "res": [
+     "xw12_27_1"
+    ],
+    "style": 13,
+    "type": 27
+   },
+   "2301": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10301,
+    "icon": {
+     "index": "xw13_1",
+     "src": "Icon/furniture/xw13"
+    },
+    "id": 2301,
+    "info": "纹理分明的墙壁上 小人手拉着手舞蹈",
+    "name": "墙壁·彩陶庆典",
+    "res": [
+     "xw13_1_1",
+     "xw13_1_2",
+     "xw13_1_3"
+    ],
+    "style": 14,
+    "type": 1
+   },
+   "2302": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10302,
+    "icon": {
+     "index": "xw13_2",
+     "src": "Icon/furniture/xw13"
+    },
+    "id": 2302,
+    "info": "沙石压成的地板 刻着历史的粗糙与厚重",
+    "name": "地板·彩陶庆典",
+    "res": [
+     "xw13_2_1"
+    ],
+    "style": 14,
+    "type": 2
+   },
+   "2303": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10303,
+    "icon": {
+     "index": "xw13_3",
+     "src": "Icon/furniture/xw13"
+    },
+    "id": 2303,
+    "info": "带着树木纹理的台阶 形状是完美的半圆",
+    "name": "阁楼·彩陶庆典",
+    "res": [
+     "xw13_3_1",
+     "xw13_3_2",
+     "xw13_3_3"
+    ],
+    "style": 14,
+    "type": 3
+   },
+   "2304": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10304,
+    "icon": {
+     "index": "xw13_4",
+     "src": "Icon/furniture/xw13"
+    },
+    "id": 2304,
+    "info": "结实又可靠的栏杆 圆头圆脑真可爱",
+    "name": "栏杆·彩陶庆典",
+    "res": [
+     "xw13_4_1",
+     "xw13_4_2",
+     "xw13_4_3"
+    ],
+    "style": 14,
+    "type": 4
+   },
+   "2305": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10305,
+    "icon": {
+     "index": "xw13_5",
+     "src": "Icon/furniture/xw13"
+    },
+    "id": 2305,
+    "info": "圆形的窗框上 一轮金色花朵绽放",
+    "name": "窗户·彩陶庆典",
+    "res": [
+     "xw13_5_1",
+     "xw13_5_2"
+    ],
+    "style": 14,
+    "type": 5
+   },
+   "2306": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10306,
+    "icon": {
+     "index": "xw13_6",
+     "src": "Icon/furniture/xw13"
+    },
+    "id": 2306,
+    "info": "方方正正的仓门 带来满满的安全感",
+    "name": "仓门·彩陶庆典",
+    "res": [
+     "xw13_6_1"
+    ],
+    "style": 14,
+    "type": 6
+   },
+   "2307": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10307,
+    "icon": {
+     "index": "xw13_7",
+     "src": "Icon/furniture/xw13"
+    },
+    "id": 2307,
+    "info": "红褐色的帘幕 以羽毛和珠串装饰点缀",
+    "name": "帘幕·彩陶庆典",
+    "res": [
+     "xw13_7_1"
+    ],
+    "style": 14,
+    "type": 7
+   },
+   "2308": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10308,
+    "icon": {
+     "index": "xw13_8",
+     "src": "Icon/furniture/xw13"
+    },
+    "id": 2308,
+    "info": "画着地图的挂毯 用钉子固定在墙上",
+    "name": "地图·彩陶庆典",
+    "res": [
+     "xw13_8_1"
+    ],
+    "style": 14,
+    "type": 8
+   },
+   "2309": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10309,
+    "icon": {
+     "index": "xw13_9",
+     "src": "Icon/furniture/xw13"
+    },
+    "id": 2309,
+    "info": "裹上带流苏的毯子 再也不用担心着凉",
+    "name": "床铺·彩陶庆典",
+    "res": [
+     "xw13_9_1"
+    ],
+    "style": 14,
+    "type": 9
+   },
+   "2310": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10310,
+    "icon": {
+     "index": "xw13_10",
+     "src": "Icon/furniture/xw13"
+    },
+    "id": 2310,
+    "info": "床头摆放的陶罐 欢迎每一束花草",
+    "name": "花瓶·彩陶庆典",
+    "res": [
+     "xw13_10_1",
+     "xw13_10_2"
+    ],
+    "style": 14,
+    "type": 10
+   },
+   "2311": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10311,
+    "icon": {
+     "index": "xw13_11",
+     "src": "Icon/furniture/xw13"
+    },
+    "id": 2311,
+    "info": "做好备忘录 出门前记得看看",
+    "name": "便签·彩陶庆典",
+    "res": [
+     "xw13_11_1"
+    ],
+    "style": 14,
+    "type": 11
+   },
+   "2312": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10312,
+    "icon": {
+     "index": "xw13_12",
+     "src": "Icon/furniture/xw13"
+    },
+    "id": 2312,
+    "info": "随手涂鸦的作品 贴在小木桌上",
+    "name": "书桌·彩陶庆典",
+    "res": [
+     "xw13_12_1"
+    ],
+    "style": 14,
+    "type": 12
+   },
+   "2313": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10313,
+    "icon": {
+     "index": "xw13_13",
+     "src": "Icon/furniture/xw13"
+    },
+    "id": 2313,
+    "info": "阳光般的线条 让坐垫也变得温暖",
+    "name": "坐垫·彩陶庆典",
+    "res": [
+     "xw13_13_1"
+    ],
+    "style": 14,
+    "type": 13
+   },
+   "2314": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10314,
+    "icon": {
+     "index": "xw13_14",
+     "src": "Icon/furniture/xw13"
+    },
+    "id": 2314,
+    "info": "打开柜门的时候 顺便照照镜子",
+    "name": "储柜·彩陶庆典",
+    "res": [
+     "xw13_14_1"
+    ],
+    "style": 14,
+    "type": 14
+   },
+   "2315": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10315,
+    "icon": {
+     "index": "xw13_15",
+     "src": "Icon/furniture/xw13"
+    },
+    "id": 2315,
+    "info": "值得纪念的回忆 都存放在陶罐里",
+    "name": "装饰·彩陶庆典",
+    "res": [
+     "xw13_15_1"
+    ],
+    "style": 14,
+    "type": 15
+   },
+   "2316": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10316,
+    "icon": {
+     "index": "xw13_16",
+     "src": "Icon/furniture/xw13"
+    },
+    "id": 2316,
+    "info": "旅途的明信片 摆放的整整齐齐",
+    "name": "箱子·彩陶庆典",
+    "res": [
+     "xw13_16_1"
+    ],
+    "style": 14,
+    "type": 16
+   },
+   "2317": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10317,
+    "icon": {
+     "index": "xw13_17",
+     "src": "Icon/furniture/xw13"
+    },
+    "id": 2317,
+    "info": "边缘不规则的小餐桌 表面有双鱼环绕",
+    "name": "餐桌·彩陶庆典",
+    "res": [
+     "xw13_17_1"
+    ],
+    "style": 14,
+    "type": 17
+   },
+   "2318": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10318,
+    "icon": {
+     "index": "xw13_18",
+     "src": "Icon/furniture/xw13"
+    },
+    "id": 2318,
+    "info": "带靠枕的小沙发 坐上去舒服极了",
+    "name": "餐椅·彩陶庆典",
+    "res": [
+     "xw13_18_1",
+     "xw13_18_2"
+    ],
+    "style": 14,
+    "type": 18
+   },
+   "2319": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10319,
+    "icon": {
+     "index": "xw13_19",
+     "src": "Icon/furniture/xw13"
+    },
+    "id": 2319,
+    "info": "拓印彩陶的纹样 化作平面铺展",
+    "name": "地毯·彩陶庆典",
+    "res": [
+     "xw13_19_1"
+    ],
+    "style": 14,
+    "type": 19
+   },
+   "2320": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10320,
+    "icon": {
+     "index": "xw13_20",
+     "src": "Icon/furniture/xw13"
+    },
+    "id": 2320,
+    "info": "以陶器为厨具 烹饪别样的风味",
+    "name": "厨灶·彩陶庆典",
+    "res": [
+     "xw13_20_1"
+    ],
+    "style": 14,
+    "type": 20
+   },
+   "2321": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10321,
+    "icon": {
+     "index": "xw13_21",
+     "src": "Icon/furniture/xw13"
+    },
+    "id": 2321,
+    "info": "装满水的大陶罐 用绳子围上一圈",
+    "name": "厨杂·彩陶庆典",
+    "res": [
+     "xw13_21_1"
+    ],
+    "style": 14,
+    "type": 21
+   },
+   "2322": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10322,
+    "icon": {
+     "index": "xw13_22",
+     "src": "Icon/furniture/xw13"
+    },
+    "id": 2322,
+    "info": "可调角度的大镜子 用彩色花纹妆点",
+    "name": "立镜·彩陶庆典",
+    "res": [
+     "xw13_22_1"
+    ],
+    "style": 14,
+    "type": 22
+   },
+   "2323": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10323,
+    "icon": {
+     "index": "xw13_23",
+     "src": "Icon/furniture/xw13"
+    },
+    "id": 2323,
+    "info": "细长的壶嘴 成了造型别致的衣架",
+    "name": "衣架·彩陶庆典",
+    "res": [
+     "xw13_23_1"
+    ],
+    "style": 14,
+    "type": 23
+   },
+   "2324": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10324,
+    "icon": {
+     "index": "xw13_24",
+     "src": "Icon/furniture/xw13"
+    },
+    "id": 2324,
+    "info": "几何纹饰的屏风上 印着小伙伴们的剪影",
+    "name": "屏风·彩陶庆典",
+    "res": [
+     "xw13_24_1"
+    ],
+    "style": 14,
+    "type": 24
+   },
+   "2325": {
+    "animation": [
+     "xw0_25_1_ani",
+     "xw0_25_2_ani"
+    ],
+    "drawing": 10325,
+    "icon": {
+     "index": "xw13_25",
+     "src": "Icon/furniture/xw13"
+    },
+    "id": 2325,
+    "info": "小巧可爱的油灯 托起温暖的烛光",
+    "name": "照明·彩陶庆典",
+    "res": [
+     "xw13_25_1",
+     "xw13_25_2"
+    ],
+    "style": 14,
+    "type": 25
+   },
+   "2326": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10326,
+    "icon": {
+     "index": "xw13_26",
+     "src": "Icon/furniture/xw13"
+    },
+    "id": 2326,
+    "info": "手工编织篮 日常出行的好帮手",
+    "name": "衣柜·彩陶庆典",
+    "res": [
+     "xw13_26_1"
+    ],
+    "style": 14,
+    "type": 26
+   },
+   "2327": {
+    "animation": [
+     ""
+    ],
+    "drawing": 10327,
+    "icon": {
+     "index": "xw13_27",
+     "src": "Icon/furniture/xw13"
+    },
+    "id": 2327,
+    "info": "色彩鲜艳的陶器之间 有一个熟悉的身影",
+    "name": "储藏·彩陶庆典",
+    "res": [
+     "xw13_27_1"
+    ],
+    "style": 14,
+    "type": 27
    }
   },
   "furnitureShopData": {
@@ -54095,6 +64156,19 @@
     "price": 1,
     "shop_limit": 0,
     "sign": 0,
+    "type": 999
+   },
+   "10": {
+    "has_item": 0,
+    "id": 10,
+    "info": "",
+    "item_id": 202103,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 88,
+    "shop_limit": 0,
+    "sign": 2,
     "type": 999
    },
    "1001": {
@@ -54344,6 +64418,19 @@
     "sign": 2,
     "type": 999
    },
+   "11": {
+    "has_item": 0,
+    "id": 11,
+    "info": "",
+    "item_id": 202104,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 88,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
    "110": {
     "has_item": 0,
     "id": 110,
@@ -54474,6 +64561,19 @@
     "sign": 2,
     "type": 999
    },
+   "12": {
+    "has_item": 0,
+    "id": 12,
+    "info": "",
+    "item_id": 202105,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 88,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
    "120": {
     "has_item": 0,
     "id": 120,
@@ -54539,6 +64639,97 @@
     "sign": 2,
     "type": 999
    },
+   "13": {
+    "has_item": 0,
+    "id": 13,
+    "info": "",
+    "item_id": 202106,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 88,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "14": {
+    "has_item": 0,
+    "id": 14,
+    "info": "",
+    "item_id": 202107,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 88,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "15": {
+    "has_item": 0,
+    "id": 15,
+    "info": "",
+    "item_id": 202108,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 288,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "16": {
+    "has_item": 0,
+    "id": 16,
+    "info": "",
+    "item_id": 202109,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 288,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "17": {
+    "has_item": 0,
+    "id": 17,
+    "info": "",
+    "item_id": 202110,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 288,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "18": {
+    "has_item": 0,
+    "id": 18,
+    "info": "",
+    "item_id": 202111,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 288,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "19": {
+    "has_item": 0,
+    "id": 19,
+    "info": "",
+    "item_id": 202112,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 288,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
    "2": {
     "has_item": 0,
     "id": 2,
@@ -54550,6 +64741,19 @@
     "price": 1,
     "shop_limit": 0,
     "sign": 0,
+    "type": 999
+   },
+   "20": {
+    "has_item": 0,
+    "id": 20,
+    "info": "",
+    "item_id": 201009,
+    "limit": 1,
+    "name": "",
+    "order": 900,
+    "price": 998,
+    "shop_limit": 0,
+    "sign": 2,
     "type": 999
    },
    "2001": {
@@ -54642,6 +64846,422 @@
     "shop_limit": 0,
     "sign": 0,
     "type": 2
+   },
+   "201": {
+    "has_item": 0,
+    "id": 201,
+    "info": "",
+    "item_id": 21,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "202": {
+    "has_item": 0,
+    "id": 202,
+    "info": "",
+    "item_id": 36,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "203": {
+    "has_item": 0,
+    "id": 203,
+    "info": "",
+    "item_id": 22,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "204": {
+    "has_item": 0,
+    "id": 204,
+    "info": "",
+    "item_id": 37,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "205": {
+    "has_item": 0,
+    "id": 205,
+    "info": "",
+    "item_id": 38,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "206": {
+    "has_item": 0,
+    "id": 206,
+    "info": "",
+    "item_id": 23,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "207": {
+    "has_item": 0,
+    "id": 207,
+    "info": "",
+    "item_id": 39,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "208": {
+    "has_item": 0,
+    "id": 208,
+    "info": "",
+    "item_id": 24,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "209": {
+    "has_item": 0,
+    "id": 209,
+    "info": "",
+    "item_id": 40,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "21": {
+    "has_item": 0,
+    "id": 21,
+    "info": "",
+    "item_id": 201003,
+    "limit": 1,
+    "name": "",
+    "order": 900,
+    "price": 999,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "210": {
+    "has_item": 0,
+    "id": 210,
+    "info": "",
+    "item_id": 25,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "211": {
+    "has_item": 0,
+    "id": 211,
+    "info": "",
+    "item_id": 41,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "212": {
+    "has_item": 0,
+    "id": 212,
+    "info": "",
+    "item_id": 26,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "213": {
+    "has_item": 0,
+    "id": 213,
+    "info": "",
+    "item_id": 27,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "214": {
+    "has_item": 0,
+    "id": 214,
+    "info": "",
+    "item_id": 42,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "215": {
+    "has_item": 0,
+    "id": 215,
+    "info": "",
+    "item_id": 43,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "216": {
+    "has_item": 0,
+    "id": 216,
+    "info": "",
+    "item_id": 28,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "217": {
+    "has_item": 0,
+    "id": 217,
+    "info": "",
+    "item_id": 44,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "218": {
+    "has_item": 0,
+    "id": 218,
+    "info": "",
+    "item_id": 29,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "219": {
+    "has_item": 0,
+    "id": 219,
+    "info": "",
+    "item_id": 30,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "22": {
+    "has_item": 0,
+    "id": 22,
+    "info": "",
+    "item_id": 201004,
+    "limit": 1,
+    "name": "",
+    "order": 900,
+    "price": 999,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "220": {
+    "has_item": 0,
+    "id": 220,
+    "info": "",
+    "item_id": 45,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "221": {
+    "has_item": 0,
+    "id": 221,
+    "info": "",
+    "item_id": 31,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "222": {
+    "has_item": 0,
+    "id": 222,
+    "info": "",
+    "item_id": 46,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "223": {
+    "has_item": 0,
+    "id": 223,
+    "info": "",
+    "item_id": 35,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "224": {
+    "has_item": 0,
+    "id": 224,
+    "info": "",
+    "item_id": 20,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "23": {
+    "has_item": 0,
+    "id": 23,
+    "info": "",
+    "item_id": 201008,
+    "limit": 1,
+    "name": "",
+    "order": 900,
+    "price": 999,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "24": {
+    "has_item": 0,
+    "id": 24,
+    "info": "",
+    "item_id": 201001,
+    "limit": 1,
+    "name": "",
+    "order": 900,
+    "price": 999,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "25": {
+    "has_item": 0,
+    "id": 25,
+    "info": "",
+    "item_id": 201002,
+    "limit": 1,
+    "name": "",
+    "order": 900,
+    "price": 999,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "26": {
+    "has_item": 0,
+    "id": 26,
+    "info": "",
+    "item_id": 10103,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 100,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "27": {
+    "has_item": 0,
+    "id": 27,
+    "info": "",
+    "item_id": 10108,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 100,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "28": {
+    "has_item": 0,
+    "id": 28,
+    "info": "",
+    "item_id": 10102,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 100,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
    },
    "3": {
     "has_item": 0,
@@ -54773,6 +65393,19 @@
     "sign": 0,
     "type": 3
    },
+   "301": {
+    "has_item": 0,
+    "id": 301,
+    "info": "",
+    "item_id": 21,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
    "3010": {
     "has_item": 0,
     "id": 3010,
@@ -54798,6 +65431,305 @@
     "shop_limit": 0,
     "sign": 0,
     "type": 3
+   },
+   "302": {
+    "has_item": 0,
+    "id": 302,
+    "info": "",
+    "item_id": 36,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "303": {
+    "has_item": 0,
+    "id": 303,
+    "info": "",
+    "item_id": 22,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "304": {
+    "has_item": 0,
+    "id": 304,
+    "info": "",
+    "item_id": 37,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "305": {
+    "has_item": 0,
+    "id": 305,
+    "info": "",
+    "item_id": 38,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "306": {
+    "has_item": 0,
+    "id": 306,
+    "info": "",
+    "item_id": 23,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "307": {
+    "has_item": 0,
+    "id": 307,
+    "info": "",
+    "item_id": 39,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "308": {
+    "has_item": 0,
+    "id": 308,
+    "info": "",
+    "item_id": 24,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "309": {
+    "has_item": 0,
+    "id": 309,
+    "info": "",
+    "item_id": 40,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "310": {
+    "has_item": 0,
+    "id": 310,
+    "info": "",
+    "item_id": 25,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "311": {
+    "has_item": 0,
+    "id": 311,
+    "info": "",
+    "item_id": 41,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "312": {
+    "has_item": 0,
+    "id": 312,
+    "info": "",
+    "item_id": 26,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "313": {
+    "has_item": 0,
+    "id": 313,
+    "info": "",
+    "item_id": 27,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "314": {
+    "has_item": 0,
+    "id": 314,
+    "info": "",
+    "item_id": 42,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "315": {
+    "has_item": 0,
+    "id": 315,
+    "info": "",
+    "item_id": 43,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "316": {
+    "has_item": 0,
+    "id": 316,
+    "info": "",
+    "item_id": 28,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "317": {
+    "has_item": 0,
+    "id": 317,
+    "info": "",
+    "item_id": 44,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "318": {
+    "has_item": 0,
+    "id": 318,
+    "info": "",
+    "item_id": 29,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "319": {
+    "has_item": 0,
+    "id": 319,
+    "info": "",
+    "item_id": 30,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "320": {
+    "has_item": 0,
+    "id": 320,
+    "info": "",
+    "item_id": 45,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "321": {
+    "has_item": 0,
+    "id": 321,
+    "info": "",
+    "item_id": 31,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "322": {
+    "has_item": 0,
+    "id": 322,
+    "info": "",
+    "item_id": 46,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "323": {
+    "has_item": 0,
+    "id": 323,
+    "info": "",
+    "item_id": 35,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "324": {
+    "has_item": 0,
+    "id": 324,
+    "info": "",
+    "item_id": 20,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
    },
    "4": {
     "has_item": 0,
@@ -54964,6 +65896,19 @@
     "shop_limit": 0,
     "sign": 0,
     "type": 4
+   },
+   "401": {
+    "has_item": 0,
+    "id": 401,
+    "info": "",
+    "item_id": 21,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
    },
    "4010": {
     "has_item": 0,
@@ -55135,6 +66080,19 @@
     "sign": 0,
     "type": 4
    },
+   "402": {
+    "has_item": 0,
+    "id": 402,
+    "info": "",
+    "item_id": 36,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
    "4020": {
     "has_item": 0,
     "icon": {
@@ -55270,6 +66228,292 @@
     "shop_limit": 0,
     "sign": 0,
     "type": 4
+   },
+   "403": {
+    "has_item": 0,
+    "id": 403,
+    "info": "",
+    "item_id": 22,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "404": {
+    "has_item": 0,
+    "id": 404,
+    "info": "",
+    "item_id": 37,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "405": {
+    "has_item": 0,
+    "id": 405,
+    "info": "",
+    "item_id": 38,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "406": {
+    "has_item": 0,
+    "id": 406,
+    "info": "",
+    "item_id": 23,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "407": {
+    "has_item": 0,
+    "id": 407,
+    "info": "",
+    "item_id": 39,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "408": {
+    "has_item": 0,
+    "id": 408,
+    "info": "",
+    "item_id": 24,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "409": {
+    "has_item": 0,
+    "id": 409,
+    "info": "",
+    "item_id": 40,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "410": {
+    "has_item": 0,
+    "id": 410,
+    "info": "",
+    "item_id": 25,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "411": {
+    "has_item": 0,
+    "id": 411,
+    "info": "",
+    "item_id": 41,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "412": {
+    "has_item": 0,
+    "id": 412,
+    "info": "",
+    "item_id": 26,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "413": {
+    "has_item": 0,
+    "id": 413,
+    "info": "",
+    "item_id": 27,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "414": {
+    "has_item": 0,
+    "id": 414,
+    "info": "",
+    "item_id": 42,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "415": {
+    "has_item": 0,
+    "id": 415,
+    "info": "",
+    "item_id": 43,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "416": {
+    "has_item": 0,
+    "id": 416,
+    "info": "",
+    "item_id": 28,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "417": {
+    "has_item": 0,
+    "id": 417,
+    "info": "",
+    "item_id": 44,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "418": {
+    "has_item": 0,
+    "id": 418,
+    "info": "",
+    "item_id": 29,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "419": {
+    "has_item": 0,
+    "id": 419,
+    "info": "",
+    "item_id": 30,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "420": {
+    "has_item": 0,
+    "id": 420,
+    "info": "",
+    "item_id": 45,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "421": {
+    "has_item": 0,
+    "id": 421,
+    "info": "",
+    "item_id": 31,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "422": {
+    "has_item": 0,
+    "id": 422,
+    "info": "",
+    "item_id": 46,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "423": {
+    "has_item": 0,
+    "id": 423,
+    "info": "",
+    "item_id": 35,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
+   "424": {
+    "has_item": 0,
+    "id": 424,
+    "info": "",
+    "item_id": 20,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 375,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
    },
    "5": {
     "has_item": 0,
@@ -55595,6 +66839,19 @@
     "shop_limit": 0,
     "sign": 0,
     "type": 6
+   },
+   "7": {
+    "has_item": 0,
+    "id": 7,
+    "info": "",
+    "item_id": 10108,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 100,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
    },
    "7001": {
     "has_item": 0,
@@ -55968,7 +67225,7 @@
     "limit": 0,
     "name": "",
     "order": 1001,
-    "price": 200,
+    "price": 300,
     "shop_limit": 0,
     "sign": 3,
     "type": 998
@@ -56024,6 +67281,19 @@
     "shop_limit": 0,
     "sign": 3,
     "type": 998
+   },
+   "8": {
+    "has_item": 0,
+    "id": 8,
+    "info": "",
+    "item_id": 202101,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 288,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
    },
    "8001": {
     "has_item": 0,
@@ -56227,7 +67497,7 @@
     "item_id": 56,
     "limit": 0,
     "name": "",
-    "order": 150,
+    "order": 151,
     "price": 325,
     "shop_limit": 0,
     "sign": 1,
@@ -56363,6 +67633,357 @@
     "sign": 1,
     "type": 8
    },
+   "8027": {
+    "has_item": 0,
+    "id": 8027,
+    "info": "",
+    "item_id": 1200,
+    "limit": 0,
+    "name": "",
+    "order": 151,
+    "price": 550,
+    "shop_limit": 0,
+    "sign": 1,
+    "type": 8
+   },
+   "8028": {
+    "has_item": 0,
+    "id": 8028,
+    "info": "",
+    "item_id": 202112,
+    "limit": 0,
+    "name": "",
+    "order": 150,
+    "price": 300,
+    "shop_limit": 0,
+    "sign": 1,
+    "type": 8
+   },
+   "8029": {
+    "has_item": 0,
+    "id": 8029,
+    "info": "",
+    "item_id": 111,
+    "limit": 0,
+    "name": "",
+    "order": 150,
+    "price": 350,
+    "shop_limit": 0,
+    "sign": 1,
+    "type": 8
+   },
+   "8030": {
+    "has_item": 0,
+    "id": 8030,
+    "info": "",
+    "item_id": 112,
+    "limit": 0,
+    "name": "",
+    "order": 150,
+    "price": 350,
+    "shop_limit": 0,
+    "sign": 1,
+    "type": 8
+   },
+   "8031": {
+    "has_item": 0,
+    "id": 8031,
+    "info": "",
+    "item_id": 113,
+    "limit": 0,
+    "name": "",
+    "order": 150,
+    "price": 350,
+    "shop_limit": 0,
+    "sign": 1,
+    "type": 8
+   },
+   "8032": {
+    "has_item": 0,
+    "id": 8032,
+    "info": "",
+    "item_id": 114,
+    "limit": 0,
+    "name": "",
+    "order": 150,
+    "price": 350,
+    "shop_limit": 0,
+    "sign": 1,
+    "type": 8
+   },
+   "8033": {
+    "has_item": 0,
+    "id": 8033,
+    "info": "",
+    "item_id": 115,
+    "limit": 0,
+    "name": "",
+    "order": 150,
+    "price": 350,
+    "shop_limit": 0,
+    "sign": 1,
+    "type": 8
+   },
+   "8034": {
+    "has_item": 0,
+    "id": 8034,
+    "info": "",
+    "item_id": 127,
+    "limit": 0,
+    "name": "",
+    "order": 150,
+    "price": 350,
+    "shop_limit": 0,
+    "sign": 1,
+    "type": 8
+   },
+   "8035": {
+    "has_item": 0,
+    "id": 8035,
+    "info": "",
+    "item_id": 116,
+    "limit": 0,
+    "name": "",
+    "order": 150,
+    "price": 350,
+    "shop_limit": 0,
+    "sign": 1,
+    "type": 8
+   },
+   "8036": {
+    "has_item": 0,
+    "id": 8036,
+    "info": "",
+    "item_id": 117,
+    "limit": 0,
+    "name": "",
+    "order": 150,
+    "price": 350,
+    "shop_limit": 0,
+    "sign": 1,
+    "type": 8
+   },
+   "8037": {
+    "has_item": 0,
+    "id": 8037,
+    "info": "",
+    "item_id": 118,
+    "limit": 0,
+    "name": "",
+    "order": 150,
+    "price": 350,
+    "shop_limit": 0,
+    "sign": 1,
+    "type": 8
+   },
+   "8038": {
+    "has_item": 0,
+    "id": 8038,
+    "info": "",
+    "item_id": 119,
+    "limit": 0,
+    "name": "",
+    "order": 150,
+    "price": 350,
+    "shop_limit": 0,
+    "sign": 1,
+    "type": 8
+   },
+   "8039": {
+    "has_item": 0,
+    "id": 8039,
+    "info": "",
+    "item_id": 120,
+    "limit": 0,
+    "name": "",
+    "order": 150,
+    "price": 350,
+    "shop_limit": 0,
+    "sign": 1,
+    "type": 8
+   },
+   "8040": {
+    "has_item": 0,
+    "id": 8040,
+    "info": "",
+    "item_id": 121,
+    "limit": 0,
+    "name": "",
+    "order": 150,
+    "price": 350,
+    "shop_limit": 0,
+    "sign": 1,
+    "type": 8
+   },
+   "8041": {
+    "has_item": 0,
+    "id": 8041,
+    "info": "",
+    "item_id": 122,
+    "limit": 0,
+    "name": "",
+    "order": 150,
+    "price": 350,
+    "shop_limit": 0,
+    "sign": 1,
+    "type": 8
+   },
+   "8042": {
+    "has_item": 0,
+    "id": 8042,
+    "info": "",
+    "item_id": 123,
+    "limit": 0,
+    "name": "",
+    "order": 150,
+    "price": 350,
+    "shop_limit": 0,
+    "sign": 1,
+    "type": 8
+   },
+   "8043": {
+    "has_item": 0,
+    "id": 8043,
+    "info": "",
+    "item_id": 124,
+    "limit": 0,
+    "name": "",
+    "order": 150,
+    "price": 350,
+    "shop_limit": 0,
+    "sign": 1,
+    "type": 8
+   },
+   "8044": {
+    "has_item": 0,
+    "id": 8044,
+    "info": "",
+    "item_id": 125,
+    "limit": 0,
+    "name": "",
+    "order": 150,
+    "price": 350,
+    "shop_limit": 0,
+    "sign": 1,
+    "type": 8
+   },
+   "8045": {
+    "has_item": 0,
+    "id": 8045,
+    "info": "",
+    "item_id": 126,
+    "limit": 0,
+    "name": "",
+    "order": 150,
+    "price": 350,
+    "shop_limit": 0,
+    "sign": 1,
+    "type": 8
+   },
+   "8046": {
+    "has_item": 0,
+    "id": 8046,
+    "info": "",
+    "item_id": 128,
+    "limit": 0,
+    "name": "",
+    "order": 150,
+    "price": 350,
+    "shop_limit": 0,
+    "sign": 1,
+    "type": 8
+   },
+   "8047": {
+    "has_item": 0,
+    "id": 8047,
+    "info": "",
+    "item_id": 129,
+    "limit": 0,
+    "name": "",
+    "order": 150,
+    "price": 350,
+    "shop_limit": 0,
+    "sign": 1,
+    "type": 8
+   },
+   "8048": {
+    "has_item": 0,
+    "id": 8048,
+    "info": "",
+    "item_id": 130,
+    "limit": 0,
+    "name": "",
+    "order": 150,
+    "price": 350,
+    "shop_limit": 0,
+    "sign": 1,
+    "type": 8
+   },
+   "8049": {
+    "has_item": 0,
+    "id": 8049,
+    "info": "",
+    "item_id": 131,
+    "limit": 0,
+    "name": "",
+    "order": 150,
+    "price": 350,
+    "shop_limit": 0,
+    "sign": 1,
+    "type": 8
+   },
+   "8050": {
+    "has_item": 0,
+    "id": 8050,
+    "info": "",
+    "item_id": 132,
+    "limit": 0,
+    "name": "",
+    "order": 150,
+    "price": 350,
+    "shop_limit": 0,
+    "sign": 1,
+    "type": 8
+   },
+   "8051": {
+    "has_item": 0,
+    "id": 8051,
+    "info": "",
+    "item_id": 133,
+    "limit": 0,
+    "name": "",
+    "order": 150,
+    "price": 350,
+    "shop_limit": 0,
+    "sign": 1,
+    "type": 8
+   },
+   "8052": {
+    "has_item": 0,
+    "id": 8052,
+    "info": "",
+    "item_id": 134,
+    "limit": 0,
+    "name": "",
+    "order": 150,
+    "price": 350,
+    "shop_limit": 0,
+    "sign": 1,
+    "type": 8
+   },
+   "9": {
+    "has_item": 0,
+    "id": 9,
+    "info": "",
+    "item_id": 202102,
+    "limit": 0,
+    "name": "",
+    "order": 900,
+    "price": 288,
+    "shop_limit": 0,
+    "sign": 2,
+    "type": 999
+   },
    "9001": {
     "has_item": 0,
     "id": 9001,
@@ -56401,32 +68022,6 @@
     "shop_limit": 0,
     "sign": 0,
     "type": 9
-   },
-   "7": {
-    "has_item": 0,
-    "id": 7,
-    "info": "",
-    "item_id": 10108,
-    "limit": 0,
-    "name": "",
-    "order": 900,
-    "price": 100,
-    "shop_limit": 0,
-    "sign": 2,
-    "type": 999
-   },
-   "8027": {
-    "has_item": 0,
-    "id": 8027,
-    "info": "",
-    "item_id": 1200,
-    "limit": 0,
-    "name": "",
-    "order": 151,
-    "price": 550,
-    "shop_limit": 0,
-    "sign": 1,
-    "type": 8
    }
   },
   "gameplay": {
@@ -56795,7 +68390,7 @@
      "pic": "server_card_4"
     },
     {
-     "num": 1000000,
+     "num": 880000,
      "pic": ""
     }
    ],
@@ -56806,11 +68401,11 @@
      8001,
      5101,
      20001,
-     102,
+     18,
+     1201,
      1105,
-     54,
      11001,
-     56,
+     8002,
      10105
     ],
     "select_list": [
@@ -57214,7 +68809,7 @@
      "type": 1
     },
     "16": {
-     "desc": "照个镜子\n保证帽子没带歪",
+     "desc": "照个镜子\n保证帽子没戴歪",
      "id": 16,
      "is_show": 1,
      "param": "egg_1_dress",
@@ -57257,6 +68852,24 @@
      "pic": "pic_egg_2",
      "rect": [],
      "type": 1
+    },
+    "20": {
+     "desc": "勤劳地浇水\n期待三叶草的丰收",
+     "id": 20,
+     "is_show": 1,
+     "param": "egg_6_jiaoshui",
+     "pic": "pic_egg_20",
+     "rect": [],
+     "type": 2
+    },
+    "21": {
+     "desc": "闭上双眼\n聆听雨滴轻舞",
+     "id": 21,
+     "is_show": 1,
+     "param": "egg_7_linyu",
+     "pic": "pic_egg_21",
+     "rect": [],
+     "type": 2
     },
     "3": {
      "desc": "除了旅行的见闻\n还有什么能记在小本本上",
@@ -57538,7 +69151,7 @@
    },
    "inspire": {
     "v1": 8.0,
-    "v2": 1701360000.0,
+    "v2": 1716566400.0,
     "v3": "",
     "v4": ""
    },
@@ -57549,8 +69162,8 @@
     "v4": ""
    },
    "open_time": {
-    "v1": "1700615100",
-    "v2": "1702828799",
+    "v1": "1715734800",
+    "v2": "1717343999",
     "v3": "",
     "v4": ""
    },
@@ -57595,7 +69208,7 @@
    "3": "看了会风景，竟然还见着{0}个{1}",
    "301": "神情诡异的双面神人，藏着哪些不为人知的南方青铜文明，了解后获得了1张江西省博物馆门票",
    "302": "别看我现在是萌萌的亚丑钺，在古代我可是很厉害的呢，认识后获得了1张山东博物馆门票",
-   "303": "差点被这小小的铜虎节吓到，2000年前这可是能调动千军万马，知晓后获得了1张南越王博物院门票",
+   "303": "差点被铜虎节吓到，2000年前这可是帝王的信物，知晓后获得了1张南越王博物院门票",
    "304": "从一把铜镜开始探吴中，感受风雅颂之美，体会后获得了1张吴文化博物馆门票",
    "305": "遇见了冒险家兔兔，告别时还叮嘱冒险要注意安全，冒险次数增加1次",
    "4": "一阵大风刮过，没想到抓住了{0}个{1}",
@@ -57684,6 +69297,15 @@
     "name": "海洋挂兜",
     "none_pic": "gd_31_1",
     "res": "gd_31_1"
+   },
+   "22041": {
+    "desc": "新年的福运 装进福袋里",
+    "full_pic": "gd_41_3",
+    "have_pic": "gd_41_2",
+    "id": 22041,
+    "name": "迎春挂兜",
+    "none_pic": "gd_41_1",
+    "res": "gd_41_1"
    }
   },
   "prayBodyData": {
@@ -58966,16 +70588,101 @@
    "1265": "Picture/Goal/g_guangzhou6_cw",
    "1266": "Picture/Goal/g_guangzhou6_bh",
    "1267": "Picture/Goal/g_guangzhou6_yhc",
+   "1268": "Picture/Unique/u_anniv",
+   "1269": "Picture/Unique/u_player",
    "127": "Picture/Goal/g_lasa4",
+   "1270": "Picture/Unique/u_squirrel",
+   "1271": "Picture/Unique/u_dog",
+   "1272": "Picture/Goal/g_neimenggu1",
+   "1273": "Picture/Goal/g_neimenggu1_bh",
+   "1274": "Picture/Goal/g_neimenggu1_cw",
+   "1275": "Picture/Goal/g_neimenggu1_qw",
+   "1276": "Picture/Goal/g_neimenggu1_yhc",
+   "1277": "Picture/Goal/g_neimenggu2",
+   "1278": "Picture/Goal/g_neimenggu2_bh",
+   "1279": "Picture/Goal/g_neimenggu2_cw",
    "128": "Picture/Goal/g_lasa5",
+   "1280": "Picture/Goal/g_neimenggu2_qw",
+   "1281": "Picture/Goal/g_neimenggu2_yhc",
+   "1282": "Picture/Goal/g_neimenggu3",
+   "1283": "Picture/Goal/g_neimenggu3_bh",
+   "1284": "Picture/Goal/g_neimenggu3_cw",
+   "1285": "Picture/Goal/g_neimenggu3_qw",
+   "1286": "Picture/Goal/g_neimenggu3_yhc",
+   "1287": "Picture/Goal/g_xinjiang1",
+   "1288": "Picture/Goal/g_xinjiang1_bh",
+   "1289": "Picture/Goal/g_xinjiang1_cw",
    "129": "Picture/Goal/g_shanghai1",
+   "1290": "Picture/Goal/g_xinjiang1_qw",
+   "1291": "Picture/Goal/g_xinjiang1_yhc",
+   "1292": "Picture/Goal/g_xinjiang2",
+   "1293": "Picture/Goal/g_xinjiang2_bh",
+   "1294": "Picture/Goal/g_xinjiang2_cw",
+   "1295": "Picture/Goal/g_xinjiang2_qw",
+   "1296": "Picture/Goal/g_xinjiang2_yhc",
+   "1297": "Picture/Goal/g_xinjiang3",
+   "1298": "Picture/Goal/g_xinjiang3_bh",
+   "1299": "Picture/Goal/g_xinjiang3_cw",
    "13": "Picture/Normal/flower03",
    "130": "Picture/Goal/g_shanghai2",
+   "1300": "Picture/Goal/g_xinjiang3_qw",
+   "1301": "Picture/Goal/g_xinjiang3_yhc",
+   "1302": "Picture/Goal/g_haerbin4_bh",
+   "1303": "Picture/Goal/g_haerbin4_cw",
+   "1304": "Picture/Goal/g_haerbin4_qw",
+   "1305": "Picture/Goal/g_haerbin4_yhc",
+   "1306": "Picture/Unique/u_denglong",
+   "1307": "Picture/Unique/u_fengyanlian",
+   "1308": "Picture/Unique/u_xieweijiao",
+   "1309": "Picture/Goal/g_chongqing3",
    "131": "Picture/Goal/g_shanghai3",
+   "1310": "Picture/Goal/g_chongqing3_bh",
+   "1311": "Picture/Goal/g_chongqing3_cw",
+   "1312": "Picture/Goal/g_chongqing3_qw",
+   "1313": "Picture/Goal/g_chongqing3_yhc",
+   "1314": "Picture/Goal/g_qingdao3",
+   "1315": "Picture/Goal/g_qingdao3_bh",
+   "1316": "Picture/Goal/g_qingdao3_cw",
+   "1317": "Picture/Goal/g_qingdao3_qw",
+   "1318": "Picture/Goal/g_qingdao3_yhc",
+   "1319": "Picture/Unique/u_xiazhi_1",
    "132": "Picture/Goal/g_shanghai4",
+   "1320": "Picture/Unique/u_xiazhi_2",
+   "1321": "Picture/Unique/u_two_month9_3",
+   "1322": "Picture/Unique/u_two_month10_3",
+   "1323": "Picture/Unique/u_month11_3",
+   "1324": "Picture/Unique/u_mid_autumn_2",
+   "1325": "Picture/Goal/g_guizhou7",
+   "1326": "Picture/Goal/g_guizhou7_bh",
+   "1327": "Picture/Goal/g_guizhou7_cw",
+   "1328": "Picture/Goal/g_guizhou7_qw",
+   "1329": "Picture/Goal/g_guizhou7_yhc",
    "133": "Picture/Goal/g_hainan1",
+   "1330": "Picture/Unique/u_month12_3",
+   "1331": "Picture/Unique/u_anniv_2",
+   "1332": "Picture/Goal/g_xian4",
+   "1333": "Picture/Goal/g_xian4_bh",
+   "1334": "Picture/Goal/g_xian4_cw",
+   "1335": "Picture/Goal/g_xian4_qw",
+   "1336": "Picture/Goal/g_xian4_yhc",
+   "1337": "Picture/Unique/u_month1_3",
+   "1338": "Picture/Unique/u_month2_3",
+   "1339": "Picture/Goal/g_zhengzhou1",
    "134": "Picture/Goal/g_hainan2",
+   "1340": "Picture/Goal/g_zhengzhou1_bh",
+   "1341": "Picture/Goal/g_zhengzhou1_cw",
+   "1342": "Picture/Goal/g_zhengzhou1_qw",
+   "1343": "Picture/Goal/g_zhengzhou1_yhc",
+   "1344": "Picture/Unique/u_month3_3",
+   "1345": "Picture/Unique/u_month4_3",
+   "1346": "Picture/Unique/u_month5_3",
+   "1347": "Picture/Unique/u_month6_3",
+   "1348": "Picture/Goal/g_beijing6",
+   "1349": "Picture/Goal/g_beijing6_bh",
    "135": "Picture/Unique/u_alipay",
+   "1350": "Picture/Goal/g_beijing6_cw",
+   "1351": "Picture/Goal/g_beijing6_qw",
+   "1352": "Picture/Goal/g_beijing6_yhc",
    "136": "Picture/Unique/u_alipay",
    "137": "Picture/Unique/u_help_bh",
    "138": "Picture/Unique/u_help_cw",
@@ -59923,7 +71630,7 @@
    "987": "Picture/Goal/g_shanxi3",
    "988": "Picture/Goal/g_shanxi3_qw",
    "989": "Picture/Goal/g_shanxi3_bh",
-   "99": "Picture/Unique/u_alipay",
+   "99": "Picture/Goal/g_haerbin4",
    "990": "Picture/Goal/g_shanxi3_cw",
    "991": "Picture/Goal/g_shanxi3_yhc",
    "992": "Picture/Goal/g_shanxi4",
@@ -59933,9 +71640,7 @@
    "996": "Picture/Goal/g_shanxi4_yhc",
    "997": "Picture/Unique/u_two_month1",
    "998": "Picture/Unique/u_two_month2",
-   "999": "Picture/Unique/u_two_month3",
-   "1268": "Picture/Unique/u_anniv",
-   "1269": "Picture/Unique/u_player"
+   "999": "Picture/Unique/u_two_month3"
   },
   "shopData": [
    {
@@ -60732,7 +72437,7 @@
     "id": 58,
     "info": "特殊的相框 是制作动态照片的保障 获得后动态相册页数+1",
     "is_hide_before": 1,
-    "is_sold_out_hide": 0,
+    "is_sold_out_hide": 1,
     "itemId": 9001,
     "limit": 1,
     "name": "动态相框·2",
@@ -60807,7 +72512,7 @@
     "id": 63,
     "info": "相册的烦恼 又远离了一点点 获得后相册页数+1",
     "is_hide_before": 1,
-    "is_sold_out_hide": 0,
+    "is_sold_out_hide": 1,
     "itemId": 9000,
     "limit": 1,
     "name": "相册扩容·35",
@@ -60822,7 +72527,7 @@
     "id": 64,
     "info": "特殊的相框 是制作动态照片的保障 获得后动态相册页数+1",
     "is_hide_before": 1,
-    "is_sold_out_hide": 0,
+    "is_sold_out_hide": 1,
     "itemId": 9001,
     "limit": 1,
     "name": "动态相框·3",
@@ -60840,6 +72545,351 @@
     "name": "许愿池·家具礼袋",
     "order": 103,
     "price": 3000
+   },
+   {
+    "before_buy": [
+     "shop",
+     "63"
+    ],
+    "id": 66,
+    "info": "相册的烦恼 又远离了一点点 获得后相册页数+1",
+    "is_hide_before": 1,
+    "is_sold_out_hide": 1,
+    "itemId": 9000,
+    "limit": 1,
+    "name": "相册扩容·36",
+    "order": 58,
+    "price": 2000
+   },
+   {
+    "before_buy": [
+     "shop",
+     "66"
+    ],
+    "id": 67,
+    "info": "相册的烦恼 又远离了一点点 获得后相册页数+1",
+    "is_hide_before": 1,
+    "is_sold_out_hide": 1,
+    "itemId": 9000,
+    "limit": 1,
+    "name": "相册扩容·37",
+    "order": 59,
+    "price": 3000
+   },
+   {
+    "before_buy": [
+     "shop",
+     "67"
+    ],
+    "id": 68,
+    "info": "相册的烦恼 又远离了一点点 获得后相册页数+1",
+    "is_hide_before": 1,
+    "is_sold_out_hide": 1,
+    "itemId": 9000,
+    "limit": 1,
+    "name": "相册扩容·38",
+    "order": 60,
+    "price": 2000
+   },
+   {
+    "before_buy": [
+     "shop",
+     "68"
+    ],
+    "id": 69,
+    "info": "相册的烦恼 又远离了一点点 获得后相册页数+1",
+    "is_hide_before": 1,
+    "is_sold_out_hide": 1,
+    "itemId": 9000,
+    "limit": 1,
+    "name": "相册扩容·39",
+    "order": 61,
+    "price": 1500
+   },
+   {
+    "before_buy": [
+     "shop",
+     "69"
+    ],
+    "id": 70,
+    "info": "相册的烦恼 又远离了一点点 获得后相册页数+1",
+    "is_hide_before": 1,
+    "is_sold_out_hide": 1,
+    "itemId": 9000,
+    "limit": 1,
+    "name": "相册扩容·40",
+    "order": 62,
+    "price": 1250
+   },
+   {
+    "before_buy": [
+     "shop",
+     "64"
+    ],
+    "id": 71,
+    "info": "特殊的相框 是制作动态照片的保障 获得后动态相册页数+1",
+    "is_hide_before": 1,
+    "is_sold_out_hide": 1,
+    "itemId": 9001,
+    "limit": 1,
+    "name": "动态相框·4",
+    "order": 204,
+    "price": 3000
+   },
+   {
+    "before_buy": [
+     "shop",
+     "71"
+    ],
+    "id": 72,
+    "info": "特殊的相框 是制作动态照片的保障 获得后动态相册页数+1",
+    "is_hide_before": 1,
+    "is_sold_out_hide": 0,
+    "itemId": 9001,
+    "limit": 1,
+    "name": "动态相框·5",
+    "order": 205,
+    "price": 3000
+   },
+   {
+    "before_buy": [
+     "shop",
+     "70"
+    ],
+    "id": 73,
+    "info": "相册的烦恼 又远离了一点点 获得后相册页数+1",
+    "is_hide_before": 1,
+    "is_sold_out_hide": 1,
+    "itemId": 9000,
+    "limit": 1,
+    "name": "相册扩容·41",
+    "order": 63,
+    "price": 1000
+   },
+   {
+    "before_buy": [
+     "shop",
+     "73"
+    ],
+    "id": 74,
+    "info": "相册的烦恼 又远离了一点点 获得后相册页数+1",
+    "is_hide_before": 1,
+    "is_sold_out_hide": 1,
+    "itemId": 9000,
+    "limit": 1,
+    "name": "相册扩容·42",
+    "order": 64,
+    "price": 1250
+   },
+   {
+    "before_buy": [
+     "shop",
+     "74"
+    ],
+    "id": 75,
+    "info": "相册的烦恼 又远离了一点点 获得后相册页数+1",
+    "is_hide_before": 1,
+    "is_sold_out_hide": 1,
+    "itemId": 9000,
+    "limit": 1,
+    "name": "相册扩容·43",
+    "order": 65,
+    "price": 1500
+   },
+   {
+    "before_buy": [
+     "shop",
+     "75"
+    ],
+    "id": 76,
+    "info": "相册的烦恼 又远离了一点点 获得后相册页数+1",
+    "is_hide_before": 1,
+    "is_sold_out_hide": 1,
+    "itemId": 9000,
+    "limit": 1,
+    "name": "相册扩容·44",
+    "order": 66,
+    "price": 2000
+   },
+   {
+    "before_buy": [
+     "shop",
+     "76"
+    ],
+    "id": 77,
+    "info": "相册的烦恼 又远离了一点点 获得后相册页数+1",
+    "is_hide_before": 1,
+    "is_sold_out_hide": 1,
+    "itemId": 9000,
+    "limit": 1,
+    "name": "相册扩容·45",
+    "order": 67,
+    "price": 3000
+   },
+   {
+    "before_buy": [
+     "shop",
+     "77"
+    ],
+    "id": 78,
+    "info": "相册的烦恼 又远离了一点点 获得后相册页数+1",
+    "is_hide_before": 1,
+    "is_sold_out_hide": 1,
+    "itemId": 9000,
+    "limit": 1,
+    "name": "相册扩容·46",
+    "order": 68,
+    "price": 2000
+   },
+   {
+    "before_buy": [
+     "shop",
+     "78"
+    ],
+    "id": 79,
+    "info": "相册的烦恼 又远离了一点点 获得后相册页数+1",
+    "is_hide_before": 1,
+    "is_sold_out_hide": 1,
+    "itemId": 9000,
+    "limit": 1,
+    "name": "相册扩容·47",
+    "order": 69,
+    "price": 1500
+   },
+   {
+    "before_buy": [
+     "shop",
+     "79"
+    ],
+    "id": 80,
+    "info": "相册的烦恼 又远离了一点点 获得后相册页数+1",
+    "is_hide_before": 1,
+    "is_sold_out_hide": 1,
+    "itemId": 9000,
+    "limit": 1,
+    "name": "相册扩容·48",
+    "order": 70,
+    "price": 1250
+   },
+   {
+    "before_buy": [
+     "shop",
+     "80"
+    ],
+    "id": 81,
+    "info": "相册的烦恼 又远离了一点点 获得后相册页数+1",
+    "is_hide_before": 1,
+    "is_sold_out_hide": 1,
+    "itemId": 9000,
+    "limit": 1,
+    "name": "相册扩容·49",
+    "order": 71,
+    "price": 1000
+   },
+   {
+    "before_buy": [
+     "shop",
+     "81"
+    ],
+    "id": 82,
+    "info": "相册的烦恼 又远离了一点点 获得后相册页数+1",
+    "is_hide_before": 1,
+    "is_sold_out_hide": 1,
+    "itemId": 9000,
+    "limit": 1,
+    "name": "相册扩容·50",
+    "order": 72,
+    "price": 1250
+   },
+   {
+    "before_buy": [
+     "shop",
+     "82"
+    ],
+    "id": 83,
+    "info": "相册的烦恼 又远离了一点点 获得后相册页数+1",
+    "is_hide_before": 1,
+    "is_sold_out_hide": 1,
+    "itemId": 9000,
+    "limit": 1,
+    "name": "相册扩容·51",
+    "order": 73,
+    "price": 1500
+   },
+   {
+    "before_buy": [
+     "shop",
+     "83"
+    ],
+    "id": 84,
+    "info": "相册的烦恼 又远离了一点点 获得后相册页数+1",
+    "is_hide_before": 1,
+    "is_sold_out_hide": 1,
+    "itemId": 9000,
+    "limit": 1,
+    "name": "相册扩容·52",
+    "order": 74,
+    "price": 2000
+   },
+   {
+    "before_buy": [
+     "shop",
+     "84"
+    ],
+    "id": 85,
+    "info": "相册的烦恼 又远离了一点点 获得后相册页数+1",
+    "is_hide_before": 1,
+    "is_sold_out_hide": 1,
+    "itemId": 9000,
+    "limit": 1,
+    "name": "相册扩容·53",
+    "order": 75,
+    "price": 3000
+   },
+   {
+    "before_buy": [
+     "shop",
+     "85"
+    ],
+    "id": 86,
+    "info": "相册的烦恼 又远离了一点点 获得后相册页数+1",
+    "is_hide_before": 1,
+    "is_sold_out_hide": 1,
+    "itemId": 9000,
+    "limit": 1,
+    "name": "相册扩容·54",
+    "order": 76,
+    "price": 2000
+   },
+   {
+    "before_buy": [
+     "shop",
+     "86"
+    ],
+    "id": 87,
+    "info": "相册的烦恼 又远离了一点点 获得后相册页数+1",
+    "is_hide_before": 1,
+    "is_sold_out_hide": 1,
+    "itemId": 9000,
+    "limit": 1,
+    "name": "相册扩容·55",
+    "order": 77,
+    "price": 1500
+   },
+   {
+    "before_buy": [
+     "shop",
+     "87"
+    ],
+    "id": 88,
+    "info": "相册的烦恼 又远离了一点点 获得后相册页数+1",
+    "is_hide_before": 1,
+    "is_sold_out_hide": 0,
+    "itemId": 9000,
+    "limit": 1,
+    "name": "相册扩容·56",
+    "order": 78,
+    "price": 1250
    }
   ],
   "springCard": {
@@ -61078,7 +73128,7 @@
    "big_box_id": 200010,
    "bless": [
     {
-     "desc": "兔年好运到，好事来得早!",
+     "desc": "龙年新气象，祝福送万家!",
      "id": 1,
      "type": 1
     },
@@ -61103,21 +73153,21 @@
      "type": 1
     },
     {
-     "desc": "不写祝福",
+     "desc": "乘风破浪，龙腾四海",
      "id": 6,
      "type": 1
     }
    ],
    "bless_box": {
-    "10": "不要着急，兔年好运正在路上",
-    "11": "呱！蛙蛙预感下个暴富就是你",
-    "12": "欢愉且胜意，好事皆可期",
-    "13": "蛙蛙陪你等待好运降临",
-    "14": "蛙蛙播报：你与好运又靠近了一点",
-    "15": "新年呱呱送你三千万\n千万快乐、千万健康、千万幸福",
-    "7": "平安喜乐，万事胜意\n好运就在下一刻",
-    "8": "初春雪漫漫，蛙蛙祝你所求皆如愿",
-    "9": "新春大吉，蛙蛙为你好运蓄力中"
+    "10": "新的一年，蛙蛙祝你驭马乘风，万事亨通！",
+    "11": "马年财运正在向您飞驰~",
+    "12": "马踏祥云至，好运常相伴",
+    "13": "骏马踏春开新境，长风载梦赴嘉年",
+    "14": "蛙蛙快报：小马正驮着好运赶来~",
+    "15": "2026年 马到成功！",
+    "7": "岁岁平安，得偿所愿\n新的惊喜正悄悄发生",
+    "8": "烟火赴新程，蛙蛙祝你万事皆胜意",
+    "9": "新春如意，蛙蛙助你事业更兴旺"
    },
    "global_reward": [
     {
@@ -61133,11 +73183,11 @@
      "pic": ""
     },
     {
-     "num": 3000000,
+     "num": 2000000,
      "pic": ""
     },
     {
-     "num": 6000000,
+     "num": 3000000,
      "pic": ""
     }
    ],
@@ -61255,10 +73305,7 @@
    "tags_box_id": 200008,
    "tags_price": 20,
    "tags_share_limit": 3,
-   "toys_list": {
-    "200012": true,
-    "200013": true
-   }
+   "toys_list": []
   },
   "stampData": {
    "1": {
@@ -65010,7 +77057,7 @@
    "id": 35,
    "type": 0,
    "sub_type": "",
-   "name": "枣泥核桃糖",
+   "name": "核桃枣泥糕",
    "price": 100,
    "spend": 1
   },
@@ -65183,6 +77230,14 @@
    "spend": 1
   },
   {
+   "id": 57,
+   "type": 0,
+   "sub_type": "",
+   "name": "庆典蛋糕",
+   "price": 100,
+   "spend": 1
+  },
+  {
    "id": 101,
    "type": 0,
    "sub_type": "",
@@ -65314,7 +77369,7 @@
    "id": 117,
    "type": 0,
    "sub_type": "",
-   "name": "八仙糕",
+   "name": "酥圈圈",
    "price": 100,
    "spend": 1
   },
@@ -65394,7 +77449,7 @@
    "id": 127,
    "type": 0,
    "sub_type": "",
-   "name": "烧饼",
+   "name": "周村烧饼",
    "price": 100,
    "spend": 1
   },
@@ -66303,6 +78358,22 @@
    "spend": 1
   },
   {
+   "id": 3039,
+   "type": 3,
+   "sub_type": "",
+   "name": "沙果",
+   "price": 0,
+   "spend": 1
+  },
+  {
+   "id": 3040,
+   "type": 3,
+   "sub_type": "",
+   "name": "馕",
+   "price": 0,
+   "spend": 1
+  },
+  {
    "id": 4000,
    "type": 3,
    "sub_type": "",
@@ -67207,6 +79278,14 @@
    "spend": 0
   },
   {
+   "id": 10701,
+   "type": 13,
+   "sub_type": 5,
+   "name": "花盆制作样式",
+   "price": "",
+   "spend": 0
+  },
+  {
    "id": 20001,
    "type": 15,
    "sub_type": 1,
@@ -67348,7 +79427,7 @@
    "sub_type": 1,
    "name": "三叶草",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 200001,
@@ -67356,7 +79435,7 @@
    "sub_type": 2,
    "name": "兑奖券",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 200002,
@@ -67364,7 +79443,7 @@
    "sub_type": 3,
    "name": "罗盘",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 200003,
@@ -67372,7 +79451,7 @@
    "sub_type": 4,
    "name": "浇水",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 200004,
@@ -67380,7 +79459,7 @@
    "sub_type": 5,
    "name": "换货",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 200005,
@@ -67388,7 +79467,7 @@
    "sub_type": 7,
    "name": "扭蛋币",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 200006,
@@ -67396,7 +79475,7 @@
    "sub_type": 9,
    "name": "奶油",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 200007,
@@ -67404,7 +79483,7 @@
    "sub_type": 10,
    "name": "翻糖",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 200008,
@@ -67412,7 +79491,7 @@
    "sub_type": 6,
    "name": "新春贴纸袋",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 200009,
@@ -67420,7 +79499,7 @@
    "sub_type": 6,
    "name": "新春宝箱·小",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 200010,
@@ -67428,7 +79507,7 @@
    "sub_type": 6,
    "name": "新春宝箱·大",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 200011,
@@ -67436,7 +79515,7 @@
    "sub_type": 6,
    "name": "宝箱的祝福",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 200012,
@@ -67444,7 +79523,7 @@
    "sub_type": 6,
    "name": "周边·明信片",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 200013,
@@ -67452,7 +79531,7 @@
    "sub_type": 6,
    "name": "周边·口罩",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 200014,
@@ -67460,7 +79539,7 @@
    "sub_type": 6,
    "name": "周边·青蛙公仔",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 200015,
@@ -67468,7 +79547,7 @@
    "sub_type": 6,
    "name": "广告替代品",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 200016,
@@ -67476,7 +79555,7 @@
    "sub_type": 6,
    "name": "许愿池开启",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 201001,
@@ -67484,7 +79563,7 @@
    "sub_type": 6,
    "name": "书桌·古琴",
    "price": "",
-   "spend": ""
+   "spend": 0
   },
   {
    "id": 201002,
@@ -67492,7 +79571,7 @@
    "sub_type": 6,
    "name": "衣柜·古琴",
    "price": "",
-   "spend": ""
+   "spend": 0
   },
   {
    "id": 201003,
@@ -67500,7 +79579,7 @@
    "sub_type": 6,
    "name": "森之国度·小鱼干",
    "price": "",
-   "spend": ""
+   "spend": 0
   },
   {
    "id": 201004,
@@ -67508,7 +79587,7 @@
    "sub_type": 6,
    "name": "森之国度·小鱼冻",
    "price": "",
-   "spend": ""
+   "spend": 0
   },
   {
    "id": 201005,
@@ -67516,7 +79595,7 @@
    "sub_type": 6,
    "name": "帘幕·许愿池",
    "price": "",
-   "spend": ""
+   "spend": 0
   },
   {
    "id": 201006,
@@ -67524,7 +79603,7 @@
    "sub_type": 6,
    "name": "地毯·许愿池",
    "price": "",
-   "spend": ""
+   "spend": 0
   },
   {
    "id": 201007,
@@ -67532,7 +79611,7 @@
    "sub_type": 6,
    "name": "墙壁·许愿池",
    "price": "",
-   "spend": ""
+   "spend": 0
   },
   {
    "id": 201008,
@@ -67540,7 +79619,15 @@
    "sub_type": 6,
    "name": "森之国度·猫猫帽",
    "price": "",
-   "spend": ""
+   "spend": 0
+  },
+  {
+   "id": 201009,
+   "type": 14,
+   "sub_type": 6,
+   "name": "迎春花盆",
+   "price": "",
+   "spend": 0
   },
   {
    "id": 202101,
@@ -67627,6 +79714,14 @@
    "type": 14,
    "sub_type": 6,
    "name": "水仙",
+   "price": "",
+   "spend": 1
+  },
+  {
+   "id": 202112,
+   "type": 14,
+   "sub_type": 6,
+   "name": "君子兰",
    "price": "",
    "spend": 1
   },
@@ -67796,7 +79891,7 @@
    "sub_type": 8,
    "name": "蛙选之人·1天",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 203002,
@@ -67804,7 +79899,7 @@
    "sub_type": 8,
    "name": "蛙选之人·7天",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 203003,
@@ -67812,7 +79907,7 @@
    "sub_type": 8,
    "name": "蛙选之人·15天",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 203004,
@@ -67820,7 +79915,7 @@
    "sub_type": 8,
    "name": "蛙选之人·30天",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 203005,
@@ -67828,7 +79923,7 @@
    "sub_type": 8,
    "name": "蛙选之人·90天",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 203006,
@@ -67836,7 +79931,7 @@
    "sub_type": 8,
    "name": "蛙选之人·180天",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 203007,
@@ -67844,7 +79939,7 @@
    "sub_type": 8,
    "name": "蛙选之人·365天",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 203011,
@@ -67852,7 +79947,7 @@
    "sub_type": 8,
    "name": "明星小蛙·1天",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 203012,
@@ -67860,7 +79955,7 @@
    "sub_type": 8,
    "name": "明星小蛙·7天",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 203013,
@@ -67868,7 +79963,7 @@
    "sub_type": 8,
    "name": "明星小蛙·15天",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 203014,
@@ -67876,7 +79971,7 @@
    "sub_type": 8,
    "name": "明星小蛙·30天",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 203015,
@@ -67884,7 +79979,7 @@
    "sub_type": 8,
    "name": "明星小蛙·90天",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 203016,
@@ -67892,7 +79987,7 @@
    "sub_type": 8,
    "name": "明星小蛙·180天",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 203017,
@@ -67900,7 +79995,7 @@
    "sub_type": 8,
    "name": "明星小蛙·365天",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 203021,
@@ -67908,7 +80003,7 @@
    "sub_type": 8,
    "name": "蛙界艺术家·1天",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 203022,
@@ -67916,7 +80011,7 @@
    "sub_type": 8,
    "name": "蛙界艺术家·7天",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 203023,
@@ -67924,7 +80019,7 @@
    "sub_type": 8,
    "name": "蛙界艺术家·15天",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 203024,
@@ -67932,7 +80027,7 @@
    "sub_type": 8,
    "name": "蛙界艺术家·30天",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 203025,
@@ -67940,7 +80035,7 @@
    "sub_type": 8,
    "name": "蛙界艺术家·90天",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 203026,
@@ -67948,7 +80043,7 @@
    "sub_type": 8,
    "name": "蛙界艺术家·180天",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 203027,
@@ -67956,7 +80051,7 @@
    "sub_type": 8,
    "name": "蛙界艺术家·365天",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 204001,
@@ -67964,7 +80059,7 @@
    "sub_type": 11,
    "name": "周年庆·家具礼袋",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 204002,
@@ -67972,7 +80067,7 @@
    "sub_type": 11,
    "name": "许愿池·家具礼袋",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 205001,
@@ -67980,7 +80075,7 @@
    "sub_type": 6,
    "name": "点击特效·青蛙",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 205002,
@@ -67988,7 +80083,7 @@
    "sub_type": 6,
    "name": "点击特效·壁虎",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 205003,
@@ -67996,7 +80091,7 @@
    "sub_type": 6,
    "name": "点击特效·刺猬",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
    "id": 205004,
@@ -68004,14 +80099,38 @@
    "sub_type": 6,
    "name": "点击特效·萤火虫",
    "price": "",
-   "spend": ""
+   "spend": 1
   },
   {
-   "id": 57,
-   "type": 0,
-   "sub_type": "",
-   "name": "庆典蛋糕",
-   "price": 100,
+   "id": 205005,
+   "type": 14,
+   "sub_type": 6,
+   "name": "点击特效·青蛙",
+   "price": "",
+   "spend": 1
+  },
+  {
+   "id": 205006,
+   "type": 14,
+   "sub_type": 6,
+   "name": "点击特效·壁虎",
+   "price": "",
+   "spend": 1
+  },
+  {
+   "id": 205007,
+   "type": 14,
+   "sub_type": 6,
+   "name": "点击特效·刺猬",
+   "price": "",
+   "spend": 1
+  },
+  {
+   "id": 205008,
+   "type": 14,
+   "sub_type": 6,
+   "name": "点击特效·萤火虫",
+   "price": "",
    "spend": 1
   }
  ]
@@ -68429,7 +80548,7 @@
   });
 
   define('./data/picture-layers.json', function (module, exports) {
-    module.exports = {"100":{"name":"back_n_roof1","type":"Normal","layers":[{"layer":[1,0,0]},{"layer":[2,-10,-70]},{"layer":[5,50,38]},{"layer":[6,0,190]},{"layer":[8,0,0]},{"layer":[7,79,54]},{"layer":[11,-754,267]},{"layer":[190,311,224],"role":"qw"},{"layer":[245,350,218],"role":"bh"}]},"101":{"name":"back_n_roof2","type":"Normal","layers":[{"layer":[1,0,0]},{"layer":[2,-10,-70]},{"layer":[6,0,190]},{"layer":[11,-754,275]},{"layer":[191,176,228],"role":"qw"},{"layer":[246,107,216],"role":"bh"},{"layer":[10,-150,252]},{"layer":[12,400,152]},{"layer":[13,-275,4]}]},"102":{"name":"back_n_beach1","type":"Normal","layers":[{"layer":[14,0,0],"size":[500,350]},{"layer":[20,0,120]},{"layer":[6,0,30]},{"layer":[21,-187,153]},{"layer":[192,94,240],"role":"qw"},{"layer":[247,168,250],"role":"bh"}]},"103":{"name":"back_n_beach2","type":"Normal","layers":[{"layer":[14,0,0],"size":[500,350]},{"layer":[20,0,120]},{"layer":[18,0,112]},{"layer":[19,-85,105]},{"layer":[21,-187,153]},{"layer":[199,226,258],"role":"qw"},{"layer":[253,302,245],"role":"bh"}]},"104":{"name":"back_n_beach3","type":"Normal","layers":[{"layer":[14,0,0],"size":[500,350]},{"layer":[20,0,120]},{"layer":[18,0,112]},{"layer":[22,-153,192]},{"layer":[390,0,262]},{"layer":[193,345,232],"role":"qw"},{"layer":[248,193,236],"role":"bh"},{"layer":[23,0,307]}]},"105":{"name":"back_n_branch1","type":"Normal","layers":[{"layer":[24,0,0],"size":[500,350]},{"layer":[25,0,-19]},{"layer":[588,0,0]},{"layer":[26,0,0]},{"layer":[27,330,60]},{"layer":[249,204,121],"role":"bh"},{"layer":[194,256,134],"role":"qw"}]},"106":{"name":"back_n_branch2","type":"Normal","layers":[{"layer":[28,0,0]},{"layer":[29,0,-19]},{"layer":[588,0,0]},{"layer":[26,0,0]},{"layer":[30,0,0]},{"layer":[31,120,120]},{"layer":[195,164,124],"role":"qw"},{"layer":[250,216,118],"role":"bh"}]},"107":{"name":"back_n_bamboo1","type":"Normal","layers":[{"layer":[32,0,0]},{"layer":[33,0,0]},{"layer":[34,0,0]},{"layer":[35,266,0]},{"layer":[36,0,212]},{"layer":[37,340,148]},{"layer":[38,105,86]},{"layer":[251,220,226],"role":"bh"},{"layer":[197,210,194],"role":"qw"},{"layer":[47,368,116]},{"layer":[48,-35,0]}]},"108":{"name":"back_n_bamboo2","type":"Normal","layers":[{"layer":[50,0,0]},{"layer":[39,8,0]},{"layer":[40,0,209]},{"layer":[41,285,0]},{"layer":[42,0,165]},{"layer":[43,348,160]},{"layer":[44,115,100]},{"layer":[49,-250,0]},{"layer":[252,213,186],"role":"bh"},{"layer":[198,272,214],"role":"qw"},{"layer":[45,371,128]},{"layer":[46,-25,0]}]},"109":{"name":"back_n_field1","type":"Normal","layers":[{"layer":[395,-104,0]},{"layer":[396,-104,0]},{"layer":[397,-104,0]},{"layer":[398,-104,0]},{"layer":[399,-104,228]},{"layer":[254,184,263],"role":"bh"},{"layer":[200,248,250],"role":"qw"}]},"110":{"name":"back_n_field2","type":"Normal","layers":[{"layer":[400,-104,0]},{"layer":[396,-104,0]},{"layer":[401,-104,0]},{"layer":[402,-104,0]},{"layer":[399,-104,228]},{"layer":[200,248,250],"role":"qw"},{"layer":[254,184,263],"role":"bh"}]},"111":{"name":"back_n_redleaves1","type":"Normal","layers":[{"layer":[602,-106,0]},{"layer":[604,170,136],"role":"qw"},{"layer":[605,246,74],"role":"bh"},{"layer":[603,-197,0]}]},"112":{"name":"back_n_redleaves2","type":"Normal","layers":[{"layer":[608,-115,0]},{"layer":[620,148,177],"role":"qw"},{"layer":[623,214,236],"role":"bh"},{"layer":[603,-197,0]}]},"113":{"name":"back_n_yellowleaves1","type":"Normal","layers":[{"layer":[609,-136,0]},{"layer":[621,185,160],"role":"qw"},{"layer":[624,252,154],"role":"bh"},{"layer":[611,-197,-100]}]},"114":{"name":"back_n_yellowleaves2","type":"Normal","layers":[{"layer":[610,-110,0]},{"layer":[622,214,228],"role":"qw"},{"layer":[625,262,226],"role":"bh"},{"layer":[611,-197,-100]}]},"115":{"name":"back_n_panda","type":"Normal","layers":[{"layer":[612,0,0]},{"layer":[614,0,0]},{"layer":[616,88,127],"role":"qw"},{"layer":[617,60,186],"role":"bh"},{"layer":[613,0,-583]}]},"116":{"name":"back_n_tulou1","type":"Normal","layers":[{"layer":[731,-170,0]},{"layer":[733,194,326]},{"layer":[723,390,306],"role":"qw"},{"layer":[724,334,302],"role":"bh"}]},"117":{"name":"back_n_tulou2","type":"Normal","layers":[{"layer":[732,-175,0]},{"layer":[733,194,326]},{"layer":[727,355,307],"role":"qw"},{"layer":[728,300,314],"role":"bh"}]},"118":{"name":"back_n_pipa","type":"Normal","layers":[{"layer":[735,0,0]},{"layer":[736,-153,-90]},{"layer":[734,0,0]},{"layer":[739,188,196],"role":"qw"},{"layer":[740,222,190],"role":"bh"}]},"119":{"name":"back_n_shizi","type":"Normal","layers":[{"layer":[735,0,0]},{"layer":[738,-62,-107]},{"layer":[737,0,0]},{"layer":[743,148,148],"role":"qw"},{"layer":[744,82,154],"role":"bh"}]},"120":{"name":"back_n_lamei1","type":"Normal","layers":[{"layer":[780,0,0]},{"layer":[778,-149,0]},{"layer":[782,0,0]},{"layer":[786,270,267],"role":"qw"},{"layer":[787,342,264],"role":"bh"}]},"121":{"name":"back_n_lamei2","type":"Normal","layers":[{"layer":[781,0,0]},{"layer":[779,-149,0]},{"layer":[783,0,0]},{"layer":[786,270,267],"role":"qw"},{"layer":[787,342,264],"role":"bh"}]},"122":{"name":"back_n_lamei3","type":"Normal","layers":[{"layer":[780,0,0]},{"layer":[778,-149,0]},{"layer":[784,0,0]},{"layer":[786,352,300],"role":"qw"},{"layer":[787,302,294],"role":"bh"}]},"123":{"name":"back_n_lamei4","type":"Normal","layers":[{"layer":[781,0,0]},{"layer":[779,-149,0]},{"layer":[785,0,0]},{"layer":[786,352,300],"role":"qw"},{"layer":[787,302,294],"role":"bh"}]},"124":{"name":"back_n_sanxia1","type":"Normal","layers":[{"layer":[847,0,0]}]},"125":{"name":"back_n_sanxia2","type":"Normal","layers":[{"layer":[848,0,0]}]},"126":{"name":"back_n_ibis","type":"Normal","layers":[{"layer":[871,0,0]},{"layer":[872,0,20]},{"layer":[873,150,160],"role":"qw"},{"layer":[874,101,152],"role":"bh"}]},"127":{"name":"back_n_rime1","type":"Normal","layers":[{"layer":[1056,-250,0]},{"layer":[1058,-250,0]},{"layer":[1059,-250,0]},{"layer":[1057,0,0]},{"layer":[1060,438,213],"role":"qw"},{"layer":[1061,408,223],"role":"bh"}]},"128":{"name":"back_n_rime2","type":"Normal","layers":[{"layer":[1056,-250,0]},{"layer":[1058,-250,0]},{"layer":[1057,0,0]},{"layer":[1060,438,213],"role":"qw"},{"layer":[1061,408,223],"role":"bh"}]},"129":{"name":"back_n_rime3","type":"Normal","layers":[{"layer":[1056,-250,0]},{"layer":[1059,-250,0]},{"layer":[1057,0,0]},{"layer":[1060,438,213],"role":"qw"},{"layer":[1061,408,223],"role":"bh"}]},"130":{"name":"n_hhly_lnw","type":"Normal","layers":[{"layer":[1175,0,0]}]},"131":{"name":"n_hhly_smx","type":"Normal","layers":[{"layer":[1176,0,0]}]},"201":{"name":"back_n_lanhuateng","type":"Normal","layers":[{"layer":[963,-250,0]},{"layer":[964,-250,0]},{"layer":[966,-115,0]},{"layer":[592,254,210],"role":"qw"},{"layer":[247,185,218],"role":"bh"},{"layer":[965,-250,0]}]},"202":{"name":"back_n_chuisihaitang1","type":"Normal","layers":[{"layer":[1011,-300,0]},{"layer":[1021,160,200],"role":"bh"},{"layer":[1013,0,0]},{"layer":[1016,290,0]},{"layer":[1014,-80,0]}]},"203":{"name":"back_n_chuisihaitang2","type":"Normal","layers":[{"layer":[1011,-300,0]},{"layer":[1021,30,200],"role":"bh"},{"layer":[1013,0,0]},{"layer":[1015,250,0]},{"layer":[1014,-80,0]}]},"204":{"name":"back_n_chuisihaitang3","type":"Normal","layers":[{"layer":[1011,-300,0]},{"layer":[1021,290,200],"role":"bh"},{"layer":[1013,0,0]},{"layer":[1015,250,0]},{"layer":[1014,-80,0]}]},"205":{"name":"back_n_mumianhua","type":"Normal","layers":[{"layer":[1064,0,0]},{"layer":[1068,0,0]},{"layer":[1072,0,55],"role":"qw"},{"layer":[1073,314,146],"role":"bh"}]},"206":{"name":"back_n_fenglingmu_h","type":"Normal","layers":[{"layer":[1117,-300,0]},{"layer":[1120,-85,10]},{"layer":[1121,0,230]},{"layer":[1126,92,220],"role":"qw"},{"layer":[1122,196,221],"role":"bh"},{"layer":[1118,0,99]},{"layer":[1119,-350,198]},{"layer":[1128,-100,57]}]},"207":{"name":"back_n_fenglingmu_z","type":"Normal","layers":[{"layer":[1129,-300,0]},{"layer":[1134,0,-2]},{"layer":[1135,0,38]},{"layer":[1126,260,162],"role":"qw"},{"layer":[1123,338,190],"role":"bh"},{"layer":[1130,0,99]},{"layer":[1131,0,198]},{"layer":[1132,285,290]},{"layer":[1133,-35,242]},{"layer":[1128,-100,57]}]},"1000":{"name":"wet","type":"Tools","layers":[{"layer":[53,0,0]},{"layer":[174,222,137],"role":"qw"},{"layer":[343,133,116],"role":"yhc"},{"layer":[391,222,102]}]},"1001":{"name":"wet1","type":"Tools","layers":[{"layer":[53,0,0]},{"layer":[175,180,80],"role":"qw"},{"layer":[343,122,112],"role":"yhc"},{"layer":[392,176,77]}]},"1002":{"name":"wet2","type":"Tools","layers":[{"layer":[53,0,0]},{"layer":[176,178,80],"role":"qw"},{"layer":[343,122,112],"role":"yhc"},{"layer":[393,173,76]}]},"1003":{"name":"wet3","type":"Tools","layers":[{"layer":[53,0,0]},{"layer":[177,174,98],"role":"qw"},{"layer":[343,122,112],"role":"yhc"},{"layer":[394,174,78]}]},"1004":{"name":"fuza","type":"Tools","layers":[{"layer":[54,0,0]},{"layer":[178,29,44],"role":"qw"},{"layer":[236,41,119],"role":"bh"},{"layer":[55,0,0]}]},"1005":{"name":"fuza1","type":"Tools","layers":[{"layer":[54,0,0]},{"layer":[179,37,162],"role":"qw"},{"layer":[236,18,135],"role":"bh"},{"layer":[55,0,0]}]},"1006":{"name":"fuza2","type":"Tools","layers":[{"layer":[54,0,0]},{"layer":[180,4,158],"role":"qw"},{"layer":[236,18,135],"role":"bh"},{"layer":[55,0,0]}]},"1007":{"name":"fuza3","type":"Tools","layers":[{"layer":[54,0,0]},{"layer":[181,22,154],"role":"qw"},{"layer":[236,18,135],"role":"bh"},{"layer":[55,0,0]}]},"1008":{"name":"dry","type":"Tools","layers":[{"layer":[51,0,0]},{"layer":[170,92,160],"role":"qw"},{"layer":[289,274,187],"role":"cw"},{"layer":[52,258,0]}]},"1009":{"name":"dry1","type":"Tools","layers":[{"layer":[51,0,0]},{"layer":[171,55,116],"role":"qw"},{"layer":[289,266,186],"role":"cw"},{"layer":[52,258,0]}]},"1010":{"name":"dry2","type":"Tools","layers":[{"layer":[51,0,0]},{"layer":[172,65,168],"role":"qw"},{"layer":[289,264,190],"role":"cw"},{"layer":[52,258,0]}]},"1011":{"name":"dry3","type":"Tools","layers":[{"layer":[51,0,0]},{"layer":[173,67,150],"role":"qw"},{"layer":[289,264,196],"role":"cw"},{"layer":[52,258,0]}]},"1012":{"name":"Town","type":"Tools","layers":[{"layer":[57,0,0]},{"layer":[182,168,28],"role":"qw"},{"layer":[237,249,208],"role":"bh"}]},"1013":{"name":"Town1","type":"Tools","layers":[{"layer":[57,0,0]},{"layer":[183,176,30],"role":"qw"},{"layer":[238,260,226],"role":"bh"}]},"1014":{"name":"Town2","type":"Tools","layers":[{"layer":[57,0,0]},{"layer":[184,174,31],"role":"qw"},{"layer":[239,262,226],"role":"bh"}]},"1015":{"name":"Town3","type":"Tools","layers":[{"layer":[57,0,0]},{"layer":[185,175,31],"role":"qw"},{"layer":[240,261,226],"role":"bh"}]},"1016":{"name":"Town1_0","type":"Tools","layers":[{"layer":[58,0,0]},{"layer":[186,170,199],"role":"qw"},{"layer":[241,253,212],"role":"bh"}]},"1017":{"name":"Town1_1","type":"Tools","layers":[{"layer":[58,0,0]},{"layer":[187,169,236],"role":"qw"},{"layer":[242,269,244],"role":"bh"}]},"1018":{"name":"Town1_2","type":"Tools","layers":[{"layer":[58,0,0]},{"layer":[188,168,235],"role":"qw"},{"layer":[243,258,244],"role":"bh"}]},"1019":{"name":"Town1_3","type":"Tools","layers":[{"layer":[58,0,0]},{"layer":[189,168,235],"role":"qw"},{"layer":[244,269,244],"role":"bh"}]},"1020":{"name":"Town2_0","type":"Tools","layers":[{"layer":[1136,0,0]},{"layer":[1137,230,150],"role":"qw"},{"layer":[1138,132,182],"role":"bh"}]},"1021":{"name":"Town2_1","type":"Tools","layers":[{"layer":[1136,0,0]},{"layer":[1141,230,149],"role":"qw"},{"layer":[1142,132,181],"role":"bh"}]},"1022":{"name":"Town2_2","type":"Tools","layers":[{"layer":[1136,0,0]},{"layer":[1145,230,149],"role":"qw"},{"layer":[1146,132,181],"role":"bh"}]},"1023":{"name":"Town2_3","type":"Tools","layers":[{"layer":[1136,0,0]},{"layer":[1149,230,149],"role":"qw"},{"layer":[1150,132,181],"role":"bh"}]},"1024":{"name":"Town3_0","type":"Tools","layers":[{"layer":[1153,0,0]},{"layer":[1154,64,295],"role":"qw"},{"layer":[1155,40,298],"role":"bh"}]},"1025":{"name":"Town3_1","type":"Tools","layers":[{"layer":[1153,0,0]},{"layer":[1158,64,295],"role":"qw"},{"layer":[1159,40,298],"role":"bh"}]},"1026":{"name":"Town3_2","type":"Tools","layers":[{"layer":[1153,0,0]},{"layer":[1162,64,295],"role":"qw"},{"layer":[1163,40,298],"role":"bh"}]},"1027":{"name":"Town3_3","type":"Tools","layers":[{"layer":[1153,0,0]},{"layer":[1166,64,295],"role":"qw"},{"layer":[1167,40,298],"role":"bh"}]},"2000":{"name":"beijing1","type":"Goal","layers":[{"layer":[59,0,0]},{"layer":[157,111,205],"role":"qw"},{"layer":[223,336,241],"role":"bh"}]},"2001":{"name":"chengdu1","type":"Goal","layers":[{"layer":[60,0,0]},{"layer":[158,304,196],"role":"qw"},{"layer":[224,90,246],"role":"bh"}]},"2002":{"name":"chongqing1","type":"Goal","layers":[{"layer":[61,0,0]},{"layer":[159,82,254],"role":"qw"},{"layer":[225,44,236],"role":"bh"}]},"2003":{"name":"guangzhou1","type":"Goal","layers":[{"layer":[62,0,0]},{"layer":[226,393,144],"role":"bh"},{"layer":[160,342,192],"role":"qw"}]},"2004":{"name":"guilin1","type":"Goal","layers":[{"layer":[63,-23,-17]},{"layer":[161,76,254],"role":"qw"},{"layer":[227,258,275],"role":"bh"}]},"2005":{"name":"hangzhou1","type":"Goal","layers":[{"layer":[64,0,0]},{"layer":[162,76,240],"role":"qw"},{"layer":[228,226,220],"role":"bh"}]},"2006":{"name":"suzhou1","type":"Goal","layers":[{"layer":[65,0,0]},{"layer":[163,402,289],"role":"qw"},{"layer":[229,349,276],"role":"bh"}]},"2007":{"name":"tianjin1","type":"Goal","layers":[{"layer":[66,0,0]},{"layer":[230,360,139],"role":"bh"},{"layer":[164,299,172],"role":"qw"}]},"2008":{"name":"tw_shifen1","type":"Goal","layers":[{"layer":[67,0,0]},{"layer":[232,212,248],"role":"bh"}]},"2009":{"name":"tw_kending1","type":"Goal","layers":[{"layer":[68,0,0]},{"layer":[165,284,264],"role":"qw"},{"layer":[231,386,256],"role":"bh"}]},"2010":{"name":"beijing2","type":"Goal","layers":[{"layer":[69,0,0]},{"layer":[202,215,276],"role":"qw"},{"layer":[256,300,272],"role":"bh"}]},"2011":{"name":"beijing3","type":"Goal","layers":[{"layer":[70,0,0]},{"layer":[203,250,302],"role":"qw"},{"layer":[257,270,291],"role":"bh"}]},"2012":{"name":"beijing4","type":"Goal","layers":[{"layer":[71,0,0]},{"layer":[204,162,40],"role":"qw"},{"layer":[258,300,92],"role":"bh"}]},"2013":{"name":"beijing5","type":"Goal","layers":[{"layer":[72,0,0]},{"layer":[205,89,214],"role":"qw"},{"layer":[388,345,195],"role":"bh"}]},"2014":{"name":"chengdu2","type":"Goal","layers":[{"layer":[73,0,0]},{"layer":[206,38,212],"role":"qw"},{"layer":[259,170,186],"role":"bh"}]},"2015":{"name":"chengdu3","type":"Goal","layers":[{"layer":[74,0,0]},{"layer":[207,50,254],"role":"qw"},{"layer":[260,140,244],"role":"bh"}]},"2016":{"name":"chengdu4","type":"Goal","layers":[{"layer":[75,0,0]},{"layer":[208,338,250],"role":"qw"},{"layer":[261,134,226],"role":"bh"}]},"2017":{"name":"chongqing2","type":"Goal","layers":[{"layer":[76,0,0]},{"layer":[209,350,252],"role":"qw"},{"layer":[262,236,237],"role":"bh"}]},"2018":{"name":"guangzhou2","type":"Goal","layers":[{"layer":[77,0,0]},{"layer":[263,302,144],"role":"bh"},{"layer":[210,208,242],"role":"qw"}]},"2019":{"name":"guangzhou3","type":"Goal","layers":[{"layer":[78,0,0]},{"layer":[211,254,222],"role":"qw"},{"layer":[264,190,208],"role":"bh"}]},"2020":{"name":"guilin2","type":"Goal","layers":[{"layer":[79,0,0]},{"layer":[265,248,187],"role":"bh"},{"layer":[212,315,232],"role":"qw"}]},"2021":{"name":"guilin3","type":"Goal","layers":[{"layer":[80,0,1]},{"layer":[213,52,177],"role":"qw"},{"layer":[266,196,230],"role":"bh"}]},"2022":{"name":"hangzhou2","type":"Goal","layers":[{"layer":[81,0,0]},{"layer":[214,378,174],"role":"qw"},{"layer":[267,138,200],"role":"bh"}]},"2023":{"name":"hangzhou3","type":"Goal","layers":[{"layer":[82,0,0]},{"layer":[268,333,204],"role":"bh"},{"layer":[215,272,196],"role":"qw"}]},"2024":{"name":"suzhou2","type":"Goal","layers":[{"layer":[83,0,0]},{"layer":[269,308,240],"role":"bh"},{"layer":[216,244,272],"role":"qw"}]},"2025":{"name":"suzhou3","type":"Goal","layers":[{"layer":[84,0,0]},{"layer":[217,315,266],"role":"qw"},{"layer":[270,356,210],"role":"bh"}]},"2026":{"name":"tianjin2","type":"Goal","layers":[{"layer":[85,0,0]},{"layer":[218,199,199],"role":"qw"},{"layer":[271,64,223],"role":"bh"}]},"2027":{"name":"tw_jingan","type":"Goal","layers":[{"layer":[86,0,0]},{"layer":[219,376,252],"role":"qw"},{"layer":[272,312,250],"role":"bh"},{"layer":[90,131,110]}]},"2028":{"name":"tw_lanyu","type":"Goal","layers":[{"layer":[87,0,0]},{"layer":[220,13,247],"role":"qw"},{"layer":[273,70,256],"role":"bh"}]},"2029":{"name":"tw_tiandeng","type":"Goal","layers":[{"layer":[88,0,0]},{"layer":[221,342,237],"role":"qw"},{"layer":[274,290,256],"role":"bh"}]},"2030":{"name":"tw_zuinandian","type":"Goal","layers":[{"layer":[89,0,0]},{"layer":[222,48,154],"role":"qw"},{"layer":[275,57,210],"role":"bh"}]},"2031":{"name":"xianggang1","type":"Goal","layers":[{"layer":[91,0,0]},{"layer":[403,324,272],"role":"qw"},{"layer":[449,382,267],"role":"bh"}]},"2032":{"name":"xianggang2","type":"Goal","layers":[{"layer":[92,0,0]},{"layer":[450,0,210],"role":"bh"}]},"2034":{"name":"xianggang4","type":"Goal","layers":[{"layer":[94,0,0]},{"layer":[406,353,254],"role":"qw"},{"layer":[452,235,244],"role":"bh"}]},"2036":{"name":"haerbin1","type":"Goal","layers":[{"layer":[96,0,0]},{"layer":[408,192,277],"role":"qw"},{"layer":[454,136,268],"role":"bh"}]},"2037":{"name":"haerbin2","type":"Goal","layers":[{"layer":[97,0,0]},{"layer":[409,242,300],"role":"qw"},{"layer":[455,271,292],"role":"bh"}]},"2038":{"name":"haerbin3","type":"Goal","layers":[{"layer":[98,0,0]},{"layer":[410,310,193],"role":"qw"},{"layer":[456,398,106],"role":"bh"}]},"2043":{"name":"zhangjiajie1","type":"Goal","layers":[{"layer":[103,0,0]},{"layer":[415,36,209],"role":"qw"},{"layer":[461,147,224],"role":"bh"}]},"2044":{"name":"zhangjiajie2","type":"Goal","layers":[{"layer":[104,0,0]},{"layer":[416,55,232],"role":"qw"},{"layer":[462,138,240],"role":"bh"}]},"2045":{"name":"zhangjiajie3","type":"Goal","layers":[{"layer":[105,0,0]},{"layer":[417,349,298],"role":"qw"},{"layer":[463,402,280],"role":"bh"}]},"2046":{"name":"zhangjiajie4","type":"Goal","layers":[{"layer":[106,0,0]},{"layer":[418,44,272],"role":"qw"},{"layer":[464,104,260],"role":"bh"}]},"2047":{"name":"wuhan1","type":"Goal","layers":[{"layer":[107,0,0]},{"layer":[419,110,282],"role":"qw"},{"layer":[465,54,278],"role":"bh"}]},"2048":{"name":"wuhan2","type":"Goal","layers":[{"layer":[108,0,0]},{"layer":[420,277,254],"role":"qw"},{"layer":[466,340,232],"role":"bh"}]},"2049":{"name":"wuhan3","type":"Goal","layers":[{"layer":[109,0,0]},{"layer":[421,312,285],"role":"qw"},{"layer":[467,130,280],"role":"bh"}]},"2050":{"name":"wuhan4","type":"Goal","layers":[{"layer":[110,0,0]},{"layer":[422,214,270],"role":"qw"},{"layer":[468,262,255],"role":"bh"}]},"2051":{"name":"luoyang1","type":"Goal","layers":[{"layer":[111,0,0]},{"layer":[423,390,254],"role":"qw"},{"layer":[469,296,298],"role":"bh"}]},"2052":{"name":"luoyang2","type":"Goal","layers":[{"layer":[112,0,0]},{"layer":[424,90,287],"role":"qw"},{"layer":[470,136,298],"role":"bh"}]},"2053":{"name":"luoyang3","type":"Goal","layers":[{"layer":[113,0,0]},{"layer":[425,90,182],"role":"qw"},{"layer":[471,75,288],"role":"bh"}]},"2054":{"name":"xian1","type":"Goal","layers":[{"layer":[114,0,0]},{"layer":[426,208,237],"role":"qw"},{"layer":[472,114,218],"role":"bh"}]},"2055":{"name":"xian2","type":"Goal","layers":[{"layer":[115,0,0]},{"layer":[427,106,262],"role":"qw"},{"layer":[473,19,259],"role":"bh"}]},"2056":{"name":"xian3","type":"Goal","layers":[{"layer":[116,0,0]},{"layer":[428,322,252],"role":"qw"},{"layer":[474,122,242],"role":"bh"}]},"2057":{"name":"jiuquan1","type":"Goal","layers":[{"layer":[117,0,0]},{"layer":[429,62,240],"role":"qw"},{"layer":[475,144,270],"role":"bh"}]},"2058":{"name":"jiuquan2","type":"Goal","layers":[{"layer":[118,0,0]},{"layer":[430,250,266],"role":"qw"},{"layer":[476,356,241],"role":"bh"}]},"2059":{"name":"jiuquan3","type":"Goal","layers":[{"layer":[119,0,0]},{"layer":[431,28,220],"role":"qw"},{"layer":[477,139,221],"role":"bh"}]},"2060":{"name":"yunnan1","type":"Goal","layers":[{"layer":[120,0,0]},{"layer":[432,8,223],"role":"qw"},{"layer":[478,113,279],"role":"bh"},{"layer":[647,0,192]}]},"2061":{"name":"yunnan2","type":"Goal","layers":[{"layer":[121,0,0]},{"layer":[433,139,272],"role":"qw"},{"layer":[479,340,115],"role":"bh"}]},"2062":{"name":"yunnan3","type":"Goal","layers":[{"layer":[122,0,0]},{"layer":[434,18,232],"role":"qw"},{"layer":[480,113,279],"role":"bh"}]},"2063":{"name":"yunnan4","type":"Goal","layers":[{"layer":[123,0,0]},{"layer":[435,156,280],"role":"qw"},{"layer":[481,130,271],"role":"bh"}]},"2064":{"name":"lasa1","type":"Goal","layers":[{"layer":[124,0,0]},{"layer":[436,354,200],"role":"qw"},{"layer":[482,288,278],"role":"bh"}]},"2065":{"name":"lasa2","type":"Goal","layers":[{"layer":[125,0,0]},{"layer":[437,345,294],"role":"qw"},{"layer":[692,296,269],"role":"bh"}]},"2066":{"name":"lasa3","type":"Goal","layers":[{"layer":[126,0,0]},{"layer":[438,98,218],"role":"qw"},{"layer":[484,51,218],"role":"bh"}]},"2067":{"name":"lasa4","type":"Goal","layers":[{"layer":[127,0,0]},{"layer":[439,40,258],"role":"qw"},{"layer":[485,127,276],"role":"bh"}]},"2068":{"name":"lasa5","type":"Goal","layers":[{"layer":[128,0,0]},{"layer":[440,80,282],"role":"qw"},{"layer":[486,150,291],"role":"bh"}]},"2069":{"name":"shanghai1","type":"Goal","layers":[{"layer":[129,0,0]},{"layer":[441,84,266],"role":"qw"},{"layer":[487,214,259],"role":"bh"}]},"2070":{"name":"shanghai2","type":"Goal","layers":[{"layer":[130,0,0]},{"layer":[442,92,266],"role":"qw"},{"layer":[488,46,195],"role":"bh"}]},"2071":{"name":"shanghai3","type":"Goal","layers":[{"layer":[131,0,0]},{"layer":[443,64,220],"role":"qw"},{"layer":[489,18,224],"role":"bh"}]},"2072":{"name":"shanghai4","type":"Goal","layers":[{"layer":[132,0,0]},{"layer":[444,84,272],"role":"qw"},{"layer":[490,46,195],"role":"bh"}]},"2073":{"name":"hainan1","type":"Goal","layers":[{"layer":[133,0,0]},{"layer":[445,47,208],"role":"qw"},{"layer":[491,148,262],"role":"bh"}]},"2074":{"name":"hainan2","type":"Goal","layers":[{"layer":[134,0,0]},{"layer":[446,40,237],"role":"qw"},{"layer":[492,187,249],"role":"bh"}]},"2077":{"name":"chengdu5","type":"Goal","layers":[{"layer":[383,0,0]},{"layer":[385,423,237],"role":"bh"},{"layer":[384,378,264],"role":"qw"}]},"2078":{"name":"hainan5","type":"Goal","layers":[{"layer":[640,0,0]},{"layer":[637,169,174],"role":"bh"},{"layer":[636,130,215],"role":"qw"},{"layer":[641,234,168]}]},"2079":{"name":"jiuquan4","type":"Goal","layers":[{"layer":[646,0,0]},{"layer":[642,266,262],"role":"qw"},{"layer":[643,356,241],"role":"bh"}]},"2080":{"name":"yunnan5","type":"Goal","layers":[{"layer":[652,0,0]},{"layer":[648,156,276],"role":"qw"},{"layer":[649,130,265],"role":"bh"}]},"2081":{"name":"guizhou1","type":"Goal","layers":[{"layer":[658,0,0]},{"layer":[664,76,246],"role":"qw"},{"layer":[665,156,244],"role":"bh"}]},"2082":{"name":"guizhou2","type":"Goal","layers":[{"layer":[659,0,0]},{"layer":[668,140,187],"role":"qw"},{"layer":[669,180,194],"role":"bh"}]},"2083":{"name":"guizhou3","type":"Goal","layers":[{"layer":[660,0,0]},{"layer":[672,129,212],"role":"qw"},{"layer":[673,30,122],"role":"bh"}]},"2084":{"name":"ningxia1","type":"Goal","layers":[{"layer":[661,0,0]},{"layer":[676,83,134],"role":"qw"},{"layer":[677,52,110],"role":"bh"}]},"2085":{"name":"ningxia2","type":"Goal","layers":[{"layer":[662,0,0]},{"layer":[680,293,230],"role":"qw"},{"layer":[681,326,218],"role":"bh"}]},"2086":{"name":"ningxia3","type":"Goal","layers":[{"layer":[663,0,0]},{"layer":[684,360,187],"role":"qw"},{"layer":[685,412,172],"role":"bh"}]},"2087":{"name":"fujian1","type":"Goal","layers":[{"layer":[702,0,0]},{"layer":[698,380,314],"role":"qw"},{"layer":[699,326,314],"role":"bh"}]},"2088":{"name":"fujian2","type":"Goal","layers":[{"layer":[707,0,0]},{"layer":[703,385,202],"role":"qw"},{"layer":[704,332,200],"role":"bh"}]},"2089":{"name":"jiangxi1","type":"Goal","layers":[{"layer":[712,0,0]},{"layer":[708,244,275],"role":"qw"},{"layer":[709,347,281],"role":"bh"}]},"2090":{"name":"jiangxi2","type":"Goal","layers":[{"layer":[717,0,0]},{"layer":[713,230,288],"role":"qw"},{"layer":[714,190,289],"role":"bh"}]},"2091":{"name":"jiangxi3","type":"Goal","layers":[{"layer":[722,0,0]},{"layer":[718,225,265],"role":"qw"},{"layer":[719,281,262],"role":"bh"}]},"2092":{"name":"guizhou4","type":"Goal","layers":[{"layer":[748,0,0]},{"layer":[754,104,277],"role":"qw"},{"layer":[755,164,276],"role":"bh"}]},"2093":{"name":"guizhou5","type":"Goal","layers":[{"layer":[749,0,0]},{"layer":[758,328,257],"role":"qw"},{"layer":[759,384,252],"role":"bh"}]},"2094":{"name":"guizhou6","type":"Goal","layers":[{"layer":[750,0,0]},{"layer":[762,158,242],"role":"qw"},{"layer":[763,30,126],"role":"bh"}]},"2095":{"name":"ningxia4","type":"Goal","layers":[{"layer":[751,0,0]},{"layer":[766,355,208],"role":"qw"},{"layer":[767,175,290],"role":"bh"}]},"2096":{"name":"ningxia5","type":"Goal","layers":[{"layer":[752,0,0]},{"layer":[770,270,244],"role":"qw"},{"layer":[771,347,240],"role":"bh"}]},"2097":{"name":"ningxia6","type":"Goal","layers":[{"layer":[753,0,0]},{"layer":[774,88,136],"role":"qw"},{"layer":[775,58,122],"role":"bh"}]},"2098":{"name":"anhui1","type":"Goal","layers":[{"layer":[792,0,0]},{"layer":[801,0,0],"role":"qw"},{"layer":[802,0,0],"role":"bh"}]},"2099":{"name":"anhui2","type":"Goal","layers":[{"layer":[793,0,0]},{"layer":[805,0,0],"role":"qw"},{"layer":[806,0,0],"role":"bh"}]},"2100":{"name":"anhui3","type":"Goal","layers":[{"layer":[794,0,0]},{"layer":[809,0,0],"role":"qw"},{"layer":[810,0,0],"role":"bh"}]},"2101":{"name":"jiangmen1","type":"Goal","layers":[{"layer":[795,0,0]},{"layer":[813,0,0],"role":"qw"},{"layer":[814,0,0],"role":"bh"}]},"2102":{"name":"jiangmen2","type":"Goal","layers":[{"layer":[796,0,0]},{"layer":[817,0,0],"role":"qw"},{"layer":[818,0,0],"role":"bh"}]},"2103":{"name":"liaoning1","type":"Goal","layers":[{"layer":[797,0,0]},{"layer":[821,0,0],"role":"qw"},{"layer":[822,0,0],"role":"bh"}]},"2104":{"name":"liaoning2","type":"Goal","layers":[{"layer":[798,0,0]},{"layer":[825,0,0],"role":"qw"},{"layer":[826,0,0],"role":"bh"}]},"2105":{"name":"qingdao1","type":"Goal","layers":[{"layer":[799,0,0]},{"layer":[829,0,0],"role":"qw"},{"layer":[830,0,0],"role":"bh"}]},"2106":{"name":"qingdao2","type":"Goal","layers":[{"layer":[800,0,0]},{"layer":[833,0,0],"role":"qw"},{"layer":[834,0,0],"role":"bh"}]},"2107":{"name":"sanxia1","type":"Goal","layers":[{"layer":[849,0,0]}]},"2108":{"name":"sanxia2","type":"Goal","layers":[{"layer":[850,0,0]}]},"2109":{"name":"bwg_jiangxi1","type":"Goal","layers":[{"layer":[878,0,0]},{"layer":[879,105,253],"role":"qw"},{"layer":[880,47,242],"role":"bh"}]},"2110":{"name":"bwg_jiangxi2","type":"Goal","layers":[{"layer":[883,0,0]},{"layer":[884,225,293],"role":"qw"},{"layer":[885,194,292],"role":"bh"}]},"2111":{"name":"bwg_shandong1","type":"Goal","layers":[{"layer":[893,0,0]},{"layer":[894,94,280],"role":"qw"},{"layer":[895,128,282],"role":"bh"}]},"2112":{"name":"bwg_shandong2","type":"Goal","layers":[{"layer":[898,0,0]},{"layer":[899,212,256],"role":"qw"},{"layer":[900,256,247],"role":"bh"}]},"2113":{"name":"bwg_nanyuewang1","type":"Goal","layers":[{"layer":[908,0,0]},{"layer":[909,70,310],"role":"qw"},{"layer":[910,464,306],"role":"bh"}]},"2114":{"name":"bwg_nanyuewang2","type":"Goal","layers":[{"layer":[913,0,0]},{"layer":[914,249,254],"role":"qw"},{"layer":[915,276,234],"role":"bh"}]},"2115":{"name":"bwg_wuwenhua1","type":"Goal","layers":[{"layer":[923,0,0]},{"layer":[924,119,257],"role":"qw"},{"layer":[925,136,256],"role":"bh"}]},"2116":{"name":"bwg_wuwenhua2","type":"Goal","layers":[{"layer":[928,0,0]},{"layer":[929,378,299],"role":"qw"},{"layer":[930,90,298],"role":"bh"}]},"2117":{"name":"fujian3","type":"Goal","layers":[{"layer":[938,0,0]},{"layer":[939,110,264],"role":"qw"},{"layer":[940,166,256],"role":"bh"}]},"2118":{"name":"fujian4","type":"Goal","layers":[{"layer":[943,0,0]},{"layer":[944,128,314],"role":"qw"},{"layer":[945,148,318],"role":"bh"}]},"2119":{"name":"bwg_shanxi1","type":"Goal","layers":[{"layer":[948,0,0]},{"layer":[950,244,273],"role":"bh"},{"layer":[949,238,273],"role":"qw"}]},"2120":{"name":"bwg_shanxi2","type":"Goal","layers":[{"layer":[953,0,0]},{"layer":[954,123,311],"role":"qw"},{"layer":[955,144,310],"role":"bh"}]},"2121":{"name":"ld_guqin","type":"Goal","layers":[{"layer":[972,0,0]},{"layer":[974,287,261],"role":"bh"}]},"2122":{"name":"shanxi1","type":"Goal","layers":[{"layer":[977,0,0]},{"layer":[978,125,269],"role":"qw"},{"layer":[979,88,245],"role":"bh"}]},"2123":{"name":"shanxi2","type":"Goal","layers":[{"layer":[982,0,0]},{"layer":[983,263,247],"role":"qw"},{"layer":[984,301,241],"role":"bh"}]},"2124":{"name":"shanxi3","type":"Goal","layers":[{"layer":[987,0,0]},{"layer":[988,32,247],"role":"qw"},{"layer":[989,84,279],"role":"bh"}]},"2125":{"name":"shanxi4","type":"Goal","layers":[{"layer":[992,0,0]},{"layer":[993,73,276],"role":"qw"},{"layer":[994,28,275],"role":"bh"}]},"2126":{"name":"jilin1","type":"Goal","layers":[{"layer":[1036,0,0]},{"layer":[1038,372,268],"role":"bh"},{"layer":[1037,332,270],"role":"qw"}]},"2127":{"name":"jilin2","type":"Goal","layers":[{"layer":[1041,0,0]},{"layer":[1042,122,276],"role":"qw"},{"layer":[1043,180,280],"role":"bh"}]},"2128":{"name":"jilin3","type":"Goal","layers":[{"layer":[1046,0,0]},{"layer":[1047,64,211],"role":"qw"},{"layer":[1048,74,210],"role":"bh"}]},"2129":{"name":"jilin4","type":"Goal","layers":[{"layer":[1051,0,0]},{"layer":[1052,270,192],"role":"qw"},{"layer":[1053,316,213],"role":"bh"}]},"2130":{"name":"aomen1","type":"Goal","layers":[{"layer":[1077,0,0]},{"layer":[1078,306,316],"role":"qw"},{"layer":[1079,332,308],"role":"bh"}]},"2131":{"name":"aomen2","type":"Goal","layers":[{"layer":[1082,0,0]},{"layer":[1083,82,263],"role":"qw"},{"layer":[1084,62,269],"role":"bh"}]},"2132":{"name":"aomen3","type":"Goal","layers":[{"layer":[1087,0,0]},{"layer":[1088,319,254],"role":"qw"},{"layer":[1089,372,280],"role":"bh"}]},"2133":{"name":"aomen4","type":"Goal","layers":[{"layer":[1092,0,0]},{"layer":[1093,168,226],"role":"qw"},{"layer":[1094,191,216],"role":"bh"}]},"2134":{"name":"qinghai1","type":"Goal","layers":[{"layer":[1097,0,0]},{"layer":[1098,188,330],"role":"qw"},{"layer":[1099,166,318],"role":"bh"}]},"2135":{"name":"qinghai2","type":"Goal","layers":[{"layer":[1102,0,0]},{"layer":[1103,284,220],"role":"qw"},{"layer":[1104,308,208],"role":"bh"}]},"2136":{"name":"qinghai3","type":"Goal","layers":[{"layer":[1107,0,0]},{"layer":[1108,50,286],"role":"qw"},{"layer":[1109,26,270],"role":"bh"}]},"2137":{"name":"qinghai4","type":"Goal","layers":[{"layer":[1112,0,0]},{"layer":[1113,179,206],"role":"qw"},{"layer":[1114,164,197],"role":"bh"}]},"2138":{"name":"g_hhly_hkpp","type":"Goal","layers":[{"layer":[1173,0,0]}]},"2139":{"name":"g_hhly_xld","type":"Goal","layers":[{"layer":[1174,0,0]}]},"2140":{"name":"hebei1","type":"Goal","layers":[{"layer":[1203,0,0]},{"layer":[1204,354,304],"role":"qw"},{"layer":[1205,378,302],"role":"bh"}]},"2141":{"name":"hebei2","type":"Goal","layers":[{"layer":[1208,0,0]},{"layer":[1210,32,250],"role":"bh"}]},"2142":{"name":"hebei3","type":"Goal","layers":[{"layer":[1213,0,0]},{"layer":[1214,428,310],"role":"qw"},{"layer":[1215,448,319],"role":"bh"}]},"2143":{"name":"hebei4","type":"Goal","layers":[{"layer":[1218,0,0]},{"layer":[1220,304,283],"role":"bh"}]},"2144":{"name":"suzhou4","type":"Goal","layers":[{"layer":[1226,0,0]},{"layer":[1230,340,298],"role":"qw"},{"layer":[1228,308,298],"role":"bh"}]},"2145":{"name":"liaoning3","type":"Goal","layers":[{"layer":[1238,0,0]},{"layer":[1242,318,258],"role":"qw"},{"layer":[1240,236,240],"role":"bh"}]},"2146":{"name":"shanxi5","type":"Goal","layers":[{"layer":[1243,0,0]},{"layer":[1244,402,284],"role":"qw"},{"layer":[1246,420,254],"role":"bh"}]},"2147":{"name":"shanxi6","type":"Goal","layers":[{"layer":[1248,0,0]},{"layer":[1249,285,170],"role":"qw"},{"layer":[1251,184,197],"role":"bh"}]},"2148":{"name":"guangzhou4","type":"Goal","layers":[{"layer":[1253,0,0]},{"layer":[1256,74,266],"role":"bh"},{"layer":[1254,118,272],"role":"qw"}]},"2149":{"name":"guangzhou5","type":"Goal","layers":[{"layer":[1258,0,0]},{"layer":[1259,402,248],"role":"qw"},{"layer":[1261,394,254],"role":"bh"}]},"2150":{"name":"guangzhou6","type":"Goal","layers":[{"layer":[1263,0,0]},{"layer":[1264,365,262],"role":"qw"},{"layer":[1266,349,281],"role":"bh"}]},"3000":{"name":"help_bh","type":"Unique","layers":[{"layer":[137,0,0]}]},"3001":{"name":"help_cw","type":"Unique","layers":[{"layer":[138,0,0]}]},"3002":{"name":"help_yhc","type":"Unique","layers":[{"layer":[139,0,0]}]},"3003":{"name":"lost_bh","type":"Unique","layers":[{"layer":[140,0,0]}]},"3004":{"name":"lost_cw","type":"Unique","layers":[{"layer":[141,0,0]}]},"3005":{"name":"lost_yhc","type":"Unique","layers":[{"layer":[142,0,0]}]},"3006":{"name":"rest_bh","type":"Unique","layers":[{"layer":[143,0,0]}]},"3007":{"name":"rest_cw","type":"Unique","layers":[{"layer":[144,0,0]}]},"3008":{"name":"rest_yhc","type":"Unique","layers":[{"layer":[145,0,0]}]},"3009":{"name":"show_bh","type":"Unique","layers":[{"layer":[146,0,0]}]},"3010":{"name":"show_cw","type":"Unique","layers":[{"layer":[147,0,0]}]},"3011":{"name":"show_yhc","type":"Unique","layers":[{"layer":[148,0,0]}]},"3012":{"name":"rnd1","type":"Unique","layers":[{"layer":[149,0,0]}]},"3013":{"name":"rnd2","type":"Unique","layers":[{"layer":[150,0,0]}]},"3014":{"name":"rnd3","type":"Unique","layers":[{"layer":[151,0,0]}]},"3015":{"name":"rnd4","type":"Unique","layers":[{"layer":[152,0,0]}]},"3016":{"name":"rnd5","type":"Unique","layers":[{"layer":[153,0,0]}]},"3017":{"name":"plant_combo","type":"Unique","layers":[{"layer":[154,0,0]},{"layer":[167,24,210],"role":"qw"},{"layer":[233,332,74],"role":"bh"}]},"3018":{"name":"roof_combo","type":"Unique","layers":[{"layer":[155,0,0]},{"layer":[168,195,131],"role":"qw"},{"layer":[234,312,24],"role":"bh"}]},"3019":{"name":"tea_combo","type":"Unique","layers":[{"layer":[156,0,0]},{"layer":[235,0,0],"role":"bh"}]},"3020":{"name":"ofo","type":"Unique","layers":[{"layer":[589,0,0]}]},"3021":{"name":"dyc","type":"Unique","layers":[{"layer":[601,0,0]}]},"3022":{"name":"jiangtun","type":"Unique","layers":[{"layer":[615,0,0]}]},"3023":{"name":"szy","type":"Unique","layers":[{"layer":[653,0,0]}]},"3024":{"name":"duanwu","type":"Unique","layers":[{"layer":[654,0,0]}]},"3025":{"name":"lkq","type":"Unique","layers":[{"layer":[655,0,0]}]},"3026":{"name":"hjh","type":"Unique","layers":[{"layer":[656,0,0]}]},"3027":{"name":"jsh","type":"Unique","layers":[{"layer":[688,0,0]}]},"3028":{"name":"csj","type":"Unique","layers":[{"layer":[689,0,0]}]},"3029":{"name":"streetlight","type":"Unique","layers":[{"layer":[690,0,0]}]},"3030":{"name":"moon","type":"Unique","layers":[{"layer":[695,0,0]}]},"3031":{"name":"xixi","type":"Unique","layers":[{"layer":[696,0,0]}]},"3032":{"name":"pumpkin","type":"Unique","layers":[{"layer":[697,0,0]}]},"3033":{"name":"lotus","type":"Unique","layers":[{"layer":[747,0,0]}]},"3034":{"name":"lamei","type":"Unique","layers":[{"layer":[790,0,0]}]},"3035":{"name":"huabei","type":"Unique","layers":[{"layer":[791,0,0]}]},"3036":{"name":"owl","type":"Unique","layers":[{"layer":[837,0,0]}]},"3037":{"name":"rabbit","type":"Unique","layers":[{"layer":[838,0,0]}]},"3038":{"name":"swan","type":"Unique","layers":[{"layer":[839,0,0]}]},"3039":{"name":"climb","type":"Unique","layers":[{"layer":[840,0,0]}]},"3040":{"name":"eave","type":"Unique","layers":[{"layer":[841,0,0]}]},"3041":{"name":"forage","type":"Unique","layers":[{"layer":[842,0,0]}]},"3042":{"name":"leaf","type":"Unique","layers":[{"layer":[843,0,0]}]},"3043":{"name":"light","type":"Unique","layers":[{"layer":[844,0,0]}]},"3044":{"name":"mushroom","type":"Unique","layers":[{"layer":[845,0,0]}]},"3045":{"name":"feishu","type":"Unique","layers":[{"layer":[846,0,0]}]},"3046":{"name":"wuxiakou","type":"Unique","layers":[{"layer":[851,0,0]}]},"3047":{"name":"baidicheng","type":"Unique","layers":[{"layer":[852,0,0]}]},"3048":{"name":"month1","type":"Unique","layers":[{"layer":[853,0,0]}]},"3049":{"name":"month2","type":"Unique","layers":[{"layer":[854,0,0]}]},"3050":{"name":"month3","type":"Unique","layers":[{"layer":[855,0,0]}]},"3051":{"name":"month4","type":"Unique","layers":[{"layer":[856,0,0]}]},"3052":{"name":"month5","type":"Unique","layers":[{"layer":[857,0,0]}]},"3053":{"name":"month6","type":"Unique","layers":[{"layer":[858,0,0]}]},"3054":{"name":"month7","type":"Unique","layers":[{"layer":[859,0,0]}]},"3055":{"name":"month8","type":"Unique","layers":[{"layer":[860,0,0]}]},"3056":{"name":"month9","type":"Unique","layers":[{"layer":[861,0,0]}]},"3057":{"name":"month10","type":"Unique","layers":[{"layer":[862,0,0]}]},"3058":{"name":"month11","type":"Unique","layers":[{"layer":[863,0,0]}]},"3059":{"name":"month12","type":"Unique","layers":[{"layer":[864,0,0]}]},"3060":{"name":"yoga","type":"Unique","layers":[{"layer":[865,0,0]}]},"3061":{"name":"maple","type":"Unique","layers":[{"layer":[866,0,0]},{"layer":[868,0,0],"role":"bh"}]},"3062":{"name":"alipay","type":"Unique","layers":[{"layer":[93,0,0]}]},"3063":{"name":"bwg_jiangxi","type":"Unique","layers":[{"layer":[888,0,0]},{"layer":[889,67,284],"role":"qw"},{"layer":[890,32,278],"role":"bh"}]},"3064":{"name":"bwg_shandong","type":"Unique","layers":[{"layer":[903,0,0]},{"layer":[904,314,265],"role":"qw"},{"layer":[905,380,258],"role":"bh"}]},"3065":{"name":"bwg_nanyuewang","type":"Unique","layers":[{"layer":[918,0,0]},{"layer":[919,352,286],"role":"qw"},{"layer":[920,372,250],"role":"bh"}]},"3066":{"name":"bwg_wuwenhua","type":"Unique","layers":[{"layer":[933,0,0]},{"layer":[934,342,278],"role":"qw"},{"layer":[935,370,278],"role":"bh"}]},"3067":{"name":"bwg_shanxi","type":"Unique","layers":[{"layer":[958,0,0]},{"layer":[959,333,270],"role":"qw"},{"layer":[960,358,274],"role":"bh"}]},"3068":{"name":"two_month1","type":"Unique","layers":[{"layer":[997,0,0]}]},"3069":{"name":"two_month2","type":"Unique","layers":[{"layer":[998,0,0]}]},"3070":{"name":"two_month3","type":"Unique","layers":[{"layer":[999,0,0]}]},"3071":{"name":"two_month4","type":"Unique","layers":[{"layer":[1000,0,0]}]},"3072":{"name":"two_month5","type":"Unique","layers":[{"layer":[1001,0,0]}]},"3073":{"name":"two_month6","type":"Unique","layers":[{"layer":[1002,0,0]}]},"3074":{"name":"two_month7","type":"Unique","layers":[{"layer":[1003,0,0]}]},"3075":{"name":"two_month8","type":"Unique","layers":[{"layer":[1004,0,0]}]},"3076":{"name":"two_month9","type":"Unique","layers":[{"layer":[1005,0,0]}]},"3077":{"name":"two_month10","type":"Unique","layers":[{"layer":[1006,0,0]}]},"3078":{"name":"two_month11","type":"Unique","layers":[{"layer":[1007,0,0]}]},"3079":{"name":"two_month12","type":"Unique","layers":[{"layer":[1008,0,0]}]},"3080":{"name":"mid_autumn","type":"Unique","layers":[{"layer":[1009,0,0]}]},"3081":{"name":"sugar_maple","type":"Unique","layers":[{"layer":[1010,0,0]}]},"3082":{"name":"lost_bh_ly","type":"Unique","layers":[{"layer":[1028,0,0]}]},"3083":{"name":"lost_cw_dn","type":"Unique","layers":[{"layer":[1029,0,0]}]},"3084":{"name":"lost_yhc_xf","type":"Unique","layers":[{"layer":[1030,0,0]}]},"3085":{"name":"yuanyang","type":"Unique","layers":[{"layer":[1031,0,0]},{"layer":[1033,0,0],"role":"bh"}]},"3086":{"name":"chunjie_tu","type":"Unique","layers":[{"layer":[1076,0,0]}]},"3087":{"name":"huazhu","type":"Unique","layers":[{"layer":[1170,0,0]}]},"3088":{"name":"tadpole","type":"Unique","layers":[{"layer":[1171,0,0]}]},"3089":{"name":"yhcwsq","type":"Unique","layers":[{"layer":[1172,0,0]}]},"3090":{"name":"u_hhly_ljx","type":"Unique","layers":[{"layer":[1177,0,0]}]},"3091":{"name":"u_hhly_sjy","type":"Unique","layers":[{"layer":[1178,0,0]}]},"3092":{"name":"linkage_szgd1","type":"Unique","layers":[{"layer":[1223,0,0]}]},"3093":{"name":"linkage_szgd2","type":"Unique","layers":[{"layer":[1224,0,0]}]},"3094":{"name":"linkage_szgd3","type":"Unique","layers":[{"layer":[1225,0,0]}]},"3095":{"name":"linkage_szgd4","type":"Unique","layers":[{"layer":[1231,0,0]}]},"3096":{"name":"baiyulan","type":"Unique","layers":[{"layer":[1232,0,0]}]},"3097":{"name":"yingchun","type":"Unique","layers":[{"layer":[1233,0,0]}]},"3098":{"name":"linkage_szgd5","type":"Unique","layers":[{"layer":[1234,0,0]}]},"3099":{"name":"linkage_szgd6","type":"Unique","layers":[{"layer":[1235,0,0]}]},"3100":{"name":"linkage_szgd7","type":"Unique","layers":[{"layer":[1236,0,0]}]},"3101":{"name":"snail","type":"Unique","layers":[{"layer":[1237,0,0]}]},"3148":{"name":"month1_2","type":"Unique","layers":[{"layer":[1179,0,0]}]},"3149":{"name":"month2_2","type":"Unique","layers":[{"layer":[1180,0,0]}]},"3150":{"name":"month3_2","type":"Unique","layers":[{"layer":[1181,0,0]}]},"3151":{"name":"month4_2","type":"Unique","layers":[{"layer":[1182,0,0]}]},"3152":{"name":"month5_2","type":"Unique","layers":[{"layer":[1183,0,0]}]},"3153":{"name":"month6_2","type":"Unique","layers":[{"layer":[1184,0,0]}]},"3154":{"name":"month7_2","type":"Unique","layers":[{"layer":[1185,0,0]}]},"3155":{"name":"month8_2","type":"Unique","layers":[{"layer":[1186,0,0]}]},"3156":{"name":"month9_2","type":"Unique","layers":[{"layer":[1187,0,0]}]},"3157":{"name":"month10_2","type":"Unique","layers":[{"layer":[1188,0,0]}]},"3158":{"name":"month11_2","type":"Unique","layers":[{"layer":[1189,0,0]}]},"3159":{"name":"month12_2","type":"Unique","layers":[{"layer":[1190,0,0]}]},"3168":{"name":"two_month1_2","type":"Unique","layers":[{"layer":[1191,0,0]}]},"3169":{"name":"two_month2_2","type":"Unique","layers":[{"layer":[1192,0,0]}]},"3170":{"name":"two_month3_2","type":"Unique","layers":[{"layer":[1193,0,0]}]},"3171":{"name":"two_month4_2","type":"Unique","layers":[{"layer":[1194,0,0]}]},"3172":{"name":"two_month5_2","type":"Unique","layers":[{"layer":[1195,0,0]}]},"3173":{"name":"two_month6_2","type":"Unique","layers":[{"layer":[1196,0,0]}]},"3174":{"name":"two_month7_2","type":"Unique","layers":[{"layer":[1197,0,0]}]},"3175":{"name":"two_month8_2","type":"Unique","layers":[{"layer":[1198,0,0]}]},"3176":{"name":"two_month9_2","type":"Unique","layers":[{"layer":[1199,0,0]}]},"3177":{"name":"two_month10_2","type":"Unique","layers":[{"layer":[1200,0,0]}]},"3178":{"name":"two_month11_2","type":"Unique","layers":[{"layer":[1201,0,0]}]},"3179":{"name":"two_month12_2","type":"Unique","layers":[{"layer":[1202,0,0]}]},"3201":{"name":"back_u_lanhuateng","type":"Unique","layers":[{"layer":[963,-250,0]},{"layer":[964,-250,0]},{"layer":[967,0,0]},{"layer":[968,250,92],"role":"qw"},{"layer":[969,57,219],"role":"bh"},{"layer":[965,-250,0]}]},"3202":{"name":"back_u_chuisihaitang","type":"Unique","layers":[{"layer":[1011,-300,0]},{"layer":[1017,-300,250]},{"layer":[1018,-300,50]},{"layer":[1019,70,0]},{"layer":[1024,200,149],"role":"qw"},{"layer":[1025,165,163],"role":"bh"},{"layer":[1012,-300,0]}]},"3203":{"name":"back_u_mumianhua1","type":"Unique","layers":[{"layer":[1064,0,0]},{"layer":[1069,0,0]},{"layer":[1072,0,55],"role":"qw"},{"layer":[1073,314,146],"role":"bh"},{"layer":[1065,369,86]}]},"3204":{"name":"back_u_mumianhua2","type":"Unique","layers":[{"layer":[1064,0,0]},{"layer":[1070,0,0]},{"layer":[1072,0,55],"role":"qw"},{"layer":[1073,314,146],"role":"bh"},{"layer":[1066,395,122]}]},"3205":{"name":"back_u_mumianhua3","type":"Unique","layers":[{"layer":[1064,0,0]},{"layer":[1071,0,0]},{"layer":[1072,0,55],"role":"qw"},{"layer":[1073,314,146],"role":"bh"},{"layer":[1067,329,86]}]},"3102":{"name":"anniv","type":"Unique","layers":[{"layer":[1268,0,0]}]},"3103":{"name":"player","type":"Unique","layers":[{"layer":[1269,0,0]}]}};
+    module.exports = {"100":{"name":"back_n_roof1","type":"Normal","layers":[{"layer":[1,0,0]},{"layer":[2,-10,-70]},{"layer":[5,50,38]},{"layer":[6,0,190]},{"layer":[8,0,0]},{"layer":[7,79,54]},{"layer":[11,-754,267]},{"layer":[190,311,224],"role":"qw"},{"layer":[245,350,218],"role":"bh"}]},"101":{"name":"back_n_roof2","type":"Normal","layers":[{"layer":[1,0,0]},{"layer":[2,-10,-70]},{"layer":[6,0,190]},{"layer":[11,-754,275]},{"layer":[191,176,228],"role":"qw"},{"layer":[246,107,216],"role":"bh"},{"layer":[10,-150,252]},{"layer":[12,400,152]},{"layer":[13,-275,4]}]},"102":{"name":"back_n_beach1","type":"Normal","layers":[{"layer":[14,0,0],"size":[500,350]},{"layer":[20,0,120]},{"layer":[6,0,30]},{"layer":[21,-187,153]},{"layer":[192,94,240],"role":"qw"},{"layer":[247,168,250],"role":"bh"}]},"103":{"name":"back_n_beach2","type":"Normal","layers":[{"layer":[14,0,0],"size":[500,350]},{"layer":[20,0,120]},{"layer":[18,0,112]},{"layer":[19,-85,105]},{"layer":[21,-187,153]},{"layer":[199,226,258],"role":"qw"},{"layer":[253,302,245],"role":"bh"}]},"104":{"name":"back_n_beach3","type":"Normal","layers":[{"layer":[14,0,0],"size":[500,350]},{"layer":[20,0,120]},{"layer":[18,0,112]},{"layer":[22,-153,192]},{"layer":[390,0,262]},{"layer":[193,345,232],"role":"qw"},{"layer":[248,193,236],"role":"bh"},{"layer":[23,0,307]}]},"105":{"name":"back_n_branch1","type":"Normal","layers":[{"layer":[24,0,0],"size":[500,350]},{"layer":[25,0,-19]},{"layer":[588,0,0]},{"layer":[26,0,0]},{"layer":[27,330,60]},{"layer":[249,204,121],"role":"bh"},{"layer":[194,256,134],"role":"qw"}]},"106":{"name":"back_n_branch2","type":"Normal","layers":[{"layer":[28,0,0]},{"layer":[29,0,-19]},{"layer":[588,0,0]},{"layer":[26,0,0]},{"layer":[30,0,0]},{"layer":[31,120,120]},{"layer":[195,164,124],"role":"qw"},{"layer":[250,216,118],"role":"bh"}]},"107":{"name":"back_n_bamboo1","type":"Normal","layers":[{"layer":[32,0,0]},{"layer":[33,0,0]},{"layer":[34,0,0]},{"layer":[35,266,0]},{"layer":[36,0,212]},{"layer":[37,340,148]},{"layer":[38,105,86]},{"layer":[251,220,226],"role":"bh"},{"layer":[197,210,194],"role":"qw"},{"layer":[47,368,116]},{"layer":[48,-35,0]}]},"108":{"name":"back_n_bamboo2","type":"Normal","layers":[{"layer":[50,0,0]},{"layer":[39,8,0]},{"layer":[40,0,209]},{"layer":[41,285,0]},{"layer":[42,0,165]},{"layer":[43,348,160]},{"layer":[44,115,100]},{"layer":[49,-250,0]},{"layer":[252,213,186],"role":"bh"},{"layer":[198,272,214],"role":"qw"},{"layer":[45,371,128]},{"layer":[46,-25,0]}]},"109":{"name":"back_n_field1","type":"Normal","layers":[{"layer":[395,-104,0]},{"layer":[396,-104,0]},{"layer":[397,-104,0]},{"layer":[398,-104,0]},{"layer":[399,-104,228]},{"layer":[254,184,263],"role":"bh"},{"layer":[200,248,250],"role":"qw"}]},"110":{"name":"back_n_field2","type":"Normal","layers":[{"layer":[400,-104,0]},{"layer":[396,-104,0]},{"layer":[401,-104,0]},{"layer":[402,-104,0]},{"layer":[399,-104,228]},{"layer":[200,248,250],"role":"qw"},{"layer":[254,184,263],"role":"bh"}]},"111":{"name":"back_n_redleaves1","type":"Normal","layers":[{"layer":[602,-106,0]},{"layer":[604,170,136],"role":"qw"},{"layer":[605,246,74],"role":"bh"},{"layer":[603,-197,0]}]},"112":{"name":"back_n_redleaves2","type":"Normal","layers":[{"layer":[608,-115,0]},{"layer":[620,148,177],"role":"qw"},{"layer":[623,214,236],"role":"bh"},{"layer":[603,-197,0]}]},"113":{"name":"back_n_yellowleaves1","type":"Normal","layers":[{"layer":[609,-136,0]},{"layer":[621,185,160],"role":"qw"},{"layer":[624,252,154],"role":"bh"},{"layer":[611,-197,-100]}]},"114":{"name":"back_n_yellowleaves2","type":"Normal","layers":[{"layer":[610,-110,0]},{"layer":[622,214,228],"role":"qw"},{"layer":[625,262,226],"role":"bh"},{"layer":[611,-197,-100]}]},"115":{"name":"back_n_panda","type":"Normal","layers":[{"layer":[612,0,0]},{"layer":[614,0,0]},{"layer":[616,88,127],"role":"qw"},{"layer":[617,60,186],"role":"bh"},{"layer":[613,0,-583]}]},"116":{"name":"back_n_tulou1","type":"Normal","layers":[{"layer":[731,-170,0]},{"layer":[733,194,326]},{"layer":[723,390,306],"role":"qw"},{"layer":[724,334,302],"role":"bh"}]},"117":{"name":"back_n_tulou2","type":"Normal","layers":[{"layer":[732,-175,0]},{"layer":[733,194,326]},{"layer":[727,355,307],"role":"qw"},{"layer":[728,300,314],"role":"bh"}]},"118":{"name":"back_n_pipa","type":"Normal","layers":[{"layer":[735,0,0]},{"layer":[736,-153,-90]},{"layer":[734,0,0]},{"layer":[739,188,196],"role":"qw"},{"layer":[740,222,190],"role":"bh"}]},"119":{"name":"back_n_shizi","type":"Normal","layers":[{"layer":[735,0,0]},{"layer":[738,-62,-107]},{"layer":[737,0,0]},{"layer":[743,148,148],"role":"qw"},{"layer":[744,82,154],"role":"bh"}]},"120":{"name":"back_n_lamei1","type":"Normal","layers":[{"layer":[780,0,0]},{"layer":[778,-149,0]},{"layer":[782,0,0]},{"layer":[786,270,267],"role":"qw"},{"layer":[787,342,264],"role":"bh"}]},"121":{"name":"back_n_lamei2","type":"Normal","layers":[{"layer":[781,0,0]},{"layer":[779,-149,0]},{"layer":[783,0,0]},{"layer":[786,270,267],"role":"qw"},{"layer":[787,342,264],"role":"bh"}]},"122":{"name":"back_n_lamei3","type":"Normal","layers":[{"layer":[780,0,0]},{"layer":[778,-149,0]},{"layer":[784,0,0]},{"layer":[786,352,300],"role":"qw"},{"layer":[787,302,294],"role":"bh"}]},"123":{"name":"back_n_lamei4","type":"Normal","layers":[{"layer":[781,0,0]},{"layer":[779,-149,0]},{"layer":[785,0,0]},{"layer":[786,352,300],"role":"qw"},{"layer":[787,302,294],"role":"bh"}]},"124":{"name":"back_n_sanxia1","type":"Normal","layers":[{"layer":[847,0,0]}]},"125":{"name":"back_n_sanxia2","type":"Normal","layers":[{"layer":[848,0,0]}]},"126":{"name":"back_n_ibis","type":"Normal","layers":[{"layer":[871,0,0]},{"layer":[872,0,20]},{"layer":[873,150,160],"role":"qw"},{"layer":[874,101,152],"role":"bh"}]},"127":{"name":"back_n_rime1","type":"Normal","layers":[{"layer":[1056,-250,0]},{"layer":[1058,-250,0]},{"layer":[1059,-250,0]},{"layer":[1057,0,0]},{"layer":[1060,438,213],"role":"qw"},{"layer":[1061,408,223],"role":"bh"}]},"128":{"name":"back_n_rime2","type":"Normal","layers":[{"layer":[1056,-250,0]},{"layer":[1058,-250,0]},{"layer":[1057,0,0]},{"layer":[1060,438,213],"role":"qw"},{"layer":[1061,408,223],"role":"bh"}]},"129":{"name":"back_n_rime3","type":"Normal","layers":[{"layer":[1056,-250,0]},{"layer":[1059,-250,0]},{"layer":[1057,0,0]},{"layer":[1060,438,213],"role":"qw"},{"layer":[1061,408,223],"role":"bh"}]},"130":{"name":"n_hhly_lnw","type":"Normal","layers":[{"layer":[1175,0,0]}]},"131":{"name":"n_hhly_smx","type":"Normal","layers":[{"layer":[1176,0,0]}]},"201":{"name":"back_n_lanhuateng","type":"Normal","layers":[{"layer":[963,-250,0]},{"layer":[964,-250,0]},{"layer":[966,-115,0]},{"layer":[592,254,210],"role":"qw"},{"layer":[247,185,218],"role":"bh"},{"layer":[965,-250,0]}]},"202":{"name":"back_n_chuisihaitang1","type":"Normal","layers":[{"layer":[1011,-300,0]},{"layer":[1021,160,200],"role":"bh"},{"layer":[1013,0,0]},{"layer":[1016,290,0]},{"layer":[1014,-80,0]}]},"203":{"name":"back_n_chuisihaitang2","type":"Normal","layers":[{"layer":[1011,-300,0]},{"layer":[1021,30,200],"role":"bh"},{"layer":[1013,0,0]},{"layer":[1015,250,0]},{"layer":[1014,-80,0]}]},"204":{"name":"back_n_chuisihaitang3","type":"Normal","layers":[{"layer":[1011,-300,0]},{"layer":[1021,290,200],"role":"bh"},{"layer":[1013,0,0]},{"layer":[1015,250,0]},{"layer":[1014,-80,0]}]},"205":{"name":"back_n_mumianhua","type":"Normal","layers":[{"layer":[1064,0,0]},{"layer":[1068,0,0]},{"layer":[1072,0,55],"role":"qw"},{"layer":[1073,314,146],"role":"bh"}]},"206":{"name":"back_n_fenglingmu_h","type":"Normal","layers":[{"layer":[1117,-300,0]},{"layer":[1120,-85,10]},{"layer":[1121,0,230]},{"layer":[1126,92,220],"role":"qw"},{"layer":[1122,196,221],"role":"bh"},{"layer":[1118,0,99]},{"layer":[1119,-350,198]},{"layer":[1128,-100,57]}]},"207":{"name":"back_n_fenglingmu_z","type":"Normal","layers":[{"layer":[1129,-300,0]},{"layer":[1134,0,-2]},{"layer":[1135,0,38]},{"layer":[1126,260,162],"role":"qw"},{"layer":[1123,338,190],"role":"bh"},{"layer":[1130,0,99]},{"layer":[1131,0,198]},{"layer":[1132,285,290]},{"layer":[1133,-35,242]},{"layer":[1128,-100,57]}]},"1000":{"name":"wet","type":"Tools","layers":[{"layer":[53,0,0]},{"layer":[174,222,137],"role":"qw"},{"layer":[343,133,116],"role":"yhc"},{"layer":[391,222,102]}]},"1001":{"name":"wet1","type":"Tools","layers":[{"layer":[53,0,0]},{"layer":[175,180,80],"role":"qw"},{"layer":[343,122,112],"role":"yhc"},{"layer":[392,176,77]}]},"1002":{"name":"wet2","type":"Tools","layers":[{"layer":[53,0,0]},{"layer":[176,178,80],"role":"qw"},{"layer":[343,122,112],"role":"yhc"},{"layer":[393,173,76]}]},"1003":{"name":"wet3","type":"Tools","layers":[{"layer":[53,0,0]},{"layer":[177,174,98],"role":"qw"},{"layer":[343,122,112],"role":"yhc"},{"layer":[394,174,78]}]},"1004":{"name":"fuza","type":"Tools","layers":[{"layer":[54,0,0]},{"layer":[178,29,44],"role":"qw"},{"layer":[236,41,119],"role":"bh"},{"layer":[55,0,0]}]},"1005":{"name":"fuza1","type":"Tools","layers":[{"layer":[54,0,0]},{"layer":[179,37,162],"role":"qw"},{"layer":[236,18,135],"role":"bh"},{"layer":[55,0,0]}]},"1006":{"name":"fuza2","type":"Tools","layers":[{"layer":[54,0,0]},{"layer":[180,4,158],"role":"qw"},{"layer":[236,18,135],"role":"bh"},{"layer":[55,0,0]}]},"1007":{"name":"fuza3","type":"Tools","layers":[{"layer":[54,0,0]},{"layer":[181,22,154],"role":"qw"},{"layer":[236,18,135],"role":"bh"},{"layer":[55,0,0]}]},"1008":{"name":"dry","type":"Tools","layers":[{"layer":[51,0,0]},{"layer":[170,92,160],"role":"qw"},{"layer":[289,274,187],"role":"cw"},{"layer":[52,258,0]}]},"1009":{"name":"dry1","type":"Tools","layers":[{"layer":[51,0,0]},{"layer":[171,55,116],"role":"qw"},{"layer":[289,266,186],"role":"cw"},{"layer":[52,258,0]}]},"1010":{"name":"dry2","type":"Tools","layers":[{"layer":[51,0,0]},{"layer":[172,65,168],"role":"qw"},{"layer":[289,264,190],"role":"cw"},{"layer":[52,258,0]}]},"1011":{"name":"dry3","type":"Tools","layers":[{"layer":[51,0,0]},{"layer":[173,67,150],"role":"qw"},{"layer":[289,264,196],"role":"cw"},{"layer":[52,258,0]}]},"1012":{"name":"Town","type":"Tools","layers":[{"layer":[57,0,0]},{"layer":[182,168,28],"role":"qw"},{"layer":[237,249,208],"role":"bh"}]},"1013":{"name":"Town1","type":"Tools","layers":[{"layer":[57,0,0]},{"layer":[183,176,30],"role":"qw"},{"layer":[238,260,226],"role":"bh"}]},"1014":{"name":"Town2","type":"Tools","layers":[{"layer":[57,0,0]},{"layer":[184,174,31],"role":"qw"},{"layer":[239,262,226],"role":"bh"}]},"1015":{"name":"Town3","type":"Tools","layers":[{"layer":[57,0,0]},{"layer":[185,175,31],"role":"qw"},{"layer":[240,261,226],"role":"bh"}]},"1016":{"name":"Town1_0","type":"Tools","layers":[{"layer":[58,0,0]},{"layer":[186,170,199],"role":"qw"},{"layer":[241,253,212],"role":"bh"}]},"1017":{"name":"Town1_1","type":"Tools","layers":[{"layer":[58,0,0]},{"layer":[187,169,236],"role":"qw"},{"layer":[242,269,244],"role":"bh"}]},"1018":{"name":"Town1_2","type":"Tools","layers":[{"layer":[58,0,0]},{"layer":[188,168,235],"role":"qw"},{"layer":[243,258,244],"role":"bh"}]},"1019":{"name":"Town1_3","type":"Tools","layers":[{"layer":[58,0,0]},{"layer":[189,168,235],"role":"qw"},{"layer":[244,269,244],"role":"bh"}]},"1020":{"name":"Town2_0","type":"Tools","layers":[{"layer":[1136,0,0]},{"layer":[1137,230,150],"role":"qw"},{"layer":[1138,132,182],"role":"bh"}]},"1021":{"name":"Town2_1","type":"Tools","layers":[{"layer":[1136,0,0]},{"layer":[1141,230,149],"role":"qw"},{"layer":[1142,132,181],"role":"bh"}]},"1022":{"name":"Town2_2","type":"Tools","layers":[{"layer":[1136,0,0]},{"layer":[1145,230,149],"role":"qw"},{"layer":[1146,132,181],"role":"bh"}]},"1023":{"name":"Town2_3","type":"Tools","layers":[{"layer":[1136,0,0]},{"layer":[1149,230,149],"role":"qw"},{"layer":[1150,132,181],"role":"bh"}]},"1024":{"name":"Town3_0","type":"Tools","layers":[{"layer":[1153,0,0]},{"layer":[1154,64,295],"role":"qw"},{"layer":[1155,40,298],"role":"bh"}]},"1025":{"name":"Town3_1","type":"Tools","layers":[{"layer":[1153,0,0]},{"layer":[1158,64,295],"role":"qw"},{"layer":[1159,40,298],"role":"bh"}]},"1026":{"name":"Town3_2","type":"Tools","layers":[{"layer":[1153,0,0]},{"layer":[1162,64,295],"role":"qw"},{"layer":[1163,40,298],"role":"bh"}]},"1027":{"name":"Town3_3","type":"Tools","layers":[{"layer":[1153,0,0]},{"layer":[1166,64,295],"role":"qw"},{"layer":[1167,40,298],"role":"bh"}]},"2000":{"name":"beijing1","type":"Goal","layers":[{"layer":[59,0,0]},{"layer":[157,111,205],"role":"qw"},{"layer":[223,336,241],"role":"bh"}]},"2001":{"name":"chengdu1","type":"Goal","layers":[{"layer":[60,0,0]},{"layer":[158,304,196],"role":"qw"},{"layer":[224,90,246],"role":"bh"}]},"2002":{"name":"chongqing1","type":"Goal","layers":[{"layer":[61,0,0]},{"layer":[159,82,254],"role":"qw"},{"layer":[225,44,236],"role":"bh"}]},"2003":{"name":"guangzhou1","type":"Goal","layers":[{"layer":[62,0,0]},{"layer":[226,393,144],"role":"bh"},{"layer":[160,342,192],"role":"qw"}]},"2004":{"name":"guilin1","type":"Goal","layers":[{"layer":[63,-23,-17]},{"layer":[161,76,254],"role":"qw"},{"layer":[227,258,275],"role":"bh"}]},"2005":{"name":"hangzhou1","type":"Goal","layers":[{"layer":[64,0,0]},{"layer":[162,76,240],"role":"qw"},{"layer":[228,226,220],"role":"bh"}]},"2006":{"name":"suzhou1","type":"Goal","layers":[{"layer":[65,0,0]},{"layer":[163,402,289],"role":"qw"},{"layer":[229,349,276],"role":"bh"}]},"2007":{"name":"tianjin1","type":"Goal","layers":[{"layer":[66,0,0]},{"layer":[230,360,139],"role":"bh"},{"layer":[164,299,172],"role":"qw"}]},"2008":{"name":"tw_shifen1","type":"Goal","layers":[{"layer":[67,0,0]},{"layer":[232,212,248],"role":"bh"}]},"2009":{"name":"tw_kending1","type":"Goal","layers":[{"layer":[68,0,0]},{"layer":[165,284,264],"role":"qw"},{"layer":[231,386,256],"role":"bh"}]},"2010":{"name":"beijing2","type":"Goal","layers":[{"layer":[69,0,0]},{"layer":[202,215,276],"role":"qw"},{"layer":[256,300,272],"role":"bh"}]},"2011":{"name":"beijing3","type":"Goal","layers":[{"layer":[70,0,0]},{"layer":[203,250,302],"role":"qw"},{"layer":[257,270,291],"role":"bh"}]},"2012":{"name":"beijing4","type":"Goal","layers":[{"layer":[71,0,0]},{"layer":[204,162,40],"role":"qw"},{"layer":[258,300,92],"role":"bh"}]},"2013":{"name":"beijing5","type":"Goal","layers":[{"layer":[72,0,0]},{"layer":[205,89,214],"role":"qw"},{"layer":[388,345,195],"role":"bh"}]},"2014":{"name":"chengdu2","type":"Goal","layers":[{"layer":[73,0,0]},{"layer":[206,38,212],"role":"qw"},{"layer":[259,170,186],"role":"bh"}]},"2015":{"name":"chengdu3","type":"Goal","layers":[{"layer":[74,0,0]},{"layer":[207,50,254],"role":"qw"},{"layer":[260,140,244],"role":"bh"}]},"2016":{"name":"chengdu4","type":"Goal","layers":[{"layer":[75,0,0]},{"layer":[208,338,250],"role":"qw"},{"layer":[261,134,226],"role":"bh"}]},"2017":{"name":"chongqing2","type":"Goal","layers":[{"layer":[76,0,0]},{"layer":[209,350,252],"role":"qw"},{"layer":[262,236,237],"role":"bh"}]},"2018":{"name":"guangzhou2","type":"Goal","layers":[{"layer":[77,0,0]},{"layer":[263,302,144],"role":"bh"},{"layer":[210,208,242],"role":"qw"}]},"2019":{"name":"guangzhou3","type":"Goal","layers":[{"layer":[78,0,0]},{"layer":[211,254,222],"role":"qw"},{"layer":[264,190,208],"role":"bh"}]},"2020":{"name":"guilin2","type":"Goal","layers":[{"layer":[79,0,0]},{"layer":[265,248,187],"role":"bh"},{"layer":[212,315,232],"role":"qw"}]},"2021":{"name":"guilin3","type":"Goal","layers":[{"layer":[80,0,1]},{"layer":[213,52,177],"role":"qw"},{"layer":[266,196,230],"role":"bh"}]},"2022":{"name":"hangzhou2","type":"Goal","layers":[{"layer":[81,0,0]},{"layer":[214,378,174],"role":"qw"},{"layer":[267,138,200],"role":"bh"}]},"2023":{"name":"hangzhou3","type":"Goal","layers":[{"layer":[82,0,0]},{"layer":[268,333,204],"role":"bh"},{"layer":[215,272,196],"role":"qw"}]},"2024":{"name":"suzhou2","type":"Goal","layers":[{"layer":[83,0,0]},{"layer":[269,308,240],"role":"bh"},{"layer":[216,244,272],"role":"qw"}]},"2025":{"name":"suzhou3","type":"Goal","layers":[{"layer":[84,0,0]},{"layer":[217,315,266],"role":"qw"},{"layer":[270,356,210],"role":"bh"}]},"2026":{"name":"tianjin2","type":"Goal","layers":[{"layer":[85,0,0]},{"layer":[218,199,199],"role":"qw"},{"layer":[271,64,223],"role":"bh"}]},"2027":{"name":"tw_jingan","type":"Goal","layers":[{"layer":[86,0,0]},{"layer":[219,376,252],"role":"qw"},{"layer":[272,312,250],"role":"bh"},{"layer":[90,131,110]}]},"2028":{"name":"tw_lanyu","type":"Goal","layers":[{"layer":[87,0,0]},{"layer":[220,13,247],"role":"qw"},{"layer":[273,70,256],"role":"bh"}]},"2029":{"name":"tw_tiandeng","type":"Goal","layers":[{"layer":[88,0,0]},{"layer":[221,342,237],"role":"qw"},{"layer":[274,290,256],"role":"bh"}]},"2030":{"name":"tw_zuinandian","type":"Goal","layers":[{"layer":[89,0,0]},{"layer":[222,48,154],"role":"qw"},{"layer":[275,57,210],"role":"bh"}]},"2031":{"name":"xianggang1","type":"Goal","layers":[{"layer":[91,0,0]},{"layer":[403,324,272],"role":"qw"},{"layer":[449,382,267],"role":"bh"}]},"2032":{"name":"xianggang2","type":"Goal","layers":[{"layer":[92,0,0]},{"layer":[450,0,210],"role":"bh"}]},"2034":{"name":"xianggang4","type":"Goal","layers":[{"layer":[94,0,0]},{"layer":[406,353,254],"role":"qw"},{"layer":[452,235,244],"role":"bh"}]},"2036":{"name":"haerbin1","type":"Goal","layers":[{"layer":[96,0,0]},{"layer":[408,192,277],"role":"qw"},{"layer":[454,136,268],"role":"bh"}]},"2037":{"name":"haerbin2","type":"Goal","layers":[{"layer":[97,0,0]},{"layer":[409,242,300],"role":"qw"},{"layer":[455,271,292],"role":"bh"}]},"2038":{"name":"haerbin3","type":"Goal","layers":[{"layer":[98,0,0]},{"layer":[410,310,193],"role":"qw"},{"layer":[456,398,106],"role":"bh"}]},"2039":{"name":"haerbin4","type":"Goal","layers":[{"layer":[99,0,0]},{"layer":[1302,295,219],"scale":1.0},{"layer":[1302,262,230],"scale":1.0},{"layer":[1302,262,227],"scale":1.0},{"layer":[1302,265,246],"scale":1.0}]},"2043":{"name":"zhangjiajie1","type":"Goal","layers":[{"layer":[103,0,0]},{"layer":[415,36,209],"role":"qw"},{"layer":[461,147,224],"role":"bh"}]},"2044":{"name":"zhangjiajie2","type":"Goal","layers":[{"layer":[104,0,0]},{"layer":[416,55,232],"role":"qw"},{"layer":[462,138,240],"role":"bh"}]},"2045":{"name":"zhangjiajie3","type":"Goal","layers":[{"layer":[105,0,0]},{"layer":[417,349,298],"role":"qw"},{"layer":[463,402,280],"role":"bh"}]},"2046":{"name":"zhangjiajie4","type":"Goal","layers":[{"layer":[106,0,0]},{"layer":[418,44,272],"role":"qw"},{"layer":[464,104,260],"role":"bh"}]},"2047":{"name":"wuhan1","type":"Goal","layers":[{"layer":[107,0,0]},{"layer":[419,110,282],"role":"qw"},{"layer":[465,54,278],"role":"bh"}]},"2048":{"name":"wuhan2","type":"Goal","layers":[{"layer":[108,0,0]},{"layer":[420,277,254],"role":"qw"},{"layer":[466,340,232],"role":"bh"}]},"2049":{"name":"wuhan3","type":"Goal","layers":[{"layer":[109,0,0]},{"layer":[421,312,285],"role":"qw"},{"layer":[467,130,280],"role":"bh"}]},"2050":{"name":"wuhan4","type":"Goal","layers":[{"layer":[110,0,0]},{"layer":[422,214,270],"role":"qw"},{"layer":[468,262,255],"role":"bh"}]},"2051":{"name":"luoyang1","type":"Goal","layers":[{"layer":[111,0,0]},{"layer":[423,390,254],"role":"qw"},{"layer":[469,296,298],"role":"bh"}]},"2052":{"name":"luoyang2","type":"Goal","layers":[{"layer":[112,0,0]},{"layer":[424,90,287],"role":"qw"},{"layer":[470,136,298],"role":"bh"}]},"2053":{"name":"luoyang3","type":"Goal","layers":[{"layer":[113,0,0]},{"layer":[425,90,182],"role":"qw"},{"layer":[471,75,288],"role":"bh"}]},"2054":{"name":"xian1","type":"Goal","layers":[{"layer":[114,0,0]},{"layer":[426,208,237],"role":"qw"},{"layer":[472,114,218],"role":"bh"}]},"2055":{"name":"xian2","type":"Goal","layers":[{"layer":[115,0,0]},{"layer":[427,106,262],"role":"qw"},{"layer":[473,19,259],"role":"bh"}]},"2056":{"name":"xian3","type":"Goal","layers":[{"layer":[116,0,0]},{"layer":[428,322,252],"role":"qw"},{"layer":[474,122,242],"role":"bh"}]},"2057":{"name":"jiuquan1","type":"Goal","layers":[{"layer":[117,0,0]},{"layer":[429,62,240],"role":"qw"},{"layer":[475,144,270],"role":"bh"}]},"2058":{"name":"jiuquan2","type":"Goal","layers":[{"layer":[118,0,0]},{"layer":[430,250,266],"role":"qw"},{"layer":[476,356,241],"role":"bh"}]},"2059":{"name":"jiuquan3","type":"Goal","layers":[{"layer":[119,0,0]},{"layer":[431,28,220],"role":"qw"},{"layer":[477,139,221],"role":"bh"}]},"2060":{"name":"yunnan1","type":"Goal","layers":[{"layer":[120,0,0]},{"layer":[432,8,223],"role":"qw"},{"layer":[478,113,279],"role":"bh"},{"layer":[647,0,192]}]},"2061":{"name":"yunnan2","type":"Goal","layers":[{"layer":[121,0,0]},{"layer":[433,139,272],"role":"qw"},{"layer":[479,340,115],"role":"bh"}]},"2062":{"name":"yunnan3","type":"Goal","layers":[{"layer":[122,0,0]},{"layer":[434,18,232],"role":"qw"},{"layer":[480,113,279],"role":"bh"}]},"2063":{"name":"yunnan4","type":"Goal","layers":[{"layer":[123,0,0]},{"layer":[435,156,280],"role":"qw"},{"layer":[481,130,271],"role":"bh"}]},"2064":{"name":"lasa1","type":"Goal","layers":[{"layer":[124,0,0]},{"layer":[436,354,200],"role":"qw"},{"layer":[482,288,278],"role":"bh"}]},"2065":{"name":"lasa2","type":"Goal","layers":[{"layer":[125,0,0]},{"layer":[437,345,294],"role":"qw"},{"layer":[692,296,269],"role":"bh"}]},"2066":{"name":"lasa3","type":"Goal","layers":[{"layer":[126,0,0]},{"layer":[438,98,218],"role":"qw"},{"layer":[484,51,218],"role":"bh"}]},"2067":{"name":"lasa4","type":"Goal","layers":[{"layer":[127,0,0]},{"layer":[439,40,258],"role":"qw"},{"layer":[485,127,276],"role":"bh"}]},"2068":{"name":"lasa5","type":"Goal","layers":[{"layer":[128,0,0]},{"layer":[440,80,282],"role":"qw"},{"layer":[486,150,291],"role":"bh"}]},"2069":{"name":"shanghai1","type":"Goal","layers":[{"layer":[129,0,0]},{"layer":[441,84,266],"role":"qw"},{"layer":[487,214,259],"role":"bh"}]},"2070":{"name":"shanghai2","type":"Goal","layers":[{"layer":[130,0,0]},{"layer":[442,92,266],"role":"qw"},{"layer":[488,46,195],"role":"bh"}]},"2071":{"name":"shanghai3","type":"Goal","layers":[{"layer":[131,0,0]},{"layer":[443,64,220],"role":"qw"},{"layer":[489,18,224],"role":"bh"}]},"2072":{"name":"shanghai4","type":"Goal","layers":[{"layer":[132,0,0]},{"layer":[444,84,272],"role":"qw"},{"layer":[490,46,195],"role":"bh"}]},"2073":{"name":"hainan1","type":"Goal","layers":[{"layer":[133,0,0]},{"layer":[445,47,208],"role":"qw"},{"layer":[491,148,262],"role":"bh"}]},"2074":{"name":"hainan2","type":"Goal","layers":[{"layer":[134,0,0]},{"layer":[446,40,237],"role":"qw"},{"layer":[492,187,249],"role":"bh"}]},"2076":{"name":"hainan4","type":"Goal","layers":[{"layer":[448,130,212],"scale":1.0},{"layer":[641,0,0]},{"layer":[448,170,233],"scale":1.0},{"layer":[448,274,231],"scale":1.0},{"layer":[448,184,234],"scale":1.0}]},"2077":{"name":"chengdu5","type":"Goal","layers":[{"layer":[383,0,0]},{"layer":[385,423,237],"role":"bh"},{"layer":[384,378,264],"role":"qw"}]},"2078":{"name":"hainan5","type":"Goal","layers":[{"layer":[640,0,0]},{"layer":[637,169,174],"role":"bh"},{"layer":[636,130,215],"role":"qw"},{"layer":[641,234,168]}]},"2079":{"name":"jiuquan4","type":"Goal","layers":[{"layer":[646,0,0]},{"layer":[642,266,262],"role":"qw"},{"layer":[643,356,241],"role":"bh"}]},"2080":{"name":"yunnan5","type":"Goal","layers":[{"layer":[652,0,0]},{"layer":[648,156,276],"role":"qw"},{"layer":[649,130,265],"role":"bh"}]},"2081":{"name":"guizhou1","type":"Goal","layers":[{"layer":[658,0,0]},{"layer":[664,76,246],"role":"qw"},{"layer":[665,156,244],"role":"bh"}]},"2082":{"name":"guizhou2","type":"Goal","layers":[{"layer":[659,0,0]},{"layer":[668,140,187],"role":"qw"},{"layer":[669,180,194],"role":"bh"}]},"2083":{"name":"guizhou3","type":"Goal","layers":[{"layer":[660,0,0]},{"layer":[672,129,212],"role":"qw"},{"layer":[673,30,122],"role":"bh"}]},"2084":{"name":"ningxia1","type":"Goal","layers":[{"layer":[661,0,0]},{"layer":[676,83,134],"role":"qw"},{"layer":[677,52,110],"role":"bh"}]},"2085":{"name":"ningxia2","type":"Goal","layers":[{"layer":[662,0,0]},{"layer":[680,293,230],"role":"qw"},{"layer":[681,326,218],"role":"bh"}]},"2086":{"name":"ningxia3","type":"Goal","layers":[{"layer":[663,0,0]},{"layer":[684,360,187],"role":"qw"},{"layer":[685,412,172],"role":"bh"}]},"2087":{"name":"fujian1","type":"Goal","layers":[{"layer":[702,0,0]},{"layer":[698,380,314],"role":"qw"},{"layer":[699,326,314],"role":"bh"}]},"2088":{"name":"fujian2","type":"Goal","layers":[{"layer":[707,0,0]},{"layer":[703,385,202],"role":"qw"},{"layer":[704,332,200],"role":"bh"}]},"2089":{"name":"jiangxi1","type":"Goal","layers":[{"layer":[712,0,0]},{"layer":[708,244,275],"role":"qw"},{"layer":[709,347,281],"role":"bh"}]},"2090":{"name":"jiangxi2","type":"Goal","layers":[{"layer":[717,0,0]},{"layer":[713,230,288],"role":"qw"},{"layer":[714,190,289],"role":"bh"}]},"2091":{"name":"jiangxi3","type":"Goal","layers":[{"layer":[722,0,0]},{"layer":[718,225,265],"role":"qw"},{"layer":[719,281,262],"role":"bh"}]},"2092":{"name":"guizhou4","type":"Goal","layers":[{"layer":[748,0,0]},{"layer":[754,104,277],"role":"qw"},{"layer":[755,164,276],"role":"bh"}]},"2093":{"name":"guizhou5","type":"Goal","layers":[{"layer":[749,0,0]},{"layer":[758,328,257],"role":"qw"},{"layer":[759,384,252],"role":"bh"}]},"2094":{"name":"guizhou6","type":"Goal","layers":[{"layer":[750,0,0]},{"layer":[762,158,242],"role":"qw"},{"layer":[763,30,126],"role":"bh"}]},"2095":{"name":"ningxia4","type":"Goal","layers":[{"layer":[751,0,0]},{"layer":[766,355,208],"role":"qw"},{"layer":[767,175,290],"role":"bh"}]},"2096":{"name":"ningxia5","type":"Goal","layers":[{"layer":[752,0,0]},{"layer":[770,270,244],"role":"qw"},{"layer":[771,347,240],"role":"bh"}]},"2097":{"name":"ningxia6","type":"Goal","layers":[{"layer":[753,0,0]},{"layer":[774,88,136],"role":"qw"},{"layer":[775,58,122],"role":"bh"}]},"2098":{"name":"anhui1","type":"Goal","layers":[{"layer":[792,0,0]},{"layer":[801,0,0],"role":"qw"},{"layer":[802,0,0],"role":"bh"}]},"2099":{"name":"anhui2","type":"Goal","layers":[{"layer":[793,0,0]},{"layer":[805,0,0],"role":"qw"},{"layer":[806,0,0],"role":"bh"}]},"2100":{"name":"anhui3","type":"Goal","layers":[{"layer":[794,0,0]},{"layer":[809,0,0],"role":"qw"},{"layer":[810,0,0],"role":"bh"}]},"2101":{"name":"jiangmen1","type":"Goal","layers":[{"layer":[795,0,0]},{"layer":[813,0,0],"role":"qw"},{"layer":[814,0,0],"role":"bh"}]},"2102":{"name":"jiangmen2","type":"Goal","layers":[{"layer":[796,0,0]},{"layer":[817,0,0],"role":"qw"},{"layer":[818,0,0],"role":"bh"}]},"2103":{"name":"liaoning1","type":"Goal","layers":[{"layer":[797,0,0]},{"layer":[821,0,0],"role":"qw"},{"layer":[822,0,0],"role":"bh"}]},"2104":{"name":"liaoning2","type":"Goal","layers":[{"layer":[798,0,0]},{"layer":[825,0,0],"role":"qw"},{"layer":[826,0,0],"role":"bh"}]},"2105":{"name":"qingdao1","type":"Goal","layers":[{"layer":[799,0,0]},{"layer":[829,0,0],"role":"qw"},{"layer":[830,0,0],"role":"bh"}]},"2106":{"name":"qingdao2","type":"Goal","layers":[{"layer":[800,0,0]},{"layer":[833,0,0],"role":"qw"},{"layer":[834,0,0],"role":"bh"}]},"2107":{"name":"sanxia1","type":"Goal","layers":[{"layer":[849,0,0]}]},"2108":{"name":"sanxia2","type":"Goal","layers":[{"layer":[850,0,0]}]},"2109":{"name":"bwg_jiangxi1","type":"Goal","layers":[{"layer":[878,0,0]},{"layer":[879,105,253],"role":"qw"},{"layer":[880,47,242],"role":"bh"}]},"2110":{"name":"bwg_jiangxi2","type":"Goal","layers":[{"layer":[883,0,0]},{"layer":[884,225,293],"role":"qw"},{"layer":[885,194,292],"role":"bh"}]},"2111":{"name":"bwg_shandong1","type":"Goal","layers":[{"layer":[893,0,0]},{"layer":[894,94,280],"role":"qw"},{"layer":[895,128,282],"role":"bh"}]},"2112":{"name":"bwg_shandong2","type":"Goal","layers":[{"layer":[898,0,0]},{"layer":[899,212,256],"role":"qw"},{"layer":[900,256,247],"role":"bh"}]},"2113":{"name":"bwg_nanyuewang1","type":"Goal","layers":[{"layer":[908,0,0]},{"layer":[909,70,310],"role":"qw"},{"layer":[910,464,306],"role":"bh"}]},"2114":{"name":"bwg_nanyuewang2","type":"Goal","layers":[{"layer":[913,0,0]},{"layer":[914,249,254],"role":"qw"},{"layer":[915,276,234],"role":"bh"}]},"2115":{"name":"bwg_wuwenhua1","type":"Goal","layers":[{"layer":[923,0,0]},{"layer":[924,119,257],"role":"qw"},{"layer":[925,136,256],"role":"bh"}]},"2116":{"name":"bwg_wuwenhua2","type":"Goal","layers":[{"layer":[928,0,0]},{"layer":[929,378,299],"role":"qw"},{"layer":[930,90,298],"role":"bh"}]},"2117":{"name":"fujian3","type":"Goal","layers":[{"layer":[938,0,0]},{"layer":[939,110,264],"role":"qw"},{"layer":[940,166,256],"role":"bh"}]},"2118":{"name":"fujian4","type":"Goal","layers":[{"layer":[943,0,0]},{"layer":[944,128,314],"role":"qw"},{"layer":[945,148,318],"role":"bh"}]},"2119":{"name":"bwg_shanxi1","type":"Goal","layers":[{"layer":[948,0,0]},{"layer":[950,244,273],"role":"bh"},{"layer":[949,238,273],"role":"qw"}]},"2120":{"name":"bwg_shanxi2","type":"Goal","layers":[{"layer":[953,0,0]},{"layer":[954,123,311],"role":"qw"},{"layer":[955,144,310],"role":"bh"}]},"2121":{"name":"ld_guqin","type":"Goal","layers":[{"layer":[972,0,0]},{"layer":[974,287,261],"role":"bh"}]},"2122":{"name":"shanxi1","type":"Goal","layers":[{"layer":[977,0,0]},{"layer":[978,125,269],"role":"qw"},{"layer":[979,88,245],"role":"bh"}]},"2123":{"name":"shanxi2","type":"Goal","layers":[{"layer":[982,0,0]},{"layer":[983,263,247],"role":"qw"},{"layer":[984,301,241],"role":"bh"}]},"2124":{"name":"shanxi3","type":"Goal","layers":[{"layer":[987,0,0]},{"layer":[988,32,247],"role":"qw"},{"layer":[989,84,279],"role":"bh"}]},"2125":{"name":"shanxi4","type":"Goal","layers":[{"layer":[992,0,0]},{"layer":[993,73,276],"role":"qw"},{"layer":[994,28,275],"role":"bh"}]},"2126":{"name":"jilin1","type":"Goal","layers":[{"layer":[1036,0,0]},{"layer":[1038,372,268],"role":"bh"},{"layer":[1037,332,270],"role":"qw"}]},"2127":{"name":"jilin2","type":"Goal","layers":[{"layer":[1041,0,0]},{"layer":[1042,122,276],"role":"qw"},{"layer":[1043,180,280],"role":"bh"}]},"2128":{"name":"jilin3","type":"Goal","layers":[{"layer":[1046,0,0]},{"layer":[1047,64,211],"role":"qw"},{"layer":[1048,74,210],"role":"bh"}]},"2129":{"name":"jilin4","type":"Goal","layers":[{"layer":[1051,0,0]},{"layer":[1052,270,192],"role":"qw"},{"layer":[1053,316,213],"role":"bh"}]},"2130":{"name":"aomen1","type":"Goal","layers":[{"layer":[1077,0,0]},{"layer":[1078,306,316],"role":"qw"},{"layer":[1079,332,308],"role":"bh"}]},"2131":{"name":"aomen2","type":"Goal","layers":[{"layer":[1082,0,0]},{"layer":[1083,82,263],"role":"qw"},{"layer":[1084,62,269],"role":"bh"}]},"2132":{"name":"aomen3","type":"Goal","layers":[{"layer":[1087,0,0]},{"layer":[1088,319,254],"role":"qw"},{"layer":[1089,372,280],"role":"bh"}]},"2133":{"name":"aomen4","type":"Goal","layers":[{"layer":[1092,0,0]},{"layer":[1093,168,226],"role":"qw"},{"layer":[1094,191,216],"role":"bh"}]},"2134":{"name":"qinghai1","type":"Goal","layers":[{"layer":[1097,0,0]},{"layer":[1098,188,330],"role":"qw"},{"layer":[1099,166,318],"role":"bh"}]},"2135":{"name":"qinghai2","type":"Goal","layers":[{"layer":[1102,0,0]},{"layer":[1103,284,220],"role":"qw"},{"layer":[1104,308,208],"role":"bh"}]},"2136":{"name":"qinghai3","type":"Goal","layers":[{"layer":[1107,0,0]},{"layer":[1108,50,286],"role":"qw"},{"layer":[1109,26,270],"role":"bh"}]},"2137":{"name":"qinghai4","type":"Goal","layers":[{"layer":[1112,0,0]},{"layer":[1113,179,206],"role":"qw"},{"layer":[1114,164,197],"role":"bh"}]},"2138":{"name":"g_hhly_hkpp","type":"Goal","layers":[{"layer":[1173,0,0]}]},"2139":{"name":"g_hhly_xld","type":"Goal","layers":[{"layer":[1174,0,0]}]},"2140":{"name":"hebei1","type":"Goal","layers":[{"layer":[1203,0,0]},{"layer":[1204,354,304],"role":"qw"},{"layer":[1205,378,302],"role":"bh"}]},"2141":{"name":"hebei2","type":"Goal","layers":[{"layer":[1208,0,0]},{"layer":[1210,32,250],"role":"bh"}]},"2142":{"name":"hebei3","type":"Goal","layers":[{"layer":[1213,0,0]},{"layer":[1214,428,310],"role":"qw"},{"layer":[1215,448,319],"role":"bh"}]},"2143":{"name":"hebei4","type":"Goal","layers":[{"layer":[1218,0,0]},{"layer":[1220,304,283],"role":"bh"}]},"2144":{"name":"suzhou4","type":"Goal","layers":[{"layer":[1226,0,0]},{"layer":[1230,340,298],"role":"qw"},{"layer":[1228,308,298],"role":"bh"}]},"2145":{"name":"liaoning3","type":"Goal","layers":[{"layer":[1238,0,0]},{"layer":[1242,318,258],"role":"qw"},{"layer":[1240,236,240],"role":"bh"}]},"2146":{"name":"shanxi5","type":"Goal","layers":[{"layer":[1243,0,0]},{"layer":[1244,402,284],"role":"qw"},{"layer":[1246,420,254],"role":"bh"}]},"2147":{"name":"shanxi6","type":"Goal","layers":[{"layer":[1248,0,0]},{"layer":[1249,285,170],"role":"qw"},{"layer":[1251,184,197],"role":"bh"}]},"2148":{"name":"guangzhou4","type":"Goal","layers":[{"layer":[1253,0,0]},{"layer":[1256,74,266],"role":"bh"},{"layer":[1254,118,272],"role":"qw"}]},"2149":{"name":"guangzhou5","type":"Goal","layers":[{"layer":[1258,0,0]},{"layer":[1259,402,248],"role":"qw"},{"layer":[1261,394,254],"role":"bh"}]},"2150":{"name":"guangzhou6","type":"Goal","layers":[{"layer":[1263,0,0]},{"layer":[1264,365,262],"role":"qw"},{"layer":[1266,349,281],"role":"bh"}]},"2151":{"name":"neimenggu1","type":"Goal","layers":[{"layer":[1272,0,0]},{"layer":[1273,404,205],"scale":1.0},{"layer":[1273,445,210],"scale":1.0},{"layer":[1273,424,211],"scale":1.0},{"layer":[1273,383,236],"scale":1.0}]},"2152":{"name":"neimenggu2","type":"Goal","layers":[{"layer":[1277,0,0]},{"layer":[1278,416,204],"scale":1.0},{"layer":[1278,401,199],"scale":1.0},{"layer":[1278,456,188],"scale":1.0},{"layer":[1278,447,209],"scale":1.0}]},"2153":{"name":"neimenggu3","type":"Goal","layers":[{"layer":[1282,0,0]},{"layer":[1283,382,324],"scale":1.0},{"layer":[1283,388,341],"scale":1.0},{"layer":[1283,366,342],"scale":1.0},{"layer":[1283,426,340],"scale":1.0}]},"2155":{"name":"xinjiang1","type":"Goal","layers":[{"layer":[1287,0,0]},{"layer":[1288,268,224],"scale":1.0},{"layer":[1288,218,224],"scale":1.0},{"layer":[1288,311,228],"scale":1.0},{"layer":[1288,216,241],"scale":1.0}]},"2156":{"name":"xinjiang2","type":"Goal","layers":[{"layer":[1292,0,0]},{"layer":[1293,358,306],"scale":1.0},{"layer":[1293,424,237],"scale":1.0},{"layer":[1293,424,243],"scale":1.0},{"layer":[1293,383,321],"scale":1.0}]},"2157":{"name":"xinjiang3","type":"Goal","layers":[{"layer":[1297,0,0]},{"layer":[1298,456,202],"scale":1.0},{"layer":[1298,426,197],"scale":1.0},{"layer":[1298,426,196],"scale":1.0},{"layer":[1298,408,215],"scale":1.0}]},"2158":{"name":"chongqing3","type":"Goal","layers":[{"layer":[1309,0,0]},{"layer":[1310,161,270],"scale":1.0},{"layer":[1310,367,284],"scale":1.0},{"layer":[1310,384,295],"scale":1.0},{"layer":[1310,368,284],"scale":1.0}]},"2159":{"name":"qingdao3","type":"Goal","layers":[{"layer":[1314,0,0]},{"layer":[1315,365,218],"scale":1.0},{"layer":[1315,444,218],"scale":1.0},{"layer":[1315,436,227],"scale":1.0},{"layer":[1315,442,245],"scale":1.0}]},"2160":{"name":"guizhou7","type":"Goal","layers":[{"layer":[1325,0,0]},{"layer":[1326,393,242],"scale":1.0},{"layer":[1326,429,256],"scale":1.0},{"layer":[1326,428,259],"scale":1.0},{"layer":[1326,418,265],"scale":1.0}]},"2161":{"name":"xian4","type":"Goal","layers":[{"layer":[1332,0,0]},{"layer":[1333,398,252],"scale":1.0},{"layer":[1333,421,259],"scale":1.0},{"layer":[1333,423,264],"scale":1.0},{"layer":[1333,401,303],"scale":1.0}]},"2162":{"name":"zhengzhou1","type":"Goal","layers":[{"layer":[1339,0,0]},{"layer":[1340,57,209],"scale":1.0},{"layer":[1340,73,190],"scale":1.0},{"layer":[1340,81,192],"scale":1.0},{"layer":[1340,30,226],"scale":1.0}]},"2163":{"name":"beijing6","type":"Goal","layers":[{"layer":[1348,0,0]},{"layer":[1349,22,205],"scale":1.0},{"layer":[1349,29,252],"scale":1.0},{"layer":[1349,34,237],"scale":1.0},{"layer":[1349,32,262],"scale":1.0}]},"3000":{"name":"help_bh","type":"Unique","layers":[{"layer":[137,0,0]}]},"3001":{"name":"help_cw","type":"Unique","layers":[{"layer":[138,0,0]}]},"3002":{"name":"help_yhc","type":"Unique","layers":[{"layer":[139,0,0]}]},"3003":{"name":"lost_bh","type":"Unique","layers":[{"layer":[140,0,0]}]},"3004":{"name":"lost_cw","type":"Unique","layers":[{"layer":[141,0,0]}]},"3005":{"name":"lost_yhc","type":"Unique","layers":[{"layer":[142,0,0]}]},"3006":{"name":"rest_bh","type":"Unique","layers":[{"layer":[143,0,0]}]},"3007":{"name":"rest_cw","type":"Unique","layers":[{"layer":[144,0,0]}]},"3008":{"name":"rest_yhc","type":"Unique","layers":[{"layer":[145,0,0]}]},"3009":{"name":"show_bh","type":"Unique","layers":[{"layer":[146,0,0]}]},"3010":{"name":"show_cw","type":"Unique","layers":[{"layer":[147,0,0]}]},"3011":{"name":"show_yhc","type":"Unique","layers":[{"layer":[148,0,0]}]},"3012":{"name":"rnd1","type":"Unique","layers":[{"layer":[149,0,0]}]},"3013":{"name":"rnd2","type":"Unique","layers":[{"layer":[150,0,0]}]},"3014":{"name":"rnd3","type":"Unique","layers":[{"layer":[151,0,0]}]},"3015":{"name":"rnd4","type":"Unique","layers":[{"layer":[152,0,0]}]},"3016":{"name":"rnd5","type":"Unique","layers":[{"layer":[153,0,0]}]},"3017":{"name":"plant_combo","type":"Unique","layers":[{"layer":[154,0,0]},{"layer":[167,24,210],"role":"qw"},{"layer":[233,332,74],"role":"bh"}]},"3018":{"name":"roof_combo","type":"Unique","layers":[{"layer":[155,0,0]},{"layer":[168,195,131],"role":"qw"},{"layer":[234,312,24],"role":"bh"}]},"3019":{"name":"tea_combo","type":"Unique","layers":[{"layer":[156,0,0]},{"layer":[235,0,0],"role":"bh"}]},"3020":{"name":"ofo","type":"Unique","layers":[{"layer":[589,0,0]}]},"3021":{"name":"dyc","type":"Unique","layers":[{"layer":[601,0,0]}]},"3022":{"name":"jiangtun","type":"Unique","layers":[{"layer":[615,0,0]}]},"3023":{"name":"szy","type":"Unique","layers":[{"layer":[653,0,0]}]},"3024":{"name":"duanwu","type":"Unique","layers":[{"layer":[654,0,0]}]},"3025":{"name":"lkq","type":"Unique","layers":[{"layer":[655,0,0]}]},"3026":{"name":"hjh","type":"Unique","layers":[{"layer":[656,0,0]}]},"3027":{"name":"jsh","type":"Unique","layers":[{"layer":[688,0,0]}]},"3028":{"name":"csj","type":"Unique","layers":[{"layer":[689,0,0]}]},"3029":{"name":"streetlight","type":"Unique","layers":[{"layer":[690,0,0]}]},"3030":{"name":"moon","type":"Unique","layers":[{"layer":[695,0,0]}]},"3031":{"name":"xixi","type":"Unique","layers":[{"layer":[696,0,0]}]},"3032":{"name":"pumpkin","type":"Unique","layers":[{"layer":[697,0,0]}]},"3033":{"name":"lotus","type":"Unique","layers":[{"layer":[747,0,0]}]},"3034":{"name":"lamei","type":"Unique","layers":[{"layer":[790,0,0]}]},"3035":{"name":"huabei","type":"Unique","layers":[{"layer":[791,0,0]}]},"3036":{"name":"owl","type":"Unique","layers":[{"layer":[837,0,0]}]},"3037":{"name":"rabbit","type":"Unique","layers":[{"layer":[838,0,0]}]},"3038":{"name":"swan","type":"Unique","layers":[{"layer":[839,0,0]}]},"3039":{"name":"climb","type":"Unique","layers":[{"layer":[840,0,0]}]},"3040":{"name":"eave","type":"Unique","layers":[{"layer":[841,0,0]}]},"3041":{"name":"forage","type":"Unique","layers":[{"layer":[842,0,0]}]},"3042":{"name":"leaf","type":"Unique","layers":[{"layer":[843,0,0]}]},"3043":{"name":"light","type":"Unique","layers":[{"layer":[844,0,0]}]},"3044":{"name":"mushroom","type":"Unique","layers":[{"layer":[845,0,0]}]},"3045":{"name":"feishu","type":"Unique","layers":[{"layer":[846,0,0]}]},"3046":{"name":"wuxiakou","type":"Unique","layers":[{"layer":[851,0,0]}]},"3047":{"name":"baidicheng","type":"Unique","layers":[{"layer":[852,0,0]}]},"3048":{"name":"month1","type":"Unique","layers":[{"layer":[853,0,0]}]},"3049":{"name":"month2","type":"Unique","layers":[{"layer":[854,0,0]}]},"3050":{"name":"month3","type":"Unique","layers":[{"layer":[855,0,0]}]},"3051":{"name":"month4","type":"Unique","layers":[{"layer":[856,0,0]}]},"3052":{"name":"month5","type":"Unique","layers":[{"layer":[857,0,0]}]},"3053":{"name":"month6","type":"Unique","layers":[{"layer":[858,0,0]}]},"3054":{"name":"month7","type":"Unique","layers":[{"layer":[859,0,0]}]},"3055":{"name":"month8","type":"Unique","layers":[{"layer":[860,0,0]}]},"3056":{"name":"month9","type":"Unique","layers":[{"layer":[861,0,0]}]},"3057":{"name":"month10","type":"Unique","layers":[{"layer":[862,0,0]}]},"3058":{"name":"month11","type":"Unique","layers":[{"layer":[863,0,0]}]},"3059":{"name":"month12","type":"Unique","layers":[{"layer":[864,0,0]}]},"3060":{"name":"yoga","type":"Unique","layers":[{"layer":[865,0,0]}]},"3061":{"name":"maple","type":"Unique","layers":[{"layer":[866,0,0]},{"layer":[868,0,0],"role":"bh"}]},"3062":{"name":"alipay","type":"Unique","layers":[{"layer":[93,0,0]}]},"3063":{"name":"bwg_jiangxi","type":"Unique","layers":[{"layer":[888,0,0]},{"layer":[889,67,284],"role":"qw"},{"layer":[890,32,278],"role":"bh"}]},"3064":{"name":"bwg_shandong","type":"Unique","layers":[{"layer":[903,0,0]},{"layer":[904,314,265],"role":"qw"},{"layer":[905,380,258],"role":"bh"}]},"3065":{"name":"bwg_nanyuewang","type":"Unique","layers":[{"layer":[918,0,0]},{"layer":[919,352,286],"role":"qw"},{"layer":[920,372,250],"role":"bh"}]},"3066":{"name":"bwg_wuwenhua","type":"Unique","layers":[{"layer":[933,0,0]},{"layer":[934,342,278],"role":"qw"},{"layer":[935,370,278],"role":"bh"}]},"3067":{"name":"bwg_shanxi","type":"Unique","layers":[{"layer":[958,0,0]},{"layer":[959,333,270],"role":"qw"},{"layer":[960,358,274],"role":"bh"}]},"3068":{"name":"two_month1","type":"Unique","layers":[{"layer":[997,0,0]}]},"3069":{"name":"two_month2","type":"Unique","layers":[{"layer":[998,0,0]}]},"3070":{"name":"two_month3","type":"Unique","layers":[{"layer":[999,0,0]}]},"3071":{"name":"two_month4","type":"Unique","layers":[{"layer":[1000,0,0]}]},"3072":{"name":"two_month5","type":"Unique","layers":[{"layer":[1001,0,0]}]},"3073":{"name":"two_month6","type":"Unique","layers":[{"layer":[1002,0,0]}]},"3074":{"name":"two_month7","type":"Unique","layers":[{"layer":[1003,0,0]}]},"3075":{"name":"two_month8","type":"Unique","layers":[{"layer":[1004,0,0]}]},"3076":{"name":"two_month9","type":"Unique","layers":[{"layer":[1005,0,0]}]},"3077":{"name":"two_month10","type":"Unique","layers":[{"layer":[1006,0,0]}]},"3078":{"name":"two_month11","type":"Unique","layers":[{"layer":[1007,0,0]}]},"3079":{"name":"two_month12","type":"Unique","layers":[{"layer":[1008,0,0]}]},"3080":{"name":"mid_autumn","type":"Unique","layers":[{"layer":[1009,0,0]}]},"3081":{"name":"sugar_maple","type":"Unique","layers":[{"layer":[1010,0,0]}]},"3082":{"name":"lost_bh_ly","type":"Unique","layers":[{"layer":[1028,0,0]}]},"3083":{"name":"lost_cw_dn","type":"Unique","layers":[{"layer":[1029,0,0]}]},"3084":{"name":"lost_yhc_xf","type":"Unique","layers":[{"layer":[1030,0,0]}]},"3085":{"name":"yuanyang","type":"Unique","layers":[{"layer":[1031,0,0]},{"layer":[1033,0,0],"role":"bh"}]},"3086":{"name":"chunjie_tu","type":"Unique","layers":[{"layer":[1076,0,0]}]},"3087":{"name":"huazhu","type":"Unique","layers":[{"layer":[1170,0,0]}]},"3088":{"name":"tadpole","type":"Unique","layers":[{"layer":[1171,0,0]}]},"3089":{"name":"yhcwsq","type":"Unique","layers":[{"layer":[1172,0,0]}]},"3090":{"name":"u_hhly_ljx","type":"Unique","layers":[{"layer":[1177,0,0]}]},"3091":{"name":"u_hhly_sjy","type":"Unique","layers":[{"layer":[1178,0,0]}]},"3092":{"name":"linkage_szgd1","type":"Unique","layers":[{"layer":[1223,0,0]}]},"3093":{"name":"linkage_szgd2","type":"Unique","layers":[{"layer":[1224,0,0]}]},"3094":{"name":"linkage_szgd3","type":"Unique","layers":[{"layer":[1225,0,0]}]},"3095":{"name":"linkage_szgd4","type":"Unique","layers":[{"layer":[1231,0,0]}]},"3096":{"name":"baiyulan","type":"Unique","layers":[{"layer":[1232,0,0]}]},"3097":{"name":"yingchun","type":"Unique","layers":[{"layer":[1233,0,0]}]},"3098":{"name":"linkage_szgd5","type":"Unique","layers":[{"layer":[1234,0,0]}]},"3099":{"name":"linkage_szgd6","type":"Unique","layers":[{"layer":[1235,0,0]}]},"3100":{"name":"linkage_szgd7","type":"Unique","layers":[{"layer":[1236,0,0]}]},"3101":{"name":"snail","type":"Unique","layers":[{"layer":[1237,0,0]}]},"3102":{"name":"anniv","type":"Unique","layers":[{"layer":[1268,0,0]}]},"3103":{"name":"player","type":"Unique","layers":[{"layer":[1269,0,0]}]},"3104":{"name":"squirrel","type":"Unique","layers":[{"layer":[1270,0,0]}]},"3105":{"name":"dog","type":"Unique","layers":[{"layer":[1271,0,0]}]},"3106":{"name":"denglong","type":"Unique","layers":[{"layer":[1306,0,0]}]},"3107":{"name":"fengyanlian","type":"Unique","layers":[{"layer":[1307,0,0]}]},"3108":{"name":"xieweijiao","type":"Unique","layers":[{"layer":[1308,0,0]}]},"3109":{"name":"xiazhi_1","type":"Unique","layers":[{"layer":[1319,0,0]}]},"3110":{"name":"xiazhi_2","type":"Unique","layers":[{"layer":[1320,0,0]}]},"3111":{"name":"mid_autumn_2","type":"Unique","layers":[{"layer":[1324,0,0]}]},"3148":{"name":"month1_2","type":"Unique","layers":[{"layer":[1179,0,0]}]},"3149":{"name":"month2_2","type":"Unique","layers":[{"layer":[1180,0,0]}]},"3150":{"name":"month3_2","type":"Unique","layers":[{"layer":[1181,0,0]}]},"3151":{"name":"month4_2","type":"Unique","layers":[{"layer":[1182,0,0]}]},"3152":{"name":"month5_2","type":"Unique","layers":[{"layer":[1183,0,0]}]},"3153":{"name":"month6_2","type":"Unique","layers":[{"layer":[1184,0,0]}]},"3154":{"name":"month7_2","type":"Unique","layers":[{"layer":[1185,0,0]}]},"3155":{"name":"month8_2","type":"Unique","layers":[{"layer":[1186,0,0]}]},"3156":{"name":"month9_2","type":"Unique","layers":[{"layer":[1187,0,0]}]},"3157":{"name":"month10_2","type":"Unique","layers":[{"layer":[1188,0,0]}]},"3158":{"name":"month11_2","type":"Unique","layers":[{"layer":[1189,0,0]}]},"3159":{"name":"month12_2","type":"Unique","layers":[{"layer":[1190,0,0]}]},"3168":{"name":"two_month1_2","type":"Unique","layers":[{"layer":[1191,0,0]}]},"3169":{"name":"two_month2_2","type":"Unique","layers":[{"layer":[1192,0,0]}]},"3170":{"name":"two_month3_2","type":"Unique","layers":[{"layer":[1193,0,0]}]},"3171":{"name":"two_month4_2","type":"Unique","layers":[{"layer":[1194,0,0]}]},"3172":{"name":"two_month5_2","type":"Unique","layers":[{"layer":[1195,0,0]}]},"3173":{"name":"two_month6_2","type":"Unique","layers":[{"layer":[1196,0,0]}]},"3174":{"name":"two_month7_2","type":"Unique","layers":[{"layer":[1197,0,0]}]},"3175":{"name":"two_month8_2","type":"Unique","layers":[{"layer":[1198,0,0]}]},"3176":{"name":"two_month9_2","type":"Unique","layers":[{"layer":[1199,0,0]}]},"3177":{"name":"two_month10_2","type":"Unique","layers":[{"layer":[1200,0,0]}]},"3178":{"name":"two_month11_2","type":"Unique","layers":[{"layer":[1201,0,0]}]},"3179":{"name":"two_month12_2","type":"Unique","layers":[{"layer":[1202,0,0]}]},"3180":{"name":"two_month9_3","type":"Unique","layers":[{"layer":[1321,0,0]}]},"3181":{"name":"two_month10_3","type":"Unique","layers":[{"layer":[1322,0,0]}]},"3182":{"name":"month11_3","type":"Unique","layers":[{"layer":[1323,0,0]}]},"3201":{"name":"back_u_lanhuateng","type":"Unique","layers":[{"layer":[963,-250,0]},{"layer":[964,-250,0]},{"layer":[967,0,0]},{"layer":[968,250,92],"role":"qw"},{"layer":[969,57,219],"role":"bh"},{"layer":[965,-250,0]}]},"3202":{"name":"back_u_chuisihaitang","type":"Unique","layers":[{"layer":[1011,-300,0]},{"layer":[1017,-300,250]},{"layer":[1018,-300,50]},{"layer":[1019,70,0]},{"layer":[1024,200,149],"role":"qw"},{"layer":[1025,165,163],"role":"bh"},{"layer":[1012,-300,0]}]},"3203":{"name":"back_u_mumianhua1","type":"Unique","layers":[{"layer":[1064,0,0]},{"layer":[1069,0,0]},{"layer":[1072,0,55],"role":"qw"},{"layer":[1073,314,146],"role":"bh"},{"layer":[1065,369,86]}]},"3204":{"name":"back_u_mumianhua2","type":"Unique","layers":[{"layer":[1064,0,0]},{"layer":[1070,0,0]},{"layer":[1072,0,55],"role":"qw"},{"layer":[1073,314,146],"role":"bh"},{"layer":[1066,395,122]}]},"3205":{"name":"back_u_mumianhua3","type":"Unique","layers":[{"layer":[1064,0,0]},{"layer":[1071,0,0]},{"layer":[1072,0,55],"role":"qw"},{"layer":[1073,314,146],"role":"bh"},{"layer":[1067,329,86]}]},"3206":{"name":"month12_3","type":"Unique","layers":[{"layer":[1330,0,0]}]},"3207":{"name":"anniv_2","type":"Unique","layers":[{"layer":[1331,0,0]}]},"3208":{"name":"month1_3","type":"Unique","layers":[{"layer":[1337,0,0]}]},"3209":{"name":"month2_3","type":"Unique","layers":[{"layer":[1338,0,0]}]},"3210":{"name":"month3_3","type":"Unique","layers":[{"layer":[1344,0,0]}]},"3211":{"name":"month4_3","type":"Unique","layers":[{"layer":[1345,0,0]}]},"3212":{"name":"month5_3","type":"Unique","layers":[{"layer":[1346,0,0]}]},"3213":{"name":"month6_3","type":"Unique","layers":[{"layer":[1347,0,0]}]}};
   });
 
   define('./data/travel.json', function (module, exports) {
@@ -68566,8 +80685,16 @@ try {
 function withLayers(p) {
   if (!p) return p;
   const rec = pictureLayers[String(p.pic_id)];
-  const layers = (rec && Array.isArray(rec.layers)) ? rec.layers : [];
+  /* 【并入他 3.3】只有「这一行确实记录到了伙伴」时才替换伙伴图层；
+     没有伙伴信息的照片保持原图层（= 我们原来的画面，不做回退）。 */
+  const layers = (rec && Array.isArray(rec.layers))
+    ? (companionSlotForPicture(p) >= 0 ? pictureLayersFor(p, rec) : rec.layers) : [];
   const out = Object.assign({}, p, { layers });
+  /* 老档里的礼物盒好友照片没有内部 travelerSlot 字段，用 PictureTag 标记恢复，
+     而不是按轮换猜一个。 */
+  if (out.travelerSlot === undefined && isGiftBoxFriendPicture(out.pic_id)) {
+    out.travelerSlot = TV_PIC_FRIEND[Number(out.pic_id)];
+  }
   if (rec && rec.travelers) out.travelers = rec.travelers;
   return out;
 }
@@ -68983,7 +81110,8 @@ function tvWalk(areaId, effects, minutes, opts) {
        tool could never actually take its own route (the budget is 60..172 min). */
     if (path.length && used + base > minutes) break;
     used += cost;
-    path.push({ from: node, node: pick, e });
+    /* 【并入他 3.3】这一步有没有路遇伙伴，记在 path 上（照片要靠它）。 */
+    path.push({ from: node, node: pick, e, travelerSlot: tvEncounterSlot(e) });
     seen[String(pick)] = true;
     node = pick;
     /* The FIRST goal node the walk touches is the trip's destination. In most areas
@@ -69020,9 +81148,57 @@ function tvGapPicture(ownedTags, trip) {
 
 /** The postcards a trip brings home: one per photo slot that rolls under its own
     NodeEdge weight, plus the mandatory 目的地照 on arrival. */
+  /* V41-TRAVEL-MAP ================= 旅行地图伙伴（依赖 state） ================= */
+
+  /** 这条路上会遇到伙伴吗：按边的 enc_per(%) 掷一次，命中返回伙伴槽位（0–2），否则 -1。 */
+  function tvEncounterSlot(edge) {
+    const slot = TV_TRAVEL_FRIEND_SLOT[String((edge && edge.en) || '').toLowerCase()];
+    const per = Number((edge && edge.ep) || 0);
+    if (slot === undefined || per <= 0) return -1;
+    return Math.random() * 100 < per ? slot : -1;
+  }
+
+  /** 这次行程实际同行的那位（取路径上第一个记录到的伙伴槽位）。 */
+  function tvTripTravelerSlot(trip) {
+    if (!trip || !Array.isArray(trip.path)) return -1;
+    for (const step of trip.path) {
+      const slot = Number(step && step.travelerSlot);
+      if (slot >= 0 && slot <= 2) return slot;
+    }
+    return -1;
+  }
+
+  function companionSlotForPicture(p) {
+    const explicit = Number(p && p.travelerSlot);
+    if (explicit >= 0 && explicit <= 2) return explicit;
+    return -1;
+  }
+
+  /** 把 Picture 记录里角色为 bh 的伙伴图层换成"实际遇到的那位"；没遇到就去掉该图层。 */
+  function pictureLayersFor(p, rec) {
+    const slot = companionSlotForPicture(p);
+    return ((rec && rec.layers) || []).map((entry) => {
+      if (!entry || entry.role !== 'bh' || !entry.layer) return entry;
+      const variants = TV_COMPANION_LAYER_VARIANTS[Number(entry.layer[0])];
+      /* 合成美术（找不到成组图层）保持原样；可替换的伙伴图层在"没遇到伙伴"时移除。 */
+      if (!variants) return entry;
+      if (slot < 0 || variants[slot] === undefined) return null;
+      return Object.assign({}, entry, {
+        layer: [variants[slot], entry.layer[1], entry.layer[2]],
+      });
+    }).filter((entry) => entry !== null);
+  }
+
+  /** 礼物盒好友照片：这些图不该被"路遇/目标"发出来（配我们已有的 TV_PIC_FRIEND）。 */
+  function isGiftBoxFriendPicture(picId) {
+    return Object.prototype.hasOwnProperty.call(TV_PIC_FRIEND, Number(picId));
+  }
+
 function tvPhotos(trip, wantFill, ownedTags) {
   const cap = Math.max(1, Number(DEF('PICTURE_GETMAX', 4)));
   const out = [];
+  /* 【并入他 3.3】条目仍然是 id（下游按 id 消费）；
+     伙伴信息记在行程 path 上，由照片行自己的 travelerSlot 决定图层。 */
   const add = (id) => {
     if (id === undefined || id === null) return;
     if (out.indexOf(id) === -1 && out.length < cap) out.push(id);
@@ -69037,13 +81213,15 @@ function tvPhotos(trip, wantFill, ownedTags) {
         if (!slot[1] || out.length >= cap) return;
         if (Math.random() * 100 >= Number(slot[2] || 0)) return;
         const ids = TV_TAG_PICS[String(slot[1])] || [];
-        if (ids.length) add(ids[tvRand(0, ids.length - 1)]);
+        const routeIds = ids.filter((id) => !isGiftBoxFriendPicture(id));
+        if (routeIds.length) add(routeIds[tvRand(0, routeIds.length - 1)], step.travelerSlot);
       });
   });
   if (trip.goal) {
     const ids = (TV_TAG_PICS[String(trip.goal.picTag)] || [])
       .concat(TV_GOAL_PICS[String(trip.goal.place)] || []);
-    const fresh = ids.filter((id) => out.indexOf(id) === -1);
+    const fresh = ids.filter((id) => !isGiftBoxFriendPicture(id)
+      && out.indexOf(id) === -1);
     if (fresh.length) add(fresh[tvRand(0, fresh.length - 1)]);
   }
   if (!out.length && PICTURE_IDS.length) {
@@ -69344,6 +81522,60 @@ const CRAFT_MATERIALS_BY_STYLE = {
 const CRAFT_DEFAULT_MATERIALS = [{ item_id: 10001, count: 2 }];
 /* 【自设计】制作时长：原版在服务端。默认 15 分钟，可用 FROG_CRAFT_SEC 覆盖。 */
 const CRAFT_SECONDS = Math.max(5, Number(process.env.FROG_CRAFT_SEC || 15 * 60));
+
+/* V37-POCKET-TUMBLER 【并入他 3.3】口袋（挂兜）与不倒翁：
+   两张配方表与外观数据都来自客户端表（PocketData / TumblerData / TumblerPathData）。
+   台面 5–9 号位放绳 11102 做口袋、放果子 11001 做不倒翁；再放一件特殊材料就做专属款。 */
+const POCKET_BLUEPRINT_ID = 10601;
+const POCKET_ROPE_ID = 11102;
+const POCKET_TOOLS = ['knife', 'needle'];
+const POCKET_BASE_MATERIALS = [
+  { item_id: 10005, count: 1 },      // 粗布
+  { item_id: 10004, count: 1 },      // 灯芯草
+  { item_id: 10006, count: 1 },      // 毛边纸
+];
+const POCKET_DATA = new Map(Object.entries(gamedata.tables.pocketData || {})
+  .map(([id, row]) => [Number(id), row]));
+const POCKET_RECIPE_OUTPUTS = {
+  common: [22011, 22012, 22013],     // 三种绳编挂兜
+  special: new Map([
+    [10103, [22021]],                // 棕榈叶 -> 雨林挂兜
+    [10104, [22031]],                // 海螺贝 -> 海洋挂兜
+  ]),
+};
+const TUMBLER_BLUEPRINT_ID = 10401;
+const TUMBLER_FRUIT_ID = 11001;
+const TUMBLER_TOOLS = ['brush', 'knife'];
+const TUMBLER_BASE_MATERIALS = [
+  { item_id: 10001, count: 1 },      // 松木
+  { item_id: 10006, count: 1 },      // 毛边纸
+];
+const TUMBLER_DATA = new Map((gamedata.tables.tumblerData || [])
+  .map((row) => [Number(row.id), row]));
+const TUMBLER_PATH_DATA = new Map((gamedata.tables.tumblerPathData || [])
+  .map((row) => [Number(row.id), row]));
+const TUMBLER_RECIPE_OUTPUTS = {
+  common: [20011, 20021, 20031, 20041],   // 胡桃、尖栗、兰栗、橡子
+  special: new Map([
+    [10101, [20111]],                // 岩纹石 -> 石头
+    [10105, [20121]],                // 紫檀木 -> 蹴鞠
+    [10104, [20151]],                // 海螺贝 -> 海螺
+    [10107, [20131, 20141, 20171]],  // 秋芦荻 -> 南瓜、丑橘、萝卜
+  ]),
+};
+/* 特殊材料 <-> 风格（客户端 CRAFT_SPECIAL_BY_STYLE 的反查；后面「制作模型」阶段会用到） */
+const CRAFT_SPECIAL_BY_STYLE = {
+  2: 10101, 3: 10102, 4: 10103, 5: 10104, 6: 10105, 7: 10106, 8: 10107, 9: 10108,
+  10: 10102, 11: 10108,
+};
+const CRAFT_STYLE_BY_SPECIAL = new Map(
+  Object.entries(CRAFT_SPECIAL_BY_STYLE).map(([style, itemId]) => [Number(itemId), Number(style)]));
+const CRAFT_TOOL_VARIANTS = {
+  saw: [10201, 10211, 10221], brush: [10202, 10212, 10222], hammer: [10203, 10213, 10223],
+  needle: [10204, 10214, 10224], knife: [10205, 10215, 10225],
+};
+const CRAFT_TOOL_NAMES = { saw: '锯子', brush: '毛刷', hammer: '锤子', needle: '棒针', knife: '小刀' };
+
 const ITEM_TYPE_DRAWING = 13;      // 图册（图纸物品）
 const SPECIALTY_MAX = DEF('SPECIALTY_MAX', 100);
 
@@ -69394,7 +81626,35 @@ const HANDCRAFT_MATERIAL_ID = 8000;
 const ROTTEN_WOOD_ID = 8001;
 const WOOD_PIECE_SEC = CRAFT_STAGE_SEC * 3;
 // Temporary user-requested pacing: one reserved item per 5 minutes, fertility +1.
-const COMPOST_DURATION_SEC = 5 * 60;
+const COMPOST_DURATION_SEC = 5 * 60;   // 我们 V3.6/V3.7 的统一时长（回退值）
+/* V40-PREFER-HIS 【V4.0】默认改用他的发酵时长：20001–3 立即（0 秒）、20004–6 三天。
+   想回到统一的 5 分钟：FROG_COMPOST_SEC=300。 */
+const COMPOST_HIS_RULES = new Map([[20001, 0], [20002, 0], [20003, 0],
+  [20004, 3 * 86400], [20005, 3 * 86400], [20006, 3 * 86400]]);
+const COMPOST_FLAT_SEC = process.env.FROG_COMPOST_SEC !== undefined
+  ? Math.max(0, Number(process.env.FROG_COMPOST_SEC) || 0) : null;
+/* V37-WISH-WORKCLOCK 【并入他 3.3 的可选项】手工品"要正在做手工才推进"：
+   他给手工品加了 work_left 工作时钟，只有蛙蛙正在做手工时才计时。
+   我们保留按阶段计时，只加上"到点时必须在做手工"这一条（等价、更简单）。
+   默认关（V3.6 的玩家说明写的是 86/129 分钟一阶段）；想照他的来设 1。 */
+/* V40-PREFER-HIS 【V4.0】默认启用他的工作时钟（只有蛙蛙在做手工时才推进）。
+   想回到 V3.7 的阶段墙钟：FROG_WISH_WORKCLOCK=0。 */
+const WISH_WORKCLOCK = String(process.env.FROG_WISH_WORKCLOCK || '1') !== '0';
+/* V40-PREFER-HIS 他的手工品不需要工具/材料；我们 V3.7 的门槛作为可选项保留。 */
+const HANDCRAFT_GATE = String(process.env.FROG_HANDCRAFT_GATE || '') === '1';
+/* V40-PREFER-HIS 他的"风格没有特殊材料就不可做"。默认关：官方 1088 表里目标件都是 style 14，
+   启用会让 27 种全部不可做（见 v37_craft_model_test.js 的断言）。 */
+const CRAFT_STRICT_SPECIAL = String(process.env.FROG_CRAFT_STRICT_SPECIAL || '') === '1';
+/* V37-SOIL-STARS 【并入他 3.3】土地肥力：点数 / 星级 / 每日衰减。
+   他那边每个发酵物的点数是 FERTILIZER_RULES（20001=10、20002=20、20003=30，
+   20004–20006 同为 10/20/30 但发酵要 3 天）。发酵**时长**保留我们这条线用户指定的
+   5 分钟，不采用他的 0/3 天。 */
+const SOIL_FERTILITY_MAX = 100;
+const SOIL_FERTILITY_DECAY_PERIOD_SEC = 86400;
+const SOIL_FERTILITY_DECAY_PER_PERIOD = 1;
+const SOIL_STAR_THRESHOLDS = [0, 20, 50, 80];      // 0/1/2/3 星
+const FERTILIZER_POINTS = new Map([[20001, 10], [20002, 20], [20003, 30],
+  [20004, 10], [20005, 20], [20006, 30]]);
 const COMPOSE_RECIPE_ID = 5502;      // Define.ComposeId, recovered
 const COMPOSE_AMULET_ID = 1306;      // 紫檀木护符 -- OUR reading, see above
 /* The three pieces, taken from the Item table rather than hard-coded so the list
@@ -69562,7 +81822,8 @@ const FURNITURE_TRIP_RELIEF = envNum('FROG_FURNITURE_TRIP_RELIEF', 5, 1);
 const FURNITURE_HANDCRAFT_RELIEF = envNum('FROG_FURNITURE_HANDCRAFT_RELIEF', 3, 1);
 const FURNITURE_CRAFT_RELIEF = envNum('FROG_FURNITURE_CRAFT_RELIEF', 2, 1);
 const FURNITURE_AUTO_REPLACE_MIN_SEC = envNum('FROG_FURNITURE_AUTO_REPLACE_MIN_SEC', 8 * 3600, 60);
-const FURNITURE_AUTO_REPLACE_MAX_SEC = envNum('FROG_FURNITURE_AUTO_REPLACE_MAX_SEC', 12 * 3600, 60);
+const FURNITURE_AUTO_REPLACE_MAX_SEC = Math.max(FURNITURE_AUTO_REPLACE_MIN_SEC,
+  Number(process.env.FROG_FURNITURE_AUTO_REPLACE_MAX_SEC || 12 * 60 * 60));
 const FURNITURE_AUTO_REPLACE_CHANCE = envNum('FROG_FURNITURE_AUTO_REPLACE_CHANCE', 35, 0);
 /* 见文件头"差异 1"：默认每拍检查，概率仍 35%；设成 10800 就是他的 3 小时。 */
 const FURNITURE_AUTO_CRAFT_MIN_SEC = envNum('FROG_FURNITURE_AUTO_CRAFT_MIN_SEC', 0, 0);
@@ -69603,7 +81864,7 @@ const FARM_SPECIALTY_IDS = ((gamedata.tables && gamedata.tables.Specialty) || []
   .filter((s) => FARM_PLACES.indexOf(s.place) !== -1)
   .map((s) => Number(s.itemId));
 
-const SAVE_VERSION = 1;
+const SAVE_VERSION = 2;
 const CLOVER_SLOTS = 20;
 /* Clover timing, now CONFIRMED rather than guessed: the Japanese original's
    decompiled CloverFarm uses
@@ -69639,7 +81900,7 @@ function rollCloverRebirth() {
          completely separate album_* channel.
      [5..] item ids (type Specialty=3 go to the gift box, others are drops)
    frog.status: 0 = home, 1 = travelling.                                  */
-const TIMER_EVENT = { NONE: 0, GoTravel: 1, BackHome: 2, Picture: 3, NewNote: 15, FurnitureFinish: 21, FurniturePut: 22 };
+const TIMER_EVENT = { NONE: 0, GoTravel: 1, BackHome: 2, Picture: 3, NewNote: 15, FurnitureFinish: 21, FurniturePut: 22, PartyGo: 23, PartyResult: 24 };
 const EV_GO_TRAVEL = TIMER_EVENT.GoTravel;
 const EV_BACK_HOME = TIMER_EVENT.BackHome;
 /* 15 = the client's own `TimerEvent.Type.NewNote` (Result.eventSystem's
@@ -69659,15 +81920,17 @@ const EV_FURNITURE_FINISH = TIMER_EVENT.FurnitureFinish;
    something playable, keep the original numbers documented here, allow env
    overrides. */
 const GUEST_ROLL_SEC = Number(process.env.FROG_GUEST_ROLL || 60);
-const GUEST_CHANCE = Number(process.env.FROG_GUEST_CHANCE || 35);/* 串门访客 pacing -- these are OUR choices (the original schedule was
+const GUEST_CHANCE = Number(process.env.FROG_GUEST_CHANCE || 50);/* 串门访客 pacing -- these are OUR choices (the original schedule was
    server-side), kept separate from the 邻居 guest knobs so each can be tuned. */
 const VISITOR_ROLL_SEC = Number(process.env.FROG_VISITOR_ROLL || 300);
 const VISITOR_CHANCE = Number(process.env.FROG_VISITOR_CHANCE || 25);
 const VISITOR_STAY_SEC = Number(process.env.FROG_VISITOR_STAY || 900);
 const VISITOR_COOL_SEC = Number(process.env.FROG_VISITOR_COOL || 600);
-const VISITOR_FOOD_MAX = Number(process.env.FROG_VISITOR_FOOD_MAX || 20);
+
 /* 友情绘本 (drawing) pacing -- OUR choices, the original schedule was server-side. */
-const DRAWING_CHANCE = Number(process.env.FROG_DRAWING_CHANCE || 75);
+/* V40-PREFER-HIS 【V4.0】默认改用他的邀约概率 20%（我们 V3.6/V3.7 是 75%）。
+   想回到 75%：FROG_DRAWING_CHANCE=75。 */
+const DRAWING_CHANCE = Number(process.env.FROG_DRAWING_CHANCE || 20);
 const DRAWING_TRIP_SEC = Number(process.env.FROG_DRAWING_TRIP || 600);
 /* The item that unlocks the whole feature: the client's `isOpen()` is
    `ItemModel.getHouseItemCount(Tabikaeru.ItemID.DRAWING_BOOK) > 0`, and that
@@ -69721,12 +81984,12 @@ const WISH_POOL_COIN_MAX = Number(process.env.FROG_WISH_COIN_MAX || 10);
 /* The visitor cooldown WE chose is 300 s for playability; the ORIGINAL is
    define.json's FRIEND_VISIT_COOL = 21600 (6 h). FROG_FAITHFUL=1 uses the real
    one, and FROG_GUEST_COOL always wins if set. */
-const GUEST_COOL_SEC = pace('FROG_GUEST_COOL', 300, ORIG.friendVisitCool);
+const GUEST_COOL_SEC = pace('FROG_GUEST_COOL', 0, ORIG.friendVisitCool);
 /* gameplay table: 串门/邻居 both have DurationFloor = DurationUpper = 30 minutes,
    so a visit lasts 1800 seconds. */
 /* 【并入他的 V3 的可选项】他是 3600（1 小时）；我们默认保留 3.4 的 30 分钟，
    想照他的来：FROG_GUEST_STAY=3600。 */
-const GUEST_STAY_SEC = Number(process.env.FROG_GUEST_STAY || 1800);
+const GUEST_STAY_SEC = Number(process.env.FROG_GUEST_STAY || 3600);
 const GUEST_POS_MAX = Number(DEF('FRIEND_RNDPOS_MAX', 3));
 
 // Offline pacing: the live game used 6-72h trips (TRAVEL_TIME_MIN = 60 in
@@ -69759,8 +82022,8 @@ const TRAVEL_WAIT_UNPREPARED_MAX = pace('FROG_WAIT_MAX', 5 * 3600, ORIG.restTick
    travel window -- now it uses the table's own numbers. */
 /* 表里这两项是**分钟**（10 / 20），引擎存的是秒，所以要 ×60 —— 他的口径。
    以前按秒用，一趟放浪只有 10–20 秒。 */
-const DRIFT_RETURN_MIN = Number(process.env.FROG_DRIFT_MIN || (ORIG.driftReturn * 60));
-const DRIFT_RETURN_MAX = Number(process.env.FROG_DRIFT_MAX || (ORIG.driftReturnMax * 60));
+const DRIFT_RETURN_MIN = pace('FROG_DRIFT_MIN', 100 * 60, ORIG.driftReturn);
+const DRIFT_RETURN_MAX = pace('FROG_DRIFT_MAX', 200 * 60, ORIG.driftReturnMax);
 
 /**
  * The upstream server PUSHES the whole game state right after hall_enter_game.
@@ -69860,6 +82123,8 @@ function defaultState() {
     achievesTime: [],
     frog: {
       status: 0, motion: 0, icon: 0, picShow: 0, todayStep: 0, taobaoData: null,
+      /* 【并入他 3.3】季节彩蛋 id（0 = 无）。 */
+      eggId: 0,
       // at-home activity sequence (see refreshFrogMotion)
       motionPattern: null, motionStep: 0, motionNextAt: 0,
     },
@@ -69972,7 +82237,11 @@ function defaultState() {
          decorationPutID: the decoration currently on display
          decorationStatus: 0/1 -> picks pic[0] (花苞) or pic[1] (花朵)
        They arrive as `{has_list, put_id, status}`. */
-    decoration: { hasList: [], putId: 0, status: 0 },
+    decoration: {
+      hasList: [], putId: 0, status: 0,
+      /* V37-FLOWER-VASE 【并入他 3.3】摆放时间 / 下一次自动更换时间 / 已自动更换次数。 */
+      startedAt: 0, nextAutoChangeAt: 0, autoChangeCount: 0, autoChangeLastAt: 0,
+    },
     /* ---- 料理 (CookingModel) ----
        The client's serverData, verbatim:
          {month, month_pro, week, complete, select, refresh_time, task_list}
@@ -70016,7 +82285,7 @@ function defaultState() {
                     (pray_load_grays.boxes -> BoxCraftShowView -> pray_confirm_make_box).
        seq        : monotonic `u_id`, which the client stores in a cookie to stop
                     re-announcing the same craft. */
-    craft: { wishes: [], stamps: [], pending: [], seq: 0 },
+    craft: { wishes: [], stamps: [], pending: [], seq: 0, workClockAt: 0 },
     /* ---- 春节贺卡 / 祝福贺卡 / 生日蛋糕 ----
        `card_info` is a REAL OBJECT with `tags` of length 3 -- the client indexes
        `card_info.tags[n]` and maps a slot to a card layer with `tags[slot]-1`, so an
@@ -70108,9 +82377,17 @@ function defaultState() {
        (the client slices 0..5 and 5..10 into two separate rows). The compost
        `box_list` uses 0 for empty instead -- do not unify them. */
     furniture: {
+      /* V37-MERCHANT-STARS 【并入他 3.3】当天的 8 个货位与它们属于哪一天。 */
+      shopOffers: {},
+      shopOffersDay: 0,
       bench: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
       benchLock: 0,         // bench_lock: 1 while a craft is running (client refuses edits)
       craft: null,          // 进行中的制作 {furnitureId, drawing, materials, startedAt, finishAt}
+      /* V37-FURNITURE-MOTION 【并入他 3.3】排队的活：等蛙蛙拿起对应工具的动作才开工。 */
+      craftQueued: 0,
+      craftQueuedFurnitureId: 0,
+      craftQueuedBenchSlot: -1,
+      nextCraftCheckAt: 0,
       owned: PLAIN_FURNITURE_IDS.slice(), // All default 素 furniture is owned.
       placed: [],           // put_fur: [{type, id}] currently in the courtyard
       replaceFur: [],       // replace_fur: furniture TYPEs being rotated out
@@ -70128,12 +82405,16 @@ function defaultState() {
       shopDailyBought: {},  // repeatable stock is replenished each local calendar day
       welfareTaken: {},     // shop id -> welfare goods taken on `welfareDay`
       welfareDay: {},       // shop id -> createDay() the welfare count belongs to
-      compost: { showIndex: 1, replaceIndex: 0, boxIndex: 0, boxes: [0, 0, 0, 0, 0, 0], list: [21000], job: null, fertility: 0 },
-      pocket: { showIndex: 0, replaceIndex: 0, clover: 0 },
-      tumbler: { showIndex: 0, replaceIndex: 0 },
+      compost: { showIndex: 1, replaceIndex: 0, boxIndex: 0, boxes: [0, 0, 0, 0, 0, 0], list: [21000], job: null, fertility: 0, fertilityDecayAt: 0 },
+      pocket: { showIndex: 0, replaceIndex: 0, clover: 0, list: [] },
+      tumbler: { showIndex: 0, replaceIndex: 0, list: [] },
     },
     tasks: [],
     taskList: [],
+    /* V37-RAIN-TASKS 【并入他 3.3】任务计数（按任务 id）/ 任务档位。 */
+    taskCounters: {},
+    taskTiers: {},
+
     events: [],
     handbook: { collections: [], specialtys: [] },
     createdAt: t,
@@ -70412,6 +82693,25 @@ function loadState(savePath) {
         s.furniture.compost.list = [21000];
         s.furniture.compost.showIndex = 1;
       }
+      /* 【并入他 3.3】老档没有 fertilityDecayAt：从现在起算衰减（不追溯扣分）；
+         肥力值夹到 [0, SOIL_FERTILITY_MAX]。 */
+      if (!Number.isFinite(Number(s.furniture.compost.fertilityDecayAt))
+          || Number(s.furniture.compost.fertilityDecayAt) <= 0) {
+        s.furniture.compost.fertilityDecayAt = nowSec();
+      }
+      s.furniture.compost.fertility = Math.max(0, Math.min(SOIL_FERTILITY_MAX,
+        Math.floor(Number(s.furniture.compost.fertility) || 0)));
+      /* 【并入他 3.3】老档没有口袋/不倒翁列表：补空数组；已有的列表过滤掉表里不存在的 id。 */
+      if (!Array.isArray(s.furniture.pocket.list)) s.furniture.pocket.list = [];
+      s.furniture.pocket.list = s.furniture.pocket.list
+        .map((id) => Number(id)).filter((id) => POCKET_DATA.has(id));
+      s.furniture.pocket.clover = Math.max(0, Math.floor(Number(s.furniture.pocket.clover) || 0));
+      if (!Array.isArray(s.furniture.tumbler.list)) s.furniture.tumbler.list = [];
+      s.furniture.tumbler.list = s.furniture.tumbler.list
+        .map((entry) => (entry && typeof entry === 'object'
+          ? { id: Number(entry.id), layers: Array.isArray(entry.layers) ? entry.layers : [] }
+          : { id: Number(entry), layers: [] }))
+        .filter((entry) => TUMBLER_DATA.has(Number(entry.id)));
       // Preserve today's purchases when migrating the old lifetime-only stock ledger.
       if (!(raw.furniture || {}).shopDailyBought) {
         s.furniture.shopDay = merchantDayAt(Number(raw.lastSeen) || nowSec());
@@ -70429,12 +82729,337 @@ function loadState(savePath) {
     report.reason = 'migrate-error';
   }
   // old saves predate the field, and a damaged one can hold anything
-  if (!(Number(s.saveVersion) >= 1)) s.saveVersion = SAVE_VERSION;
+  /* V37-WISH-WORKCLOCK 老档按版本迁移：v1 -> v2（V3.7 会回填新字段）；比本版新的档不动。 */
+  if (Number(s.saveVersion) < SAVE_VERSION) s.saveVersion = SAVE_VERSION;
+  /* %s 【抄他 3.3】他的进度模型用的字段：老档缺失就回填默认值（已有值不动）。
+     默认值取自跑他的引擎导出的新档。 */
+  {
+    const HIS_DEFAULTS = [
+      ['calendar', 'rewardVersion', 5],
+      ['flowerpot', 'plantingVersion', 2],
+      ['travel', 'scheduleVersion', 1],
+      ['travel', 'lastCheckAt', 0],
+      ['travel', 'lastCheckRoll', null],
+      ['travel', 'preparingUntil', 0],
+      ['furniture', 'shopStockDay', 0],
+      ['selectedAchieve', null, undefined],
+      ['drawingQueued', false, undefined],
+      ['drawingRestUntil', 0, undefined],
+    ];
+    for (const row of HIS_DEFAULTS) {
+      const [a, b, value] = row;
+      if (b === undefined) {
+        if (s[a] === undefined) s[a] = value;
+      } else {
+        if (!s[a] || typeof s[a] !== 'object') s[a] = {};
+        if (s[a][b] === undefined) s[a][b] = value;
+      }
+    }
+    if (s.furniture && typeof s.furniture === 'object') {
+      if (s.furniture.moodReplaceCount === undefined) s.furniture.moodReplaceCount = 0;
+      if (s.furniture.moodReplaceThreshold === undefined) s.furniture.moodReplaceThreshold = 0;
+      if (s.furniture.moodRecoverAutoFurniture === undefined) s.furniture.moodRecoverAutoFurniture = 0;
+      if (s.furniture.compost && typeof s.furniture.compost === 'object') {
+        if (s.furniture.compost.fermenting === undefined) s.furniture.compost.fermenting = null;
+        if (s.furniture.compost.fertilizerLoads === undefined) s.furniture.compost.fertilizerLoads = [];
+      }
+    }
+    if (s.craft && typeof s.craft === 'object'
+      && Number.isFinite(Number(s.craft.finishAt)) && (s.craft.workClockAt === undefined)) {
+      s.craft.workClockAt = 0;
+    }
+  }
+
+
   if (!Array.isArray(s.clovers) || s.clovers.length !== CLOVER_SLOTS) s.clovers = makeClovers();
   s.lastSeen = nowSec();
   s.__saveReport = report;
   return s;
 }
+
+/* V37-CALENDAR-EGGS ============ 天气（按日期与季节）/ 节气日 / 本地日键（纯函数，模块级） ============ */
+
+/* 5–10 月在家里"扇扇子"动作出彩蛋的概率（他的口径，可用 env 改）。 */
+const FROG_FAN_ACTION_CHANCE = Math.min(100, Math.max(0,
+  Number(process.env.FROG_FAN_ACTION_CHANCE || 10)));
+
+/* 24 节气的经验系数（他给的复原表）：
+   节气日 = floor(年份后两位 * 0.2422 + 系数) - floor((年份后两位 - 1) / 4)。 */
+const SOLAR_TERM_DAY_COEFFICIENTS = [
+  5.4055, 20.12, 3.87, 18.73, 5.63, 20.646,
+  4.81, 20.1, 5.52, 21.04, 5.678, 21.37,
+  7.108, 22.83, 7.5, 23.13, 7.646, 23.042,
+  8.318, 23.438, 7.438, 22.36, 7.18, 21.94,
+];
+
+function solarTermDay(year, termIndex) {
+  const yearInCentury = Number(year) % 100;
+  const coefficient = SOLAR_TERM_DAY_COEFFICIENTS[termIndex];
+  if (!Number.isFinite(yearInCentury) || coefficient === undefined) return 0;
+  return Math.floor(yearInCentury * 0.2422 + coefficient)
+    - Math.floor((yearInCentury - 1) / 4);
+}
+
+function seasonForMonth(month) {
+  if (month >= 3 && month <= 5) return 1;
+  if (month >= 6 && month <= 8) return 2;
+  if (month >= 9 && month <= 11) return 3;
+  return 4;
+}
+
+/* 每个季节的天气候选（重复项就是权重）。雪(8/9)只在冬天，霜(6)只在秋冬。 */
+const WEATHER_BY_SEASON = {
+  1: [1, 1, 2, 2, 2, 3, 3, 4, 5, 7],
+  2: [1, 1, 1, 2, 2, 3, 3, 3, 4, 5, 7],
+  3: [1, 1, 2, 2, 2, 3, 3, 4, 5, 6, 7],
+  4: [1, 1, 2, 2, 5, 6, 6, 7, 8, 8, 9],
+};
+
+function weatherForDate(year, month, day) {
+  const season = seasonForMonth(month);
+  const candidates = WEATHER_BY_SEASON[season];
+  const dayIndex = Math.floor(Date.UTC(year, month - 1, day) / 86400000);
+  return { season, weather: candidates[dayIndex % candidates.length] };
+}
+
+/* 本地日期键 YYYYMMDD（他的商店补货/货架与幸运日都按天归档用它）。 */
+function localDayKeyAt(at) {
+  const d = new Date(Number(at) * 1000);
+  return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+}
+
+/* V37-MERCHANT-STARS ============ 嘟嘟商店：星级货架 / 节气商店 / 特殊货架行 ============ */
+
+/* 家具礼包（内容物是"家具"而不是普通物品，开包时进 furniture.owned）。 */
+const FURNITURE_GIFT_BAG_IDS = new Set([204001, 204002]);
+
+/* 每天摆几个货位、以及各星级的抽中权重（他的复原值）。 */
+const MERCHANT_DAILY_OFFER_COUNT = 8;
+/* V40-PREFER-HIS 售罄行是否还列出来（V4.0 默认不列，与他的实现一致）。 */
+const SHOP_KEEP_SOLD_OUT = String(process.env.FROG_SHOP_KEEP_SOLD_OUT || '') === '1';
+const MERCHANT_STAR_WEIGHTS = new Map([[0, 35], [1, 30], [2, 18], [3, 10], [4, 5], [5, 2]]);
+
+/* 每档星级的候选货架。 */
+const MERCHANT_STAR_ROWS = new Map([
+  [0, [8024]],
+  [1, [8008, 7014, 7024, 7025, 7026, 7027, 7028]],
+  [2, [6001, 6002, 6003, 6004, 6005, 6006, 9001, 9002, 9003]],
+  [3, [3006, 8001, 8002, 8003, 8004, 8005, 8006, 8009,
+    8010, 8011, 8012, 8013, 8014, 8015, 8017, 8018, 8019, 8020, 8021, 8025]],
+  [4, [1001, 1002, 1003, 1004, 1005, ...Array.from({ length: 27 }, (_, i) => 4001 + i),
+    2001, 2002, 2003, 2004, 2005, 2006, 2007, 3001, 3003, 3004, 3005, 3008, 3009,
+    5, 6, 6007, 6008, 6009, 6010, 6011, 6012, 6013, 6014, 6015, 6016, 6019, 8027, 8035, 8036,
+    8053, 8054]],
+  [5, [1, 2, 3002, 3007, 3010, 3011, 8007, 8016, 8026, 8030, 8031, 8032, 8033, 8034]],
+]);
+
+/* 本地补的出售行。他那边补了 7 行（id 8030–8036），但**我们合并后的官方表里**：
+     · 201001/201002/201003/201004/201008（古琴书桌、森之国度系列）**本来就有出售行**，不用补；
+     · 8035/8036 这两个 id 已被官方行占用（卖的是南瓜豆沙糕 116 / 酥圈圈 117），不能覆盖；
+     · 只有 **不倒翁图鉴 10401** 与 **挂兜手工制作 10601** 这两件图纸在我们表里没有任何出售行。
+   所以只补这两行，并挪到空闲 id 8053/8054（价格/限购沿用他的：500、限 1、唯一）。
+   注意：客户端要显示这两行，还需要他客户端那段"把未知行加进 KeyGetter"的补丁（客户端批次）。 */
+const MERCHANT_SPECIAL_ROWS = [
+  { id: 8053, item_id: 10401, name: '不倒翁图鉴', price: 500, limit: 1, unique: true, info: '不倒翁家具制作图纸' },
+  { id: 8054, item_id: 10601, name: '挂兜手工制作', price: 500, limit: 1, unique: true, info: '挂兜制作图纸' },
+];
+for (const row of MERCHANT_SPECIAL_ROWS) {
+  if (!FURNITURE_SHOP.has(row.id)) FURNITURE_SHOP.set(row.id, Object.assign({
+    has_item: 0, limit: 0, shop_limit: 0, sign: 0, type: 999, order: 900,
+  }, row));
+}
+
+/* 24 节气 -> 节气货架（他的映射表）。 */
+const MERCHANT_SOLAR_TERM_OFFERS = [
+  { month: 1, term: 0, shopId: 113 }, { month: 1, term: 1, shopId: 101 },
+  { month: 2, term: 2, shopId: 102 }, { month: 2, term: 3, shopId: 114 },
+  { month: 3, term: 4, shopId: 103 }, { month: 3, term: 5, shopId: 115 },
+  { month: 4, term: 6, shopId: 116 }, { month: 4, term: 7, shopId: 104 },
+  { month: 5, term: 8, shopId: 117 }, { month: 5, term: 9, shopId: 105 },
+  { month: 6, term: 10, shopId: 118 }, { month: 6, term: 11, shopId: 106 },
+  { month: 7, term: 12, shopId: 119 }, { month: 7, term: 13, shopId: 107 },
+  { month: 8, term: 14, shopId: 108 }, { month: 8, term: 15, shopId: 120 },
+  { month: 9, term: 16, shopId: 121 }, { month: 9, term: 17, shopId: 109 },
+  { month: 10, term: 18, shopId: 122 }, { month: 10, term: 19, shopId: 110 },
+  { month: 11, term: 20, shopId: 111 }, { month: 11, term: 21, shopId: 123 },
+  { month: 12, term: 22, shopId: 112 }, { month: 12, term: 23, shopId: 124 },
+];
+
+/** 今天是节气吗？是的话返回那天的节气货架 id（否则 0）。 */
+function solarTermShopFor(dayKey) {
+  const day = Number(dayKey);
+  const year = Math.floor(day / 10000);
+  const month = Math.floor(day / 100) % 100;
+  const dayOfMonth = day % 100;
+  const term = MERCHANT_SOLAR_TERM_OFFERS.find((entry) => (
+    entry.month === month && solarTermDay(year, entry.term) === dayOfMonth
+  ));
+  return term ? term.shopId : 0;
+}
+
+/* V37-FLOWER-VASE ============ 花盆生长速度 / 花瓶生命周期与自动更换 ============ */
+
+const DAY_SEC = 24 * 60 * 60;
+
+/* 野草类装饰（会长出来又枯掉的那几种）。 */
+const WILD_GRASS_DECORATIONS = new Set([1001, 1002, 1003, 1004, 1005]);
+const CULTIVATED_DECORATION_MIN = 10011;
+const CULTIVATED_DECORATION_MAX = 10063;
+
+/* 花瓶自动更换：每 24 小时掷一次，35% 概率换成别的已拥有装饰（他的口径，可用 env 改）。 */
+const VASE_AUTO_CHANGE_SECONDS = Math.max(60,
+  Number(process.env.FROG_VASE_AUTO_CHANGE_SECONDS || 24 * 60 * 60));
+const VASE_AUTO_CHANGE_CHANCE = Math.min(100, Math.max(0,
+  Number(process.env.FROG_VASE_AUTO_CHANGE_CHANCE || 35)));
+
+/* V37-RAIN-TASKS ============ 雨天客人彩蛋 / 绘本出行节奏 ============ */
+
+/* 客人到达时若在下雨，这位客人有 30% 概率带上雨天装扮彩蛋（0/1/2 号 -> 103/104/102）。 */
+const RAIN_GUEST_CHANCE = 0.30;
+const RAIN_GUEST_EGG = { 0: 103, 1: 104, 2: 102 };
+
+/* 绘本（友情邀约）的出行节奏 —— 他的口径：伙伴出门 4–8 小时、回来在家歇 1 小时、
+   每隔 8 小时才重新看一次邀约条件。邀约**概率**仍是我们这条线用户指定的 75%。 */
+const DRAWING_CHECK_COOLDOWN_SEC = Number(process.env.FROG_DRAWING_ROLL || 8 * 60 * 60);
+const DRAWING_HOME_REST_SEC = Number(process.env.FROG_DRAWING_REST || 60 * 60);
+const DRAWING_TRIP_MIN_SEC = Number(process.env.FROG_DRAWING_TRIP_MIN || 4 * 60 * 60);
+const DRAWING_TRIP_MAX_SEC = Number(process.env.FROG_DRAWING_TRIP_MAX || 8 * 60 * 60);
+
+/* V37-FURNITURE-MOTION ============ 做家具的工具动画 / 排队开工 ============ */
+
+/* 做家具时的具体工具动画（FrogMotionNum.make = 3，工具动画是 5..9）。 */
+  const FURNITURE_TOOL_MOTION = {
+    saw: 5, brush: 6, hammer: 7, needle: 8, knife: 9,
+  };
+
+/* 每个家具 type 需要哪些工具（他的 27 行表）。本轮只用于"演哪段工具动画"，
+   真正的按 type 卡工具留到「制作模型」那一轮。 */
+const CRAFT_TOOLS_BY_TYPE = {
+  1: ['hammer'], 2: ['hammer'], 3: ['brush', 'saw', 'needle', 'hammer'],
+  4: ['brush', 'saw', 'needle'], 5: ['brush', 'saw', 'knife'],
+  6: ['brush', 'saw', 'hammer', 'knife'], 7: ['needle', 'knife'],
+  8: ['knife', 'hammer'], 9: ['brush', 'saw', 'needle', 'knife'],
+  10: ['needle', 'hammer'], 11: ['knife', 'hammer'],
+  12: ['brush', 'saw', 'hammer'], 13: ['needle', 'knife'],
+  14: ['brush', 'hammer', 'knife'], 15: ['knife', 'hammer'],
+  16: ['brush', 'saw', 'hammer', 'knife'], 17: ['brush', 'hammer'],
+  18: ['brush', 'saw'], 19: ['needle', 'knife'],
+  20: ['brush', 'saw', 'hammer'], 21: ['hammer'],
+  22: ['brush', 'saw', 'hammer'], 23: ['brush', 'saw', 'needle'],
+  24: ['brush', 'saw', 'knife'], 25: ['needle', 'hammer'],
+  26: ['brush', 'saw', 'needle'],
+  27: ['brush', 'saw', 'needle', 'hammer', 'knife'],
+};
+
+/* 他的"排队开工"是可选流程（默认关，见文件头说明）。 */
+/* V40-PREFER-HIS 【V4.0】默认启用他的排队开工（等蛙蛙拿起对应工具的动作才开工）。
+   想回到 V3.7 的"抽中即开工"：FROG_CRAFT_QUEUE=0。 */
+const FROG_CRAFT_QUEUE = String(process.env.FROG_CRAFT_QUEUE || '1') !== '0';
+
+/* V37-CRAFT-MODEL ============ 制作模型：27 个 type 的基材表（他的复原表） ============ */
+
+/* 每个家具 type 的基准材料（他按官方指南复原的那张表）。 */
+const CRAFT_BASE_MATERIALS_BY_TYPE = {
+  1: [{ item_id: 10003, count: 4 }, { item_id: 10007, count: 1 }],
+  2: [{ item_id: 10003, count: 4 }, { item_id: 10007, count: 1 }],
+  3: [{ item_id: 10001, count: 2 }, { item_id: 10002, count: 2 }, { item_id: 10004, count: 1 }, { item_id: 10007, count: 1 }],
+  4: [{ item_id: 10001, count: 1 }, { item_id: 10002, count: 1 }, { item_id: 10004, count: 1 }],
+  5: [{ item_id: 10001, count: 1 }, { item_id: 10002, count: 1 }, { item_id: 10006, count: 2 }],
+  6: [{ item_id: 10001, count: 1 }, { item_id: 10002, count: 1 }, { item_id: 10005, count: 1 }, { item_id: 10007, count: 1 }],
+  7: [{ item_id: 10005, count: 3 }],
+  8: [{ item_id: 10005, count: 1 }, { item_id: 10006, count: 1 }, { item_id: 10007, count: 2 }],
+  9: [{ item_id: 10001, count: 2 }, { item_id: 10002, count: 1 }, { item_id: 10004, count: 1 }, { item_id: 10005, count: 2 }],
+  10: [{ item_id: 10003, count: 3 }, { item_id: 10004, count: 1 }],
+  11: [{ item_id: 10006, count: 3 }, { item_id: 10007, count: 1 }],
+  12: [{ item_id: 10001, count: 1 }, { item_id: 10002, count: 1 }, { item_id: 10007, count: 2 }],
+  13: [{ item_id: 10004, count: 1 }, { item_id: 10005, count: 1 }, { item_id: 10006, count: 2 }],
+  14: [{ item_id: 10001, count: 2 }, { item_id: 10002, count: 2 }, { item_id: 10005, count: 1 }],
+  15: [{ item_id: 10003, count: 2 }, { item_id: 10006, count: 2 }],
+  16: [{ item_id: 10001, count: 1 }, { item_id: 10002, count: 1 }, { item_id: 10006, count: 1 }, { item_id: 10007, count: 1 }],
+  17: [{ item_id: 10001, count: 3 }, { item_id: 10007, count: 1 }],
+  18: [{ item_id: 10001, count: 1 }, { item_id: 10002, count: 2 }],
+  19: [{ item_id: 10004, count: 2 }, { item_id: 10005, count: 2 }],
+  20: [{ item_id: 10001, count: 1 }, { item_id: 10002, count: 1 }, { item_id: 10003, count: 2 }],
+  21: [{ item_id: 10003, count: 2 }],
+  22: [{ item_id: 10001, count: 1 }, { item_id: 10002, count: 1 }, { item_id: 10007, count: 1 }],
+  23: [{ item_id: 10001, count: 1 }, { item_id: 10002, count: 1 }, { item_id: 10004, count: 1 }],
+  24: [{ item_id: 10001, count: 1 }, { item_id: 10002, count: 1 }, { item_id: 10005, count: 2 }, { item_id: 10006, count: 2 }],
+  25: [{ item_id: 10007, count: 2 }],
+  26: [{ item_id: 10001, count: 2 }, { item_id: 10002, count: 2 }, { item_id: 10004, count: 2 }],
+  27: [{ item_id: 10001, count: 1 }, { item_id: 10002, count: 1 }, { item_id: 10003, count: 1 },
+       { item_id: 10004, count: 1 }, { item_id: 10005, count: 1 }, { item_id: 10006, count: 1 }],
+};
+
+/* V41-TRAVEL-MAP ============ 旅行地图：伙伴同行 / 路遇 / 照片伙伴图层 ============ */
+
+/* 能在旅途中路遇、并出现在旅行照片里的三位伙伴（对应 NodeEdge.enc_name）。 */
+const TV_TRAVEL_FRIEND_SLOT = { bh: 0, cw: 1, yhc: 2 };
+
+/* 某张照片里的伙伴图层 -> 三位伙伴各自的图层 id。
+   官方 resources 表里伙伴图层是按 `xxx_bh` / `xxx_cw` / `xxx_yhc`（可带 `_后缀`）成组的，
+   这里把同一组的三张登记在一起；登记不全的（合成图）不参与替换。 */
+const TV_COMPANION_LAYER_VARIANTS = {};
+(function indexCompanionLayers() {
+  const resources = (gamedata.tables && gamedata.tables.resources) || {};
+  const byPath = {};
+  Object.keys(resources).forEach((id) => { byPath[String(resources[id]).toLowerCase()] = Number(id); });
+  Object.keys(resources).forEach((id) => {
+    const source = String(resources[id]).toLowerCase();
+    const match = source.match(/^(.*)_bh(_[a-z0-9]+)?$/);
+    if (!match) return;
+    const tail = match[2] || '';
+    const variants = ['bh', 'cw', 'yhc'].map((suffix) => (
+      byPath[match[1] + '_' + suffix + tail] || byPath[match[1] + '_' + suffix]
+    ));
+    if (variants.every((value) => value !== undefined)) {
+      TV_COMPANION_LAYER_VARIANTS[Number(id)] = variants;
+    }
+  });
+})();
+
+/* V40-VISITOR-GAP ============ 访客食物 / 访客摇号（他的口径） ============ */
+
+const VISITOR_ACTION_LIST = ((gamedata.tables || {}).visitors || {}).actionList || {};
+const VISITOR_FOOD_IDS = Object.keys(VISITOR_ACTION_LIST).map(Number)
+  .filter((n) => Number.isFinite(n)).sort((a, b) => a - b);
+  const VISITOR_FOOD_MAX = Math.max(1, Math.min(VISITOR_FOOD_IDS.length || 1,
+  Number(process.env.FROG_VISITOR_FOOD_MAX || VISITOR_FOOD_IDS.length || 1)));
+/* 他的访客摇号区间：8–10 小时。我们默认仍用 GUEST_ROLL_SEC（60 秒一拍），
+   只有显式设了 MIN/MAX（或 FROG_GUEST_ROLL）才走他的随机区间。 */
+const GUEST_ROLL_MIN_SEC = Number(process.env.FROG_GUEST_ROLL_MIN || process.env.FROG_GUEST_ROLL || 8 * 3600);
+const GUEST_ROLL_MAX_SEC = Number(process.env.FROG_GUEST_ROLL_MAX || process.env.FROG_GUEST_ROLL || 10 * 3600);
+
+/* V40-MOOD-V2 常量（抄他 3.3） */
+const FURNITURE_ANGER_CHANCE = Math.min(100, Math.max(0,
+  Number(process.env.FROG_FURNITURE_ANGER_CHANCE || 75)));
+const FURNITURE_ANGER_MIN_CHANGES = Math.max(1,
+  Number(process.env.FROG_FURNITURE_ANGER_MIN_CHANGES || 3));
+const FURNITURE_ANGER_MAX_CHANGES = Math.max(FURNITURE_ANGER_MIN_CHANGES,
+  Number(process.env.FROG_FURNITURE_ANGER_MAX_CHANGES || 6));
+const FURNITURE_AUTO_REPLACE_RELIEF = Math.max(1,
+  Number(process.env.FROG_FURNITURE_AUTO_REPLACE_RELIEF || 5));
+const FURNITURE_CRAFT_CHECK_SECONDS = Math.max(60, Number(process.env.FROG_CRAFT_CHECK_SEC || 3 * 60 * 60));
+const FURNITURE_CRAFT_START_CHANCE = Math.min(1, Math.max(0,
+  Number(process.env.FROG_CRAFT_START_CHANCE || 0.35)));
+
+/* V40-REST 常量（抄他 3.3） */
+const FERTILIZER_RULES = new Map([
+    [20001, { points: 10, releaseSec: 0 }],
+    [20002, { points: 20, releaseSec: 0 }],
+    [20003, { points: 30, releaseSec: 0 }],
+    [20004, { points: 10, releaseSec: 3 * 86400 }],
+    [20005, { points: 20, releaseSec: 3 * 86400 }],
+    [20006, { points: 30, releaseSec: 3 * 86400 }],
+  ]);
+const CALENDAR_REWARD_VERSION = 5;
+const FLOWERPOT_STATE_VERSION = 2;
+const TRAVEL_SCHEDULE_VERSION = 1;
+const COMPOSE_PIECE_CHANCE = 12;
+const GIFTBOX_VISIT_TAGS = ['u_owl', 'u_rabbit', 'u_lotus', 'u_swan', 'u_light', 'u_mushroom', 'u_streetlight', 'u_snail'];
+const GUEST_BONUS_TICKET_CHANCE = Number(process.env.FROG_GUEST_BONUS_TICKET_CHANCE || 35);
+const GUEST_CLOVER_MIN = Number(process.env.FROG_GUEST_CLOVER_MIN || 50);
+const GUEST_CLOVER_MAX = Number(process.env.FROG_GUEST_CLOVER_MAX || 300);
+const FROG_MIRROR_PREP_SEC = Math.max(60, Number(process.env.FROG_MIRROR_PREP_SEC || 10 * 60));
 
 /* ---------------------------------------------------------------- engine */
 
@@ -70514,9 +83139,25 @@ function createEngine(opts) {
   })();
 
   /** 【自设计】某件家具需要的材料（原版配方在服务端）。 */
+  /* 【并入他 3.3】配方改成"按 type 的基准材料 + 该风格的特殊材料"。
+     说明：他的原版要求特殊材料**摆在工作台选择位**上，而且 style 没有登记就直接不可做；
+     我们这边台面没有"选择位"这一层，而且官方 1088 表里很多 type 的最高风格是 14/101
+     （他的 special 表只到 11），照搬会让这些件不可做。所以这里：
+       · 他的表里登记了该 type -> 用他的基材，并在该风格有 special 时追加一件；
+       · 没登记 -> 退回我们原来的 style/默认配方（保证 27 种都能做）。 */
   function craftMaterialsFor(furnitureId) {
     const def = FURNITURE_BY_ID.get(Number(furnitureId));
     if (!def) return null;
+    /* V40-PREFER-HIS 【V4.0 可选】他的原版规则：风格没有登记特殊材料 -> 这件不可做。
+       默认关（官方 1088 表里目标件都是 style 14，启用会让 27 种全不可做）。 */
+    if (CRAFT_STRICT_SPECIAL && !CRAFT_SPECIAL_BY_STYLE[Number(def.style)]) return null;
+    const base = CRAFT_BASE_MATERIALS_BY_TYPE[Number(def.type)];
+    if (Array.isArray(base) && base.length) {
+      const mats = base.map((m) => ({ item_id: Number(m.item_id), count: Number(m.count) }));
+      const special = CRAFT_SPECIAL_BY_STYLE[Number(def.style)];
+      if (special) mats.push({ item_id: Number(special), count: 1 });
+      return mats;
+    }
     const byStyle = CRAFT_MATERIALS_BY_STYLE[Number(def.style)];
     return (byStyle || CRAFT_DEFAULT_MATERIALS).map((m) => ({ item_id: m.item_id, count: m.count }));
   }
@@ -70526,7 +83167,129 @@ function createEngine(opts) {
   }
 
   /** 台面上那张图纸（在 5–9 号"物品位"里）-> 将要做出的家具；没有就返回 null。 */
-  function benchBlueprint() {
+  /* V37-POCKET-TUMBLER ---------- 口袋 / 不倒翁：工作台候选与开工 ---------- */
+  function craftMissingToolsFor(requirements) {
+    const tools = (state.furniture.bench || []).slice(0, 5).map(Number);
+    return (requirements || []).filter((tool) => !tools.some((id) =>
+      (CRAFT_TOOL_VARIANTS[tool] || []).includes(id)));
+  }
+
+  /** 不倒翁外观：`TumblerData.bg = bdw_<n>_base`，眼睛图层取 `bdw_eye_<n>`。 */
+  function tumblerAppearance(tumblerId) {
+    const def = TUMBLER_DATA.get(Number(tumblerId));
+    const match = String((def && def.bg) || '').match(/^bdw_(\d+)_base$/);
+    if (!match) return null;
+    const eye = Array.from(TUMBLER_PATH_DATA.values())
+      .find((part) => String(part.res) === 'bdw_eye_' + match[1]);
+    if (!eye) return null;
+    return { id: Number(tumblerId), layers: [{ layer: [Number(eye.id), 0, 0, 0, 0] }] };
+  }
+
+  /** 这条配方占的是哪个台面位（结算与替换时要清掉它）。 */
+  function craftRecipeSlot(bp) {
+    if (!bp) return -1;
+    if (Number.isInteger(bp.specialSlot)) return bp.specialSlot;
+    if (bp.kind === 'tumbler') {
+      return bp.tumblerSpecialSlot >= 0 ? bp.tumblerSpecialSlot : bp.tumblerFruitSlot;
+    }
+    if (bp.kind === 'pocket') {
+      return bp.pocketSpecialSlot >= 0 ? bp.pocketSpecialSlot : bp.pocketRopeSlot;
+    }
+    return -1;
+  }
+
+  /** 台面 5–9 号位里的"特殊材料"选择器（谁在台面上就做谁的专属款，他的做法）。 */
+  function benchSpecialSelectors() {
+    const bench = state.furniture.bench || [];
+    const selectors = [];
+    for (let i = 5; i < 10; i += 1) {
+      const itemId = Number(bench[i]);
+      if (itemId > 0 && CRAFT_STYLE_BY_SPECIAL.has(itemId)) selectors.push({ slot: i, itemId });
+    }
+    return selectors;
+  }
+
+  /** 台面上有没有可做的口袋/不倒翁（绳/果子 + 可选特殊材料 + 对应图纸在背包里）。 */
+  function benchPocketTumblerBlueprint(furnitureId, benchSlot) {
+    const bench = state.furniture.bench || [];
+    const selectors = benchSpecialSelectors();
+    const candidates = [];
+    const fruitSlot = bench.findIndex((id, i) => i >= 5 && Number(id) === TUMBLER_FRUIT_ID);
+    if (fruitSlot >= 0 && getHaveItem(TUMBLER_BLUEPRINT_ID) > 0) {
+      const matching = selectors.filter((s) => TUMBLER_RECIPE_OUTPUTS.special.has(s.itemId));
+      const recipes = selectors.length
+        ? matching.map((s) => ({ slot: s.slot, outputs: TUMBLER_RECIPE_OUTPUTS.special.get(s.itemId) || [] }))
+        : [{ slot: -1, outputs: TUMBLER_RECIPE_OUTPUTS.common }];
+      for (const recipe of recipes) {
+        for (const id of recipe.outputs) {
+          if (!TUMBLER_DATA.has(Number(id))) continue;
+          candidates.push({
+            kind: 'tumbler', itemId: TUMBLER_BLUEPRINT_ID, furnitureId: Number(id), type: 0, style: 0,
+            tumblerFruitSlot: fruitSlot, tumblerSpecialSlot: recipe.slot,
+          });
+        }
+      }
+    }
+    const ropeSlot = bench.findIndex((id, i) => i >= 5 && Number(id) === POCKET_ROPE_ID);
+    if (ropeSlot >= 0 && getHaveItem(POCKET_BLUEPRINT_ID) > 0) {
+      const matching = selectors.filter((s) => POCKET_RECIPE_OUTPUTS.special.has(s.itemId));
+      const recipes = selectors.length
+        ? matching.map((s) => ({ slot: s.slot, outputs: POCKET_RECIPE_OUTPUTS.special.get(s.itemId) || [] }))
+        : [{ slot: -1, outputs: POCKET_RECIPE_OUTPUTS.common }];
+      for (const recipe of recipes) {
+        for (const id of recipe.outputs) {
+          if (!POCKET_DATA.has(Number(id))) continue;
+          candidates.push({
+            kind: 'pocket', itemId: POCKET_BLUEPRINT_ID, furnitureId: Number(id), type: 0, style: 0,
+            pocketRopeSlot: ropeSlot, pocketSpecialSlot: recipe.slot,
+          });
+        }
+      }
+    }
+    const targetId = Number(furnitureId) || 0;
+    const slot = Number(benchSlot);
+    return candidates.find((c) => (!(targetId > 0) || c.furnitureId === targetId)
+      && (!(slot >= 0) || craftRecipeSlot(c) === slot)) || null;
+  }
+
+  function startCraftFromBench(startedAt, furnitureId, benchSlot) {
+    if (state.furniture.craft || furnitureMoodBlocked()) return false;
+    const bp = benchPocketTumblerBlueprint(furnitureId, benchSlot);
+    if (!bp) return false;
+    const info = craftMissing(bp);
+    if (!info || info.missing.length || (info.missingTools || []).length) return false;
+    const now = Number(startedAt) > 0 ? Number(startedAt) : nowSec();
+    const bench = state.furniture.bench;
+    if (bp.kind === 'tumbler') {
+      const appearance = tumblerAppearance(bp.furnitureId);
+      if (!appearance) return false;
+      for (const m of TUMBLER_BASE_MATERIALS) addHouseItem(m.item_id, -m.count);
+      bench[bp.tumblerFruitSlot] = -1;
+      if (bp.tumblerSpecialSlot >= 0) bench[bp.tumblerSpecialSlot] = -1;
+      state.furniture.craft = {
+        kind: 'tumbler', furnitureId: bp.furnitureId, drawing: TUMBLER_BLUEPRINT_ID,
+        materials: TUMBLER_BASE_MATERIALS.map((m) => ({ ...m })), tumbler: appearance,
+        startedAt: now, finishAt: now + CRAFT_SECONDS,
+      };
+    } else {
+      for (const m of POCKET_BASE_MATERIALS) addHouseItem(m.item_id, -m.count);
+      bench[bp.pocketRopeSlot] = -1;
+      if (bp.pocketSpecialSlot >= 0) bench[bp.pocketSpecialSlot] = -1;
+      state.furniture.craft = {
+        kind: 'pocket', furnitureId: bp.furnitureId, drawing: POCKET_BLUEPRINT_ID,
+        materials: POCKET_BASE_MATERIALS.map((m) => ({ ...m })),
+        startedAt: now, finishAt: now + CRAFT_SECONDS,
+      };
+    }
+    state.furniture.benchLock = 1;
+    save();
+    return true;
+  }
+
+  function benchBlueprint(furnitureId, benchSlot) {
+    /* 【并入他 3.3】先看台面上有没有"绳/果子 + 特殊材料"这样的口袋/不倒翁配方。 */
+    const extra = benchPocketTumblerBlueprint(furnitureId, benchSlot);
+    if (extra) return extra;
     const bench = state.furniture.bench || [];
     for (let i = 5; i < 10; i++) {
       const itemId = Number(bench[i]);
@@ -70551,18 +83314,33 @@ function createEngine(opts) {
     }
     const bp = benchBlueprint();
     if (!bp) return [];
-    const mats = craftMaterialsFor(bp.furnitureId) || [];
+    /* V40-PREFER-HIS 【V4.0】他的模型里「算不出配方」就是不可做；原来的 `|| []`
+       会把严格模式算出来的 null 当成「不缺材料」，于是 craft 能起来但材料列表是空的。 */
+    const mats = craftMaterialsFor(bp.furnitureId);
+    if (!mats) return null;
     const out = [];
     for (const m of mats) for (let i = 0; i < m.count; i++) out.push(m.item_id);
     return out;
   }
 
-  function craftMissing() {
-    const bp = benchBlueprint();
+  function craftMissing(blueprint) {
+    const bp = blueprint || benchBlueprint();
     if (!bp) return null;
-    const mats = craftMaterialsFor(bp.furnitureId) || [];
+    /* 【并入他 3.3】口袋/不倒翁有自己的基材与工具。 */
+    if (bp.kind === 'tumbler') {
+      const missing = TUMBLER_BASE_MATERIALS.filter((m) => getHaveItem(m.item_id) < m.count);
+      return { bp, missing, missingTools: craftMissingToolsFor(TUMBLER_TOOLS) };
+    }
+    if (bp.kind === 'pocket') {
+      const missing = POCKET_BASE_MATERIALS.filter((m) => getHaveItem(m.item_id) < m.count);
+      return { bp, missing, missingTools: craftMissingToolsFor(POCKET_TOOLS) };
+    }
+    /* V40-PREFER-HIS 【V4.0】他的模型里「算不出配方」就是不可做；原来的 `|| []`
+       会把严格模式算出来的 null 当成「不缺材料」，于是 craft 能起来但材料列表是空的。 */
+    const mats = craftMaterialsFor(bp.furnitureId);
+    if (!mats) return null;
     const missing = mats.filter((m) => getHaveItem(m.item_id) < m.count);
-    return missing.length ? { bp, missing } : { bp, missing: [] };
+    return missing.length ? { bp, missing, missingTools: [] } : { bp, missing: [], missingTools: [] };
   }
 
   /* 【并入他的 V3】自动换家具 / 自动开工的引擎侧胶水（要 ctx 推送，所以放在这里）。 */
@@ -70595,6 +83373,86 @@ function createEngine(opts) {
     return false;
   }
 
+  /* V37-FURNITURE-MOTION ================= 工具动画与排队开工（依赖 state） ================= */
+
+  /** V40-PREFER-HIS 排队模式的安全阀：需要的工具不在台面上就别排队（否则等不到工具动作）。
+      我们的家具制作不强制工具，所以这种活应当直接开工。 */
+  function canQueueCraft(bp) {
+    if (!bp) return false;
+    const tools = furnitureCraftTools(Number(bp.furnitureId), bp.kind);
+    return Array.isArray(tools) && tools.length > 0
+      && craftMissingToolsFor(tools).length === 0;
+  }
+
+  /** 这件东西需要哪些工具（口袋/不倒翁用各自的，其余按家具 type）。 */
+  function furnitureCraftTools(furnitureId, kind) {
+    if (kind === 'tumbler') return TUMBLER_TOOLS;
+    if (kind === 'pocket') return POCKET_TOOLS;
+    const row = FURNITURE_BY_ID.get(Number(furnitureId));
+    return CRAFT_TOOLS_BY_TYPE[Number(row && row.type)] || [];
+  }
+
+  /** "做"这个动作要演哪一段：按"需要的工具 ∩ 台面上有的工具"挑一个，按动作步数轮换。 */
+  function furnitureActionMotion() {
+    const craft = state.furniture.craft;
+    const queued = !craft && state.furniture.craftQueued;
+    if (!craft && !queued) return Number(FROGMOTIONNUM.make) || 0;
+    const furnitureId = craft ? craft.furnitureId : state.furniture.craftQueuedFurnitureId;
+    const bp = queued ? benchBlueprint(furnitureId, state.furniture.craftQueuedBenchSlot) : null;
+    const kind = craft ? craft.kind : bp && bp.kind;
+    const required = furnitureCraftTools(furnitureId, kind);
+    const benchTools = (state.furniture.bench || []).slice(0, 5).map(Number);
+    const available = required.filter((tool) => benchTools.some((id) =>
+      (CRAFT_TOOL_VARIANTS[tool] || []).includes(id)));
+    if (!available.length) {
+      /* 台面上没有对应工具时的退化：
+         · 他的做法是退回"做"这个通用动作（make = 3）；
+         · 但我们这条线的家具制作**目前不强制工具**（工具门槛属于他的「制作模型」大改，
+           留到那一轮），所以为了不出现"人在工作台却演读书动作"，这里退化成
+           我们原来的工作台动作 5..9（有工具时仍然演具体工具动画）。 */
+      return 5 + (Math.abs(Number(state.frog.motionStep) || 0) % 5);
+    }
+    const index = Math.abs(Number(state.frog.motionStep) || 0) % available.length;
+    return FURNITURE_TOOL_MOTION[available[index]] || Number(FROGMOTIONNUM.make) || 0;
+  }
+
+  function furnitureToolMotion(motion) {
+    return Object.values(FURNITURE_TOOL_MOTION).includes(Number(motion));
+  }
+
+  /** 排队的活：等蛙蛙进入"对应工具"的动作时才真的开工（他的做法）。 */
+  function tryStartQueuedCraft(at, ctx) {
+    if (!state.furniture.craftQueued || state.furniture.craft
+      || state.frog.status !== 0
+      || !furnitureToolMotion(state.frog.motion)
+      || furnitureMoodBlocked()) return false;
+    const queuedId = Number(state.furniture.craftQueuedFurnitureId) || 0;
+    const bp = benchBlueprint(queuedId, state.furniture.craftQueuedBenchSlot);
+    const furnitureId = Number(bp && bp.furnitureId) || queuedId;
+    if (!bp || !furnitureId) return false;
+    const required = furnitureCraftTools(furnitureId, bp && bp.kind);
+    const motionTool = Object.keys(FURNITURE_TOOL_MOTION)
+      .find((tool) => FURNITURE_TOOL_MOTION[tool] === Number(state.frog.motion));
+    if (!motionTool || !required.includes(motionTool)) return false;
+    if (!startCraftFromBench(at, state.furniture.craftQueuedFurnitureId,
+      state.furniture.craftQueuedBenchSlot)) {
+      /* 台面已经凑不齐了：取消排队，别卡着。 */
+      state.furniture.craftQueued = 0;
+      state.furniture.craftQueuedFurnitureId = 0;
+      state.furniture.craftQueuedBenchSlot = -1;
+      return false;
+    }
+    state.furniture.craftQueued = 0;
+    state.furniture.craftQueuedFurnitureId = 0;
+    state.furniture.craftQueuedBenchSlot = -1;
+    if (ctx) {
+      ctx.push('furniture_load_furniture', handlers.furniture_load_furniture({}));
+      ctx.push('item_load_items', handlers.item_load_items());
+    }
+    save();
+    return true;
+  }
+
   function autoCraftCheck(ctx, t) {
     if (state.furniture.craft) return false;
     if (!Number(state.furniture.nextAutoCraftAt)) {
@@ -70606,6 +83464,17 @@ function createEngine(opts) {
     if (furnitureMoodBlocked()) { save(); return false; }
     const chance = Math.max(0, Math.min(100, Number(FURNITURE_AUTO_CRAFT_CHANCE) || 0));
     if (Math.random() * 100 >= chance) { save(); return false; }
+    /* 【并入他 3.3 的可选项】FROG_CRAFT_QUEUE=1 时先排队，等蛙蛙拿起对应工具的动作再开工。 */
+    if (FROG_CRAFT_QUEUE && canQueueCraft(benchBlueprint())) {
+      const bp = benchBlueprint();
+      if (!bp) { save(); return false; }
+      state.furniture.craftQueued = 1;
+      state.furniture.craftQueuedFurnitureId = Number(bp.furnitureId) || 0;
+      state.furniture.craftQueuedBenchSlot = craftRecipeSlot(bp);
+      save();
+      ctx.push('furniture_load_furniture', handlers.furniture_load_furniture({}));
+      return true;
+    }
     if (!maybeStartCraft()) { save(); return false; }
     ctx.push('furniture_load_furniture', handlers.furniture_load_furniture({}));
     ctx.push('item_load_items', handlers.item_load_items());
@@ -70622,7 +83491,10 @@ function createEngine(opts) {
     const info = craftMissing();
     if (!info || info.missing.length) return false;
     const { bp } = info;
-    const mats = craftMaterialsFor(bp.furnitureId) || [];
+    /* V40-PREFER-HIS 【V4.0】他的模型里「算不出配方」就是不可做；原来的 `|| []`
+       会把严格模式算出来的 null 当成「不缺材料」，于是 craft 能起来但材料列表是空的。 */
+    const mats = craftMaterialsFor(bp.furnitureId);
+    if (!mats) return null;
     for (const m of mats) addHouseItem(m.item_id, -m.count);
     (state.furniture.bench)[bp.slot] = -1;          // 图纸被用掉
     const now = nowSec();
@@ -70645,10 +83517,34 @@ function createEngine(opts) {
     const fid = Number(craft.furnitureId);
     state.furniture.craft = null;
     state.furniture.benchLock = 0;
+    /* 【并入他的 V3】做出一件东西 = 安抚一次。 */
+    sootheFurnitureMood(FURNITURE_CRAFT_RELIEF, 'craft');
+    /* 【并入他 3.3】口袋/不倒翁不进家具收藏，进各自的列表。 */
+    if (craft.kind === 'tumbler') {
+      if (!Array.isArray(state.furniture.tumbler.list)) state.furniture.tumbler.list = [];
+      const entry = craft.tumbler || tumblerAppearance(fid);
+      if (entry) state.furniture.tumbler.list.push(entry);
+      save();
+      if (ctx) {
+        ctx.push('furniture_load_furniture', handlers.furniture_load_furniture({}));
+        ctx.push('furniture_load_tumbler', handlers.furniture_load_tumbler());
+        ctx.push('item_load_items', handlers.item_load_items());
+      }
+      return true;
+    }
+    if (craft.kind === 'pocket') {
+      if (!Array.isArray(state.furniture.pocket.list)) state.furniture.pocket.list = [];
+      if (state.furniture.pocket.list.indexOf(fid) === -1) state.furniture.pocket.list.push(fid);
+      save();
+      if (ctx) {
+        ctx.push('furniture_load_furniture', handlers.furniture_load_furniture({}));
+        ctx.push('furniture_load_pocket', handlers.furniture_load_pocket());
+        ctx.push('item_load_items', handlers.item_load_items());
+      }
+      return true;
+    }
     if (!Array.isArray(state.furniture.owned)) state.furniture.owned = [];
     if (state.furniture.owned.indexOf(fid) === -1) state.furniture.owned.push(fid);
-    /* 【并入他的 V3】做出一件家具 = 安抚一次。 */
-    sootheFurnitureMood(FURNITURE_CRAFT_RELIEF, 'craft');
     save();
     const ev = makeEvent(EV_FURNITURE_FINISH, [fid, craft.drawing || 0]);
     if (ctx) {
@@ -70766,6 +83662,14 @@ function createEngine(opts) {
       if (owned.has(pic)) continue;
       state.pictureSeq = (state.pictureSeq || 0) + 1;
       const row = { id: state.pictureSeq, pic_id: pic, read: 0, new: 1 };
+      /* 【并入他 3.3】这张照片是哪位伙伴同行；老档没有这个字段时按 PictureTag 救援。 */
+      {
+        const src0 = (Array.isArray(pictures) ? pictures : [])
+          .find((x) => x && typeof x === 'object' && Number(x.pic_id) === pic);
+        let slot = Number(src0 && src0.travelerSlot);
+        if (!(slot >= 0 && slot <= 2) && isGiftBoxFriendPicture(pic)) slot = TV_PIC_FRIEND[Number(pic)];
+        if (slot >= 0 && slot <= 2) row.travelerSlot = slot;
+      }
       if (visit) row.visit = true;
       if (sender >= 0) row.sender = sender;
       (visit ? state.albumPendingVisit : state.albumPending).push(row);
@@ -70873,7 +83777,159 @@ function createEngine(opts) {
      num > 0 and decrements it itself on success). Rows whose `has_item`
      prerequisite is not owned yet are withheld, which is exactly how the
      original chain gated them. */
+  /* V37-MERCHANT-STARS ============ 嘟嘟商店：每天的货架与营业窗口 ============ */
+
+  /** 前置商品是否已经在手上（家里 / 工作台 / 家具收藏都算）。 */
+  function hasShopPrerequisite(itemId) {
+    const id = Number(itemId);
+    return getHaveItem(id) > 0
+      || (state.furniture.bench || []).some((value) => Number(value) === id)
+      || (state.furniture.owned || []).some((value) => Number(value) === id);
+  }
+
+  /** 按 (uid, 日期) 生成当天 8 个货位：同一天恒定、换天才换（他的做法）。 */
+  function createFurnitureShopOffers(day) {
+    let seed = (Number(state.uid) || 0) ^ Number(day);
+    seed = Math.imul(seed ^ (seed >>> 16), 0x45d9f3b);
+    seed = Math.imul(seed ^ (seed >>> 16), 0x45d9f3b);
+    seed = (seed ^ (seed >>> 16)) >>> 0;
+    let randomState = seed || 0x9e3779b9;
+    const random = () => {
+      randomState = (randomState + 0x6d2b79f5) >>> 0;
+      let value = randomState;
+      value = Math.imul(value ^ (value >>> 15), value | 1);
+      value ^= value + Math.imul(value ^ (value >>> 7), value | 61);
+      return ((value ^ (value >>> 14)) >>> 0) / 4294967296;
+    };
+
+    const pools = new Map();
+    for (const [star, ids] of MERCHANT_STAR_ROWS) {
+      const rows = ids.map((id) => [id, FURNITURE_SHOP.get(id)])
+        .filter(([, row]) => row && row.item_id !== undefined)
+        .filter(([id, row]) => !(Number(row.limit) > 0
+          && (Number(state.furniture.shopBought[id]) || 0) >= Number(row.limit)))
+        .filter(([, row]) => !row.unique || getHaveItem(row.item_id) <= 0)
+        .filter(([, row]) => !row.has_item || hasShopPrerequisite(row.has_item))
+        .filter(([id, row]) => !(isWelfareRow(row)
+          && state.furniture.welfareDay && state.furniture.welfareDay[id] === createDay()
+          && (Number(state.furniture.welfareTaken && state.furniture.welfareTaken[id]) || 0) >= WELFARE_PER_DAY));
+      pools.set(star, rows);
+    }
+
+    const offers = {};
+    for (let slot = 0; slot < MERCHANT_DAILY_OFFER_COUNT; slot++) {
+      const available = [...pools.entries()].filter(([, rows]) => rows.length > 0);
+      if (!available.length) break;
+      const totalWeight = available.reduce((sum, [star]) => sum + MERCHANT_STAR_WEIGHTS.get(star), 0);
+      let roll = random() * totalWeight;
+      let chosenStar = available[available.length - 1][0];
+      for (const [star] of available) {
+        roll -= MERCHANT_STAR_WEIGHTS.get(star);
+        if (roll < 0) { chosenStar = star; break; }
+      }
+      const pool = pools.get(chosenStar);
+      const index = Math.floor(random() * pool.length);
+      const [shopId, row] = pool.splice(index, 1)[0];
+      const itemId = Number(row.item_id);
+      for (const rows of pools.values()) {
+        for (let i = rows.length - 1; i >= 0; i--) {
+          if (Number(rows[i][1].item_id) === itemId) rows.splice(i, 1);
+        }
+      }
+
+      let maxStock = 3;
+      if (Number(row.limit) > 0) {
+        maxStock = Math.min(maxStock, Number(row.limit) - (Number(state.furniture.shopBought[shopId]) || 0));
+      }
+      if (Number(row.shop_limit) > 0) maxStock = Math.min(maxStock, Number(row.shop_limit));
+      if (isWelfareRow(row)) maxStock = Math.min(maxStock, WELFARE_PER_DAY);
+      if (maxStock > 0) offers[shopId] = 1 + Math.floor(random() * maxStock);
+    }
+    /* 节气当天多摆一个节气货架（他的做法）。 */
+    /* solarTermShopFor 要的是 YYYYMMDD 日键（本地日），而这里的 day 是零点时间戳。 */
+    const solarTermShopId = solarTermShopFor(localDayKeyAt(day));
+    if (solarTermShopId && FURNITURE_SHOP.has(solarTermShopId)) {
+      offers[solarTermShopId] = 1 + Math.floor(random() * 3);
+    }
+    return offers;
+  }
+
+  /** 换天就重掷货架、清空当天已买账本（`shopDay`/`shopDailyBought` 是我们原来的账本）。
+      注意：这里**不写盘**。这个函数是从载荷构建（furnitureShopList）里调的，而载荷路径调
+      save() 会在每次 gm/推送之间插入一次额外提交，把 .bak 提前写脏（我们这条线的备份语义是
+      "备份 = 上一次完整存档"）。货架按 (uid, 日期) 确定性生成，重开一次结果相同，
+      交给下一次自然保存（购买 / tick / gm）持久化即可。 */
+  function ensureFurnitureShopStock(at) {
+    /* 日键必须与我们原有的账本一致（`merchantDayAt` = 本地零点时间戳），否则两边会在
+       不同时刻"换天"：曾出现 refreshMerchantDay 误判换天、又保存一次、还把当天已买清空。
+       `shopDay` / `shopDailyBought` 由 refreshMerchantDay 负责，这里只换货架。 */
+    const day = merchantDayAt(Number(at) || nowSec());
+    if (Number(state.furniture.shopOffersDay) !== day) {
+      state.furniture.shopOffers = createFurnitureShopOffers(day);
+      state.furniture.shopOffersDay = day;
+    }
+    return day;
+  }
+
+  /** 嘟嘟的营业窗口：12:00 之后到（按 uid+日期确定，最多晚 6 小时），21:00 走。 */
+  function furnitureShopWindow(at) {
+    const t = Number(at) || nowSec();
+    const date = new Date(t * 1000);
+    const noon = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 12, 0, 0, 0);
+    const evening = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 21, 0, 0, 0);
+    const day = localDayKeyAt(t);
+    let seed = (Number(state.uid) || 0) ^ day;
+    seed = Math.imul(seed ^ (seed >>> 16), 0x45d9f3b);
+    seed = Math.imul(seed ^ (seed >>> 16), 0x45d9f3b);
+    seed = (seed ^ (seed >>> 16)) >>> 0;
+    const arrival = Math.floor(noon.getTime() / 1000) + (seed % 361) * 60;
+    const leave = Math.floor(evening.getTime() / 1000);
+    return { start_time: arrival, leave_time: leave, open: t >= arrival && t < leave };
+  }
+
+  /* 【并入他 3.3】不再把整张表都列出来，只列"当天货架"上的（每天 8 个 + 节气货架）。 */
   function furnitureShopList() {
+    const now = nowSec();
+    refreshMerchantDay();
+    ensureFurnitureShopStock(now);
+    const offers = state.furniture.shopOffers || {};
+    const out = [];
+    for (const key of Object.keys(offers)) {
+      const shopId = Number(key);
+      const row = FURNITURE_SHOP.get(shopId);
+      if (!row) continue;
+      const limit = Number(row.limit) || 0;
+      const bought = Number(state.furniture.shopBought[shopId]) || 0;
+      const limitLeft = limit > 0 ? limit - bought : 99;
+      const stockLeft = Number(offers[key])
+        - (Number(state.furniture.shopDailyBought[shopId]) || 0);
+      const num = Math.max(0, Math.min(limitLeft, stockLeft));
+      /* V40-PREFER-HIS 【V4.0】他的实现是售罄就从货架上拿掉；
+         想恢复 V3.7/上游 3.4 的"卖完了看得见"：FROG_SHOP_KEEP_SOLD_OUT=1。 */
+      if (!SHOP_KEEP_SOLD_OUT && num <= 0) continue;
+      /* 【与上游 3.4 一致】售罄的行**仍然列出来**（num=0），这样玩家看到的是"卖完了"
+         而不是它凭空消失；他的实现是直接跳过，这里取 3.4 的行为。 */
+      if (isWelfareRow(row) && state.furniture.welfareDay
+          && state.furniture.welfareDay[shopId] === createDay()
+          && (Number((state.furniture.welfareTaken || {})[shopId]) || 0) >= WELFARE_PER_DAY) continue;
+      const need = Number(row.has_item) || 0;
+      if (need && !hasShopPrerequisite(need)) continue;
+      if (row.unique && getHaveItem(row.item_id) > 0) continue;
+      out.push({ shop_id: shopId, item_id: Number(row.item_id), num,
+        price: Number(row.price) || 0, name: String(row.name || ''),
+        info: String(row.info || ''), type: Number(row.type) || 0,
+        has_item: need, limit });
+    }
+    out.sort((a, b) => {
+      const oa = Number(FURNITURE_SHOP.get(a.shop_id).order) || 0;
+      const ob = Number(FURNITURE_SHOP.get(b.shop_id).order) || 0;
+      return oa - ob || a.shop_id - b.shop_id;
+    });
+    return out;
+  }
+
+  /* 旧的"整表 + 现算库存"实现保留给测试与回退用（默认不再走它）。 */
+  function furnitureShopListAllRows() {
     refreshMerchantDay();
     const out = [];
     for (const [shopId, row] of FURNITURE_SHOP) {
@@ -70900,6 +83956,12 @@ function createEngine(opts) {
   }
 
   function furnitureStock(row) {
+    /* 【并入他 3.3】有当天货架时，库存就是"货架上还剩几件"。 */
+    const shopId = Number(row && row.id);
+    const offerNum = Number((state.furniture.shopOffers || {})[shopId]);
+    if (Number.isFinite(offerNum) && offerNum > 0) {
+      return Math.max(0, offerNum - (Number(state.furniture.shopDailyBought[shopId]) || 0));
+    }
     const limit = Number(row.limit);
     if (limit > 0 && !isWelfareRow(row)) return Math.max(0, limit - (state.furniture.shopBought[row.id] || 0));
     const dailyLimit = isWelfareRow(row) ? WELFARE_PER_DAY : (Number(row.shop_limit) || 1);
@@ -70908,7 +83970,18 @@ function createEngine(opts) {
 
   function merchantShop() {
     const shop_list = furnitureShopList();
-    const now = nowSec(), day = merchantDayAt(now);
+    const now = nowSec();
+    /* 【并入他 3.3 的可选项】他的嘟嘟是"12:00 后到、21:00 走"（按 uid+日期确定）。
+       我们这条线的默认仍是**常开**（离线版按真实时间玩，早上/深夜都可能开游戏；
+       3.4 的文档也把"商店常开"写成本项目的自设计），所以默认不启用他的窗口；
+       想照他的来：FROG_SHOP_WINDOW=faithful。FROG_SHOP_HOURS 仍可指定固定时段。 */
+    /* V40-PREFER-HIS 【V4.0】默认改用他的营业窗口（12:00 后到、21:00 走）。
+       想恢复 V3.7 的常开：FROG_SHOP_WINDOW=always。 */
+    if (String(process.env.FROG_SHOP_WINDOW || 'faithful') !== 'always') {
+      const win = furnitureShopWindow(now);
+      return { shop_list, start_time: win.start_time, leave_time: win.leave_time };
+    }
+    const day = merchantDayAt(now);
     const next = new Date(day * 1000);
     next.setDate(next.getDate() + 1);
     const hours = Number(process.env.FROG_SHOP_HOURS || 0);
@@ -71159,6 +84232,10 @@ function advanceCraft(t) {
   const stampIds = Object.keys(stampRows);
   const atHome = !state.frog || state.frog.status === 0;
   const canCraft = getHaveItem(HANDCRAFT_TOOL_ID) > 0;
+  /* 【并入他 3.3 的可选项】蛙蛙此刻是不是正在做手工（FrogMotionNum.make = 3）。 */
+  const craftMotionNum = Number((defineData.maps && defineData.maps.FrogMotionNum || {}).make);
+  const doingHandcraft = atHome && Number(state.frog && state.frog.motion)
+    === (Number.isFinite(craftMotionNum) ? craftMotionNum : 3);
   let changed = false;
 
   // Reserve from storage and persist the receipt with the job. Stages, reloads
@@ -71210,7 +84287,11 @@ function advanceCraft(t) {
   }
 
   for (const w of c.wishes) {
-    if (!canCraft || w.state > 3 || !reserveMaterial(w, HANDCRAFT_MATERIAL_ID) || t < w.make_time) continue;
+    /* 【并入他 3.3 的可选项】WISH_WORKCLOCK=1 时，到点还不够，得蛙蛙正在做手工。 */
+    if (WISH_WORKCLOCK && !doingHandcraft) continue;
+    /* V40-PREFER-HIS 【V4.0】他的手工品不再要工具/材料；我们的门槛走 FROG_HANDCRAFT_GATE=1。 */
+    if (w.state > 3 || t < w.make_time) continue;
+    if (HANDCRAFT_GATE && (!canCraft || !reserveMaterial(w, HANDCRAFT_MATERIAL_ID))) continue;
     w.state += 1;
     if (w.state > 3) {
       /* The table's last stage lists the pieces that MAY be used ("102,103,104,
@@ -71959,17 +85040,57 @@ function mdPayload(s) {
     return !!item && (item.type === ITEM_TYPE_SPECIALTY || (item.type === 15 && item.sub_type === 1));
   }
 
+  /* 【并入他 3.3】星级：阈值 [0,20,50,80] → 0/1/2/3 星（客户端 pips 之外的真实星级）。 */
+  function soilStars(fertility) {
+    const value = Math.max(0, Number(fertility) || 0);
+    let stars = 0;
+    for (let i = 1; i < SOIL_STAR_THRESHOLDS.length; i += 1) {
+      if (value >= SOIL_STAR_THRESHOLDS[i]) stars = i;
+    }
+    return stars;
+  }
+
+  /* 一个发酵物完成时给多少肥力点（他的点数表；未登记的按 1 点，即我们原来的 +1）。 */
+  function compostPointsFor(id) {
+    const points = FERTILIZER_POINTS.get(Number(id));
+    return Number.isFinite(points) && points > 0 ? points : 1;
+  }
+
+  /** 他的发酵时长：20004–6 三天，其余立即；FROG_COMPOST_SEC 可强制统一时长。 */
+  function compostDurationFor(itemId) {
+    if (COMPOST_FLAT_SEC !== null) return COMPOST_FLAT_SEC;
+    const id = Number(itemId);
+    return COMPOST_HIS_RULES.has(id) ? Number(COMPOST_HIS_RULES.get(id)) : COMPOST_DURATION_SEC;
+  }
+
   function refreshCompost(t) {
     const c = state.furniture.compost;
     const before = JSON.stringify(c);
     c.boxes = Array.from({length: 6}, (_, i) => Number((c.boxes || [])[i]) || 0);
-    c.fertility = Number.isSafeInteger(c.fertility) && c.fertility >= 0 ? c.fertility : 0;
+    c.fertility = Number.isFinite(c.fertility) && c.fertility >= 0
+      ? Math.min(SOIL_FERTILITY_MAX, Math.floor(c.fertility)) : 0;
+    /* 【并入他 3.3】肥力每天 −1，离线期间同样补算；记在 fertilityDecayAt 上。 */
+    {
+      const at = Number(t) || nowSec();
+      const decayAt = Number(c.fertilityDecayAt);
+      if (!Number.isFinite(decayAt) || decayAt <= 0) {
+        c.fertilityDecayAt = at;
+      } else if (at > decayAt) {
+        const periods = Math.floor((at - decayAt) / SOIL_FERTILITY_DECAY_PERIOD_SEC);
+        if (periods > 0) {
+          c.fertility = Math.max(0,
+            c.fertility - periods * SOIL_FERTILITY_DECAY_PER_PERIOD);
+          c.fertilityDecayAt = decayAt + periods * SOIL_FERTILITY_DECAY_PERIOD_SEC;
+        }
+      }
+    }
     const job = c.job;
     if (job && !(Number.isInteger(job.index) && job.index >= 1 && job.index <= 6
         && isCompostItem(job.itemId) && c.boxes[job.index - 1] === job.itemId
         && Number.isFinite(job.startedAt) && job.startedAt > 0
         && Number.isFinite(job.finishAt)
-        && [COMPOST_DURATION_SEC, 3 * 60 * 60].includes(job.finishAt - job.startedAt))) {
+        && [compostDurationFor(job.itemId), COMPOST_DURATION_SEC, 3 * 60 * 60]
+          .includes(job.finishAt - job.startedAt))) {
       c.job = null; // Invalid job: keep its contents, restart a full cycle.
     }
     // Existing three-hour jobs keep their selected slot and elapsed time.
@@ -71981,12 +85102,13 @@ function mdPayload(s) {
         const candidates = c.boxes.map((id, index) => isCompostItem(id) ? index + 1 : 0).filter(Boolean);
         if (!candidates.length) break;
         const index = candidates[randInt(0, candidates.length - 1)];
-        c.job = {index, itemId: c.boxes[index - 1], startedAt: cursor, finishAt: cursor + COMPOST_DURATION_SEC};
+        c.job = {index, itemId: c.boxes[index - 1], startedAt: cursor,
+      finishAt: cursor + compostDurationFor(c.boxes[index - 1])};
       }
       if (t < c.job.finishAt) break;
       cursor = c.job.finishAt;
       c.boxes[c.job.index - 1] = 0;
-      c.fertility = Math.min(Number.MAX_SAFE_INTEGER, c.fertility + 1);
+      c.fertility = Math.min(SOIL_FERTILITY_MAX, c.fertility + compostPointsFor(c.job.itemId));
       c.job = null;
     }
     c.boxIndex = c.job ? c.job.index : 0;
@@ -71999,6 +85121,7 @@ function mdPayload(s) {
       show_index: c.showIndex, replace_index: c.replaceIndex,
       // Original pips light at 2/3/4; keep the uncapped total separately.
       state: Math.min(4, 1 + c.fertility), fertility: c.fertility,
+      fertility_stars: soilStars(c.fertility),
       box_index: c.boxIndex, box_list: c.boxes.slice(), compost_list: c.list || [],
       finish_at: c.job ? c.job.finishAt : 0,
     };
@@ -72481,6 +85604,7 @@ function mdPayload(s) {
     /* 【并入他的 V3】不再要求"先准备"：掷骰中了就能走；没便当的那一趟按放浪
        结算（DRIFT 短窗口，不带照片/特产回来）。 */
     state.travel.waitingForBag = false;
+    setFrogEgg(0);        // 【并入他 3.3】出门就不带家里的彩蛋了
     // Provisions are decided (and consumed) at DEPARTURE: the stray-or-not outcome
     // depends on whether a lunch box was packed, so it cannot be deferred.
     state.travel.plan = provisionTrip();
@@ -72561,6 +85685,8 @@ function mdPayload(s) {
     /* 【并入他的 V3】奖励在出发时已经掷好；老档（本次之前的行程）没有这个字段，
        就按老办法在回家时掷，行为与 V3.5 一致。 */
     const r = state.travel.rewards || rollTripRewards(plan);
+    /* 【并入他 3.3】他就是在这一行后面记任务的。 */
+    markTripTaskProgress(plan, r);
     const deliveredMidTrip = (state.travel.postcardPics || []).slice();
     state.frog.status = 0;                       // home again
     state.items.bagCompleted = 0;
@@ -72738,9 +85864,21 @@ function mdPayload(s) {
       ctx.push('furniture_load_compost', compostPayload());
     }
     refreshClovers(t);
+    /* 【并入他 3.3】花期推进 + 花瓶每 24 小时可能自动换花。 */
+    if (refreshDecoration(t, ctx)) save();
+    if (maybeAutoChangeVaseFlower(t, ctx)) save();
     // season / time-of-day / weather: only push when something actually changed
-    if (refreshWeather()) ctx.push('weather_load', weatherPayload());
-    if (refreshFrogMotion(t)) ctx.push('client_load_role', rolePayload());
+    if (refreshWeather()) {
+      ctx.push('weather_load', weatherPayload());
+      /* 【并入他 3.3】天气/季节变了，院子的彩蛋也要跟着换。 */
+      ctx.push('easteregg_load', eggPayload());
+    }
+    if (refreshFrogMotion(t)) {
+      ctx.push('easteregg_load', eggPayload());
+      ctx.push('client_load_role', rolePayload());
+    }
+    /* 【并入他 3.3】排队的活：趁刚才换了动作，看看是不是该开工了。 */
+    tryStartQueuedCraft(t, ctx);
     const away = state.frog.status === 1;
     if (!away) {
       if (!state.travel.nextDepartAt) {
@@ -72784,7 +85922,8 @@ function mdPayload(s) {
     maybeAutoReplaceFurniture(ctx, t);
     /* 【并入他的 V3】材料齐了却还没开工时，按 35% 概率自己开工
        （检查间隔默认每拍；设 FROG_FURNITURE_AUTO_CRAFT_MIN_SEC=10800 就是他的 3 小时）。 */
-    autoCraftCheck(ctx, t);
+    /* 抄他 3.3：工坊改成"每 3 小时检查一次 + 35% 开工"（我们原来的每拍检查不再调用）。 */
+    if (processFurnitureCraftChecks(t, ctx)) save();
     if (advanceCraft(t)) {
       save();
       ctx.push('item_load_items', handlers.item_load_items());
@@ -72833,21 +85972,574 @@ function mdPayload(s) {
   /* Cadence per Define: roll every FRIEND_VISIT_RNDSEC with FRIEND_VISIT_RNDPER%
      chance, then a FRIEND_VISIT_COOL cooldown after they leave. A visitor is
      cleared either by expiring or by `guest_finish`. */
+  /* V37-RAIN-TASKS ================= 任务计数（依赖 state） ================= */
+
+  /** 某个任务计数当前值（没有就是 0）。 */
+  function taskCounter(id) {
+    return Math.max(0, Number((state.taskCounters || {})[String(id)]) || 0);
+  }
+
+  function addTaskCounter(id, amount) {
+    const n = Math.max(0, Number(amount) || 0);
+    if (!n) return;
+    if (!state.taskCounters || typeof state.taskCounters !== 'object') state.taskCounters = {};
+    state.taskCounters[String(id)] = taskCounter(id) + n;
+  }
+
+  /** 记"这件事发生过一次"（计数不足 1 才记，避免重复累加）。 */
+  function completeTaskCounter(id) {
+    if (taskCounter(id) < 1) addTaskCounter(id, 1);
+  }
+
+  /* V40-TASKS2 顶层的任务计数（v37 那份被插在嵌套作用域里，顶层调用者看不到它们）。 */
+
+  function taskCounter(id) {
+    return Math.max(0, Number((state.taskCounters || {})[String(id)]) || 0);
+  }
+
+  function addTaskCounter(id, amount) {
+    const n = Math.max(0, Number(amount) || 0);
+    if (!n) return;
+    if (!state.taskCounters || typeof state.taskCounters !== 'object') state.taskCounters = {};
+    state.taskCounters[String(id)] = taskCounter(id) + n;
+  }
+
+  function completeTaskCounter(id) {
+    if (taskCounter(id) < 1) addTaskCounter(id, 1);
+  }
+
+  /* V40-WIRE1 已把挂空函数接上（ownsFurniture / furnitureBenchLocked / craftMissingTools） */
+  /* V40-TASKS2 ============ 任务计数（抄他 3.3 的实现） ============ */
+
+  function blueprintTaskId(itemId) {
+    const id = Number(itemId);
+    if (id >= 10301 && id <= 10327) return id - 9699;
+    if (id === 10401) return 629;
+    if (id === 10501) return 630;
+    return 0;
+  }
+
+  function blueprintTaskProgress(id) {
+    const n = Number(id);
+    let blueprint = 0;
+    if (n >= 602 && n <= 628) blueprint = 10300 + (n - 601);
+    else if (n === 629) blueprint = 10401;
+    else if (n === 630) blueprint = 10501;
+    if (blueprint && hasHouseItem(blueprint)) return 1;
+    /* A blueprint is consumed when work starts; owning the finished furniture
+       still proves that the corresponding learning task was completed. */
+    if (n >= 602 && n <= 628) {
+      const type = n - 601;
+      const target = CRAFTABLE_BY_TYPE.get(type);
+      if (target && ownsFurniture(target.furnitureId)) return 1;
+    }
+    return taskCounter(id);
+  }
+
+  function markTripTaskProgress(plan, reward) {
+    if (!plan || !reward || reward.stray) return;
+    if (reward.goal) completeTaskCounter(102);
+    if (reward.area) completeTaskCounter(103);
+
+    /* These five rows are the original food -> destination checklist. The
+       destination must be reached with the matching food, not merely bought. */
+    const foodAreas = {
+      408: ['A_WSOUTH', 'A_WNORTH', 'A_WSOUTH2'],
+      409: ['A_EAST', 'A_TAIWAN'],
+      410: ['A_SOUTH', 'A_SOUTH2', 'A_EAST'],
+      411: ['A_NORTH', 'A_ENORTH'],
+    };
+    const foodIds = { 408: 4, 409: 5, 410: 15, 411: 16, 412: 33 };
+    for (const id of Object.keys(foodIds)) {
+      const taskId = Number(id);
+      if (!tripCarries(plan, foodIds[taskId])) continue;
+      const areas = foodAreas[taskId];
+      if (!areas || areas.indexOf(String(reward.area)) !== -1 || taskId === 412) {
+        completeTaskCounter(taskId);
+      }
+    }
+
+    if (reward.museum) completeTaskCounter(501);
+    /* A returned specialty/material is one count toward「合适的材料带回家」. */
+    const materialCount = (reward.items || []).filter((id) => {
+      const item = ITEM_BY_ID.get(Number(id));
+      return item && (item.type === ITEM_TYPE_SPECIALTY || item.type === 10 || item.type === 11);
+    }).length;
+    if (materialCount) addTaskCounter(601, materialCount);
+    if (tripCarries(plan, 1)) completeTaskCounter(205);
+    if (tripCarries(plan, 2)) completeTaskCounter(302);
+    if (tripCarries(plan, 3)) completeTaskCounter(303);
+  }
+
+  /* V40-PRAY-STORY ============ 祈愿分层 / 剧情查找 / 邀约 ============ */
+
+  /** 这个 id 是不是合法的祈愿"层"（身体/图案表里有它）。 */
+  function validPrayLayer(id) {
+    const n = Number(id);
+    return Number.isFinite(n) && !!((gamedata.tables.prayBodyData || {})[String(n)]);
+  }
+
+  /** 把 "1,2,3" 这样的层列表拆开、只留下合法的那些。 */
+  function pickPrayLayer(v) {
+    return String(v == null ? '' : v).split(',')
+      .map((s) => Number(String(s).trim()))
+      .filter((n) => validPrayLayer(n));
+  }
+
+  /** 从多组候选层里挑一层：从最后一组往前找，找到就随机取一个（他的口径）。 */
+  function choosePrayLayer(parts) {
+    const rows = Array.isArray(parts) ? parts.slice().reverse() : [];
+    for (const raw of rows) {
+      const list = pickPrayLayer(raw);
+      if (list.length) return list[randInt(0, list.length - 1)];
+    }
+    return 0;
+  }
+
+  /** 剧情在客户端那边用的 id：优先 storyid，其次 id。 */
+  function storyClientId(story) {
+    const tableId = Number(story && story.storyid);
+    return tableId > 0 ? tableId : Number(story && story.id) || 0;
+  }
+
+  /** 在本地剧情簿里找一条剧情（按内部 id 或客户端 id 都认）。 */
+  function findStory(id) {
+    const wanted = Number(id);
+    const list = (state.storyBook && state.storyBook.list) || [];
+    return list.find((story) => Number(story.id) === wanted || storyClientId(story) === wanted);
+  }
+
+  /** 访客离开时留下"友情绘本"邀约：冷却到点 + 按概率 + 指定或随机一位伙伴。 */
+  function leaveDrawingInvitation(guestId, t) {
+    const d = state.drawing;
+    if (!d || (d.state !== 0 && d.state !== undefined && d.state !== null)) return false;
+    const at = Number(t || nowSec());
+    if (Number(state.drawingNextRollAt) > at) return false;
+    state.drawingNextRollAt = at + DRAWING_CHECK_COOLDOWN_SEC;
+    if (Math.random() * 100 >= DRAWING_CHANCE) return false;
+    const guests = drawingGuestIds();
+    if (!guests.length) return false;
+    let guest = Number(guestId);
+    if (guests.indexOf(guest) === -1) guest = guests[randInt(0, guests.length - 1)];
+    d.state = 1;
+    d.guest = guest;
+    d.bag = Array.isArray(d.bag) ? d.bag.map(() => -1) : [-1, -1, -1, -1];
+    d.invitationAccepted = false;
+    return true;
+  }
+
+  /* V40-VISITOR-GAP ================= 访客 / 剧情辅助（依赖 state） ================= */
+
+  /** 这次旅行有没有带某件道具（他的命名）。 */
+  function tripCarries(plan, itemId) {
+    return !!(plan && Array.isArray(plan.carried)
+      && plan.carried.some((id) => Number(id) === Number(itemId)));
+  }
+
+  /** 下一次摇访客的时间：设了 MIN/MAX 走他的随机区间，否则用我们的一分钟节奏。 */
+  function nextGuestRollAt(t) {
+    const at = Number(t) || nowSec();
+    if (GUEST_ROLL_MIN_SEC > 0 || GUEST_ROLL_MAX_SEC > 0) {
+      const min = Math.max(60, GUEST_ROLL_MIN_SEC || 8 * 3600);
+      const max = Math.max(min, GUEST_ROLL_MAX_SEC || min);
+      return at + randInt(min, max);
+    }
+    return at + GUEST_ROLL_SEC;
+  }
+
+  /** 把访客食物归一到合法 id（他的命名）。 */
+  function normalizeVisitorFood(food) {
+    const id = Number(food);
+    if (VISITOR_FOOD_IDS.indexOf(id) >= 0) return id;
+    return VISITOR_FOOD_IDS.length ? Number(VISITOR_FOOD_IDS[0]) : 0;
+  }
+
+  /** 心境编号 -> 中文标签（他的命名；面板与调试用）。 */
+  function furnitureMoodLabel(mood) {
+    return ({
+      1: '非常开心', 2: '开心', 3: '平静', 4: '生气', 5: '非常生气',
+    })[Number(mood)] || '未知';
+  }
+
+  /* V40-MISC-GAP ============ 他 3.3 的辅助函数（薄封装，行为等价） ============ */
+
+  /** 家里有没有某件东西（他的命名；我们原来直接调 getHaveItem）。 */
+  function hasHouseItem(itemId, count) {
+    const need = Math.max(1, Number(count) || 1);
+    return getHaveItem(Number(itemId)) >= need;
+  }
+
+  /** 这件家具是否已经拥有（他的命名）。 */
+  function ownsFurniture(furnitureId) {
+    const list = state.furniture.owned || [];
+    return list.some((id) => Number(id) === Number(furnitureId));
+  }
+
+  /** 工作台是否正锁着（他的命名）。 */
+  function furnitureBenchLocked() {
+    return !!state.furniture.benchLock;
+  }
+
+  /** 这套工具还缺哪几件（他的命名；我们叫 craftMissingToolsFor）。 */
+  function craftMissingTools(tools) {
+    return craftMissingToolsFor(tools);
+  }
+
+  /** 某个风格对应的特殊材料（他的命名；我们表叫 CRAFT_SPECIAL_BY_STYLE）。 */
+  function craftSpecialMaterialFor(style) {
+    const id = CRAFT_SPECIAL_BY_STYLE[Number(style)];
+    return id === undefined ? 0 : Number(id);
+  }
+
+  /** 工作台上所有可做的活（他的命名）：普通家具 + 口袋 + 不倒翁，按 benchBlueprint 的口径。 */
+  function benchBlueprintCandidates() {
+    const out = [];
+    const plain = benchBlueprint();
+    if (plain) out.push(plain);
+    const extra = benchPocketTumblerBlueprint();
+    if (extra && !out.some((bp) => Number(bp.furnitureId) === Number(extra.furnitureId))) out.push(extra);
+    return out;
+  }
+
+  /** 堆肥载荷（他的命名；我们叫 compostPayload）。 */
+  function compostDisplayState() {
+    return compostPayload();
+  }
+
+  /** 保证堆肥状态形状正确（他的命名；我们 refreshCompost 里已内联同一件事）。 */
+  function ensureCompostState() {
+    const c = state.furniture.compost || (state.furniture.compost = {});
+    c.boxes = Array.from({ length: 6 }, (_, i) => Number((c.boxes || [])[i]) || 0);
+    c.fertility = Math.max(0, Math.min(SOIL_FERTILITY_MAX, Number(c.fertility) || 0));
+    if (!Array.isArray(c.list) || !c.list.length) c.list = [21000];
+    return c;
+  }
+
+  /** 祈愿物做完时的图案落定（他抽成具名函数；我们原来是内联在 advanceCraft 里）。 */
+  function fillWishArt(wish) {
+    const bodyIds = Object.keys((gamedata.tables || {}).prayBodyData || {});
+    if (bodyIds.length && wish && !wish.body_id) {
+      wish.body_id = Number(bodyIds[randInt(0, bodyIds.length - 1)]);
+    }
+    return wish;
+  }
+
+  /** 已完成（state > 3）的祈愿物数量 / 已盖好的印章数量（他的命名）。 */
+  function finishedWishCount() {
+    const c = state.craft || {};
+    return (c.wishes || []).filter((w) => Number(w && w.state) > 3).length;
+  }
+
+  function finishedStampCount() {
+    const c = state.craft || {};
+    return (c.stamps || []).filter((s) => Number(s && s.state) > 3).length;
+  }
+
+  /** 他用来判断"这件是不是已经做完"的小工具（我们内联写的 state > 3）。 */
+  function done(job) {
+    return Number(job && job.state) > 3;
+  }
+
+  function doneStamps() {
+    const c = state.craft || {};
+    return (c.stamps || []).filter((s) => done(s));
+  }
+
+  /* 【抄他 3.3】recordFurnitureChange */
+  function recordFurnitureChange() {
+    const F = state.furniture;
+    recordFurnitureChange();   /* 抄他 3.3：换家具记一次（含强制乱掉判定） */
+    F.moodReplaceCount = Math.max(0, Number(F.moodReplaceCount) || 0) + 1;
+    if (!(Number(F.moodReplaceThreshold) > 0)) {
+      F.moodReplaceThreshold = randInt(FURNITURE_ANGER_MIN_CHANGES, FURNITURE_ANGER_MAX_CHANGES);
+    }
+    if (F.moodReplaceCount < Number(F.moodReplaceThreshold)) return false;
+
+    F.moodReplaceCount = 0;
+    F.moodReplaceThreshold = randInt(FURNITURE_ANGER_MIN_CHANGES, FURNITURE_ANGER_MAX_CHANGES);
+    if (Math.random() * 100 >= FURNITURE_ANGER_CHANCE) return false;
+    F.moodStress = Math.max(Number(F.moodStress) || 0, FURNITURE_MESS_STRESS);
+    normalizeFurnitureMood();
+    return true;
+  }
+
+  /* 【抄他 3.3】skipFurnitureCraftChecksUntil */
+  function skipFurnitureCraftChecksUntil(at) {
+    let next = Number(state.furniture.nextCraftCheckAt);
+    if (!(next > 0)) next = Number(at) + FURNITURE_CRAFT_CHECK_SECONDS;
+    while (next <= Number(at)) next += FURNITURE_CRAFT_CHECK_SECONDS;
+    state.furniture.nextCraftCheckAt = next;
+  }
+
+  /* 【抄他 3.3】rollFurnitureCraftCheck */
+  function rollFurnitureCraftCheck(at, ctx) {
+    const next = Number(state.furniture.nextCraftCheckAt) || (Number(at) + FURNITURE_CRAFT_CHECK_SECONDS);
+    state.furniture.nextCraftCheckAt = next + FURNITURE_CRAFT_CHECK_SECONDS;
+    if (state.frog.status !== 0 || state.furniture.craft || state.furniture.craftQueued
+      || furnitureMoodBlocked()) return false;
+    const ready = benchBlueprintCandidates().map((bp) => craftMissing(bp))
+      .filter((info) => info && !info.missing.length && !info.missingTools.length);
+    if (!ready.length || Math.random() >= FURNITURE_CRAFT_START_CHANCE) return true;
+    const groups = new Map();
+    for (const info of ready) {
+      const bp = info.bp;
+      const slot = craftRecipeSlot(bp);
+      const key = slot >= 0 ? 'slot:' + slot : 'candidate:' + groups.size;
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(bp);
+    }
+    const choices = Array.from(groups.values());
+    const group = choices.length > 1
+      ? choices[Math.floor(Math.random() * choices.length)] : choices[0];
+    const selected = (group.length > 1
+      ? group[Math.floor(Math.random() * group.length)] : group[0]);
+    state.furniture.craftQueued = 1;
+    state.furniture.craftQueuedFurnitureId = selected.furnitureId;
+    state.furniture.craftQueuedBenchSlot = craftRecipeSlot(selected);
+    tryStartQueuedCraft(at, ctx);
+    return true;
+  }
+
+  /* 【抄他 3.3】processFurnitureCraftChecks */
+  function processFurnitureCraftChecks(at, ctx) {
+    let changed = false;
+    let next = Number(state.furniture.nextCraftCheckAt);
+    if (!(next > 0)) next = Number(at) + FURNITURE_CRAFT_CHECK_SECONDS;
+    while (next <= Number(at)) {
+      state.furniture.nextCraftCheckAt = next;
+      rollFurnitureCraftCheck(next, ctx);
+      next = Number(state.furniture.nextCraftCheckAt);
+      changed = true;
+    }
+    if (state.furniture.nextCraftCheckAt !== next) {
+      state.furniture.nextCraftCheckAt = next;
+      changed = true;
+    }
+    return changed;
+  }
+
+  /* 【抄他 3.3】advanceFurnitureCraft */
+  function advanceFurnitureCraft(ctx, t) {
+    const craft = state.furniture.craft;
+    if (!craft) return false;
+    if (craft.work_left === undefined) {
+      craft.work_left = Math.max(0, Number(craft.finishAt || 0) - t);
+    }
+    const previous = Number(craft.workClockAt) > 0 ? Number(craft.workClockAt) : t;
+    const active = state.frog.status === 0
+      && furnitureToolMotion(state.frog.motion);
+    const motionEnd = Number(state.frog.motionNextAt) || 0;
+    const activeUntil = active && motionEnd > previous
+      ? Math.min(t, motionEnd) : previous;
+    const delta = active ? Math.max(0, activeUntil - previous) : 0;
+    craft.workClockAt = t;
+    if (delta > 0) craft.work_left = Math.max(0, Number(craft.work_left) - delta);
+    craft.finishAt = t + Math.max(0, Number(craft.work_left) || 0);
+    if (active && craft.work_left <= 0) {
+      return craftTick(ctx, t);
+    }
+    return delta > 0;
+  }
+
+  /* 【抄他 3.3】cookingPayload */
+  function cookingPayload() {
+    const C = refreshCooking();
+    return {
+      month: C.month,
+      month_pro: C.monthPro || 0,
+      week: C.week || 0,
+      complete: !!C.complete,
+      select: C.select || 1,
+      refresh_time: C.refreshTime || 0,
+      task_list: (C.taskList || []).map((t) => ({
+        id: t.id, pro: t.pro || 0, complete: !!t.complete,
+      })),
+    };
+  }
+  /* 【抄他 3.3】cookingResetDailyTasks */
+  function cookingResetDailyTasks(preserveWeekly) {
+    const C = state.cooking;
+    const oldWeekly = (C.taskList || []).find((row) => {
+      const def = COOKING_TASKS[String(row.id)];
+      return def && Number(def.type) === 1;
+    });
+    C.taskList = cookingTaskRows().map((r) => ({
+      id: Number(r.id), pro: 0, complete: false,
+    }));
+    if (preserveWeekly && oldWeekly) {
+      const weekly = C.taskList.find((row) => Number(row.id) === Number(oldWeekly.id));
+      if (weekly) {
+        weekly.pro = Number(oldWeekly.pro) || 0;
+        weekly.complete = !!oldWeekly.complete;
+      }
+    }
+  }
+  /* 【抄他 3.3】capsuleFastTask */
+  function capsuleFastTask(ctx, slot) {
+    const cost = Number(CAPSULE_FAST_COST) || 0;
+    if (!slot || slot.complete || state.clover < cost) return false;
+    state.clover -= cost;
+    slot.complete = true;
+    if (!state.capsule.doneTasks) state.capsule.doneTasks = [];
+    if (state.capsule.doneTasks.indexOf(Number(slot.id)) === -1) {
+      state.capsule.doneTasks.push(Number(slot.id));
+    }
+    state.capsule.preCoin = (Number(state.capsule.preCoin) || 0) + 1;
+    save();
+    if (ctx) {
+      ctx.push('clover_update', { clover: state.clover });
+      ctx.push('capsule_load_coin', {
+        coin: state.capsule.coin || 0,
+        pre_coin: state.capsule.preCoin,
+      });
+      ctx.push('capsule_load_task', { task_list: capsulePayload().task_list });
+    }
+    return true;
+  }
+  /* 【抄他 3.3】queuePartyResult */
+  function queuePartyResult(ctx, guest, page, coll) {
+    const event = {
+      id: state.eventSeq++,
+      evt_type: TIMER_EVENT.PartyResult,
+      evt_id: Number(guest),
+      evt_value: [page === null ? 0 : Number(page), coll === null ? 0 : Number(coll), 0, 0],
+      evt_string: [],
+      evt_pic: [],
+    };
+    if (!Array.isArray(state.pendingEvents)) state.pendingEvents = [];
+    state.pendingEvents.push(event);
+    ctx.push('notify_new_event', { event });
+    return event;
+  }
+  /* 【抄他 3.3】wishingPoolPayload */
+  function wishingPoolPayload(W) {
+    return {
+      end_time: W.endTime,
+      coin: W.coin,
+      items: W.items.map((item) => ({ id: item.id, num: item.num, limit: item.limit })),
+    };
+  }
+  /* 【抄他 3.3】resetWishPoolIfExhausted */
+  function resetWishPoolIfExhausted() {
+    const items = wishPoolItems();
+    if (!items.length || items.some((item) => Number(item.limit) > 0)) return false;
+    const fourLeaf = DEF('FourLeafCloverID', 1000);
+    for (const item of items) {
+      item.limit = Number(item.id) === fourLeaf ? 1 : 3;
+    }
+    return true;
+  }
+  /* 【抄他 3.3】advanceFurnitureOffline */
+  function advanceFurnitureOffline(ctx, t, from) {
+    if (state.frog.status !== 0) return false;
+    let cursor = Number(from) > 0 ? Number(from) : t;
+    let motion = Number(state.frog.motion);
+    let next = Number(state.frog.motionNextAt);
+    if (!(next > cursor)) next = cursor + FROG_MOTION_SEC;
+    let checkAt = Number(state.furniture.nextCraftCheckAt);
+    if (!(checkAt > 0)) checkAt = cursor + FURNITURE_CRAFT_CHECK_SECONDS;
+    while (checkAt <= cursor) checkAt += FURNITURE_CRAFT_CHECK_SECONDS;
+    state.furniture.nextCraftCheckAt = checkAt;
+    let consumed = 0;
+    let changed = false;
+    let guard = 0;
+    while ((cursor < t || checkAt <= t || next <= t) && guard++ < 200000) {
+      const end = Math.min(t, next, checkAt);
+      let craft = state.furniture.craft;
+      if (furnitureToolMotion(motion) && craft) {
+        const use = Math.max(0, end - cursor);
+        if (use > 0) {
+          const left = Math.max(0, Number(craft.work_left) || 0);
+          const used = Math.min(left, use);
+          craft.work_left = left - used;
+          consumed += used;
+          changed = changed || used > 0;
+          if (craft.work_left <= 0) {
+            const finishedAt = cursor + used;
+            craft.workClockAt = finishedAt;
+            craft.finishAt = finishedAt;
+            craftTick(ctx, finishedAt);
+          }
+        }
+      }
+      cursor = end;
+      if (checkAt <= cursor) {
+        state.furniture.nextCraftCheckAt = checkAt;
+        rollFurnitureCraftCheck(checkAt, ctx);
+        checkAt = Number(state.furniture.nextCraftCheckAt);
+        changed = true;
+      }
+      if (next <= cursor) {
+        motion = scheduledFurnitureMotion(cursor);
+        state.frog.motion = motion;
+        next = cursor + FROG_MOTION_SEC;
+        changed = true;
+        if (furnitureToolMotion(motion) && tryStartQueuedCraft(cursor, ctx)) changed = true;
+      }
+      if (cursor >= t && checkAt > t && next > t) break;
+    }
+    state.frog.motion = motion;
+    state.frog.motionNextAt = next;
+    const craft = state.furniture.craft;
+    if (craft) {
+      craft.workClockAt = t;
+      craft.finishAt = t + Math.max(0, Number(craft.work_left) || 0);
+    }
+    return changed || consumed > 0;
+  }
+  /* 【抄他 3.3】scheduledFurnitureMotion */
+  function scheduledFurnitureMotion(at) {
+    const keys = Object.keys(FROGPATTERN);
+    if (!keys.length) return Number(FROGMOTIONNUM.doku) || 0;
+    if (state.frog.motionPattern == null) {
+      const max = Math.max(1, Number(DEF('FrogPatternMax', 3)));
+      state.frog.motionPattern = Math.floor(Math.random() * max);
+      state.frog.motionStep = 0;
+    }
+    const seq = FROGPATTERN[String(state.frog.motionPattern)] || FROGPATTERN[keys[0]];
+    if (!Array.isArray(seq) || !seq.length) return Number(FROGMOTIONNUM.doku) || 0;
+    state.frog.motionStep = ((state.frog.motionStep || 0) + 1) % seq.length;
+    const token = seq[state.frog.motionStep];
+    const hour = new Date(at * 1000).getHours();
+    if (hour >= 21 || hour < 6) return 10 + state.frog.motionStep % 4;
+    const motion = Number(FROGMOTIONNUM[token]) || 0;
+    return token === 'make' ? furnitureActionMotion() : motion;
+  }
+
+  /* V40-UNIFY-HIS 【抄他 3.3】他进度模型的字段：顶层原始值会被启动包装掉，在 tick 里按他的默认补齐。 */
+  if (state.drawingQueued === undefined || typeof state.drawingQueued === 'object') state.drawingQueued = false;
+  if (state.drawingRestUntil === undefined || typeof state.drawingRestUntil === 'object') state.drawingRestUntil = 0;
+  if (state.cooking) {
+    if (state.cooking.lastWeek === undefined) state.cooking.lastWeek = 2962;
+    if (state.cooking.taskDay === undefined) state.cooking.taskDay = 20261011;
+  }
+  if (state.craft && state.craft.workClockAt === undefined) state.craft.workClockAt = 0;
+  if (state.furniture && state.furniture.compost && state.furniture.compost.state === undefined) state.furniture.compost.state = 0;
+
   function tickGuest(ctx, t) {
     if (state.guest) {
       finishGuest(ctx, t);
       return;
     }
     if (!state.guestNextRollAt) {
-      state.guestNextRollAt = t + GUEST_ROLL_SEC;
+      state.guestNextRollAt = nextGuestRollAt(t);
       save();
       return;
     }
     if (t < state.guestNextRollAt) return;
-    state.guestNextRollAt = t + GUEST_ROLL_SEC;
+    state.guestNextRollAt = nextGuestRollAt(t);
     if (t < (state.guestCoolUntil || 0)) { save(); return; }
     if (Math.random() * 100 >= GUEST_CHANCE) { save(); return; }
     state.guest = pickGuest();
+    /* V37-RAIN-TASKS 【并入他 3.3】下雨天来的客人有 30% 概率带"雨天装扮"彩蛋。 */
+    {
+      const wx = Number((state.weather || {}).weather) || 0;
+      const isRain = wx === 3 || wx === 4;
+      const guestId = Number(state.guest && state.guest.id);
+      if (isRain && RAIN_GUEST_EGG[guestId] && Math.random() < RAIN_GUEST_CHANCE) {
+        state.guest.rainEgg = RAIN_GUEST_EGG[guestId];
+      }
+    }
     state.guestVisits = (state.guestVisits || 0) + 1;
     if (!state.firstGuest) state.firstGuest = Number(state.guest.id) || 0;
     save();
@@ -72913,6 +86605,8 @@ function mdPayload(s) {
       state.drawing.guest = Number(g.id);
       state.drawingNextRollAt = 0;
     }
+    /* 【并入他 3.3】访客离开是"种花"的触发点之一（土不够肥就不种）。 */
+    plantRandomFlowerpot(t);
     state.guest = null;
     state.guestBonusTickets = 0;
     state.guestCoolUntil = t + GUEST_COOL_SEC;
@@ -73022,7 +86716,8 @@ function mdPayload(s) {
       if (!got.length) {
         // nothing left to give: fall through to the visit branch
         d.state = 4; // visit
-        state.drawingReturnAt += 60;
+        /* 【并入他 3.3】被邀约的伙伴出门 4–8 小时（原来是 60 秒）。 */
+        state.drawingReturnAt = t + randInt(DRAWING_TRIP_MIN_SEC, DRAWING_TRIP_MAX_SEC);
       } else {
         d.state = 0;
         if (verbose) console.log(`[engine] drawing trip returned ${got.join(',')}`);
@@ -73030,15 +86725,27 @@ function mdPayload(s) {
       changed = true;
     }
     if (d.state === 4) {
-      if (!state.drawingReturnAt) { state.drawingReturnAt = t + 60; changed = true; }
-      if (t >= state.drawingReturnAt) { d.state = 0; changed = true; }
+      if (!state.drawingReturnAt) {
+        state.drawingReturnAt = t + randInt(DRAWING_TRIP_MIN_SEC, DRAWING_TRIP_MAX_SEC);
+        changed = true;
+      }
+      if (t >= state.drawingReturnAt) {
+        d.state = 0;
+        /* 【并入他 3.3】回来先在家歇一小时，之后每 8 小时才重新看一次邀约条件。 */
+        state.drawingRestUntil = t + DRAWING_HOME_REST_SEC;
+        state.drawingNextRollAt = t + DRAWING_CHECK_COOLDOWN_SEC;
+        changed = true;
+      }
     }
     if (!changed) return;
     if (d.state === 0) {
       d.bag = (d.bag || []).map(() => -1);
       d.guest = -1;
       state.drawingReturnAt = 0;
-      state.drawingNextRollAt = 0;
+      /* 【并入他 3.3】回来后的 8 小时冷却由出行分支设置，这里别清零。 */
+      if (!Number(state.drawingNextRollAt)) {
+        state.drawingNextRollAt = t + DRAWING_CHECK_COOLDOWN_SEC;
+      }
     }
     save();
     ctx.push('guest_load_drawing', drawingPayload());
@@ -74193,20 +87900,29 @@ function mdPayload(s) {
        ended on the 28th, and the client's own claim check (which is keyed by
        day-of-month) could never fire for those days either. */
     const covered = state.calendar.st.length + state.calendar.lucky.length;
-    if (state.calendar.month === m && covered === maxDay) return;
+    if (state.calendar.month === m && covered === maxDay
+        && Number(state.calendar.rewardVersion) === CALENDAR_REWARD_VERSION) return;
+    const keepClaimed = state.calendar.month === m
+      ? new Set([...(state.calendar.claimedSt || []), ...(state.calendar.claimedLucky || [])])
+      : new Set();
     state.calendar.month = m;
     state.calendar.claimedLucky = [];
     state.calendar.claimedSt = [];
     const st = [];
     const lucky = [];
     for (let d = 1; d <= maxDay; d++) {
-      // every day of the month carries a reward, as the original's own month art
-      // did (every cell had an icon); the every-7th-day ticket is our design
-      if (d % 7 === 0) lucky.push({ day: d, item_id: ITEM_TICKET_RES });
-      else st.push({ day: d, item_id: ITEM_CLOVER_RES });
+      const reward = CALENDAR_MONTH_REWARDS[(d - 1) % CALENDAR_MONTH_REWARDS.length];
+      const row = { day: d, item_id: reward.item_id, num: reward.num };
+      // Fixed monthly rewards belong to st_days in the original client. The
+      // lucky_days branch is reserved for a separate current-day event.
+      st.push(row);
+      if (keepClaimed.has(d)) {
+        state.calendar.claimedSt.push(d);
+      }
     }
     state.calendar.st = st;
     state.calendar.lucky = lucky;
+    state.calendar.rewardVersion = CALENDAR_REWARD_VERSION;
     save();
   }
 
@@ -74346,6 +88062,12 @@ function mdPayload(s) {
      type 1 = 旅行  -> trips taken
      type 2 = 旅行笔记 -> notes collected (pictures stand in for notes here) */
   function taskProgress(t) {
+    /* 【并入他 3.3】他的进度是**按任务 id** 算的：602..630 是「图纸/学会做它」这一类，
+       看手上有没有图纸、或有没有已经把这件家具做出来；再与他自己的计数取大者。 */
+    const taskId = Number(t && t.id);
+    if (taskId >= 602 && taskId <= 630) {
+      return Math.max(taskCounter(taskId), blueprintTaskProgress(taskId));
+    }
     const type = Number(t && t.type);
     if (type === 1) return Number(state.travel.tripCount) || 0;
     if (type === 2) return (state.pictures || []).length;
@@ -74480,7 +88202,7 @@ function mdPayload(s) {
   }));
   /* Growth timing is not in any table we can read, so this is our choice:
      three stages over FROG_PLANT_SEC (default 10 minutes total). */
-  const PLANT_STAGE_SEC = Number(process.env.FROG_PLANT_STAGE_SEC || 200);
+  const PLANT_STAGE_SEC = Number(process.env.FROG_PLANT_STAGE_SEC || 3 * 86400);
 
   function plantList() {
     return (state.flowerpot.slots || []).map((s, i) => ({
@@ -74493,6 +88215,173 @@ function mdPayload(s) {
 
   /* The client has NO "plant" command -- the whole cycle is server-driven -- so a
      free slot is re-seeded here. Growth is by elapsed time. */
+  /* V37-FLOWER-VASE ================= 花盆与花瓶（依赖 state） ================= */
+
+  /** 星级越高长得越快：`PLANT_STAGE_SEC / 星级`（1–3 星封顶，最少 60 秒）。 */
+  function plantStageSeconds(stars) {
+    const level = Math.max(1, Math.min(3, Number(stars) || 1));
+    return Math.max(60, Math.round(PLANT_STAGE_SEC / level));
+  }
+
+  /** 花盆槽位形状（老档/损坏档补齐成 FLOWERPOT_SLOTS 个空槽）。 */
+  function ensureFlowerpotSlots() {
+    if (!Array.isArray(state.flowerpot.slots)
+        || state.flowerpot.slots.length !== FLOWERPOT_SLOTS) {
+      state.flowerpot.slots = [];
+      for (let i = 0; i < FLOWERPOT_SLOTS; i++) {
+        state.flowerpot.slots.push({ id: 0, stage: 0, plantedAt: 0 });
+      }
+      return true;
+    }
+    return false;
+  }
+
+  /** 他的触发：访客离开时种一株（土不够肥就空着）。空位随便挑、品种随便挑。 */
+  function plantRandomFlowerpot(t) {
+    refreshCompost(t);
+    const compost = state.furniture.compost || {};
+    ensureFlowerpotSlots();
+    const empty = [];
+    for (let i = 0; i < state.flowerpot.slots.length; i += 1) {
+      if (!state.flowerpot.slots[i].id) empty.push(i);
+    }
+    const stars = soilStars(Number(compost.fertility) || 0);
+    if (!empty.length || stars < 1 || !FLOWER_PLANTS.length) return false;
+    const slotIndex = empty[randInt(0, empty.length - 1)];
+    const plantId = Number(FLOWER_PLANTS[randInt(0, FLOWER_PLANTS.length - 1)]);
+    const plantedAt = Number(t) || nowSec();
+    state.flowerpot.slots[slotIndex] = {
+      id: plantId,
+      stage: 1,
+      plantedAt,
+      fertility: stars,
+      stageSec: plantStageSeconds(stars),
+      seededByGuest: true,
+    };
+    save();
+    return true;
+  }
+
+  /** 一件装饰的生命周期：[总时长, 转形态的时刻]（null = 不变形态）。 */
+  function decorationFlowerRule(id) {
+    if (WILD_GRASS_DECORATIONS.has(Number(id))) {
+      return { lifeSec: 2 * DAY_SEC, stage2Sec: 1 * DAY_SEC };
+    }
+    if (Number(id) === 100) {
+      // 蜡梅：含苞三天，开花两天，总计五天。
+      return { lifeSec: 5 * DAY_SEC, stage2Sec: 3 * DAY_SEC };
+    }
+    if (Number(id) >= CULTIVATED_DECORATION_MIN
+      && Number(id) <= CULTIVATED_DECORATION_MAX) {
+      // 角堇/葡风/风信子/鸢尾/郁金香/铃兰：美丽五天，枯萎一天。
+      return { lifeSec: 6 * DAY_SEC, stage2Sec: 5 * DAY_SEC };
+    }
+    // 木槿、桂花、丁香、建兰、水仙：保持同一形态七天。
+    return { lifeSec: 7 * DAY_SEC, stage2Sec: null };
+  }
+
+  /** 把某个装饰从库存里扣掉一件（撤下花瓶时用）。 */
+  function removeDisplayedDecoration(id) {
+    const list = state.decoration.hasList || [];
+    const entry = list.find((d) => Number(d.id) === Number(id));
+    if (!entry) return;
+    entry.num = Math.max(0, Number(entry.num) - 1);
+    if (entry.num <= 0) {
+      state.decoration.hasList = list.filter((d) => d !== entry);
+    }
+  }
+
+  function decorationPayload() {
+    return {
+      has_list: decorationInventory(),
+      put_id: state.decoration.putId || 0,
+      status: state.decoration.status || 0,
+    };
+  }
+
+  /** 推进当前摆着的花：到第二形态改 status、到寿命就撤下（`startedAt` 是我们新加的字段，
+      老档没有就按"现在开始"算，不会把老档的花直接判死）。 */
+  function refreshDecoration(t, ctx) {
+    const D = state.decoration;
+    const putId = Number(D.putId) || 0;
+    if (!putId) {
+      if (D.status || D.startedAt) {
+        D.status = 0;
+        D.startedAt = 0;
+        return true;
+      }
+      return false;
+    }
+    if (!DECORATIONS[String(putId)]) {
+      D.putId = 0;
+      D.status = 0;
+      D.startedAt = 0;
+      if (ctx) ctx.push('client_load_decorate', decorationPayload());
+      return true;
+    }
+    const rule = decorationFlowerRule(putId);
+    let startedAt = Number(D.startedAt) || 0;
+    let changed = false;
+    if (!startedAt) {
+      /* 老档没有摆放时间：本来已经是第二形态的就按"刚好进第二形态"倒推，否则从现在开始。 */
+      startedAt = Number(D.status) >= 2 && rule.stage2Sec ? t - rule.stage2Sec : t;
+      D.startedAt = startedAt;
+      changed = true;
+    }
+    const elapsed = Math.max(0, t - startedAt);
+    if (elapsed >= rule.lifeSec) {
+      removeDisplayedDecoration(putId);
+      D.putId = 0;
+      D.status = 0;
+      D.startedAt = 0;
+      if (ctx) ctx.push('client_load_decorate', decorationPayload());
+      return true;
+    }
+    const nextStatus = rule.stage2Sec !== null && elapsed >= rule.stage2Sec ? 2 : 1;
+    if (Number(D.status) !== nextStatus) {
+      D.status = nextStatus;
+      changed = true;
+      if (ctx) ctx.push('client_load_decorate', decorationPayload());
+    }
+    return changed;
+  }
+
+  /** 每 24 小时掷一次：35% 概率把花瓶换成另一件已拥有的装饰（换下来的退回库存）。 */
+  function maybeAutoChangeVaseFlower(at, ctx) {
+    const D = state.decoration;
+    if (!Number(D.nextAutoChangeAt)) {
+      D.nextAutoChangeAt = Number(at) + VASE_AUTO_CHANGE_SECONDS;
+      save();
+      return false;
+    }
+    if (Number(at) < Number(D.nextAutoChangeAt)) return false;
+    D.nextAutoChangeAt = Number(at) + VASE_AUTO_CHANGE_SECONDS;
+    save();
+    if (Math.random() * 100 >= VASE_AUTO_CHANGE_CHANCE) return false;
+    if (state.frog.status !== 0 || !(Number(D.putId) > 0)) return false;
+
+    const choices = decorationInventory().filter((row) => Number(row.id) !== Number(D.putId));
+    if (!choices.length) return false;
+    const nextId = Number(choices[randInt(0, choices.length - 1)].id);
+    const item = DECORATION_ITEMS.get(nextId);
+    const stored = (D.hasList || []).find((row) => Number(row.id) === nextId);
+    if ((!stored || Number(stored.num) <= 0)
+      && item && state.items.house.some((row) => Number(row.item_id) === item.id && row.count > 0)) {
+      addHouseItem(item.id, -1);
+      addDecoration(nextId, 1);
+      pushItemUpdate(ctx, item.id, getHaveItem(item.id));
+    }
+    removeDisplayedDecoration(D.putId);
+    D.putId = nextId;
+    D.status = 1;
+    D.startedAt = Number(at);
+    D.autoChangeCount = (Number(D.autoChangeCount) || 0) + 1;
+    D.autoChangeLastAt = Number(at);
+    save();
+    if (ctx) ctx.push('client_load_decorate', handlers.client_load_decorate());
+    return true;
+  }
+
   function refreshFlowerpot(t) {
     if (!state.flowerpot.slots || state.flowerpot.slots.length !== FLOWERPOT_SLOTS) {
       state.flowerpot.slots = [];
@@ -74501,17 +88390,23 @@ function mdPayload(s) {
       }
     }
     let changed = false;
+    /* 【并入他 3.3】生长速度由土地肥力的星级决定（1–3 星 -> 1/2/3 倍速）。 */
+    const stars = soilStars(Number((state.furniture.compost || {}).fertility) || 0);
+    const stageSec = plantStageSeconds(stars);
     for (const s of state.flowerpot.slots) {
       if (!s.id) {
         if (FLOWER_PLANTS.length) {
           s.id = Number(FLOWER_PLANTS[randInt(0, FLOWER_PLANTS.length - 1)]);
           s.stage = 1;
           s.plantedAt = t;
+          s.fertility = stars;
+          s.stageSec = stageSec;
           changed = true;
         }
         continue;
       }
-      const want = Math.min(3, 1 + Math.floor((t - (s.plantedAt || t)) / PLANT_STAGE_SEC));
+      const sec = Number(s.stageSec) || stageSec;
+      const want = Math.min(3, 1 + Math.floor((t - (s.plantedAt || t)) / sec));
       if (want !== s.stage) { s.stage = want; changed = true; }
     }
     if (changed) save();
@@ -74766,12 +88661,97 @@ function mdPayload(s) {
      a UTC+8 player selected the wrong season near a month boundary and, far more
      visibly, rendered the night courtyard during the local afternoon -- the
      player's own wall clock is what the artwork is supposed to reflect. */
+  /* V37-CALENDAR-EGGS ================= 月历奖励与季节性彩蛋（依赖 state，放在引擎内） ================= */
+
+  /* 月历每天的奖励表（他的复原表；用真实 ItemDB id，保证每个格子都能画出图标）。 */
+  const CALENDAR_MONTH_REWARDS = [
+    { item_id: ITEM_CLOVER_RES, num: 30 }, { item_id: 101, num: 1 },
+    { item_id: 1104, num: 1 }, { item_id: 3000, num: 1 },
+    { item_id: 1201, num: 1 }, { item_id: 5101, num: 1 },
+    { item_id: ITEM_TICKET_RES, num: 1 }, { item_id: 3002, num: 1 },
+    { item_id: 102, num: 1 }, { item_id: 1103, num: 1 },
+    { item_id: ITEM_CLOVER_RES, num: 50 }, { item_id: 3004, num: 1 },
+    { item_id: 1104, num: 1 }, { item_id: ITEM_TICKET_RES, num: 1 },
+    { item_id: 1201, num: 1 }, { item_id: 3012, num: 1 },
+    { item_id: 101, num: 1 }, { item_id: ITEM_CLOVER_RES, num: 30 },
+    { item_id: 5101, num: 1 }, { item_id: 3014, num: 1 },
+    { item_id: ITEM_TICKET_RES, num: 1 }, { item_id: 1104, num: 1 },
+    { item_id: ITEM_CLOVER_RES, num: 60 }, { item_id: 3017, num: 1 },
+    { item_id: 1103, num: 1 }, { item_id: 102, num: 1 },
+    { item_id: 1201, num: 1 }, { item_id: ITEM_TICKET_RES, num: 1 },
+    { item_id: ITEM_CLOVER_RES, num: 80 }, { item_id: 3008, num: 1 },
+    { item_id: 1104, num: 1 },
+  ];
+
+  function calendarTaskPayload() {
+    return (state.calendar.taskList || []).slice(0, 3).map((row, i) => ({
+      id: Number(row && row.id) || i + 1,
+      pro: Number(row && row.pro) || 0,
+      complete: 1,
+    }));
+  }
+
+  /** 月历奖励统一在这里发：三叶草 / 抽奖券 / 普通物品（他的做法）。 */
+  function grantCalendarReward(ctx, itemId, count) {
+    const id = Number(itemId);
+    const n = Math.max(1, Number(count) || 1);
+    if (id === ITEM_CLOVER_RES) {
+      state.clover += n;
+      ctx.push('clover_update', { clover: state.clover });
+      return;
+    }
+    if (id === ITEM_TICKET_RES) {
+      state.ticket += n;
+      ctx.push('item_update_ticket', { ticket: state.ticket });
+      return;
+    }
+    const have = addHouseItem(id, n);
+    pushItemUpdate(ctx, id, have);
+  }
+
+  /** 吃饭时的彩蛋：5/15–6 月是粽子季(4)，5–10 月有西瓜(5)，其余 10% 出(2)。 */
+  function seasonalMealEgg(t) {
+    const d = new Date(Number(t) * 1000);
+    const month = d.getMonth() + 1;
+    const zongziSeason = (month === 5 && d.getDate() >= 15) || month === 6;
+    if (zongziSeason && Math.random() < 0.5) return 4;
+    if (month >= 5 && month <= 10 && Math.random() < 0.5) return 5;
+    if (Math.random() < 0.1) return 2;
+    return 0;
+  }
+
+  /** 每次换动作时决定彩蛋：吃饭走季节款，5–10 月的其他动作按 10% 出扇子彩蛋(3)。 */
+  function rotationEgg(motion, t) {
+    if (Number(motion) === Number(FROGMOTIONNUM.eat)) return seasonalMealEgg(t);
+    const month = new Date(Number(t) * 1000).getMonth() + 1;
+    return month >= 5 && month <= 10
+      && Math.random() * 100 < FROG_FAN_ACTION_CHANCE ? 3 : 0;
+  }
+
+  function setFrogEgg(id) {
+    const next = Number(id) || 0;
+    if (Number(state.frog.eggId) === next) return false;
+    state.frog.eggId = next;
+    const momentByEgg = {
+      1: 'egg_1_dress', 2: 'egg_2_eat', 3: 'egg_3_cook',
+      4: 'zongzi', 5: 'egg_5_chixigua',
+    };
+    if (next && momentByEgg[next]) momentTrigger(2, momentByEgg[next]);
+    return true;
+  }
+
+  /** `easteregg_load` 的载荷：当前彩蛋 + 雨天访客彩蛋 + 夏天夜里的萤火虫(201)。 */
+  function eggPayload() {
+    const eggs = [];
+    const add = (id) => { if (id && eggs.indexOf(id) === -1) eggs.push(id); };
+    add(Number(state.frog.eggId));
+    if (state.guest && state.guest.rainEgg) add(Number(state.guest.rainEgg));
+    if (seasonNow() === 2 && hoursTypeNow() >= 3) add(201);
+    return { egg_list: eggs };
+  }
+
   function seasonNow() {
-    const m = new Date(nowSec() * 1000).getMonth() + 1;
-    if (m >= 3 && m <= 5) return 1;        // spring
-    if (m >= 6 && m <= 8) return 2;        // summer
-    if (m >= 9 && m <= 11) return 3;       // autumn
-    return 4;                              // winter
+    return seasonForMonth(new Date(nowSec() * 1000).getMonth() + 1);
   }
 
   function hoursTypeNow() {
@@ -74786,9 +88766,10 @@ function mdPayload(s) {
      we pin a VALID enum value -- WeatherType runs 1..9 and the old default of 0 was
      outside it -- and vary it deterministically by day so it is not always the
      same. This model is ours, not the original's. */
+  /* 【并入他 3.3】天气改成"按日期 + 季节"决定：同一天恒定、季节里只出应季天气。 */
   function weatherNow() {
     const d = new Date(nowSec() * 1000);
-    return ((d.getFullYear() * 372 + (d.getMonth() + 1) * 31 + d.getDate()) % 9) + 1;
+    return weatherForDate(d.getFullYear(), d.getMonth() + 1, d.getDate()).weather;
   }
 
   /** @returns true when the season/hours/weather actually changed. */
@@ -74828,7 +88809,10 @@ function mdPayload(s) {
     // Sleep only in the game's night/late-night states (3/4), never day/evening.
     // A day/night boundary must interrupt the previous activity's timer.
     const sleeping = hoursTypeNow() >= 3;
-    const mode = sleeping ? 'sleep' : state.furniture.craft ? 'craft' : 'awake';
+    /* V40-PREFER-HIS 【V4.0】排队的活也算制作中：不然蛙蛙永远进不了 craft 模式、
+       也就永远拿不到工具动作，tryStartQueuedCraft 的门槛永远不成立（实测卡死）。 */
+    const mode = sleeping ? 'sleep'
+      : (state.furniture.craft || state.furniture.craftQueued) ? 'craft' : 'awake';
     if (state.frog.motionMode === mode && t < (state.frog.motionNextAt || 0)) return false;
     state.frog.motionMode = mode;
     const keys = Object.keys(FROGPATTERN);
@@ -74851,7 +88835,10 @@ function mdPayload(s) {
       // The newest bed has no sleep_2..4 skin in the shipped Spine assets.
       if (bed && bed.id > 1909) state.frog.motion = 10;
     }
-    else if (mode === 'craft') state.frog.motion = 5 + state.frog.motionStep % 5;
+    /* 【并入他 3.3】做东西时按台面上的工具换成具体工具动画（锯/刷/锤/缝/刻）。 */
+    else if (mode === 'craft') state.frog.motion = furnitureActionMotion();
+    /* 【并入他 3.3】每换一个动作就重掷季节彩蛋（睡觉时清掉）。 */
+    setFrogEgg(sleeping ? 0 : rotationEgg(state.frog.motion, t));
     state.frog.motionNextAt = t + FROG_MOTION_SEC;
     save();
     // 回忆彩蛋 type 1 (frog_motion): the moment's param IS a FrogMotionName value
@@ -76011,16 +89998,20 @@ function mdPayload(s) {
       if (refreshCompost(nowSec())) save();
       return compostPayload();
     },
+    /* 【并入他 3.3】口袋/不倒翁的真正载荷（原来这里写死空列表）。 */
     furniture_load_pocket: () => ({
       show_index: state.furniture.pocket.showIndex,
       replace_index: state.furniture.pocket.replaceIndex,
-      list: [],
+      list: (state.furniture.pocket.list || []).filter((id) => POCKET_DATA.has(Number(id))),
       clover: state.furniture.pocket.clover,
     }),
     furniture_load_tumbler: () => ({
       show_index: state.furniture.tumbler.showIndex,
       replace_index: state.furniture.tumbler.replaceIndex,
-      tumbler_list: [],
+      tumbler_list: (state.furniture.tumbler.list || []).map((entry) => ({
+        id: Number(entry.id),
+        layers: (entry.layers || []).map((layer) => ({ layer: layer.layer.slice() })),
+      })),
     }),
 
     /* ================= furniture actions (contracts read from main.min.js) ====
@@ -76057,8 +90048,23 @@ function mdPayload(s) {
       if (prev > 0) addHouseItem(prev, 1);     // give the displaced one back
       addHouseItem(id, -1);                    // consume the one being placed
       state.furniture.bench[slot] = id;
-      /* 图纸进台面之后：材料够就自动开工（原版也是服务端看着台面决定、再推 FurnitureFinish） */
-      const started = maybeStartCraft();
+      /* 图纸进台面之后：材料够就自动开工（原版也是服务端看着台面决定、再推 FurnitureFinish）
+         【并入他 3.3】台面上若是口袋/不倒翁配方（绳 11102 / 果子 11001），走他那条开工路径。 */
+      const extraBp = benchPocketTumblerBlueprint();
+      let started = false;
+      if (FROG_CRAFT_QUEUE && canQueueCraft(extraBp || benchBlueprint())) {
+        /* 【并入他 3.3 的可选项】排队模式：放上台面也先排队，等蛙蛙拿起对应工具的动作。 */
+        const qbp = extraBp || benchBlueprint();
+        if (qbp) {
+          state.furniture.craftQueued = 1;
+          state.furniture.craftQueuedFurnitureId = Number(qbp.furnitureId) || 0;
+          state.furniture.craftQueuedBenchSlot = craftRecipeSlot(qbp);
+        }
+      } else if (extraBp) {
+        started = startCraftFromBench(nowSec(), extraBp.furnitureId, craftRecipeSlot(extraBp));
+      } else {
+        started = maybeStartCraft();
+      }
       save();
       /* ItemModel.addHouseItem/consumeHouseItem are validation-only stubs in the
          shipped client. Without an authoritative inventory push, the material
@@ -76137,7 +90143,12 @@ function mdPayload(s) {
        show_index and replace_index from it. */
     furniture_replace_tumbler: (d) => finishReplace('tumbler', d),
     furniture_replace_compost: (d) => finishReplace('compost', d),
-    furniture_replace_pocket: (d) => finishReplace('pocket', d),
+    furniture_replace_pocket: (d) => {
+      const index = Number(d && d.index);
+      const count = (state.furniture.pocket.list || []).filter((id) => POCKET_DATA.has(Number(id))).length;
+      if (!Number.isInteger(index) || index < 1 || index > count) return { code: -1 };
+      return finishReplace('pocket', d);
+    },
 
     /* Payload is the SHOP id (FurnitureShopDB row), not the item id. The client
        deducts the clovers and adds the item locally, so the server has to do the
@@ -76148,6 +90159,11 @@ function mdPayload(s) {
       const shopId = shopIdOf(d);
       const row = FURNITURE_SHOP.get(shopId);
       if (!row) return { code: -1 };
+      /* 【并入他 3.3】只能买"今天货架上"的东西：他不是整表常驻，每天只有 8 个货位。 */
+      ensureFurnitureShopStock(nowSec());
+      if (!Object.prototype.hasOwnProperty.call(state.furniture.shopOffers || {}, shopId)) {
+        return { code: -1 };
+      }
       const bought = state.furniture.shopBought[shopId] || 0;
       const welfare = isWelfareRow(row);
       /* A welfare row's `limit` is 0 (= unrestricted for the client); the old
@@ -76158,7 +90174,8 @@ function mdPayload(s) {
       const boughtToday = state.furniture.shopDailyBought[shopId] || 0;
       const limit = Number(row.limit) || (welfare ? WELFARE_PER_DAY : Number(row.shop_limit) || 1);
       if (furnitureStock(row) <= 0) return { code: -1 };
-      if (row.has_item && state.furniture.owned.indexOf(Number(row.has_item)) === -1) {
+      /* 【并入他 3.3】前置商品在家里/台面/收藏里都算（他的 hasShopPrerequisite）。 */
+      if (row.has_item && !hasShopPrerequisite(row.has_item)) {
         return { code: -1 };
       }
       /* Welfare goods are NOT paid for -- see FURNITURE_TYPE_WELFARE. */
@@ -76483,6 +90500,14 @@ function mdPayload(s) {
     /* task_load: `tasks` carries each task's claimed flag and `list` the progress.
        `pro` only moves for the mappings we can justify (see taskProgress); the
        rest stay at 0 rather than inventing progress. */
+    /* 【并入他 3.3】客户端打点：看过地图 / 加过笔友，各记一次任务。 */
+    task_client_pro: (d) => {
+      const param = String(firstDefined(d, ['param']) || '');
+      if (param === 'Map') completeTaskCounter(103);
+      if (param === 'NoteFriend') completeTaskCounter(306);
+      save();
+      return undefined;
+    },
     task_load: () => {
       const rows = taskRows();
       return {
@@ -76903,13 +90928,13 @@ function mdPayload(s) {
 
     /* 庭院装饰. Payload is {has_list, put_id, status}; the client's handler is
        `this.decorationList = convertArray(e.has_list)` plus the other two. */
-    client_load_decorate: () => ({
+    /* 【并入他 3.3】取载荷前先推进花期（到点转形态/枯萎撤下）。 */
+    client_load_decorate: () => {
+      if (refreshDecoration(nowSec())) save();
       // Harvested flower items remain in the house until selected for the vase.
       // Expose them with decoration IDs without copying/duplicating ownership.
-      has_list: decorationInventory(),
-      put_id: state.decoration.putId || 0,
-      status: state.decoration.status || 0,
-    }),
+      return decorationPayload();
+    },
 
     /* Payload is the decoration id to put on display. The client mirrors the
        server exactly on success:
@@ -76999,11 +91024,25 @@ function mdPayload(s) {
       for (let i = 0; i < day; i++) {
         flags.push(state.calendar.claimedBeginner.indexOf(i + 1) !== -1 ? 1 : 0);
       }
+      /* 【并入他 3.3】已领的日子不再下发（否则重启会重新长出红点），
+         每天的奖励套用他的月历表（真实 ItemDB id），并回传已领清单。 */
+      const claimedSt = new Set(state.calendar.claimedSt || []);
+      const claimedLucky = new Set(state.calendar.claimedLucky || []);
+      const stDays = (state.calendar.st || [])
+        .filter((row) => !claimedSt.has(row.day))
+        .map((row) => {
+          const d = Number(row.day);
+          const fixed = CALENDAR_MONTH_REWARDS[d - 1];
+          return fixed ? { day: d, item_id: fixed.item_id, num: fixed.num } : row;
+        });
+      const luckyDays = (state.calendar.lucky || []).filter((row) => !claimedLucky.has(row.day));
       return {
         new_flag: flags,
-        task_list: state.calendar.taskList.slice(0, 3),
-        lucky_days: state.calendar.lucky,
-        st_days: state.calendar.st,
+        task_list: calendarTaskPayload(),
+        lucky_days: luckyDays,
+        st_days: stDays,
+        claimed_st_days: [...claimedSt],
+        claimed_lucky_days: [...claimedLucky],
       };
     },
 
@@ -77043,25 +91082,34 @@ function mdPayload(s) {
     calendar_get_st_reward: (d, ctx) => {
       ensureCalendarMonth();
       const today = curDayOfMonth();
-      if (!state.calendar.st.some((e) => e.day === today)) return { code: -1 };
+      const row = state.calendar.st.find((e) => e.day === today);
+      if (!row) return { code: -1 };
       if (state.calendar.claimedSt.indexOf(today) !== -1) return { code: 0 };
       state.calendar.claimedSt.push(today);
-      state.clover += CALENDAR_ST_CLOVER;
+      /* 【并入他 3.3】按当天的月历奖励发（原来一律 30 三叶草）。 */
+      const fixed = CALENDAR_MONTH_REWARDS[today - 1] || row;
+      const rewardId = Number(fixed.item_id) || ITEM_CLOVER_RES;
+      const rewardCount = Math.max(1, Number(fixed.num) || 1);
+      grantCalendarReward(ctx, rewardId, rewardCount);
+      /* 【并入他 3.3】领「当日奖励」= 任务 407 记一次（他的写法，只有 st 奖励记）。 */
+      completeTaskCounter(407);
       save();
-      ctx.push('clover_update', { clover: state.clover });
-      return { code: 0 };
+      return { code: 0, item_id: rewardId, count: rewardCount };
     },
 
     calendar_get_luck_reward: (d, ctx) => {
       ensureCalendarMonth();
       const today = curDayOfMonth();
-      if (!state.calendar.lucky.some((e) => e.day === today)) return { code: -1 };
+      const row = state.calendar.lucky.find((e) => e.day === today);
+      if (!row) return { code: -1 };
       if (state.calendar.claimedLucky.indexOf(today) !== -1) return { code: 0 };
       state.calendar.claimedLucky.push(today);
-      state.ticket += CALENDAR_LUCKY_TICKETS;
+      /* 【并入他 3.3】幸运日同样按行里的奖励发。 */
+      const rewardId = Number(row.reward_item_id || row.item_id) || ITEM_TICKET_RES;
+      const rewardCount = Math.max(1, Number(row.num) || CALENDAR_LUCKY_TICKETS);
+      grantCalendarReward(ctx, rewardId, rewardCount);
       save();
-      ctx.push('item_update_ticket', { ticket: state.ticket });
-      return { code: 0 };
+      return { code: 0, item_id: rewardId, count: rewardCount };
     },
 
     /* Indexed by day-1; the values are calendarData.note keys (the newcomer tips). */
@@ -77561,7 +91609,8 @@ function mdPayload(s) {
     // pray_load_grays USED TO LIVE HERE TOO, with exactly the same problem: the real
     // implementation (祈愿木牌 / 印章 / 三箱) is above, and this stub would have
     // shadowed it. Removed -- the duplicate-handler test caught it again.
-    easteregg_load: () => ({ egg_list: [] }),
+    /* 【并入他 3.3】彩蛋载荷不再写死空列表：当前彩蛋 / 雨天访客彩蛋 / 夏天夜里萤火虫。 */
+    easteregg_load: () => eggPayload(),
     /* =============================================== 春节贺卡 (springcard)
        Every command in this family gates on a value the client reads straight out of
        the reply, and the callbacks test `0 == code` -- never getErrorInfo -- so a
@@ -78485,7 +92534,11 @@ function mdPayload(s) {
   };
 }
 
-module.exports = { createEngine, canon, toWire, nowSec, defaultState, makeClovers, CLOVER_SLOTS };
+module.exports = {
+  createEngine, canon, toWire, nowSec, defaultState, makeClovers, CLOVER_SLOTS,
+  /* 【并入他 3.3】他的引擎也导出 weatherForDate；这里连节气日与本地日键一起导出。 */
+  weatherForDate, solarTermDay, localDayKeyAt,
+};
 
   });
 

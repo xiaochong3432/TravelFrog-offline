@@ -4,8 +4,8 @@
    "layers": {
     "1": {
      "cream": 8,
-     "item_id": 204001,
-     "item_num": 1,
+     "item_id": 200001,
+     "item_num": 4,
      "l_name": "蛋糕胚1层",
      "layer": 1,
      "make_pic": "cake_make_1_1_on",
@@ -14,8 +14,8 @@
     },
     "2": {
      "cream": 8,
-     "item_id": 204001,
-     "item_num": 1,
+     "item_id": 57,
+     "item_num": 2,
      "l_name": "蛋糕胚2层",
      "layer": 2,
      "make_pic": "cake_make_1_2_on",
@@ -31,8 +31,8 @@
    "layers": {
     "1": {
      "cream": 6,
-     "item_id": 204001,
-     "item_num": 1,
+     "item_id": 8001,
+     "item_num": 4,
      "l_name": "装饰2层",
      "layer": 1,
      "make_pic": "cake_make_2_1_on",
@@ -41,8 +41,8 @@
     },
     "2": {
      "cream": 6,
-     "item_id": 204001,
-     "item_num": 1,
+     "item_id": 57,
+     "item_num": 2,
      "l_name": "装饰1层",
      "layer": 2,
      "make_pic": "cake_make_2_2_on",
@@ -52,14 +52,14 @@
    },
    "name": "装饰",
    "part": 2,
-   "time": 1671379200
+   "time": 1766160000
   },
   "3": {
    "layers": {
     "1": {
      "cream": 5,
-     "item_id": 204001,
-     "item_num": 1,
+     "item_id": 10108,
+     "item_num": 2,
      "l_name": "小房子",
      "layer": 1,
      "make_pic": "cake_make_3_1_on",
@@ -69,14 +69,14 @@
    },
    "name": "小房子",
    "part": 3,
-   "time": 1671379200
+   "time": 1766160000
   },
   "4": {
    "layers": {
     "1": {
      "cream": 4,
-     "item_id": 204001,
-     "item_num": 1,
+     "item_id": 5101,
+     "item_num": 2,
      "l_name": "翻糖·青蛙",
      "layer": 1,
      "make_pic": "cake_make_4_1_on",
@@ -85,8 +85,8 @@
     },
     "2": {
      "cream": 4,
-     "item_id": 204001,
-     "item_num": 1,
+     "item_id": 57,
+     "item_num": 2,
      "l_name": "翻糖·萤火虫",
      "layer": 2,
      "make_pic": "cake_make_4_2_on",
@@ -95,8 +95,8 @@
     },
     "3": {
      "cream": 4,
-     "item_id": 204001,
-     "item_num": 1,
+     "item_id": 20001,
+     "item_num": 2,
      "l_name": "翻糖·乌龟",
      "layer": 3,
      "make_pic": "cake_make_4_3_on",
@@ -105,8 +105,8 @@
     },
     "4": {
      "cream": 4,
-     "item_id": 204001,
-     "item_num": 1,
+     "item_id": 57,
+     "item_num": 2,
      "l_name": "翻糖·刺猬",
      "layer": 4,
      "make_pic": "cake_make_4_4_on",
@@ -115,8 +115,8 @@
     },
     "5": {
      "cream": 4,
-     "item_id": 204001,
-     "item_num": 1,
+     "item_id": 11001,
+     "item_num": 2,
      "l_name": "翻糖·松鼠",
      "layer": 5,
      "make_pic": "cake_make_4_5_on",
@@ -125,8 +125,8 @@
     },
     "6": {
      "cream": 4,
-     "item_id": 204001,
-     "item_num": 1,
+     "item_id": 57,
+     "item_num": 2,
      "l_name": "翻糖·猫头鹰",
      "layer": 6,
      "make_pic": "cake_make_4_6_on",
@@ -135,8 +135,8 @@
     },
     "7": {
      "cream": 4,
-     "item_id": 204001,
-     "item_num": 1,
+     "item_id": 5101,
+     "item_num": 2,
      "l_name": "翻糖·壁虎",
      "layer": 7,
      "make_pic": "cake_make_4_7_on",
@@ -145,8 +145,8 @@
     },
     "8": {
      "cream": 4,
-     "item_id": 204001,
-     "item_num": 1,
+     "item_id": 57,
+     "item_num": 2,
      "l_name": "翻糖·嘟嘟",
      "layer": 8,
      "make_pic": "cake_make_4_8_on",
@@ -156,14 +156,14 @@
    },
    "name": "翻糖",
    "part": 4,
-   "time": 1671984000
+   "time": 1766764800
   },
   "5": {
    "layers": {
     "1": {
      "cream": 3,
-     "item_id": 204001,
-     "item_num": 1,
+     "item_id": 10108,
+     "item_num": 2,
      "l_name": "蜡烛",
      "layer": 1,
      "make_pic": "cake_make_5_1_on",
@@ -173,16 +173,16 @@
    },
    "name": "蜡烛",
    "part": 5,
-   "time": 1672588800
+   "time": 1767369600
   }
  },
  "light_reward": {
-  "item_id": 204001,
-  "item_num": 2
+  "item_id": 203004,
+  "item_num": 1
  },
  "share_reward": [
-  14,
-  204001
+  1,
+  57
  ],
  "task_list": {
   "1": {

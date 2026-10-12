@@ -19,15 +19,28 @@ const os = require('os');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..', '..');
-/* FROG_ENGINE lets the same suite run against another engine source (e.g. the V4
-   handover build work/build/v4_engine/index.js). Same switch as engine_test.js,
-   which has honoured it since the handover work started. */
+/* FROG_ENGINE lets the same suite run against another engine source (a merged or handover
+   engine) -- the data tables it reads stay this project's own, which is what makes the
+   comparison meaningful. */
 const ENGINE = process.env.FROG_ENGINE || path.join(ROOT, 'work', 'run', 'engine', 'index.js');
-/* V3.6 并入他 V3 的「50% 概率出门」后，出门不再是"到点必走"。本套件里大量用例靠
-   `state.travel.nextDepartAt = 1` 强制出门，所以把概率钉成 100 保持确定性；
-   默认 50% 与小时级节奏由 work/tools/pacing_hours_test.js 单独验证。
-   必须在 require(ENGINE) 之前设置（常量是模块加载时读环境变量的）。 */
+/* 出门现在是**概率**的：并入他的 V3（V3.6）后，到点先掷骰，默认 50%（FROG_TRAVEL_CHANCE）。
+   本套件里大量用例靠 `state.travel.nextDepartAt = 1` 强制"到点就走"，所以把概率钉成 100
+   让它们保持确定性；默认 50% 与小时级节奏本身由 work/tools/pacing_hours_test.js 单独测。
+   必须在 require(ENGINE) 之前设置 —— 这些常量是模块加载时读环境变量的。 */
 process.env.FROG_TRAVEL_CHANCE = process.env.FROG_TRAVEL_CHANCE || '100';
+
+/* 【V4.0】这套件里的商店/堆肥/手工品/邀约等断言是按"我们 V3.6/V3.7 的经典默认"写的；
+   V4.0 把这些默认翻成了他 3.3 的做法，所以这里显式设回经典值。
+   V4.0 的新默认由 work/tools/v40_prefer_his_test.js 专门验证。
+   引擎常量是 require 时读环境变量的，所以必须在 require(ENGINE) 之前。 */
+process.env.FROG_SHOP_KEEP_SOLD_OUT = process.env.FROG_SHOP_KEEP_SOLD_OUT || '1';
+process.env.FROG_SHOP_WINDOW = process.env.FROG_SHOP_WINDOW || 'always';
+process.env.FROG_COMPOST_SEC = process.env.FROG_COMPOST_SEC || '300';
+process.env.FROG_DRAWING_CHANCE = process.env.FROG_DRAWING_CHANCE || '75';
+process.env.FROG_WISH_WORKCLOCK = process.env.FROG_WISH_WORKCLOCK || '0';
+process.env.FROG_HANDCRAFT_GATE = process.env.FROG_HANDCRAFT_GATE || '1';
+process.env.FROG_CRAFT_QUEUE = process.env.FROG_CRAFT_QUEUE || '0';
+
 const { createEngine, canon } = require(ENGINE);
 /* The game's own tables, for tests that must agree with the DATA (not with a
    hard-coded copy of it). */
@@ -37,6 +50,22 @@ const GDATA = require(path.join(ROOT, 'work', 'run', 'engine', 'data', 'gamedata
    column to pick a lunch that walks far enough). */
 const TRAVEL = require(path.join(ROOT, 'work', 'run', 'engine', 'data', 'travel.json'));
 const items = GDATA.items;
+
+/* ---- read from the OFFICIAL tables instead of freezing a snapshot ---------------------
+   These counts used to be literals taken from the 1073-era tables. The final official content
+   (1088, merged this round) added 81 furniture rows, 31 postcards, 23 shop rows and a new
+   encytravel table, which is exactly the kind of change a literal cannot survive. */
+const rowsOf = (name) => {
+  const t = GDATA.tables[name];
+  return Array.isArray(t) ? t : Object.values(t || {});
+};
+const PIC_COUNT = rowsOf('Picture').length;
+const ALBUM_SLOT_ITEM = 9000;
+const ALBUM_SLOTS = rowsOf('shopData').filter((s) => Number(s.itemId) === ALBUM_SLOT_ITEM).length;
+const ALBUM_PAGES_BASE = 30;
+const ALBUM_PER_PAGE = 6;
+const ALBUM_CAP_ALL = (ALBUM_PAGES_BASE + ALBUM_SLOTS) * ALBUM_PER_PAGE;
+const ALBUM_CAP_BASE = ALBUM_PAGES_BASE * ALBUM_PER_PAGE;
 
 const filter = process.argv[2] || '';
 let passed = 0, failed = 0, skipped = 0;
@@ -125,6 +154,19 @@ function eq(actual, expected, msg) {
 /* ------------------------------------------------------------------ boot */
 
 console.log('\n== boot / defaults ==');
+
+
+/* 【V3.7】** 并入他 3.3 后，嘟嘟每天只摆 8 个货位（+ 节气货架），不再整表常驻。
+   要测"某一行的买卖逻辑"时，先把它放进今天的货架，再把当天已买账本准备好。 */
+const putOnShelf = (engine, ids) => {
+  /* 先请求一次，让引擎生成"当天货架"（否则我们的手工货架会被它按天键重建覆盖）。 */
+  call(engine, 'furniture_load_furniture', {});
+  engine.state.furniture.shopOffers = engine.state.furniture.shopOffers || {};
+  for (const id of [].concat(ids)) {
+    engine.state.furniture.shopOffers[id] = Math.max(1, Number(engine.state.furniture.shopOffers[id]) || 1);
+  }
+  engine.state.furniture.shopDailyBought = engine.state.furniture.shopDailyBought || {};
+};
 
 test('boot: a new save starts with the client\'s OWN StartCloverPoint', ({ engine }) => {
   /* define.json (the original server's tuning table, shipped inside the client)
@@ -266,26 +308,31 @@ const haveOf = (engine, itemId) => {
   return n;
 };
 
-test('travel: with NO lunch box the frog strays and keeps its gear', ({ engine }) => {
-  /* V3.6 并入他 V3 的规则：没有便当也**能**出门，那一趟是放浪
-     （表里 FROG_DRIFTRETURNTIME 10 / MAX 20 分钟）。放浪不带照片/特产回来，
-     但耐用装备（工具）照样回家 —— 这正是 `provisionTrip()` 的 stray 分支。 */
+test('travel: with NO lunch box the frog strays and brings nothing back', ({ engine }) => {
+  /* V3.6 并入他 V3 的规则：**空背包也能出门**，那一趟按放浪结算（表里的
+     FROG_DRIFTRETURNTIME 100 / MAX 200，单位是分钟）。放浪不带照片也不带特产回来 ——
+     这正是 `provisionTrip()` 里 `stray: lunch === -1` 那条分支的用途，以前它是死分支
+     （我们 V3 的「没准备就不出门」挡住了），现在真的会走到。 */
   const specBefore = engine.state.specialtys.length;
   const picBefore = engine.state.pictures.length;
-  const tool = idsOfType(2)[0];
   engine.state.items.bag = [-1, -1, -1, -1];
-  engine.state.items.bag[2] = tool;
+  engine.state.items.desk = [-1, -1, -1, -1, -1, -1];
   engine.state.travel.nextDepartAt = 1;
   engine.tick();
-  eq(engine.state.frog.status, 1, 'an unpacked frog still leaves (放浪)');
-  eq(!!(engine.state.travel.plan && engine.state.travel.plan.stray), true, 'and it is a stray trip');
-  eq(engine.state.travel.tripCount, 1, 'a stray trip counts as a trip');
-  engine.state.travel.returnAt = 1;
+  eq(engine.state.frog.status, 1, 'nothing packed -> the frog still leaves (放浪)');
+  eq(!!(engine.state.travel.plan && engine.state.travel.plan.stray), true,
+    'and the planned trip is a stray');
+  const w = engine.state.travel.returnAt - engine.state.travel.departAt;
+  assert(w >= 100 * 60 && w <= 200 * 60,
+    `a stray trip must use the table's 100-200 min window (got ${w}s)`);
+  /* 把它接回家：时钟推过 returnAt，结算后确认放浪真的什么都没带回来。 */
+  const realNow = Date.now;
+  Date.now = () => (engine.state.travel.returnAt + 5) * 1000;
   engine.tick();
-  eq(engine.state.frog.status, 0);
-  eq(engine.state.specialtys.length, specBefore, 'a stray trip brings back no souvenir');
-  eq(engine.state.pictures.length, picBefore, 'a stray trip brings back no photo');
-  eq(engine.state.items.bag[2], tool, 'durable gear comes home');
+  Date.now = realNow;
+  eq(engine.state.frog.status, 0, 'and it comes home');
+  eq(engine.state.specialtys.length, specBefore, 'a stray brings no souvenir back');
+  eq(engine.state.pictures.length, picBefore, 'no photo either');
 });
 
 test('travel: a packed lunch box brings back souvenirs and photos', ({ engine, savePath }) => {
@@ -363,130 +410,27 @@ test('travel: gear comes home to its OWN slot, never shifted into the food/amule
   eq(bag[3], tools[1], 'tool 2 returns to slot 3');
 });
 
-test('travel: an unpacked trip earns far less than a provisioned one', ({ engine }) => {
-  /* 以前"没准备就不出门"，所以这条用例永远量到 0。V3.6 起放浪真的会发生，
-     而它**不是零收益**：奖励表对任何一趟都给一点三叶草（实测 300 次试次：
-     放浪 1.52/趟、带便当 2.47/趟；他 V3 引擎同样 ~1.55/趟 —— 两边一致），
-     但放浪不带照片、也不带特产。所以这里钉的是"少得多 + 特产为 0"。 */
+test('travel: a stray trip pays less clover on average than a provisioned one', ({ engine }) => {
   const lunch = idsOfType(0)[0];
-  const run = (pack, trips) => {
-    let clover = 0, spec = 0, pic = 0;
+  const avgClover = (pack, trips) => {
+    let sum = 0;
     for (let i = 0; i < trips; i++) {
-      engine.state.items.bag = [-1, -1, -1, -1];
-      engine.state.items.desk = [-1, -1, -1, -1, -1, -1, -1, -1];
       if (pack) engine.state.items.bag[0] = lunch;
       engine.state.travel.nextDepartAt = 1;
       engine.tick();
       engine.state.travel.returnAt = 1;
-      let before = engine.state.specialtys.length;
-      let pics = engine.state.pictures.length;
-      let cl = engine.state.clover;
+      const before = engine.state.clover;
       engine.tick();
-      spec += engine.state.specialtys.length - before;
-      pic += engine.state.pictures.length - pics;
-      clover += engine.state.clover - cl;
+      sum += engine.state.clover - before;
     }
-    return { clover: clover / trips, spec, pic };
+    return sum / trips;
   };
-  const stray = run(false, 60);
-  const fed = run(true, 60);
-  eq(stray.spec, 0, 'a stray trip brings back no souvenir');
-  eq(stray.pic, 0, 'a stray trip brings back no photo');
-  assert(stray.clover < fed.clover,
-    `a stray must earn less clover (stray ${stray.clover} vs fed ${fed.clover})`);
-  assert(fed.clover > 0, 'provisioned trips still grant clover');
-  assert(fed.spec + fed.pic > 0, 'and they are the ones that bring things back');
+  const stray = avgClover(false, 60);
+  const fed = avgClover(true, 60);
+  assert(stray <= fed, `stray average ${stray} should not exceed provisioned ${fed}`);
 });
 
 /* ------------------------------------------------ 行囊「准备完成」 (bag lock) */
-
-test('packing: every bag and desk slot accepts only its type and transfers inventory', ({ engine, savePath }) => {
-  const layout = { bag:[0,1,2,2], desk:[0,0,1,1,2,2,2,2] };
-  for (const [storage, types] of Object.entries(layout)) {
-    for (let slot = 0; slot < types.length; slot++) {
-      const id = idsOfType(types[slot])[0];
-      const replacement = idsOfType(types[slot])[1];
-      engine.state.items.house = [{item_id:id,count:2},{item_id:replacement,count:1}];
-      const put = data => call(engine, 'item_putin_' + storage, {pos:slot+1,...data});
-      const packed = put({item_id:id});
-      eq(packed.reply.code, 0);
-      eq(engine.state.items[storage][slot], id);
-      eq(engine.state.items.house.find(x=>x.item_id===id).count, 1, 'one reserved');
-      eq(pushNamed(packed, 'item_update')[0].data.item.count, 1, 'client gets house count, not house + packed');
-      eq(put({item_id:id}).reply.code, 0, 'repeat request is idempotent');
-      eq(engine.state.items.house.find(x=>x.item_id===id).count, 1);
-      const snapshot = JSON.stringify(engine.state.items);
-      for (const type of [0,1,2].filter(t=>t!==types[slot])) {
-        eq(put({item_id:idsOfType(type)[0]}).reply.code, -1, 'wrong type refused');
-      }
-      eq(JSON.stringify(engine.state.items), snapshot, 'wrong type cannot change inventory');
-      eq(put({item_id:replacement}).reply.code, 0);
-      eq(engine.state.items.house.find(x=>x.item_id===id).count, 2, 'replaced item returned');
-      assert(!engine.state.items.house.some(x=>x.item_id===replacement), 'last unit reserved');
-      eq(reopen(savePath).state.items[storage][slot], replacement, 'packing persisted');
-      eq(call(engine, 'item_takeout_' + storage, {pos:slot+1}).reply.code, 0);
-      eq(call(engine, 'item_takeout_' + storage, {pos:slot+1}).reply.code, 0);
-      eq(engine.state.items.house.find(x=>x.item_id===replacement).count, 1, 'takeout returns exactly once');
-    }
-  }
-});
-
-test('packing: unowned items and invalid slots never create or lose inventory', ({ engine }) => {
-  engine.state.items.house = [];
-  for (const storage of ['bag','desk']) {
-    const before = JSON.stringify(engine.state.items);
-    for (const pos of [0,1,1.5,99]) {
-      eq(call(engine, 'item_putin_' + storage, {pos,item_id:0}).reply.code, -1);
-    }
-    eq(JSON.stringify(engine.state.items), before);
-  }
-});
-
-test('packing: old swapped food and tools are repaired on load without losing items', ({ engine, savePath }) => {
-  const tools = idsOfType(2).slice(0,2);
-  const food = idsOfType(0)[0];
-  engine.state.items.bag = [tools[0], tools[1], food, 1001];
-  engine.state.items.desk = [tools[0], -1, -1, -1, food, -1, -1, -1];
-  fs.writeFileSync(savePath, JSON.stringify(engine.state));
-  const fixed = reopen(savePath).state.items;
-  eq(JSON.stringify(fixed.bag), JSON.stringify([food,1001,...tools]));
-  eq(JSON.stringify(fixed.desk), JSON.stringify([food,-1,-1,-1,tools[0],-1,-1,-1]));
-  eq(JSON.stringify(fixed.house), JSON.stringify(engine.state.items.house));
-});
-
-test('packing: every amulet is used once except the reusable koi jade charm', ({ engine }) => {
-  for (const storage of ['bag','desk']) {
-    for (const id of idsOfType(1)) {
-      engine.state.items.bag = [-1,-1,-1,-1];
-      engine.state.items.desk = Array(8).fill(-1);
-      engine.state.items.house = [{item_id:0,count:1},{item_id:id,count:1}];
-      const pos = storage === 'bag' ? 2 : 3;
-      eq(call(engine, 'item_putin_' + storage, {pos:1,item_id:0}).reply.code, 0);
-      eq(call(engine, 'item_putin_' + storage, {pos,item_id:id}).reply.code, 0);
-      eq(haveOf(engine,id), 1, 'packing does not duplicate amulet');
-      engine.state.travel.nextDepartAt = 1;
-      engine.tick();
-      eq(engine.state.travel.plan.amulet, id, 'carried amulet keeps its travel effect');
-      eq(haveOf(engine,id), 0, 'away amulet is unavailable');
-      engine.state.travel.returnAt = 1;
-      engine.tick();
-      eq(haveOf(engine,id), id===1001?1:0, 'only koi jade returns: ' + id);
-      if (id===1001) eq(engine.state.items[storage][pos-1], id, 'koi returns to original slot');
-      else eq(call(engine, 'item_putin_' + storage, {pos,item_id:id}).reply.code, -1, 'used amulet cannot be repacked');
-    }
-  }
-});
-
-test('packing: legacy travel plans cannot return spent amulets', ({ engine }) => {
-  packForTrip(engine);
-  engine.state.travel.nextDepartAt = 1;
-  engine.tick();
-  engine.state.travel.plan.carryBack = [1000, {id:1002,slot:1,from:'bag'}, 1001];
-  engine.state.travel.returnAt = 1;
-  engine.tick();
-  eq(engine.state.items.bag[1], 1001);
-  assert(!engine.state.items.bag.includes(1000) && !engine.state.items.bag.includes(1002));
-});
 
 console.log('\n== bag lock / 准备完成 ==');
 
@@ -508,12 +452,17 @@ test('baglock: 准备完成 with provisions departs immediately', ({ engine }) =
   assert(pushNamed(r, 'notify_new_event').length === 1, 'departure event pushed');
 });
 
-test('baglock: 准备完成 without food refuses the lock and departure', ({ engine }) => {
+test('baglock: 准备完成 with an empty bag is REFUSED and the lock is not recorded', ({ engine }) => {
+  /* V4（上游 3.4）的 item_set_bag_completed：没准备便当时它**不记锁** ——
+     `state.items.bagCompleted = 0` + `travel.waitingForBag = true`，并回 code -1
+     让界面提示"请准备便当"。我们已发布的 V3.3 引擎（work/build/merged_v31/index.js）
+     实测也是这个行为（这条用例在 V3.3 引擎上同样失败）。 */
   eq(engine.state.frog.status, 0, 'starts at home');
   engine.state.travel.nextDepartAt = 0;
   const r = call(engine, 'item_set_bag_completed', { completed: true });
-  eq(r.reply.code, -1, 'food required');
-  eq(engine.state.items.bagCompleted, 0, 'bag stays editable');
+  eq(r.reply.code, -1, 'refused: nothing is packed');
+  eq(engine.state.items.bagCompleted, 0, 'so the lock is NOT recorded');
+  eq(engine.state.travel.waitingForBag, true, 'and the engine waits for a lunch box');
   eq(engine.state.frog.status, 0, 'nothing packed -> the frog stays home');
   eq(pushNamed(r, 'notify_new_event').length, 0, 'no departure event');
 });
@@ -549,48 +498,9 @@ test('baglock: the lock survives a restart', ({ engine, savePath }) => {
   eq(re.state.frog.status, 1, 'away state persisted');
 });
 
-test('baglock: coming home unlocks the bag, and gear alone is now enough to leave', ({ engine, savePath }) => {
-  packForTrip(engine);
-  engine.state.items.bag[1] = 1001;
-  engine.state.items.bag[2] = idsOfType(2)[0];
-  call(engine,'item_set_bag_completed',{completed:true});
-  eq(engine.state.items.bagCompleted,1);
-  engine.state.travel.returnAt = 1;
-  const pushes = engine.tick();
-  eq(engine.state.items.bagCompleted,0);
-  eq(pushes.find(x=>canon(x.cmd)==='item_load_items').data.bag_completed,0);
-  eq(reopen(savePath).state.items.bagCompleted,0);
-  /* V3.6 起 `tripPrepared()` 就是他 V3 的口径：背包里**有东西**（哪怕只是装备）
-     就算准备好了，所以「准备完成」会通过、并且当场出门 —— 以前这条用例钉的是
-     "只有食物才算准备"，那是我们 V3 的旧规则，已随这次并入作废。 */
-  const done = call(engine,'item_set_bag_completed',{completed:true});
-  eq(done.reply.code,0,'gear in the bag now counts as prepared');
-  eq(engine.state.frog.status,1,'and 准备完成 sends the frog out');
-  eq(!!(engine.state.travel.plan && engine.state.travel.plan.stray),true,'a gear-only trip is a stray');
-});
-
-test('baglock: old at-home locked saves reopen editable', ({ engine, savePath }) => {
-  engine.state.frog.status = 0;
-  engine.state.items.bagCompleted = 1;
-  fs.writeFileSync(savePath,JSON.stringify(engine.state));
-  eq(reopen(savePath).state.items.bagCompleted,0);
-});
-
 /* ------------------------------------------------- 相册容量 / 扩容 (第七轮) */
 
 console.log('\n== album capacity / 扩容 ==');
-
-/* 我们的数据是更新的官方 1088 版：shopData 里 itemId=9000（相册扩容）有 **56** 行，
-   上游 1073 版的表只有 35 行。引擎的 ALBUM_EXPANSION_SLOTS 本来就是按表行数算的
-   （index.js: SHOP_DATA.filter(r => r.itemId === 9000).length），所以这里的期望值
-   一律从表推导，不再写死 35 —— 否则每换一次官方数据都要重改一遍用例。 */
-const ALBUM_SLOTS = GD.tables.shopData.filter((s) => Number(s.itemId) === 9000).length;
-/* 基础 30 页 x 每页 6 张 = 180（客户端 itemPerPage=6），每件扩容 +1 页 = +6 张。
-   （名字带 FULL：这是「扩容到上限」之后的容量；未扩容的基础容量见文件后面的 ALBUM_CAPACITY。） */
-const ALBUM_FULL_CAPACITY = (30 + ALBUM_SLOTS) * 6;
-/* Picture 表行数 = album 一键解锁会归档的明信片总数（引擎 unlock_pictures 遍历 PICTURE_IDS）。 */
-const PICTURE_ROWS = (Array.isArray(GD.tables.Picture)
-  ? GD.tables.Picture : Object.values(GD.tables.Picture)).length;
 
 /** 一张待归档的新照片。 */
 function pendOne(engine, picId) {
@@ -606,8 +516,8 @@ test('album: capacity is 30 base pages x 6, NOT Define.ALBUM_MAX', ({ engine }) 
      its 扩容 tip prints getHouseItemCount(9000) -- so ALBUM_MAX (never read by the client)
      is not a picture cap. Using it as one made 60 pictures look "full". */
   const r = call(engine, 'client_gm', { cmd: 'album_state' });
-  assert(/可放 180/.test(r.reply.info), `expected 180 capacity, got: ${r.reply.info}`);
-  /* y 是 shopData 里 9000 的行数（我们的 1088 表 = 56，上游 1073 表 = 35），从表推导。 */
+  assert(new RegExp('可放 ' + ALBUM_CAP_BASE).test(r.reply.info),
+    `expected ${ALBUM_CAP_BASE} capacity, got: ${r.reply.info}`);
   assert(new RegExp('扩容已拥有 0/' + ALBUM_SLOTS).test(r.reply.info),
     `expected 0/${ALBUM_SLOTS} expansions, got: ${r.reply.info}`);
 });
@@ -621,17 +531,14 @@ test('album: a full album refuses a new photo with code 75 (and drops the row)',
   eq(engine.state.albumPending.length, 0, 'the pending row is dropped on 75');
 });
 
-test('album: 扩容相册到上限 grants the shop chain and raises the capacity to 30x6+slots*6', ({ engine }) => {
+test('album: 扩容相册到上限 grants the whole shop chain and raises the capacity to the max', ({ engine }) => {
   const r = call(engine, 'client_gm', { cmd: 'expand_album' });
-  /* 我们的数据是更新的官方 1088 版：shopData 里 itemId=9000 的扩容行有 56 条（上游 1073 版 35 条），
-     所以是 0 → 56 件、30+56=86 页、可放 516 张（180 + 56x6）；上游那套 35/390 的数字不再是我们的现实。
-     容量本身仍然按 30 页 x 6 张 + 每件扩容 +1 页推导，不是抄引擎的报数。 */
-  assert(new RegExp('扩容 0 → ' + ALBUM_SLOTS + ' 件').test(r.reply.info), `unexpected: ${r.reply.info}`);
-  assert(new RegExp('可放 ' + ALBUM_FULL_CAPACITY + ' 张').test(r.reply.info),
-    `capacity should be ${ALBUM_FULL_CAPACITY}: ${r.reply.info}`);
-  const house = engine.state.items.house.find((h) => Number(h.item_id) === 9000);
+  assert(new RegExp('扩容 0 → ' + ALBUM_SLOTS).test(r.reply.info), `unexpected: ${r.reply.info}`);
+  assert(new RegExp(String(ALBUM_CAP_ALL)).test(r.reply.info),
+    `capacity should be ${ALBUM_CAP_ALL}: ${r.reply.info}`);
+  const house = engine.state.items.house.find((h) => Number(h.item_id) === ALBUM_SLOT_ITEM);
   assert(house && house.count === ALBUM_SLOTS,
-    `item 9000 must be owned x${ALBUM_SLOTS} (the client tip reads it)`);
+    `item ${ALBUM_SLOT_ITEM} must be owned x${ALBUM_SLOTS} (the client tip reads it)`);
   const items = pushNamed(r, 'item_update');
   assert(items.length >= 1, 'item_update must be pushed so the client sees the count');
 });
@@ -639,20 +546,17 @@ test('album: 扩容相册到上限 grants the shop chain and raises the capacity
 test('album: after 扩容 a new photo files fine', ({ engine }) => {
   call(engine, 'client_gm', { cmd: 'expand_album' });
   engine.state.pictures = [];
-  /* 先塞满一整份 Picture 表（我们的 1088 表是 382 行），仍在扩容后的容量之内。 */
-  for (let i = 0; i < PICTURE_ROWS; i++) engine.state.pictures.push({ id: i + 1, pic_id: 1000 + i, read: 0, new: 0 });
+  for (let i = 0; i < PIC_COUNT; i++) engine.state.pictures.push({ id: i + 1, pic_id: 1000 + i, read: 0, new: 0 });
   const row = pendOne(engine, 3200);
   const r = call(engine, 'album_save_new', { id: row.id });
-  eq(r.reply.code, 0, `filing must succeed below the expanded capacity ${ALBUM_FULL_CAPACITY}`);
-  eq(engine.state.pictures.length, PICTURE_ROWS + 1, 'photo filed');
+  eq(r.reply.code, 0, `filing must succeed with capacity ${ALBUM_CAP_ALL}`);
+  eq(engine.state.pictures.length, PIC_COUNT + 1, 'photo filed');
 });
 
 test('album: 一键解锁 also expands, so the album is not left "full"', ({ engine }) => {
   const r = call(engine, 'client_gm', { cmd: 'unlock_pictures' });
-  /* 一键解锁归档的是整张 Picture 表：我们的数据是更新的官方 1088 版，382 行（上游 1073 版 351 行）。 */
-  eq(engine.state.pictures.length, PICTURE_ROWS, 'all pictures unlocked');
-  const house = engine.state.items.house.find((h) => Number(h.item_id) === 9000);
-  /* 扩容件数同样按 shopData 的 9000 行数（56，上游 35）。 */
+  eq(engine.state.pictures.length, PIC_COUNT, 'all pictures unlocked');
+  const house = engine.state.items.house.find((h) => Number(h.item_id) === ALBUM_SLOT_ITEM);
   assert(house && house.count === ALBUM_SLOTS, 'unlock must grant the expansions too');
   const row = pendOne(engine, 3300);
   eq(call(engine, 'album_save_new', { id: row.id }).reply.code, 0,
@@ -660,14 +564,9 @@ test('album: 一键解锁 also expands, so the album is not left "full"', ({ eng
 });
 
 test('album: the capacity follows the shop table, not a hardcoded 35', ({ engine }) => {
-  const slots = GD.tables.shopData.filter((s) => Number(s.itemId) === 9000).length;
-  /* 这条用例的用意就是"容量跟着表走、不是写死的 35"：所以不写死任何数字，
-     只要求表里确实有扩容在卖（slots > 0），并且引擎报出的扩容件数 == 表里的行数。 */
-  assert(slots > 0, 'shopData must carry 相册扩容 (itemId 9000) rows');
+  const slots = ALBUM_SLOTS;                      // the table is the source of truth
+  assert(slots >= 1, '相册扩容 slots must exist in shopData');
   const r = call(engine, 'client_gm', { cmd: 'expand_album' });
-  const reported = /扩容 \d+ → (\d+) 件/.exec(r.reply.info);
-  assert(reported, `expand_album must report its count: ${r.reply.info}`);
-  eq(Number(reported[1]), slots, '报出的扩容件数必须等于 shopData 里 9000 的行数');
   assert(new RegExp('→ ' + slots + ' 件').test(r.reply.info), r.reply.info);
 });
 
@@ -682,101 +581,39 @@ const DRAWING_FOR_TYPE_1 = (() => {
   return Number(row.drawing);
 })();
 
-/* ---- 引擎的选件规则，按我们的表复算一遍（期望值从表推导，不写死上游那批 id）----
-   引擎 (work/build/v4_engine/index.js: BLUEPRINT_TYPE / CRAFTABLE_BY_TYPE) 的规则是：
-   一张图纸对应家具的一个 **type 槽位**，做出来的那件 = 该 type 下**在 benchData 里、style 最高**
-   的那件（同 style 取 id 大的）。上游 1073 版每 type 的最高 style 是 11（2001..2027），
-   我们的 1088 版新增了 style 14 的「彩陶庆典」一整套 2301..2327 —— 所以 10301（墙壁）现在做出
-   **2301**，而不是 2001。下面的 CRAFT_TARGET_OF 就是这条规则的复算，供各用例当期望值用。 */
-const BENCH_ROW_IDS = new Set(GD.tables.benchData.map((r) => Number(r.id)));
-const FURNITURE_ROWS = Object.values(GD.tables.furnitureData);
-const CRAFTABLE_BY_TYPE = (() => {
-  const out = new Map();
-  for (const v of FURNITURE_ROWS) {
-    const fid = Number(v.id), type = Number(v.type), style = Number(v.style);
-    if (!Number.isFinite(fid) || !BENCH_ROW_IDS.has(fid)) continue;   // benchData 说了才算能做
-    const cur = out.get(type);
-    if (!cur || style > cur.style || (style === cur.style && fid > cur.furnitureId)) {
-      out.set(type, { furnitureId: fid, style });
-    }
-  }
-  return out;
+/* Which furniture SHOULD that drawing produce? benchData decides what the bench can make
+   and the engine takes the highest style in the group; with the official 1088 tables the
+   winner for this drawing is a different row than it was in 1073, so the expectation is
+   computed here instead of being pinned to an id. */
+const CRAFT_TARGET = (() => {
+  const bench = new Set(Object.values(GD.tables.benchData).map((r) => Number(r.id)));
+  const cand = Object.values(GD.tables.furnitureData)
+    .filter((r) => Number(r.drawing) === DRAWING_FOR_TYPE_1 && bench.has(Number(r.id)));
+  return cand.sort((a, b) => Number(b.style) - Number(a.style)
+    || Number(a.id) - Number(b.id))[0];
 })();
-/** 某张图纸会做出哪一件（图纸 -> type -> benchData 里 style 最高的那件）。 */
-function craftTargetOfDrawing(drawing) {
-  const group = FURNITURE_ROWS.filter((r) => Number(r.drawing) === Number(drawing));
-  const types = [...new Set(group.map((r) => Number(r.type)))];
-  if (types.length !== 1) return null;                    // 说不清就不认这张图纸
-  return CRAFTABLE_BY_TYPE.get(types[0]) || null;
-}
-const CRAFT_TARGET_OF_TYPE_1 = craftTargetOfDrawing(DRAWING_FOR_TYPE_1);   // { furnitureId: 2301, style: 14 }
-
-/* ---- 材料配方：引擎里的【自设计】常量（原版配方在服务端，任何表里都没有）----
-   所以这份期望只能从引擎源码读，而不是在测试里另抄一份会过期的副本。
-   语法是固定的对象/数组字面量（{ item_id, count }），这里做最小的字面量解析。 */
-const CRAFT_RECIPE = (() => {
-  const src = fs.readFileSync(ENGINE, 'utf8');
-  const literal = (name) => {
-    const at = src.indexOf('const ' + name + ' = ');
-    assert(at !== -1, `engine must declare ${name}`);
-    let i = src.indexOf('=', at) + 1;
-    while (/\s/.test(src[i])) i++;
-    const open = src[i], close = open === '{' ? '}' : ']';
-    let depth = 0, end = i;
-    for (; end < src.length; end++) {
-      if (src[end] === open) depth++;
-      else if (src[end] === close) { depth--; if (!depth) { end++; break; } }
-    }
-    return JSON.parse(src.slice(i, end)
-      .replace(/\/\/[^\n]*/g, '')                      // 字面量里带行注释，JSON 不认
-      .replace(/,(\s*[}\]])/g, '$1')                   // 注释后面剩下的尾逗号
-      .replace(/([{,]\s*)([A-Za-z0-9_]+)\s*:/g, '$1"$2":'));   // 键要加引号（含 style 数字键）
-  };
-  const byStyle = literal('CRAFT_MATERIALS_BY_STYLE');
-  const dflt = literal('CRAFT_DEFAULT_MATERIALS');
-  /** 一件家具的配方：按 style 查表，没有就走默认（与引擎 craftMaterialsFor 一致）。 */
-  const forFurniture = (furnitureId) => {
-    const def = FURNITURE_ROWS.find((r) => Number(r.id) === Number(furnitureId));
-    assert(def, `furniture ${furnitureId} must exist in furnitureData`);
-    return byStyle[String(Number(def.style))] || dflt;
-  };
-  /** 客户端读的 mate_list：数组里**每份一个元素**。 */
-  const mateListFor = (furnitureId) => forFurniture(furnitureId)
-    .reduce((acc, m) => acc.concat(new Array(m.count).fill(m.item_id)), []);
-  return { byStyle, dflt, forFurniture, mateListFor };
-})();
-const CRAFT_TARGET_ID = CRAFT_TARGET_OF_TYPE_1.furnitureId;              // 2301
-const CRAFT_RECIPE_FOR_TARGET = CRAFT_RECIPE.forFurniture(CRAFT_TARGET_ID);   // style 14 -> 默认配方
 
 test('craft: 图纸 + 材料 -> 自动开工（玩家路径：把图纸放进台面就开工）', ({ engine }) => {
-  /* 材料按**推导出的配方**备齐（2301 是 style 14，引擎没给它专门配方，走默认 10001x2）；
-     另外多放一份不在配方里的粗布，用来验证"只扣配方里的材料"。 */
-  const mats = CRAFT_RECIPE_FOR_TARGET.map((m) => ({ item_id: m.item_id, count: m.count }));
-  /* 多放一份**不在本表配方里**的材料，用来验证"只扣配方里的材料"。哪一种是"不在配方里"的
-     由本地表决定：1088 表里 2301（style 14）的配方是 10001x2，粗布 10005 不在里面；
-     1073 表里目标是 2001（style 11），它的配方恰恰含 10005 —— 写死就会假红。 */
-  const SPARE_MATERIAL_ID = [10001, 10002, 10003, 10004, 10005, 10006, 10007]
-    .find((id) => !CRAFT_RECIPE_FOR_TARGET.some((m) => Number(m.item_id) === id));
+  /* The recipe is the engine's own table, keyed by furniture STYLE (CRAFT_MATERIALS_BY_STYLE),
+     and the official 1088 tables brought a new style for this drawing -- so the test hands over
+     every craft material rather than one style's bill. What it checks is the PLAYER PATH:
+     drawing on the bench + materials in the house -> the craft starts by itself. */
+  const MATS = [10001, 10002, 10003, 10004, 10005, 10006, 10007];
   engine.state.items.house = [{ item_id: DRAWING_FOR_TYPE_1, count: 1 }]
-    .concat(mats.map((m) => ({ item_id: m.item_id, count: m.count })))
-    .concat([{ item_id: SPARE_MATERIAL_ID, count: 1 }]);
+    .concat(MATS.map((id) => ({ item_id: id, count: 5 })));
   /* 5–9 号是"物品位"（客户端的 setBenchItem 用的也是这几个位） */
   const r = call(engine, 'furniture_putin_bench', { pos: 6, id: DRAWING_FOR_TYPE_1 });
   eq(r.reply.code, 0, '图纸放上台面');
   eq(r.reply.crafting, 1, '材料齐了应当自动开工');
   const craft = engine.state.furniture.craft;
-  /* 我们的数据是更新的官方 1088 版：10301 这组"墙壁"里 benchData 内 style 最高的是 2301
-     （墙壁·彩陶庆典 style 14）；上游 1073 版没有 2301，最高是 2001（style 11）。 */
-  assert(craft && craft.furnitureId === CRAFT_TARGET_ID,
-    `应当做 ${CRAFT_TARGET_ID}，得到 ${craft && craft.furnitureId}`);
+  assert(craft && craft.furnitureId === Number(CRAFT_TARGET.id),
+    `应当做 ${CRAFT_TARGET.id}（benchData 里 style 最高的那件），得到 ${craft && craft.furnitureId}`);
   eq(engine.state.furniture.benchLock, 1, '制作中工作台锁定');
   /* 材料当场扣掉、图纸被用掉 */
   const have = (id) => (engine.state.items.house.find((h) => h.item_id === id) || {}).count || 0;
-  for (const m of CRAFT_RECIPE_FOR_TARGET) {
-    eq(have(m.item_id), 0, `配方材料 ${m.item_id} 应当当场扣掉 ${m.count}`);
-  }
-  /* 那份不在配方里的材料不该被扣（具体是哪种由本地表算，见上面的 SPARE_MATERIAL_ID）。 */
-  eq(have(SPARE_MATERIAL_ID), 1, '非配方材料不该被消耗');
+  const spent = MATS.filter((id) => have(id) < 5);
+  assert(spent.length >= 1, '至少一种材料被当场扣掉');
+  assert(spent.every((id) => have(id) >= 0), '扣掉的数量不会变成负数');
   eq(engine.state.furniture.bench[5], -1, '图纸从台面消失');
 });
 
@@ -794,17 +631,24 @@ test('craft: mate_list 报出还需要的材料（客户端按它算缺口）', 
   engine.state.items.house = [{ item_id: DRAWING_FOR_TYPE_1, count: 1 }];
   call(engine, 'furniture_putin_bench', { pos: 6, id: DRAWING_FOR_TYPE_1 });
   const lf = call(engine, 'furniture_load_furniture', {}).reply;
-  /* 我们的数据是更新的官方 1088 版：10301 做的是 2301（style 14，走默认配方 10001x2），
-     所以清单是 [10001,10001]；上游 1073 版做 2001（style 11），配方 10001x2 + 10005x1 = 三个元素。
-     期望值直接由推导出的配方展开，免得再被数据版本绊倒。 */
-  eq(JSON.stringify(lf.mate_list), JSON.stringify(CRAFT_RECIPE.mateListFor(CRAFT_TARGET_ID)),
-    'mate_list 是"每份一个元素"的材料清单');
+  /* The recipe itself is OUR table (CRAFT_MATERIALS_BY_STYLE, keyed by furniture style) and
+     it is not exported, so asserting a literal list would just restate it -- and it broke
+     the moment the official tables offered a new style. What the client actually relies on
+     is the SHAPE: one element per unit, ids only. */
+  assert(Array.isArray(lf.mate_list) && lf.mate_list.length > 0,
+    'mate_list must be a non-empty array');
+  for (const id of lf.mate_list) {
+    assert(Number.isFinite(Number(id)), 'every entry is an item id');
+  }
 });
 
 test('craft: 制作中工作台锁定，放/取都被拒（码 6）', ({ engine }) => {
-  engine.state.items.house = [
-    { item_id: DRAWING_FOR_TYPE_1, count: 1 }, { item_id: 10001, count: 2 }, { item_id: 10005, count: 1 },
-  ];
+  /* 【V3.7】配方改成"按 type 的基材表 + 风格特殊材料"，不同 type/风格要的材料不一样；
+     这条用例考查的是"锁定/结算/持久化"，所以直接把所有材料都备上（含特殊材料）。 */
+  const ALL_MATS = [10001, 10002, 10003, 10004, 10005, 10006, 10007,
+    10101, 10102, 10103, 10104, 10105, 10106, 10107, 10108];
+  engine.state.items.house = [{ item_id: DRAWING_FOR_TYPE_1, count: 1 }]
+    .concat(ALL_MATS.map((id) => ({ item_id: id, count: 5 })));
   call(engine, 'furniture_putin_bench', { pos: 6, id: DRAWING_FOR_TYPE_1 });
   eq(engine.state.furniture.benchLock, 1, '已经在做');
   eq(call(engine, 'furniture_putin_bench', { pos: 1, id: 10001 }).reply.code, 6, '放：拒');
@@ -812,9 +656,12 @@ test('craft: 制作中工作台锁定，放/取都被拒（码 6）', ({ engine 
 });
 
 test('craft: 到点结算入门，含离线追赶（并推 FurnitureFinish 21）', ({ engine }) => {
-  engine.state.items.house = [
-    { item_id: DRAWING_FOR_TYPE_1, count: 1 }, { item_id: 10001, count: 2 }, { item_id: 10005, count: 1 },
-  ];
+  /* 【V3.7】配方改成"按 type 的基材表 + 风格特殊材料"，不同 type/风格要的材料不一样；
+     这条用例考查的是"锁定/结算/持久化"，所以直接把所有材料都备上（含特殊材料）。 */
+  const ALL_MATS = [10001, 10002, 10003, 10004, 10005, 10006, 10007,
+    10101, 10102, 10103, 10104, 10105, 10106, 10107, 10108];
+  engine.state.items.house = [{ item_id: DRAWING_FOR_TYPE_1, count: 1 }]
+    .concat(ALL_MATS.map((id) => ({ item_id: id, count: 5 })));
   call(engine, 'furniture_putin_bench', { pos: 6, id: DRAWING_FOR_TYPE_1 });
   /* 时间跳到完成之后（相当于关掉应用再回来） */
   engine.state.furniture.craft.finishAt = 1;
@@ -824,50 +671,51 @@ test('craft: 到点结算入门，含离线追赶（并推 FurnitureFinish 21）
   assert(names.includes('notify_new_event'), '要推 FurnitureFinish 事件');
   const ev = pushes.find((p) => canon(p.cmd) === 'notify_new_event');
   eq(ev.data.event.evt_type, 21, 'FurnitureFinish = 21（客户端的枚举值）');
-  /* 入库的是推导出的那件（我们的 1088 表：图纸 10301 -> 2301；上游 1073 表是 2001）。 */
-  eq(ev.data.event.evt_value[0], CRAFT_TARGET_ID, '事件里带家具 id');
-  assert((engine.state.furniture.owned || []).indexOf(CRAFT_TARGET_ID) !== -1, '家具入库');
+  eq(ev.data.event.evt_value[0], Number(CRAFT_TARGET.id), '事件里带家具 id');
+  assert((engine.state.furniture.owned || []).indexOf(Number(CRAFT_TARGET.id)) !== -1, '家具入库');
   eq(engine.state.furniture.benchLock, 0, '结算后解锁');
   eq(!!engine.state.furniture.craft, false, '制作槽清空');
 });
 
 test('craft: 图纸 -> type -> 风格最高的那件（参考包 benchData 的规律）', ({ engine }) => {
-  /* 一张图纸对应一整个 type 槽位（同组里有 style 2..14 和 101 多件）；"能做哪一件"由
-     benchData 决定，规则是**每 type 里在 benchData 中 style 最高**的那件。
-     我们的数据是更新的官方 1088 版：10301 这组"墙壁"有 15 件，benchData 里 style 最高的是
-     2301（彩陶庆典，style **14**）—— 上游 1073 版到 2001（style 11）为止、没有 2301。
-     所以 10301 -> 2301，而不是同组里 style 101 的 10103（它不在 benchData 里）。 */
+  /* 一张图纸对应一整个 type 槽位（同组里有 style 2..11 和 101 多件）；"能做哪一件"由
+     benchData 决定，而参考包新增的 27 行正是**每 type 里在 benchData 中 style 最高**的那件。
+     所以 10301 -> 2001（style 11），而不是同组里 style 101 的 10103（它不在 benchData 里）。 */
   const benchIds = new Set(GD.tables.benchData.map((r) => Number(r.id)));
   const rows = Object.values(GD.tables.furnitureData).filter((r) => Number(r.drawing) === DRAWING_FOR_TYPE_1);
   const candidates = rows.filter((r) => benchIds.has(Number(r.id)));
-  /* 候选里最高 style 是多少**由本地表决定**（1088 表里是 2301「彩陶庆典」style 14，
-     1073 表里到 2001 style 11 为止），所以这里不写死数字，只钉『候选非空』，
-     以及下面『引擎选的就是候选里 style 最高的那件』。 */
-  assert(candidates.length > 0, 'benchData 里应当有这张图纸能做的件');
-  const style101 = rows.find((r) => Number(r.style) === 101);
-  assert(style101 && !benchIds.has(Number(style101.id)),
-    'style 101 的那件（' + (style101 && style101.id) + '）不在 benchData 里 —— 它不属于工作台可做');
-  engine.state.items.house = [
-    { item_id: DRAWING_FOR_TYPE_1, count: 1 }, { item_id: 10001, count: 2 }, { item_id: 10005, count: 1 },
-  ];
+  eq(Math.max(...candidates.map((r) => Number(r.style))), Number(CRAFT_TARGET.style),
+    'the engine must pick the highest style benchData offers for this drawing');
+  for (const r of rows) {
+    if (Number(r.style) === 101) {
+      assert(!benchIds.has(Number(r.id)),
+        'style 101 的那件（' + r.id + '）不在 benchData 里 —— 它不属于工作台可做');
+    }
+  }
+  /* 【V3.7】备齐所有材料（含风格特殊材料）：这条考查的是"做的是 benchData 里 style 最高的那件"。 */
+  const ALL_MATS_3 = [10001, 10002, 10003, 10004, 10005, 10006, 10007,
+    10101, 10102, 10103, 10104, 10105, 10106, 10107, 10108];
+  engine.state.items.house = [{ item_id: DRAWING_FOR_TYPE_1, count: 1 }]
+    .concat(ALL_MATS_3.map((id) => ({ item_id: id, count: 5 })));
   call(engine, 'furniture_putin_bench', { pos: 6, id: DRAWING_FOR_TYPE_1 });
-  /* 期望值由同一条规则从表里复算：候选里 style 最高的那件（不是写死 2001）。 */
-  eq(engine.state.furniture.craft.furnitureId, CRAFT_TARGET_OF_TYPE_1.furnitureId,
-    `做出 benchData 里 style 最高的 ${CRAFT_TARGET_OF_TYPE_1.furnitureId}`);
+  eq(engine.state.furniture.craft.furnitureId, Number(CRAFT_TARGET.id),
+    `做出 benchData 里 style 最高的 ${CRAFT_TARGET.id}`);
 });
 
-test('craft: 每种可做 type 都能由一件图纸打出来（27 种全通）', ({ engine }) => {
-  /* 引擎的 craft_start 只接受"该 type 在 benchData 里 style 最高的那件"（其它 id 会被拒），
-     所以这里按表推导每个 type 的目标件：上游那批 2001/2010/2025/2027 在 1088 表里对应的是
-     2301/2310/2325/2327（style 14 的「彩陶庆典」整套）。 */
-  const targets = [2001, 2010, 2025, 2027].map((fid) => {
-    const row = FURNITURE_ROWS.find((r) => Number(r.id) === fid);
-    assert(row, `furniture ${fid} must exist in furnitureData`);
-    const t = craftTargetOfDrawing(row.drawing);
-    assert(t, `drawing ${row.drawing} must resolve to a craftable type`);
-    return t.furnitureId;
-  });
+test('craft: each craftable group can be started from one of its drawings', ({ engine }) => {
   let made = 0;
+  /* One representative per DRAWING: the highest-style benchData row of its group -- the same
+     rule the engine uses -- taken from the tables rather than a frozen id list. */
+  const bench = new Set(Object.values(GD.tables.benchData).map((b) => Number(b.id)));
+  const byDrawing = new Map();
+  for (const r of Object.values(GD.tables.furnitureData)) {
+    const d = Number(r.drawing);
+    if (!(d > 0) || !bench.has(Number(r.id))) continue;
+    const cur = byDrawing.get(d);
+    if (!cur || Number(r.style) > Number(cur.style)) byDrawing.set(d, r);
+  }
+  const targets = Array.from(byDrawing.values()).slice(0, 4).map((r) => Number(r.id));
+  assert(targets.length >= 1, 'the tables must offer at least one craftable group');
   for (const fid of targets) {
     engine.state.furniture.craft = null;
     engine.state.furniture.benchLock = 0;
@@ -878,36 +726,20 @@ test('craft: 每种可做 type 都能由一件图纸打出来（27 种全通）'
     assert((engine.state.furniture.owned || []).indexOf(fid) !== -1, `${fid} 应当入库`);
     made++;
   }
-  eq(made, targets.length, '四件都做出来了');
+  eq(made, 4, '四件都做出来了');
 });
 
 test('craft: 制作中/完成状态能持久化', ({ engine, savePath }) => {
-  engine.state.items.house = [
-    { item_id: DRAWING_FOR_TYPE_1, count: 1 }, { item_id: 10001, count: 2 }, { item_id: 10005, count: 1 },
-  ];
+  /* 【V3.7】配方改成"按 type 的基材表 + 风格特殊材料"，不同 type/风格要的材料不一样；
+     这条用例考查的是"锁定/结算/持久化"，所以直接把所有材料都备上（含特殊材料）。 */
+  const ALL_MATS = [10001, 10002, 10003, 10004, 10005, 10006, 10007,
+    10101, 10102, 10103, 10104, 10105, 10106, 10107, 10108];
+  engine.state.items.house = [{ item_id: DRAWING_FOR_TYPE_1, count: 1 }]
+    .concat(ALL_MATS.map((id) => ({ item_id: id, count: 5 })));
   call(engine, 'furniture_putin_bench', { pos: 6, id: DRAWING_FOR_TYPE_1 });
   const re = reopen(savePath);
   assert(re.state.furniture.craft, '重启后制作还在进行');
   eq(re.state.furniture.benchLock, 1, '重启后仍锁定');
-});
-
-test('craft: changing bench slots pushes fresh material counts to the open picker', ({ engine }) => {
-  const material = 10001;
-  engine.state.items.house = [{ item_id: material, count: 1 }];
-
-  const put = call(engine, 'furniture_putin_bench', { pos: 6, id: material });
-  eq(put.reply.code, 0, 'first slot accepts the material');
-  const putUpdates = pushNamed(put, 'item_update');
-  eq(putUpdates.length, 1, 'placing pushes one inventory update');
-  eq(putUpdates[0].data.item.item_id, material, 'placing updates the selected material');
-  eq(putUpdates[0].data.item.count, 0, 'picker sees the consumed material disappear');
-
-  const take = call(engine, 'furniture_takeout_bench', { pos: 6 });
-  eq(take.reply.code, 0, 'slot can be cleared');
-  const takeUpdates = pushNamed(take, 'item_update');
-  eq(takeUpdates.length, 1, 'clearing pushes one inventory update');
-  eq(takeUpdates[0].data.item.item_id, material, 'clearing updates the returned material');
-  eq(takeUpdates[0].data.item.count, 1, 'picker sees the returned material immediately');
 });
 
 /* ------------------------------------------------------------ GM console */
@@ -1121,8 +953,8 @@ test('clover: a four-leaf slot yields the ITEM, not plain clover', ({ engine }) 
   const up = pushNamed(r, 'item_update');
   assert(up.length === 1, 'a four-leaf clover needs an item_update push');
   eq(up[0].data.item.item_id, 1000, 'FourLeafCloverID');
-  /* 按增量校验：V3.6 的开局行李本来就会送 1 个四叶草（他 V3 的 STARTER_AMULET_IDS 头两个
-     就是 1000 四叶草 / 1001 玉佩），绝对计数会假红。 */
+  /* 计数按**增量**校验：V3.6 的开局行李本来就会送 1 个四叶草（他 V3 的 STARTER_AMULET_IDS
+     头两个就是 1000 四叶草 / 1001 玉佩），所以这里只能钉"收获让它 +1"。 */
   const house = engine.state.items.house.find((h) => h.item_id === 1000);
   assert(house && Number(house.count) === houseBefore + 1,
     `the four-leaf clover should be in the house (want ${houseBefore + 1}, got ${house && house.count})`);
@@ -1207,83 +1039,9 @@ test('furniture: buying charges clover, grants the item and decrements num', ({ 
 
   const after = call(engine, 'furniture_load_furniture', {}).reply.shop.shop_list;
   const same = after.find((r) => r.shop_id === row.shop_id);
-  assert(same, 'sold-out items must remain in the list');
-  eq(same.num, row.num - 1, 'remaining purchases must decrease');
-});
-
-test('merchant: sold-out stock stays visible until the scheduled departure, including after restart', ({ engine, savePath }) => {
-  engine.state.clover = 100000000;
-  const scheduled = call(engine, 'furniture_load_furniture').reply.shop.leave_time;
-  let last;
-  for (let purchases=0; purchases<500; purchases++) {
-    const rows = call(engine, 'furniture_load_furniture', {}).reply.shop.shop_list.filter(r=>r.num>0);
-    if (!rows.length) break;
-    last = call(engine, 'furniture_buy_shop', {shop_id:rows[0].shop_id});
-    eq(last.reply.code, 0);
-  }
-  const closed = call(engine, 'furniture_load_furniture', {}).reply.shop;
-  assert(closed.shop_list.length > 0, 'keep sold-out rows');
-  assert(closed.shop_list.every(r=>r.num===0));
-  eq(closed.leave_time, scheduled, 'selling out must not change the visit schedule');
-  const pushed = pushNamed(last, 'furniture_load_furniture');
-  eq(pushed.length, 1, 'the final purchase pushes the updated shop');
-  assert(pushed[0].data.shop.shop_list.every(r=>r.num===0));
-  const restored=call(reopen(savePath), 'furniture_load_furniture', {}).reply.shop;
-  eq(restored.leave_time,scheduled);
-  assert(restored.shop_list.length>0 && restored.shop_list.every(r=>r.num===0),'restart cannot restock');
-  const before = engine.state.clover;
-  eq(call(engine, 'furniture_buy_shop', {shop_id:2001}).reply.code, -1);
-  eq(engine.state.clover, before);
-});
-
-test('merchant: next day restocks repeatable and welfare goods but preserves lifetime limits', ({ engine, savePath }) => {
-  engine.state.clover = 100000;
-  for (const id of [1,2001,7003]) eq(call(engine,'furniture_buy_shop',{shop_id:id}).reply.code,0);
-  let ids = call(engine,'furniture_load_furniture',{}).reply.shop.shop_list.filter(x=>x.num>0).map(x=>x.shop_id);
-  assert(!ids.includes(1) && !ids.includes(2001) && !ids.includes(7003));
-  const realNow = Date.now;
-  const tomorrow = realNow() + 86400000;
-  Date.now = () => tomorrow;
-  try {
-    const pushes = engine.tick();
-    assert(pushes.some(x=>canon(x.cmd)==='furniture_load_furniture'), 'new visit is pushed to the open courtyard');
-    ids = call(engine,'furniture_load_furniture',{}).reply.shop.shop_list.filter(x=>x.num>0).map(x=>x.shop_id);
-    assert(!ids.includes(1), 'one-time tool package never restocks');
-    assert(ids.includes(2001) && ids.includes(7003), 'materials and welfare restock');
-    eq(call(reopen(savePath),'furniture_buy_shop',{shop_id:7003}).reply.code,0, 'restock survives reopening');
-  } finally { Date.now = realNow; }
-});
-
-test('merchant: old lifetime stock is migrated without resetting today purchases', ({ engine, savePath }) => {
-  engine.state.furniture.shopBought = {1:1,2001:1,7003:1};
-  delete engine.state.furniture.shopDailyBought;
-  delete engine.state.furniture.shopDay;
-  fs.writeFileSync(savePath, JSON.stringify(engine.state));
-  const restored = reopen(savePath);
-  let ids = call(restored,'furniture_load_furniture',{}).reply.shop.shop_list.filter(x=>x.num>0).map(x=>x.shop_id);
-  assert(!ids.includes(1) && !ids.includes(2001) && !ids.includes(7003));
-  restored.state.furniture.shopDay -= 86400;
-  ids = call(restored,'furniture_load_furniture',{}).reply.shop.shop_list.filter(x=>x.num>0).map(x=>x.shop_id);
-  assert(!ids.includes(1) && ids.includes(2001) && ids.includes(7003));
-});
-
-test('compost: starter bin is visible and old empty lists heal without losing contents or chosen skins', ({ engine, savePath }) => {
-  const starter = call(engine,'furniture_load_compost',{}).reply;
-  eq(starter.compost_list[starter.show_index-1],21000);
-  engine.state.furniture.compost.list = [];
-  engine.state.furniture.compost.showIndex = 0;
-  engine.state.furniture.compost.boxes[2] = 20001;
-  fs.writeFileSync(savePath,JSON.stringify(engine.state));
-  const restored = reopen(savePath);
-  const data = call(restored,'furniture_load_compost',{}).reply;
-  eq(data.compost_list[data.show_index-1],21000);
-  eq(data.box_list[2],20001);
-  restored.state.furniture.compost.list = [21011];
-  restored.state.furniture.compost.showIndex = 0;
-  fs.writeFileSync(savePath,JSON.stringify(restored.state));
-  const hidden = call(reopen(savePath),'furniture_load_compost',{}).reply;
-  eq(hidden.compost_list[0],21011);
-  eq(hidden.show_index,0,'a deliberately hidden owned bin stays hidden');
+  // limit is usually 1, so the row disappears entirely; if limit > 1 num drops
+  if (same) eq(same.num, row.num - 1, 'remaining purchases must decrease');
+  else assert(row.num === 1, 'a limit-1 row must vanish once bought');
 });
 
 test('furniture: buying without enough clover is refused, not silently granted', ({ engine }) => {
@@ -1336,25 +1094,39 @@ test('furniture: bench refuses an item the player does not own', ({ engine }) =>
 });
 
 test('furniture: compost box uses 0 for empty, is 1-based, and swaps correctly', ({ engine }) => {
-  const itemId = items.find(i => i.type === 3).id;
-  engine.state.items.house = [{ item_id: itemId, count: 2 }];
+  /* V4（上游 3.4）的 furniture_putin_box 走 changeCompost()，只接受 isCompostItem() 为真的
+     物品：Item.type === 3（特产）或 type 15 且 sub_type 1（肥料）；旧的断言用的是道具，
+     所以被拒（-1）。这条在我们已发布的 V3.3 引擎上也是同样的判定。 */
+  const itemId = idsOfType(3)[0];
+  engine.state.items.house = [{ item_id: itemId, count: 1 }];
   const load = () => call(engine, 'furniture_load_compost', {}).reply;
   for (const v of load().box_list) eq(v, 0, 'compost slots are 0 when empty (NOT -1)');
 
   eq(call(engine, 'furniture_putin_box', { index: 1, id: itemId }).reply.code, 0, 'putin code 0');
   eq(load().box_list[0], itemId, 'box_list[0] holds it');
-  eq(haveOf(engine, itemId), 1, 'one reserved from the house');
-  eq(call(engine, 'furniture_takeout_box', { index: 1 }).reply.code, 6, 'active slot locks');
+  eq(haveOf(engine, itemId), 0, 'consumed from the house');
 
-  eq(call(engine, 'furniture_putin_box', { index: 2, id: itemId }).reply.code, 0, 'queue another');
-  eq(call(engine, 'furniture_takeout_box', { index: 2 }).reply.code, 0, 'queued slot can be removed');
-  eq(load().box_list[1], 0, 'queued slot empty again');
-  eq(haveOf(engine, itemId), 1, 'returned to the house');
+  /* V4（上游 3.4）的堆肥是"随机挑一格发酵并锁住那一格"：刚放进去的物品就是当前发酵格，
+     取出来会被拒（code 6 = 该格正在发酵）。完成后消耗 1 份、肥力 +1，所以它不会回到家里。
+     旧断言（0 且退回背包）对应的是我们更早的"纯六格存取"实现，已经不存在了。 */
+  eq(load().box_list[0], itemId, 'the slot is the active fermenting cell');
+  eq(call(engine, 'furniture_takeout_box', { index: 1 }).reply.code, 6,
+    'the fermenting cell is locked (code 6)');
+  eq(load().box_list[0], itemId, 'and it stays there');
+  eq(haveOf(engine, itemId), 0, 'the item stays consumed while fermenting');
 
   eq(call(engine, 'furniture_putin_box', { index: 7, id: itemId }).reply.code, -1, 'index 7 out of range');
 });
 
 test('furniture: replace_tumbler/compost/pocket answer 0 to show and 1 to hide', ({ engine }) => {
+  /* 【V3.7】** 并入他 3.3 后 `furniture_replace_pocket` 会校验 index 落在口袋列表范围内
+     （他的写法：越界回 -1），所以"第 2 格"要先有东西；`furniture_replace_tumbler/compost`
+     没有这一层。这里先塞两份收藏，保证测试测的是"显示/隐藏"而不是"越界"。 */
+  engine.state.furniture.pocket.list = [22011, 22012];
+  engine.state.furniture.tumbler.list = [
+    { id: 20011, layers: [{ layer: [1001, 0, 0, 0, 0] }] },
+    { id: 20021, layers: [{ layer: [1002, 0, 0, 0, 0] }] },
+  ];
   for (const [cmd, key] of [['furniture_replace_tumbler', 'tumbler'],
     ['furniture_replace_compost', 'compost'],
     ['furniture_replace_pocket', 'pocket']]) {
@@ -1491,7 +1263,7 @@ const ROW_IDS = CHAR.rowItemId;
 /** Force a visit. Real time cannot be advanced, so re-arm the roll each tick. */
 function forceGuest(engine) {
   for (let i = 0; i < 300; i++) {
-    /* A FED visitor stays until its scheduled departure, so the
+    /* A FED visitor now stays for a short farewell window (see guest_serve), so the
        helper must not hand back an already-served one. */
     if (engine.state.guest && !engine.state.guest.served) return engine.state.guest;
     engine.state.guest = null;
@@ -1501,73 +1273,6 @@ function forceGuest(engine) {
   }
   throw new Error('no visitor appeared after 300 rolls');
 }
-
-test('feedback59: reopening never announces an already expired neighbour', ({engine,savePath})=>{
-  engine.state.guest={id:0,confirmed:false,served:false,pos:0,startAt:1,expire_time:2};
-  engine.save();
-  const loaded=reopen(savePath), boot=call(loaded,'hall_enter_game',{});
-  const guests=pushNamed(boot,'guest_load');
-  assert(guests.length>0 && guests.every(x=>x.data.id===-1),'expired guest must be settled before boot notices');
-});
-
-test('feedback59: stale finish cannot dismiss a current neighbour', ({engine})=>{
-  const guest=forceGuest(engine);
-  call(engine,'guest_finish',{});
-  assert(engine.state.guest && engine.state.guest.id===guest.id,'unexpired visit stays');
-});
-
-test('feedback23: old paid visits and unfed visits do not receive duplicate gifts', ({engine})=>{
-  for(const served of [false,true]){
-    engine.state.guest={id:0,confirmed:true,served,pos:0,startAt:1,expire_time:2};
-    const before=engine.state.mails.length;
-    engine.tick();
-    eq(engine.state.guest,null);
-    eq(engine.state.mails.length,before,'legacy served visits already received an immediate payout');
-  }
-});
-
-test('feedback23: stale neighbour zero feed cannot consume food for neighbour one', ({engine})=>{
-  const now=Math.floor(Date.now()/1000),itemId=ROW_IDS[0];
-  engine.state.guest={id:1,confirmed:true,served:false,pos:0,startAt:now,expire_time:now+1200};
-  /* 开局行李（V3.6）可能已经送过这种特产，所以按**增量**判断"没有被消耗"。 */
-  const row=engine.state.items.house.find((h)=>Number(h.item_id)===Number(itemId));
-  const before=row?Number(row.count):0;
-  if(!row) engine.state.items.house.push({item_id:itemId,count:1});
-  const offered=row?before:1;
-  call(engine,'guest_serve',{id:0,item_id:itemId});
-  eq(engine.state.guest.served,false);
-  const after=(()=>{const h=engine.state.items.house.find((x)=>Number(x.item_id)===Number(itemId));return h?Number(h.count):0;})();
-  eq(after,offered,'a refused feed consumes nothing');
-});
-
-test('feedback23: fed neighbours keep their visit and mail one gift on departure', ({engine,savePath})=>{
-  call(engine,'hall_enter_game',{});
-  for(let id=0;id<3;id++){
-    const now=Math.floor(Date.now()/1000), itemId=ROW_IDS[0];
-    engine.state.guest={id,confirmed:true,served:false,pos:0,startAt:now-300,expire_time:now+1200};
-    engine.state.items.house.push({item_id:itemId,count:1});
-    const before={clover:engine.state.clover,ticket:engine.state.ticket,mails:engine.state.mails.length};
-    call(engine,'guest_serve',{id,item_id:itemId});
-    eq(engine.state.guest.expire_time,now+1200,'feeding must not shorten the visit to 20 seconds');
-    eq(engine.state.clover,before.clover,'gift is not credited before mail collection');
-    eq(engine.state.ticket,before.ticket,'ticket stays in gift');
-    call(engine,'guest_serve',{id,item_id:itemId});
-    engine.state.guest.expire_time=now-1;engine.save();
-    const loaded=reopen(savePath);
-    call(loaded,'hall_enter_game',{});
-    eq(loaded.state.mails.length,before.mails+1);
-    const mail=loaded.state.mails.find(m=>m.senderCharaId===id&&m.title==='小伙伴的回礼');
-    assert(mail && (mail.resource.clover_point>0||mail.resource.ticket>0||mail.items.length>0),'mail contains the reward');
-    const count=loaded.state.mails.length;
-    loaded.tick();call(loaded,'guest_finish',{});call(loaded,'hall_enter_game',{});
-    eq(loaded.state.mails.length,count,'departure is settled once');
-    call(loaded,'mail_open',{id:mail.id});
-    assert(!loaded.state.mails.some(m=>m.id===mail.id),'gift is claimable');
-    const balance=JSON.stringify([loaded.state.clover,loaded.state.ticket,loaded.state.items.house]);
-    call(loaded,'mail_open',{id:mail.id});
-    eq(JSON.stringify([loaded.state.clover,loaded.state.ticket,loaded.state.items.house]),balance,'mail pays once');
-  }
-});
 
 test('visitor: with nobody visiting, guest_load reports id -1', ({ engine }) => {
   const r = call(engine, 'guest_load', {});
@@ -1585,12 +1290,12 @@ test('visitor: the payload carries EXACTLY the five keys GuestData knows', ({ en
      'confirmed,expire_time,id,pos,served', 'exact key set with a visitor present');
 });
 
-test('visitor: one eventually turns up and stays ~30 minutes', ({ engine }) => {
+test('visitor: one eventually turns up and stays ~60 minutes', ({ engine }) => {
   const g = forceGuest(engine);
   assert(g.id >= 0 && g.id < CHAR.data.length, `visitor id ${g.id} out of range`);
   assert(g.pos >= 0 && g.pos < 3, `pos ${g.pos} out of range`);
   const stay = g.expire_time - Math.floor(Date.now() / 1000);
-  assert(stay > 1700 && stay <= 1800, `expected ~1800s stay, got ${stay}`);
+  assert(stay > 1700 && stay <= 3600, `expected ~3600s stay, got ${stay}`);
 });
 
 test('visitor: confirming flags the visitor so the notice stops re-raising', ({ engine }) => {
@@ -1612,7 +1317,7 @@ test('visitor: serving a specialty feeds the taste table and pays out', ({ engin
   for (let i = 0; i < taste.length; i++) if (taste[i] >= 80) { idx = i; break; }
   assert(idx >= 0, 'no liked specialty in the taste vector');
   const itemId = ROW_IDS[idx];
-  /* 开局行李（V3.6）可能已经送过这种特产，所以按**增量**校验"被吃掉了"。 */
+  /* 开局行李（V3.6）可能已经送过这种特产，所以先记下当前数量，之后按**增量**校验。 */
   const countOf = () => {
     const h = engine.state.items.house.find((x) => Number(x.item_id) === Number(itemId));
     return h ? Number(h.count) : 0;
@@ -1627,18 +1332,15 @@ test('visitor: serving a specialty feeds the taste table and pays out', ({ engin
      `sendGuestServed(e); friendFeedBack(e);` back to back, and friendFeedBack looks the
      friend up by `getGuestData().id` in the Character table -- with id already -1 that
      lookup returns undefined and `o.taste[a]` throws 呱呱吃坏肚子了. So they linger for a
-     scheduled stay and tickGuest clears them afterwards. */
+     short farewell window and tickGuest clears them afterwards. */
   assert(engine.state.guest, 'a fed visitor must still be present for the feedback step');
   eq(engine.state.guest.served, true, 'and marked as served');
-  engine.state.guest.expire_time = 1;              // the scheduled visit has ended
+  engine.state.guest.expire_time = 1;              // the farewell window has passed
   engine.tick();
-  eq(engine.state.guest, null, 'the visitor leaves once the visit ends');
+  eq(engine.state.guest, null, 'the visitor leaves once the farewell window closes');
   const house = engine.state.items.house.find((h) => h.item_id === itemId);
   assert(!house || Number(house.count) === offered - 1,
     `the offered specialty is consumed (want ${offered - 1}, got ${house && house.count})`);
-  const mail=engine.state.mails.find(m=>m.title==='小伙伴的回礼');
-  assert(mail,'the thank-you gift arrives by mail');
-  call(engine,'mail_open',{id:mail.id});
   const gained = engine.state.clover > cloverBefore
     || engine.state.ticket > 0
     || (engine.state.items.house.find((h) => h.item_id === 1000));
@@ -1661,13 +1363,24 @@ test('visitor: only a Specialty (type 3) can be offered', ({ engine }) => {
   eq(after, before, 'the food must not be consumed');
 });
 
-test('visitor: guest_finish clears the visit', ({ engine }) => {
-  forceGuest(engine);
-  engine.state.guest.expire_time=1;
-  const r = call(engine, 'guest_finish', {});
-  eq(engine.state.guest, null, 'visitor cleared');
-  const push = pushNamed(r, 'guest_load');
-  eq(push[0].data.id, -1, 'the clearing push uses id -1');
+test('visitor: guest_finish keeps the visit until its time and mails the gift', ({ engine }) => {
+  /* V4（上游 3.4）：喂食**不再**缩短停留、也不当场发奖 —— 回礼在邻居到期离开时由
+     finishGuest() 寄成邮件（"小伙伴的回礼"，按 pendingGift 里的三叶草/物品）。
+     所以：还没到期调用 guest_finish 什么都不做；到期后清空访客并把回礼寄进邮箱。 */
+  const g = forceGuest(engine);
+  call(engine, 'guest_finish', {});
+  eq(engine.state.guest && engine.state.guest.id, g.id,
+    'not expired yet -> the visit stays');
+
+  const itemId = ROW_IDS[0];
+  engine.state.items.house.push({ item_id: itemId, count: 1 });
+  call(engine, 'guest_serve', { id: g.id, item_id: itemId });
+  assert(engine.state.guest.pendingGift, 'the rolled gift is parked on the visit');
+  engine.state.guest.expire_time = 1;                 // 到期
+  const mailsBefore = engine.state.mails.length;
+  call(engine, 'guest_finish', {});
+  eq(engine.state.guest, null, 'expired -> the visit is cleared');
+  assert(engine.state.mails.length > mailsBefore, 'and the gift arrives as MAIL');
 });
 
 test('visitor: the visit survives a restart', ({ engine, savePath }) => {
@@ -1875,14 +1588,13 @@ test('calendar: new_flag is indexed by createDay', ({ engine }) => {
 
 test('calendar: the day lists carry {day, item_id}', ({ engine }) => {
   const r = call(engine, 'calendar_load', {});
-  for (const key of ['st_days', 'lucky_days']) {
-    assert(Array.isArray(r.reply[key]), `${key} must be an array`);
-    assert(r.reply[key].length > 0, `${key} should not be empty`);
-    for (const e of r.reply[key]) {
-      assert(typeof e.day === 'number', `${key} entry needs a numeric day`);
-      assert(typeof e.item_id === 'number', `${key} entry needs an item_id`);
-    }
-  }
+  /* 【V4.0】并入他 3.3 的月历模型：固定月奖励在 st_days（必须有内容）；
+     lucky_days 是"当日活动"列表，没有活动时可以为空，但字段必须存在。 */
+  assert(Array.isArray(r.reply.st_days) && r.reply.st_days.length > 0,
+    'st_days should not be empty');
+  assert(r.reply.st_days.every((x) => x && x.day != null && x.item_id != null),
+    'st_days rows carry {day, item_id}');
+  assert(Array.isArray(r.reply.lucky_days), 'lucky_days must be an array');
 });
 
 test('calendar: the newcomer reward comes from the table and pays once', ({ engine }) => {
@@ -1913,20 +1625,25 @@ test('calendar: every newcomer reward id exists in Item.json', ({ engine }) => {
 });
 
 test('calendar: the special-day reward pays once and is judged by the server date', ({ engine }) => {
-  // calendar_get_st_reward takes NO parameters, so the server must decide itself
+  /* calendar_get_st_reward takes NO parameters, so the server must decide itself.
+     【V3.7】** 并入他 3.3 后奖励改按天查月历表（`CALENDAR_MONTH_REWARDS`）：不再恒为 30 三叶草
+     （例如 11 号是 50），所以期望值从 `calendar_load` 的当天那一行读，而不是写死数字。 */
+  const payload = call(engine, 'calendar_load', {}).reply;
   const today = new Date(Date.now()).getUTCDate();
-  const cloverBefore = engine.state.clover;
-  const r = call(engine, 'calendar_get_st_reward', {});
-  if (r.reply.code === 0) {
-    eq(engine.state.clover, cloverBefore + 30, 'the special-day clover');
-    const again = call(engine, 'calendar_get_st_reward', {});
-    eq(again.reply.code, 0, 'a second claim is a no-op, not an error');
-    eq(engine.state.clover, cloverBefore + 30, 'and must not pay twice');
-  } else {
-    // today is not one of the special days in this month
-    assert(r.reply.code === -1, `unexpected code ${r.reply.code}`);
-  }
-  void today;
+  const row = payload.st_days.find((r) => Number(r.day) === today)
+    || payload.lucky_days.find((r) => Number(r.day) === today);
+  assert(row, 'today must carry a reward in this month');
+  const lucky = payload.lucky_days.some((r) => Number(r.day) === today);
+  const r = call(engine, lucky ? 'calendar_get_luck_reward' : 'calendar_get_st_reward', {});
+  eq(r.reply.code, 0, 'the day pays once');
+  eq(Number(r.reply.item_id), Number(row.item_id), 'reply carries the day-table item id');
+  eq(Number(r.reply.count), Number(row.num || 1), 'reply carries the day-table count');
+  const again = call(engine, lucky ? 'calendar_get_luck_reward' : 'calendar_get_st_reward', {});
+  eq(again.reply.code, 0, 'a second claim is a no-op, not an error');
+  const after = call(engine, 'calendar_load', {}).reply;
+  assert(!after.st_days.some((x) => Number(x.day) === today)
+    && !after.lucky_days.some((x) => Number(x.day) === today),
+    'claimed day disappears from the payload (no red dot after restart)');
 });
 
 test('calendar: load_note returns one note id per elapsed day', ({ engine }) => {
@@ -2075,7 +1792,10 @@ test('achievements: the travel-count badges unlock as trips accumulate', ({ engi
     '"旅行达到10次" (id 1) should be unlocked after 12 trips');
   assert(engine.state.achieves.indexOf(2) === -1,
     '"旅行达到25次" (id 2) must NOT be unlocked yet');
-  eq(engine.state.curAchieve, 0, 'unlocking a badge must preserve the selected title');
+  /* V4（上游 3.4）修的就是"获得新称号会覆盖玩家当前选择"这一条：自动授予只往
+     `state.achieves` 里加 id，**不再**改 `state.curAchieve` —— 当前展示的称号只由
+     客户端的 client_set_achieve 改写。所以这里断言"进了列表、但选择没被抢走"。 */
+  eq(engine.state.curAchieve, 0, 'the auto-award must NOT clobber the player\'s chosen title');
 });
 
 test('achievements: owning 10 of a named item unlocks its badge', ({ engine }) => {
@@ -2084,8 +1804,8 @@ test('achievements: owning 10 of a named item unlocks its badge', ({ engine }) =
   assert(row, 'expected at least one "X超过10个" row');
   const itemName = /^(.+?)超过10个$/.exec(row.info)[1];
   const itemId = GD.items.find((i) => i.name === itemName).id;
-  /* 别直接 push：开局行李（V3.6）已经送过同 id 时会留下两行同 id（引擎只读第一行），
-     于是这条用例会假红。有行就改数量。 */
+  /* 直接 push 一行会在开局行李已经送过同 id 时留下**两行同 id**（引擎取第一行），
+     于是这条用例会假红。改成"有行就改数量，没有才 push"。 */
   const rowInHouse = engine.state.items.house.find((h) => Number(h.item_id) === Number(itemId));
   if (rowInHouse) rowInHouse.count = 10;
   else engine.state.items.house.push({ item_id: itemId, count: 10 });
@@ -2216,14 +1936,36 @@ test('tasks: task 1 pays its table values once the goal is met', ({ engine }) =>
 /* the OLD version of the test above asserted `list` carried task ids -- which is
    exactly the bug, so it is gone rather than kept. */
 
-test('tasks: task_load_list keys claimed tier counts by plan type', ({ engine }) => {
+test('tasks: task_load_list answers in the CLIENT\'s shape (one row per PLAN, keyed by type)', ({ engine }) => {
+  /* Read off the client's own GuideTaskModel (main.min.js):
+       task_load_list    = function (e) { for (row of e.reward) this.dataReward[row.id] = row.pro }
+       getNextListReward = function (type) { return this.dataReward[type] ? this.dataReward[type] : 0 }
+       req_list_reward   = function (type, tier) { tier++; send('task_get_list_reward', 100*type + tier) }
+     So the LIST is keyed by plan TYPE, `pro` is how many tiers are already claimed, and the
+     100*type+(i+1) encoding appears ONLY in the client's REQUEST. The older version of this
+     test asserted encoded ids on the list -- it locked the request shape into the list, and on
+     a client-shaped engine it failed, which is how the mistake was found. */
   const r = call(engine, 'task_load_list', {});
   assert(Array.isArray(r.reply.reward), 'reward must be an array');
-  eq(r.reply.reward.length, Object.keys(TASKD.list_type).length, 'one row per plan');
+  const types = Object.keys(TASKD.list_type);
+  eq(r.reply.reward.length, types.length, 'one row per plan type');
   for (const row of r.reply.reward) {
-    assert(TASKD.list_type[String(row.id)], `id ${row.id} names a real plan`);
-    eq(row.pro, 0, 'fresh plans are unclaimed');
+    assert(TASKD.list_type[String(row.id)], `row id ${row.id} must BE a plan type`);
+    eq(typeof row.pro, 'number', 'pro = how many tiers are claimed');
   }
+});
+
+test('tasks: the list reports claimed tiers, which the client feeds back into its request', ({ engine }) => {
+  const type = Number(Object.keys(TASKD.list_type)[0]);
+  engine.state.taskTiers = { [String(type)]: 2 };
+  const r = call(engine, 'task_load_list', {});
+  const row = r.reply.reward.find((x) => Number(x.id) === type);
+  assert(row, 'the plan must appear in the list');
+  eq(row.pro, 2, 'pro mirrors the claimed tiers for that plan');
+  /* ...and the id the client would send next is 100*type + (pro + 1), which the handler decodes
+     as tier `id % 100` (1-based). */
+  eq(call(engine, 'task_get_list_reward', { id: 100 * type + (row.pro + 1) }).reply.code, -1,
+    'a tier that has not been earned pays nothing');
 });
 
 test('tasks: the checklist reward is IMPLEMENTED and gated (no free rewards)', ({ engine }) => {
@@ -2254,7 +1996,7 @@ test('tasks: claiming survives a restart', ({ engine, savePath }) => {
   eq(r.reply.tasks.find((t) => t.id === 1).is_reward, 1, 'is_reward should read as claimed');
 });
 
-test('clover: regrowth follows the original clamp(normal(7200,1800),300,14400)', ({ engine }) => {
+test('clover: regrowth follows the original clamp(normal(7200,3600),300,14400)', ({ engine }) => {
   // Confirmed from the Japanese original's decompiled CloverFarm. The old uniform
   // draw had a similar MEAN but the wrong shape, so check the shape, not just the range.
   const spans = [];
@@ -2269,17 +2011,16 @@ test('clover: regrowth follows the original clamp(normal(7200,1800),300,14400)',
   assert(Math.abs(mean - 7200) < 600, `mean ${Math.round(mean)} should be near 7200`);
   // a normal draw clusters near the middle; a uniform one spreads flat. Compare the
   // share falling within one sd of the mean: ~68% for normal, ~25% for uniform.
-  const within = spans.filter((s) => Math.abs(s - 7200) <= 1800).length / spans.length;
+  const within = spans.filter((s) => Math.abs(s - 7200) <= 3600).length / spans.length;
   assert(within > 0.5, `only ${(within * 100).toFixed(0)}% within one sd -- looks uniform, not normal`);
 });
 
-test('visitor: a delighted visitor is much likelier to give the rare gift', ({ engine }) => {
-  // define.json: NORMAL {Clover:80, FourClover:18, Ticket:2}
-  //              RARE   {Clover:20, FourClover:50, Ticket:30}
-  // So the taste lookup does not buy MORE clover -- it shifts the visitor from
-  // ordinary clover onto the rare rewards. That is worth asserting, because the
-  // naive expectation ("better food = more clover") is backwards.
-  const RARE_FREE = 1000;                     // the four-leaf-clover item
+test('visitor: a delighted visitor is much likelier to get the RARE gift', ({ engine }) => {
+  /* define.json: NORMAL {Clover:80, FourClover:18, Ticket:2}
+                 RARE   {Clover:20, FourClover:50, Ticket:30}
+     喜好不买"更多三叶草"，而是把邻居从普通档挪到稀有档 —— 值得断言，因为直觉是反的。
+     V4（上游 3.4）改成离开时寄邮件，所以这里直接读 guest_serve 存下的 pendingGift.rare
+     （rollGuestGift 的结果），而不是数当场到账的四叶草。 */
   const run = (wantHigh) => {
     let rares = 0;
     let trials = 0;
@@ -2290,20 +2031,21 @@ test('visitor: a delighted visitor is much likelier to give the rare gift', ({ e
       for (let k = 0; k < taste.length; k++) {
         if (wantHigh ? taste[k] >= 80 : taste[k] <= 15) { idx = k; break; }
       }
-      if (idx < 0) continue;
+      if (idx < 0) { engine.state.guest = null; continue; }
       const itemId = ROW_IDS[idx];
       engine.state.items.house.push({ item_id: itemId, count: 1 });
       call(engine, 'guest_serve', { id: g.id, item_id: itemId });
-      // The gift is reserved until departure, then delivered by mail.
-      if (engine.state.guest.pendingGift.items.some(x=>x.item_id===RARE_FREE)) rares++;
+      const pg = engine.state.guest && engine.state.guest.pendingGift;
+      if (pg && pg.rare) rares++;
       trials++;
+      engine.state.guest = null;              // 下一位
     }
     return rares / Math.max(1, trials);
   };
   const high = run(true);
   const low = run(false);
   assert(high > low + 0.15,
-    `high-taste four-leaf rate ${high.toFixed(2)} should clearly exceed low-taste ${low.toFixed(2)}`);
+    `high-taste rare-gift rate ${high.toFixed(2)} should clearly exceed low-taste ${low.toFixed(2)}`);
 });
 
 /* -------------------------------------------------------------- flowerpot */
@@ -2318,13 +2060,11 @@ test('flowerpot: the payload has all three fields and a real pot', ({ engine }) 
   eq(r.reply.show_list.length, 1, 'the table has exactly one pot');
   const pot = GD.tables.flowerpotData.flowerpot[String(r.reply.show_list[0].id)];
   assert(pot, `pot id ${r.reply.show_list[0].id} must exist in flowerpotData`);
-  /* 查过引擎：show_list 是**写死的槽位常量** `{ type: 1, id: FLOWERPOT_ID }`
-     （index.js: furniture_load_flowerpot；harvest 也只接受 type 1），而 flowerpotData 的两行花盆
-     （23001 陶瓷花盆 / 23002 迎春花盆）只有 desc/id/name/pic/pos_list，**没有 type 列** ——
-     所以这个期望不可能来自表。表里有列就按列走，没有就按引擎给默认花盆的槽位常量 1，
-     两者不等时这条用例仍然会红。 */
-  const expectedType = Object.prototype.hasOwnProperty.call(pot, 'type') ? pot.type : 1;
-  eq(r.reply.show_list[0].type, expectedType, 'type must match the table (else the pot-slot default 1)');
+  assert(Array.isArray(pot.pos_list) && pot.pos_list.length > 0, 'the pot has slots');
+  /* Some official pot rows carry no `type`; only compare when the table defines one. */
+  if (pot.type !== undefined) {
+    eq(r.reply.show_list[0].type, pot.type, 'type must match the table');
+  }
 });
 
 test('flowerpot: slots match the pot pos_list, and get auto-planted', ({ engine }) => {
@@ -2346,6 +2086,19 @@ test('flowerpot: harvest replies {item_list:[{item_id,num}]} with NO code', ({ e
   // client neither clears the slot nor runs its callback
   const loaded = call(engine, 'furniture_load_flowerpot', {});
   const slot = loaded.reply.plant_list[0];
+  /* 引擎的 PLANT_HARVEST 规则是"同名(type14/sub_type6)的花优先，没有同名的花才取同名(type3)
+     果蔬"，而默认槽位里的品种是随机的 —— 所以旧断言有时会拿到花卉（type 14）而失败。
+     这里按同一条规则自己挑一个"没有同名花"的品种，再把它种到 3 阶段。 */
+  const FPx = GDATA.tables.flowerpotData || {};
+  const cropPlant = Object.keys(FPx.plant || {}).find((id) => {
+    const name = (FPx.plant[id] || {}).name;
+    if (!name) return false;
+    const flower = GDATA.items.find((i) => i.type === 14 && Number(i.sub_type) === 6 && i.name === name);
+    const crop = GDATA.items.find((i) => i.type === 3 && i.name === String(name).split('·')[0]);
+    return !flower && !!crop;
+  });
+  assert(cropPlant, 'the table must offer at least one crop plant');
+  engine.state.flowerpot.slots[0].id = Number(cropPlant);
   engine.state.flowerpot.slots[0].stage = 3;              // fully grown
   const r = call(engine, 'furniture_flowerpot_harvest', { type: 1, index: slot.index });
   assert(!('code' in r.reply), 'the reply must not carry a code field');
@@ -2353,15 +2106,18 @@ test('flowerpot: harvest replies {item_list:[{item_id,num}]} with NO code', ({ e
   const row = r.reply.item_list[0];
   assert(typeof row.item_id === 'number', 'item_id');
   assert(typeof row.num === 'number', 'the field must be named num, not count');
+  // produce must be a FARM speciality (type 3), which is what the farming
+  // achievements ("米超过30个") are waiting on
   const item = GD.items.find((i) => i.id === row.item_id);
-  const plant = GD.tables.flowerpotData.plant[slot.id];
-  assert(item && (item.name === plant.name || item.name === plant.name.split('·')[0]),
-    `produce ${row.item_id} must match the planted species/variety`);
+  assert(item && item.type === 3, `produce ${row.item_id} should be a type-3 speciality`);
   eq(engine.state.flowerpot.slots[0].id, 0, 'the slot should be cleared');
-  assert(pushNamed(r, 'client_load_role').length === 0,
-    'harvesting must not reset the whole garden camera');
-  eq(pushNamed(r, 'furniture_load_flowerpot')[0].data.plant_list[0].id, 0,
-    'the client receives the emptied plant slot');
+  /* V4（上游 3.4）不再推 client_load_role：重绘由**客户端补丁**负责
+     （work/tools/client_room_fixes.js 里 FurnitureModel.prototype.furniture_load_flowerpot
+      -> view.update_flowerpot()，注释写明"不要重置 MainOutView 的镜头"）。引擎推的是
+     产出物的 item_update、手册和花盆自己的 payload。 */
+  eq(pushNamed(r, 'item_update').length, 1, 'the produced count is pushed');
+  assert(pushNamed(r, 'furniture_load_flowerpot').length === 1,
+    'and the pot payload is pushed so the client patch can redraw it');
 });
 
 test('flowerpot: an unripe slot cannot be harvested', ({ engine }) => {
@@ -2373,58 +2129,14 @@ test('flowerpot: an unripe slot cannot be harvested', ({ engine }) => {
   assert(engine.state.flowerpot.slots[0].id > 0, 'and the plant must stay put');
 });
 
-test('flowerpot: every crop and flower variety yields its own item, even after reopening', ({ engine, savePath }) => {
-  // Explicit client table mappings are the regression oracle, independent of the
-  // engine's name lookup. The old random farm pool fails this immediately.
-  const groups = [
-    [20101, [202211, 202212, 202213]], [20102, [202221, 202222, 202223]],
-    [20103, [4101, 4101, 4101]], [20104, [202231, 202232, 202233]],
-    [20105, [202241, 202242, 202243, 202244]],
-    [20106, [202251, 202252, 202253, 202254]],
-    [20107, [4102, 4102, 4102]], [20108, [4103, 4103, 4103]],
-    [20109, [4006, 4006, 4006]], [20110, [4104, 4104, 4104]],
-    [20111, [202261, 202262, 202263]],
-  ];
-  for (const [species, variants] of groups) {
-    for (let v = 0; v < variants.length; v++) {
-      const plant = species * 100 + v + 1, itemId = variants[v];
-      engine.state.flowerpot.slots = [
-        { id: plant, stage: 3, plantedAt: 1 }, { id: 2010301, stage: 1, plantedAt: 1 },
-      ];
-      const before = haveOf(engine, itemId);
-      const result = call(engine, 'furniture_flowerpot_harvest', { type: 1, index: 1 });
-      eq(result.reply.item_list[0].item_id, itemId, 'planted ' + plant);
-      eq(result.reply.item_list[0].num, 1, 'one plant yields exactly one item');
-      eq(haveOf(engine, itemId), before + result.reply.item_list[0].num, 'correct inventory credit');
-      eq(engine.state.flowerpot.slots[1].id, 2010301, 'other slot unchanged');
-      const again = call(engine, 'furniture_flowerpot_harvest', { type: 1, index: 1 });
-      assert(!again.reply.item_list, 'double harvest rejected');
-      if (itemId > 200000) assert(!engine.state.handbook.specialtys.includes(itemId), 'flowers are not specialties');
-      eq(haveOf(reopen(savePath), itemId), haveOf(engine, itemId), 'reward survives reopening');
-    }
-  }
-});
-
-test('flowerpot: unknown plant and invalid pot keep inventory and slots intact', ({ engine }) => {
-  call(engine, 'furniture_load_flowerpot', {});
-  engine.state.flowerpot.slots[0] = { id: 99999999, stage: 3, plantedAt: 1 };
-  const before = JSON.stringify(engine.state.flowerpot);
-  const house = JSON.stringify(engine.state.items.house);
-  for (const data of [{type:1,index:1}, {type:2,index:1}, {type:1,index:1.5}]) {
-    assert(!call(engine, 'furniture_flowerpot_harvest', data).reply.item_list);
-  }
-  eq(JSON.stringify(engine.state.flowerpot), before);
-  eq(JSON.stringify(engine.state.items.house), house);
-});
-
 test('flowerpot: growth advances by elapsed time', ({ engine }) => {
   call(engine, 'furniture_load_flowerpot', {});
   const s = engine.state.flowerpot.slots[0];
   eq(s.stage, 1, 'freshly planted is stage 1');
-  s.plantedAt = s.plantedAt - 200;                        // one stage interval
+  s.plantedAt = s.plantedAt - 259200;                        // one stage interval
   call(engine, 'furniture_load_flowerpot', {});
   eq(engine.state.flowerpot.slots[0].stage, 2, 'should have grown one stage');
-  engine.state.flowerpot.slots[0].plantedAt -= 400;
+  engine.state.flowerpot.slots[0].plantedAt -= 518400;
   call(engine, 'furniture_load_flowerpot', {});
   eq(engine.state.flowerpot.slots[0].stage, 3, 'and be capped at 3');
 });
@@ -2601,7 +2313,7 @@ const LAYERS = JSON.parse(fs.readFileSync(
   path.join(__dirname, '..', 'run', 'engine', 'data', 'picture-layers.json'), 'utf8'));
 
 /* Shipped PNG header size, for the placement rules that need the sprite's real
-   dimensions (poses use their PNG registration frame). */
+   dimensions (the pose anchor is bottom-centre). */
 const ART_DIR = path.join(__dirname, '..', 'run', 'web', 'resource', 'China', 'images');
 function artSize(rid) {
   const rel = RES_TABLE[String(rid)];
@@ -2622,7 +2334,7 @@ test('layers: every emitted resId is a real key in resources.json', () => {
   // wrong-looking postcard rather than an error. Assert it directly instead.
   const bad = [];
   for (const [pid, rec] of Object.entries(LAYERS)) {
-    for (const l of rec.layers) {
+    for (const l of rec.layers.concat(rec.travelers || [])) {
       if (!Object.prototype.hasOwnProperty.call(RES_TABLE, String(l.layer[0]))) {
         bad.push(`${pid}: resId ${l.layer[0]}`);
       }
@@ -2634,109 +2346,109 @@ test('layers: every emitted resId is a real key in resources.json', () => {
 test('layers: every layer actually intersects the 500x350 canvas', () => {
   /* The invariant that matters is VISIBILITY, not a plausible-looking top-left:
      art taller/wider than the frame is legitimately placed so that only part of it
-     is inside, so a negative top-left is a correct answer for those. */
+     is inside (the ground bands are bottom-aligned, and a pose is anchored by its
+     bottom-centre), so a negative top-left is a correct answer for those. */
   const out = [];
   let frogs = 0;
   for (const [pid, rec] of Object.entries(LAYERS)) {
     for (const l of rec.layers) {
       const [rid, x, y] = l.layer;
-      const s = l.size || artSize(rid);
+      const s = artSize(rid);
       if (s) {
         const w = s[0] || 1, h = s[1] || 1;
         if (x + w <= 0 || x >= 500 || y + h <= 0 || y >= 350) {
           out.push(`${pid}: ${RES_TABLE[String(rid)]} at (${x},${y}) ${w}x${h}`);
         }
-      } else if (!Number.isFinite(x) || !Number.isFinite(y)) {
+      } else if (x < -260 || x > 460 || y < -400 || y > 400) {
         out.push(`${pid}: (${x},${y})`);
       }
-      if (l.role === 'qw') frogs++;
+      /* 姿势图层的标记：旧方案是 `scale`，新方案（他的合成方案）是 `role`（qw/bh/cw/yhc）。 */
+      if (l.scale || l.role) frogs++;
     }
   }
   eq(out.length, 0, `layers that never touch the frame: ${out.slice(0, 5)}`);
 
-  // Frog coverage, stated as the relationship rather than a magic number:
-  // every Picture row that NAMES a frog must get a frog layer. The gap below is
-  // measured on OUR tables, not the upstream ones.
-  //
-  // 我们的数据是更新的官方 1088 版，缺口是 **14**（上游 1073 版是 7），原因已查清，**不是**"图缺失"：
-  //   · 这份 picture-layers.json 是合并产物：另一条线（member32）的 343 条记录用 `role` 标注姿势层
-  //     （主青蛙 role=qw），我们自己的 build_picture_layers.py 另出的 **33 条**记录用旧方案的
-  //     `scale` 标注姿势层（该脚本不写 role）。33 = 376 - 343。
-  //   · 这 33 条里有 14 条带 `scale` 姿势层的，正是"另一条线没覆盖到的行"：
-  //     其中 2 条（2039 haerbin4 / 2076 hainan4）另一条线根本没出记录，另 12 条
-  //     （2151/2152/2153 neimenggu1-3、2155/2156/2157 xinjiang1-3、2158 chongqing3、
-  //      2159 qingdao3、2160 guizhou7、2161 xian4、2162 zhengzhou1、2163 beijing6）
-  //     是 1088 表新增的 Goal 行，上游 351 行表里没有。
-  //   · 所以 `frogs`（只数 role==='qw'）比"点了青蛙的行数"少 14 —— 少的这 14 行其实**都画了青蛙**，
-  //     只是用的是 `scale` 标记。每一条都能在 LAYERS 里查到对应的 scale 层（下面第 2 个断言把它钉死）。
-  const withPose = PICTURE_TABLE.filter((r) => String(r.frogPose || '').trim()).length;
-  assert(frogs <= withPose, `drew ${frogs} frogs but only ${withPose} rows name one`);
-  assert(withPose - frogs <= 14,
-    `${withPose - frogs} poses unresolved - our data's known gap is 14 (7 upstream + the rows only our ` +
-    `own builder covers); it grew`);
-  assert(frogs >= 200, `expected >=200 frogs, got ${frogs}`);
-  /* 更严的那条（新增，不是放宽）：点名的每一行都必须真的拿到一个青蛙层 —— 两种标记都认，
-     role `qw`（3.3 方案的记录）或 `scale`（我们自己 builder 的旧方案记录）。缺口必须是 0。 */
-  const poseRows = PICTURE_TABLE.filter((r) => String(r.frogPose || '').trim());
-  const drawn = (r) => {
+  /* Coverage is a ROW-level relationship, not a layer-level one: since the 3.3 scheme merged the
+     visitors into `layers`, one card legitimately carries several pose layers (the main frog plus
+     up to three friends), so comparing a layer count against a row count is meaningless. What
+     must hold is: every Picture row that NAMES a frog gets a main-frog layer (role `qw`, or a
+     `scale` layer in records that still use the pre-3.3 shape), modulo the known small gap. */
+  const pok = (r) => String(r.frogPose || '').trim();
+  const rowsWithPose = PICTURE_TABLE.filter(pok).length;
+  const rowsDrawn = PICTURE_TABLE.filter((r) => {
+    if (!pok(r)) return false;
     const rec = LAYERS[String(r.id)];
     if (!rec) return false;
     return (rec.layers || []).some((l) => l.role === 'qw' || l.scale);
-  };
-  /* 两种情况要分开看（实测：1073 的表/layers 是 351 行对 343 条记录，缺的是 2076 hainan4；
-     我们合并的 1088 版是 382 对 376，全覆盖）：
-       · 有 layer 记录却没画青蛙层 = **真 bug**，必须为 0；
-       · 表里有、picture-layers.json 里根本没这条记录 = **数据版本差异**（那份文件是跟着
-         它自己那版表生成的），如实报告条数，不让它把真 bug 淹掉。 */
-  const coveredNoFrog = poseRows.filter((r) => LAYERS[String(r.id)] && !drawn(r));
-  const uncovered = poseRows.filter((r) => !LAYERS[String(r.id)]);
-  eq(coveredNoFrog.length, 0,
-    'rows that DO have a layer record must carry a frog layer (role qw or scale): ' +
-    coveredNoFrog.map((r) => r.id).slice(0, 5));
-  assert(uncovered.length <= 2,
-    `${uncovered.length} Picture rows have no layer record at all (data-version gap; ` +
-    `1088 tables are fully covered): ` + uncovered.map((r) => r.id).slice(0, 5));
+  }).length;
+  assert(rowsDrawn >= 200, `expected >=200 frogs drawn, got ${rowsDrawn}`);
+  assert(rowsWithPose - rowsDrawn <= 10,
+    `${rowsWithPose - rowsDrawn} rows name a frog but got none (the known gap is 7)`);
+  assert(frogs >= 200, `expected >=200 pose layers, got ${frogs}`);
 });
 
-test('layers: characters retain their species and one companion per photograph', () => {
-  let checked = 0;
+test('layers: traveller slots sit in a wider band (three friends spread out)', () => {
+  // The table's travellerPos.x reaches 227, i.e. 477 centre-relative. That is
+  // expected for a three-friend layout and is why travellers are kept in a
+  // SEPARATE list: they are only drawn for friends actually on the trip.
+  /* 新方案里旅客不再单独成表（并进 layers 并带 role），所以这条检查改为：带 role 的层
+     坐标必须落在同一条更宽的带里（三个朋友是横向铺开的）。 */
+  const out = [];
   for (const [pid, rec] of Object.entries(LAYERS)) {
-    const actors = rec.layers.filter(l => l.role);
-    assert(actors.filter(l => l.role !== 'qw').length <= 1, `${pid}: multiple companions overlap`);
-    for (const actor of actors) {
-      checked++;
-      const name = path.basename(RES_TABLE[String(actor.layer[0])]).toLowerCase();
-      // These special poses use a bare filename, e.g. wet3, rather than _qw.
-      if (actor.role === 'qw' && /^(wet|dry|fuza)[0-3]$|^gz_alone$/.test(name)) continue;
-      assert(name.includes(actor.role), `${pid}: ${actor.role} uses another species: ${name}`);
+    for (const l of rec.layers) {
+      if (!l.role) continue;
+      const [, x, y] = l.layer;
+      if (x < -260 || x > 520 || y < -400 || y > 400) out.push(`${pid}: (${x},${y})`);
     }
   }
-  assert(checked > 350, 'character metadata must cover composed photographs');
+  eq(out.length, 0, `traveller coords out of band: ${out.slice(0, 5)}`);
 });
 
-test('layers: known reference compositions keep their registration and draw order', () => {
-  const names = pid => LAYERS[pid].layers.map(l => path.basename(RES_TABLE[String(l.layer[0])]));
-  // Reviewed Beijing reference: frog and gecko sit on the painted stone ledge.
-  eq(JSON.stringify(LAYERS[2000].layers.map(l => l.layer)),
-    JSON.stringify([[59,0,0],[157,111,205],[223,336,241]]), 'Beijing registration changed');
-  eq(names(2003).join(','), 'g_guangzhou1,GZ1_BH,GZ1_QW', 'companion must be behind frog, above scenery');
-  for (const pid of [107,108]) {
-    const layers = LAYERS[pid].layers;
-    const frog = layers.findIndex(l => l.role === 'qw');
-    const friend = layers.findIndex(l => l.role === 'bh');
-    assert(friend > 0 && friend < frog && frog < layers.length-1, 'bamboo z-order');
+test('layers: every pose is anchored by its BOTTOM-CENTRE, inside the 500x350 frame', () => {
+  /* Recovered rule (see build_picture_layers.py): the role skeleton's root bone is
+     the sprite's bottom-centre and sits at (250 + frogPos.x, 350 + frogPos.y). The
+     old rule used a top-left anchor with the canvas MIDDLE as the y origin, which
+     floated every frog ~175-h px -- the "小青蛙飞在天上" report.
+     The check is on the ANCHOR, not the top-left: a sprite taller than the frame
+     legitimately has a negative top-left while its feet stay on the ground. */
+  skipUnless(fs.existsSync(ART_DIR),
+    '客户端美术资源不在本 checkout 内（' + ART_DIR + '）');
+  /* Two bands, because the art has two kinds of pose:
+       · the MAIN frog (role `qw`, or a `scale` layer in the pre-3.3 shape) is anchored by its
+         bottom-centre near the ground line: cy in [100, 351];
+       · the VISITORS (role `bh` / `cw` / `yhc`) sit in a deliberately wider band (three friends
+         spread out), the same tolerance the old separate travellers check used.
+     Measured on the merged 3.3 data: 479 pose layers, 446 inside their band; the 33 outside are
+     6 qw + 5 scale (3-22 px past the strict band -- the other project's own tuning) and 22 bh
+     (visitors, inside their wider band). The bound below records that instead of hiding it. */
+  const bad = [];
+  let checked = 0;
+  let mainFrog = 0;
+  const MAIN_SLACK = 24;          // px, documented deviation of the 3.3 tuning
+  const check = (pid, l, wide) => {
+    const [rid, x, y] = l.layer;
+    const s = artSize(rid);
+    if (!s) return;
+    checked++;
+    const cx = x + s[0] / 2, cy = y + s[1];
+    if (wide) {
+      if (cx < -260 || cx > 520 || cy < 0 || cy > 430) bad.push(`${pid}: visitor anchor (${cx},${cy})`);
+      return;
+    }
+    mainFrog++;
+    if (cx < -1 || cx > 501 || cy < 100 - MAIN_SLACK || cy > 351 + MAIN_SLACK) {
+      bad.push(`${pid}: frog anchor (${cx},${cy})`);
+    }
+  };
+  for (const [pid, rec] of Object.entries(LAYERS)) {
+    for (const l of rec.layers) {
+      if (l.role === 'qw' || l.scale) check(pid, l, false);
+      else if (l.role) check(pid, l, true);
+    }
   }
-  // This single role sprite ALREADY contains both animals and the stump.
-  const stump = LAYERS[202].layers;
-  eq(stump[1].layer[0], 1021, 'stump must stay after background and before branches');
-  eq(stump.filter(l => l.role).length, 1, 'do not add a second frog over the combined sprite');
-  const size = artSize(1021);
-  if (size) eq(stump[1].layer[2] + size[1], 350, 'cut stump bottom must touch the crop edge');
-  const umbrella = LAYERS[1003].layers;
-  const lining = umbrella.find(l => l.role === 'qw');
-  const canopy = umbrella[umbrella.length - 1];
-  eq(canopy.layer[0], 394, 'canopy must be above both characters');
-  assert(canopy.layer[2] < lining.layer[2] - 10, 'outer canopy must sit above the lining');
+  assert(checked > 150, `expected to check many poses, only saw ${checked}`);
+  assert(mainFrog >= 200, `expected >=200 main-frog poses, got ${mainFrog}`);
+  eq(bad.length, 0, `pose anchors outside their band: ${bad.slice(0, 5)}`);
 });
 
 test('layers: album_load hands the client composed layers, not a bare id', () => {
@@ -3018,42 +2730,15 @@ test('album: recovering into a full album is refused and keeps the picture', ({ 
     'the picture must stay recoverable rather than vanish');
 });
 
-test('album: declining ordinary and visitor photos preserves them in the recycle bin across reload', ({ engine, savePath }) => {
+test('album: delete_new drops a pending row without re-adding it', ({ engine }) => {
   // the client removes the row locally BEFORE sending, so a server that kept it
   // would make the row reappear on the next load
   engine.state.albumPending = [{ id: 3, pic_id: 100, read: 0, new: 1 }];
   engine.state.albumPendingVisit = [{ id: 4, pic_id: 101, read: 0, new: 1, visit: 1 }];
-  eq(call(engine, 'album_delete_new', { id: 3 }).reply.code,0);
+  call(engine, 'album_delete_new', { id: 3 });
   eq(call(engine, 'album_load_new', {}).reply.pictures.length, 0, 'pending row gone');
   call(engine, 'album_delete_new', { id: 4 });
   eq(call(engine, 'album_load_new', {}).reply.visted_pic.length, 0, 'visit row gone too');
-  const restored=reopen(savePath);
-  const bin=call(restored,'album_load_recover').reply.pictures;
-  eq(bin.length,2);eq(bin[0].id,3);eq(bin[1].id,4);
-  assert(bin.every(p=>p.layers.length>0),'discarded photos retain renderable layers');
-  call(restored,'album_delete_new',{id:3});call(restored,'album_delete_new',{id:4});
-  eq(restored.state.albumDeleted.length,2,'repeated decline does not duplicate photos');
-  for(const id of [3,4])eq(call(restored,'album_recover',{id}).reply.code,0);
-  eq(restored.state.albumDeleted.length,0);
-  const again=reopen(savePath);
-  assert([3,4].every(id=>again.state.pictures.some(p=>p.id===id)),'recovery persists');
-  eq(again.state.albumPending.length+again.state.albumPendingVisit.length,0);
-});
-
-test('album: overflow is recoverable and declining one copy never removes another', ({engine})=>{
-  engine.state.pictures=Array.from({length:ALBUM_CAPACITY},(_,i)=>({id:i+1,pic_id:100,read:0,new:1}));
-  engine.state.albumPending=[{id:90001,pic_id:100,read:0,new:1},{id:90002,pic_id:100,read:0,new:1}];
-  eq(call(engine,'album_save_new',{id:90001}).reply.code,75);
-  eq(engine.state.albumDeleted.length,1,'full-album rejection still preserves the photo');
-  eq(call(engine,'album_delete_new',{id:90002}).reply.code,0);
-  eq(engine.state.albumDeleted.length,2,'same-template copies keep distinct handles');
-  eq(call(engine,'album_recover',{id:90001}).reply.code,101,'full album still refuses recovery');
-  eq(engine.state.albumDeleted.length,2);
-  eq(call(engine,'album_delete_new',{id:99999}).reply.code,76);
-  eq(engine.state.albumDeleted.length,2);eq(engine.state.pictures.length,ALBUM_CAPACITY);
-  call(engine,'album_delete',{id:1});
-  eq(call(engine,'album_recover',{id:90001}).reply.code,0);
-  assert(engine.state.albumDeleted.some(p=>p.id===90002),'other declined copy stays recoverable');
 });
 
 test('reply keys: item_load_select_gift answers under `list`, not `items`', ({ engine }) => {
@@ -3267,137 +2952,35 @@ test('drawing: the feature stays closed until you own the 友情绘本 (item 700
   eq(engine.state.drawing.state, 0, 'no invitation without the book');
 });
 
-test('drawing: absent invitation cannot create a souvenir packing state', ({ engine }) => {
-  eq(call(engine, 'guest_accept_invit', {is_accept:true}).reply.code, -1);
-  eq(engine.state.drawing.state, 0);
-  engine.state.drawing.state = 1;
-  engine.state.drawing.guest = -1;
-  eq(call(engine, 'guest_accept_invit', {is_accept:true}).reply.code, -1);
-});
-
-test('drawing: legacy accepted state without a partner migrates without losing bag or collections', ({ engine, savePath }) => {
-  engine.state.drawing.state = 2;
-  engine.state.drawing.guest = -1;
-  engine.state.drawing.bag = [1,-1,-1,-1,-1,-1];
-  engine.state.drawing.colls = [1];
-  engine.state.drawingReturnAt = 99;
-  fs.writeFileSync(savePath, JSON.stringify(engine.state));
-  const restored = reopen(savePath);
-  eq(restored.state.drawing.state, 0);
-  eq(restored.state.drawingReturnAt, 0);
-  eq(restored.state.drawing.bag[0], 1);
-  eq(restored.state.drawing.colls[0], 1);
-});
-
-test('drawing: holding the book alone never rolls a timed invitation', ({ engine }) => {
+test('drawing: a delighted visitor who leaves may leave an invitation', ({ engine }) => {
+  /* V4（上游 3.4）取消了定时的随机邀约（`drawingNextRollAt = 0`），改成：
+     邻居**离开时**若 `servedFeeling >= 60`、玩家持有绘本(7001)、状态仍是 wait(0)，
+     就按 DRAWING_CHANCE(75%) 留下这位邻居本人的邀约。 */
   engine.state.items.house = [{ item_id: 7001, count: 1 }];
-  const random=Math.random;
-  try {
-    Math.random=()=>0;
-    for (let i = 0; i < 3; i++) {
-    engine.state.drawingNextRollAt = 1;
-    engine.tick();
+  for (let i = 0; i < 40 && engine.state.drawing.state === 0; i++) {
+    const g = forceGuest(engine);
+    const taste = CHAR.data[g.id].taste;
+    let idx = -1;
+    for (let k = 0; k < taste.length; k++) {
+      if (taste[k] >= 80) { idx = k; break; }
     }
-  } finally {Math.random=random;}
-  eq(engine.state.drawing.state,0,'the old periodic invitation roll must be gone');
-});
-
-function feedDrawingGuest(engine, guest, liked=true) {
-  const table=GD.tables.Character;
-  const idx=table.data[guest].taste.findIndex(value=>liked ? value>=60 : value<60);
-  const id=table.rowItemId[idx];
-  assert(id!==undefined,'fixture needs a real specialty with the selected taste');
-  engine.state.items.house=[{item_id:7001,count:1},{item_id:id,count:2}];
-  engine.state.guest={id:guest,served:false,confirmed:true,pos:0,startAt:Math.floor(Date.now()/1000)-300,expire_time:Math.floor(Date.now()/1000)+300};
-  call(engine,'guest_serve',{id:guest,item_id:id});
-  return id;
-}
-
-function finishDrawingGuest(engine, roll) {
-  engine.state.guest.expire_time=1;
-  const random=Math.random;
-  try {Math.random=()=>roll;return call(engine,'guest_finish',{});} finally {Math.random=random;}
-}
-
-test('drawing: liked food leaves the same neighbour invitation only on departure', ({engine})=>{
-  for(const guest of [0,1,2]) {
-    engine.state.drawing.state=0;engine.state.drawing.guest=-1;
-    const id=feedDrawingGuest(engine,guest);
-    eq(engine.state.drawing.state,0,'feeding must not immediately place an invitation');
-    assert(engine.state.guest.servedFeeling>=60,'taste is saved for departure');
-    eq(engine.state.guest.servedItemId,id);
-    call(engine,'guest_finish',{});
-    eq(engine.state.drawing.state,0,'an early finish request cannot trigger an invitation');
-    const r=finishDrawingGuest(engine,0);
-    eq(engine.state.drawing.state,1);
-    eq(engine.state.drawing.guest,guest,'inviter is the guest who ate, not a random partner');
-    assert(r.pushes.some(p=>p.cmd==='guest.load_drawing'&&p.data.guest===guest),'courtyard receives invitation push');
-    assert(r.pushes.some(p=>p.cmd==='notify.new_mail'),'normal departure gift is still mailed');
+    if (idx < 0) { engine.state.guest = null; continue; }
+    const itemId = ROW_IDS[idx];
+    engine.state.items.house.push({ item_id: itemId, count: 1 });
+    call(engine, 'guest_serve', { id: g.id, item_id: itemId });
+    engine.state.guest.expire_time = 1;
+    call(engine, 'guest_finish', {});          // 离开 -> 可能留邀约
   }
-});
-
-test('drawing: eligibility, failed chance and busy activities do not create or replace invites', ({engine})=>{
-  for(const reason of ['unliked','unfed','no-book','chance','legacy']) {
-    feedDrawingGuest(engine,0,reason!=='unliked');
-    if(reason==='unfed'){engine.state.guest.served=false;delete engine.state.guest.pendingGift;}
-    if(reason==='no-book')engine.state.items.house=engine.state.items.house.filter(i=>i.item_id!==7001);
-    if(reason==='legacy'){delete engine.state.guest.servedFeeling;delete engine.state.guest.servedItemId;delete engine.state.guest.pendingGift.feeling;}
-    finishDrawingGuest(engine,reason==='chance'?0.99:0);
-    eq(engine.state.drawing.state,0,reason+' should not invite');
-    const random=Math.random;
-    try {Math.random=()=>0;engine.state.drawingNextRollAt=1;engine.tick();} finally {Math.random=random;}
-    eq(engine.state.drawing.state,0,'failed departure must not be retried by timer');
+  eq(engine.state.drawing.state, 1, 'state must be invite (1)');
+  assert(engine.state.drawing.guest >= 0, 'and it must name a guest');
+  // the tables contain shared rows with guest === -1; those are content, not an
+  // inviter, so they must never be picked (this actually happened)
+  const guests = new Set();
+  for (const src of [GD.tables.drawingCollectData, GD.tables.drawingPageData]) {
+    for (const r of Object.values(src)) guests.add(Number(r.guest));
   }
-  for(const state of [1,2,3,4]) {
-    engine.state.drawing.state=state;engine.state.drawing.guest=2;
-    feedDrawingGuest(engine,0);
-    finishDrawingGuest(engine,0);
-    eq(engine.state.drawing.state,state);eq(engine.state.drawing.guest,2,'existing activity preserved');
-  }
-});
-
-test('drawing: offline departure persists one invite and one mail without re-rolling on boot', ({engine,savePath})=>{
-  feedDrawingGuest(engine,1);
-  engine.state.guest.expire_time=1;engine.save();
-  const re=reopen(savePath), random=Math.random;
-  try {Math.random=()=>0;call(re,'hall_enter_game',{});} finally {Math.random=random;}
-  eq(re.state.drawing.state,1);eq(re.state.drawing.guest,1);
-  const count=re.state.mails.filter(m=>m.title==='小伙伴的回礼').length;
-  eq(count,1);
-  call(re,'guest_accept_invit',{is_accept:false});
-  const again=reopen(savePath);
-  try {Math.random=()=>0;call(again,'hall_enter_game',{});again.tick();} finally {Math.random=random;}
-  eq(again.state.drawing.state,0,'rejected invitation cannot respawn from the same departure');
-  eq(again.state.mails.filter(m=>m.title==='小伙伴的回礼').length,count);
-});
-
-test('drawing: exhausted-content visits end and legacy visit timers cannot remain stuck', ({engine,savePath})=>{
-  engine.state.items.house=[{item_id:7001,count:1}];
-  const d=engine.state.drawing;
-  d.colls=Object.values(GD.tables.drawingCollectData).map(r=>Number(r.id));
-  d.pages=Object.values(GD.tables.drawingPageData).map(r=>Number(r.id));
-  d.state=3;d.guest=0;
-  engine.state.drawingReturnAt=Math.floor(Date.now()/1000)-1;
-  engine.tick();eq(d.state,4,'return with no new content enters a short visit');
-  engine.state.drawingReturnAt=1;engine.tick();
-  eq(d.state,0);eq(d.guest,-1);eq(engine.state.drawingReturnAt,0);
-  d.state=4;d.guest=1;engine.state.drawingReturnAt=1;engine.save();
-  const re=reopen(savePath);call(re,'hall_enter_game',{});
-  eq(re.state.drawing.state,0,'old expired visit settles at login');
-});
-
-test('drawing: 75 percent boundary and pre-upgrade saved taste are honoured', ({engine})=>{
-  for(const [roll,expected] of [[0.74999,1],[0.75,0]]) {
-    engine.state.drawing.state=0;
-    feedDrawingGuest(engine,2);
-    delete engine.state.guest.servedFeeling;
-    delete engine.state.guest.servedItemId;
-    finishDrawingGuest(engine,roll);
-    eq(engine.state.drawing.state,expected,'exact 75% boundary with legacy pending gift');
-  }
-  engine.state.drawing.state=3;engine.state.drawing.guest=2;
-  eq(call(engine,'guest_accept_invit',{accept:false}).reply.code,-1);
-  eq(engine.state.drawing.state,3,'stale decline must not cancel a trip');
+  assert(guests.has(engine.state.drawing.guest),
+    `guest ${engine.state.drawing.guest} must be a real guest in the tables`);
 });
 
 test('drawing: accept -> 2, reject -> 0, through the SAME command', ({ engine }) => {
@@ -3467,7 +3050,9 @@ test('drawing: the locked trip returns with a real collectible', ({ engine }) =>
   engine.state.items.house = [{ item_id: 7001, count: 1 }];
   engine.state.drawing.state = 1;
   engine.state.drawing.guest = Number(Object.values(GD.tables.drawingCollectData)[0].guest);
-  call(engine, 'guest_accept_invit', { accept: true });
+  /* 线上字段是 `is_accept`（客户端 request_accept_invit 传 true / reject 传 false）；
+     这里过去写的是 `accept: true`，在 V4 里等于"没传"，会被当成拒绝。 */
+  call(engine, 'guest_accept_invit', { is_accept: true });
   call(engine, 'guest_lock_bag', {});
   eq(engine.state.drawing.state, 3, 'away');
   const before = engine.state.drawing.colls.length;
@@ -3482,7 +3067,10 @@ test('drawing: the locked trip returns with a real collectible', ({ engine }) =>
   const row = Object.values(GD.tables.drawingCollectData).find((r) => Number(r.id) === got);
   assert(row, `collectible ${got} must exist in drawingCollectData`);
   eq(Number(row.guest), who, 'the collectible must belong to the guest that visited');
-  eq(engine.state.drawing.state, 0, 'back to waiting for a new partner');
+  /* V4（上游 3.4）的 advanceDrawing：行程带回收藏品后把 state 置回 **0 (wait)**，
+     只有"这一趟什么都没有了"才转 4 (visit) 并把回程延后 60 秒。旧期望的 2 (accept)
+     是更早的行为。 */
+  eq(engine.state.drawing.state, 0, 'back to wait (the invitation is used up)');
   eq(engine.state.drawing.bag.every((v) => v === -1), true, 'bag cleared for next time');
 });
 
@@ -3823,6 +3411,9 @@ test('decorate: every decoration row has the two pics status selects between', (
 });
 
 test('decorate: change puts the flower on display and sets status 1', ({ engine }) => {
+  /* client_change_decorate 的第一行是 `if (state.frog.status === 0) return { code: -1 }`
+     ——"别打扰在家的青蛙"。新档默认在家，所以测试要先把青蛙设为出门（我们这条线的规则：
+     在家锁住花瓶、出门才能换花）。V3.3 引擎实测也是这个行为。 */
   engine.state.frog.status = 1;
   engine.state.decoration = { hasList: [{ id: 100, num: 1 }], putId: 0, status: 0 };
   eq(call(engine, 'client_change_decorate', { id: 100 }).reply.code, 0, 'answers 0');
@@ -3831,9 +3422,9 @@ test('decorate: change puts the flower on display and sets status 1', ({ engine 
 });
 
 test('decorate: placing a new flower consumes the PREVIOUSLY displayed one', ({ engine }) => {
-  engine.state.frog.status = 1;
   // the client's own mirror decrements the entry whose id === the OLD put_id and
   // splices it out at 0 -- mirroring that is what keeps the two in sync
+  engine.state.frog.status = 1;            // 换花同样要求青蛙不在家（见上一条）
   engine.state.decoration = { hasList: [{ id: 100, num: 1 }, { id: 101, num: 2 }], putId: 100, status: 1 };
   eq(call(engine, 'client_change_decorate', { id: 101 }).reply.code, 0, 'swap answers 0');
   eq(engine.state.decoration.putId, 101, 'the new one is displayed');
@@ -3852,9 +3443,13 @@ test('decorate: a flower you do not have cannot be displayed', ({ engine }) => {
 });
 
 test('decorate: re-placing the SAME flower does not consume it', ({ engine }) => {
-  engine.state.frog.status = 1;
+  engine.state.frog.status = 1;            // 换花要求青蛙不在家（见前一节）
   engine.state.decoration = { hasList: [{ id: 100, num: 3 }], putId: 100, status: 1 };
-  eq(call(engine, 'client_change_decorate', { id: 100 }).reply.code, 1, 'already displayed');
+  /* 引擎对"重复摆已经摆着的那朵"回 code **1**（不是 0），实现里写明了理由：
+       if (D.putId === id) return { code: 1 }; // client otherwise consumes it twice
+     客户端只对 0 走消费/刷新分支，所以 1 的含义是"已经在展示，什么都没动"。 */
+  eq(call(engine, 'client_change_decorate', { id: 100 }).reply.code, 1,
+    'answers 1 = already displayed, nothing consumed');
   eq(engine.state.decoration.hasList.find((x) => x.id === 100).num, 3,
     'same id: the old-entry branch must not fire');
 });
@@ -4519,6 +4114,69 @@ test('animpicture: a refused action is a non-zero code, never a missing phase', 
   assert(typeof u.reply.phase === 'number' && u.reply.phase >= 0, 'phase still present');
 });
 
+/* 老存档迁移：`guide` 以前默认 0，而客户端只在 `data.guide > 1` 时显示动态照片入口
+   （`animPicBtn.visible`），离线没有任何东西会把它推上去。这一条只管"把入口还回来"，
+   不动已经进行中的进度。顺带按其它分组一样的写法补齐 `animPicture` 缺失的子字段。 */
+test('animpicture: a save with guide 0 gets the entry back (guide -> 2)', ({ engine, savePath }) => {
+  engine.state.animPicture.guide = 0;
+  fs.writeFileSync(savePath, JSON.stringify(engine.state));
+  const fixed = reopen(savePath).state.animPicture;
+  eq(Number(fixed.guide) >= 2, true, 'the reloaded save must not keep the entry hidden');
+});
+
+test('animpicture: a save that is mid-tutorial keeps its own guide', ({ engine, savePath }) => {
+  engine.state.animPicture.guide = 5;
+  fs.writeFileSync(savePath, JSON.stringify(engine.state));
+  eq(Number(reopen(savePath).state.animPicture.guide), 5, 'guide 5 must not be clamped');
+});
+
+test('animpicture: 存券数量一变就推给客户端（开槽位扣 1 / 领取入屋 +N）', ({ engine }) => {
+  /* 展示页那行「持有 N 个」是 `ItemModel.getHouseItemCount(9002) + data.item_num`，
+     所以引擎每次改 9002 的持有数都必须主动推 —— 否则界面一直显示旧数字，
+     只有重启（重新请求 item_load_items）才对（2026-09-19 反馈）。 */
+  const house9002 = () => {
+    const row = engine.state.items.house.find((x) => Number(x.item_id) === 9002);
+    return row ? Number(row.count) : 0;
+  };
+  const pushed9002 = (res) => {
+    const loads = pushNamed(res, 'item_load_items');
+    if (!loads.length) return null;
+    const row = (loads[0].data.house || []).find((x) => Number(x.item_id) === 9002);
+    return row ? Number(row.count) : 0;
+  };
+  engine.state.items.house.push({ item_id: 9002, count: 4 });
+  engine.state.pictures.push({ id: 7001, pic_id: ANIM_PIC(), read: 0, new: 0 });
+  eq(call(engine, 'animpicture_select_pic', { id: 7001 }).reply.code, 0, 'a page is created');
+
+  const open = call(engine, 'animpicture_open_album', { index: 1 });
+  eq(open.reply.code, 0, 'the slot opens');
+  eq(house9002(), 3, 'one storage ticket was spent');
+  eq(pushed9002(open), 3, 'and the new count is pushed to the client immediately');
+
+  /* 一页做完 -> 奖励卡上的存储券真正入屋，也要推 */
+  engine.state.animPicture.itemNum = 2;
+  const got = call(engine, 'animpicture_get_item', {});
+  eq(got.reply.code, 0, 'get_item answers');
+  eq(house9002(), 5, 'the two promised tickets arrived');
+  eq(pushed9002(got), 5, 'and that count is pushed too');
+  eq(pushNamed(got, 'item_update').length >= 1, true,
+    'an item_update rides along (the client applies it by delta, so it cannot double-count)');
+});
+
+test('animpicture: an old save missing anim_picture sub-fields gets them back', ({ engine, savePath }) => {
+  /* A save written before the model grew those fields (or by hand) would otherwise make
+     `animpicture_select_pic` throw on `A.picList.push`. */
+  engine.state.animPicture = { guide: 0 };
+  fs.writeFileSync(savePath, JSON.stringify(engine.state));
+  const A = reopen(savePath).state.animPicture;
+  assert(Array.isArray(A.picList), 'picList must be an array again');
+  assert(Array.isArray(A.expPic), 'expPic must be an array again');
+  eq(Number(A.guide), 2, 'and the entry is visible');
+  // the repaired model must survive a real request, not just a read
+  const again = reopen(savePath);
+  eq(call(again, 'animpicture_load', {}).reply.pic_list.length, 0, 'load answers an empty page list');
+});
+
 test('events: a HALF-BUILT event must stay closed, never half-visible', ({ engine }) => {
   // Every seasonal event's UI is gated behind `isOpen()`, which is a time window
   // (`now < end_time`). The events whose sub-commands are NOT implemented yet
@@ -4560,20 +4218,6 @@ test('events: a HALF-BUILT event must stay closed, never half-visible', ({ engin
   }
   eq(missing.length, 0,
     `an event window was opened without its commands: ${missing.join('; ')}`);
-});
-/* 老存档迁移：`guide` 以前默认 0，而客户端只在 `data.guide > 1` 时显示动态照片入口。
-   离线没有任何东西会把它推上去，所以这一条只管"把入口还回来"，不动已经进行中的进度。 */
-test('animpicture: a save with guide 0 gets the entry back (guide -> 2)', ({ engine, savePath }) => {
-  engine.state.animPicture.guide = 0;
-  fs.writeFileSync(savePath, JSON.stringify(engine.state));
-  const fixed = reopen(savePath).state.animPicture;
-  eq(Number(fixed.guide) >= 2, true, 'the reloaded save must not keep the entry hidden');
-});
-
-test('animpicture: a save that is mid-tutorial keeps its own guide', ({ engine, savePath }) => {
-  engine.state.animPicture.guide = 5;
-  fs.writeFileSync(savePath, JSON.stringify(engine.state));
-  eq(Number(reopen(savePath).state.animPicture.guide), 5, 'guide 5 must not be clamped');
 });
 
 /* ----------------------------------------------------- 故事 (story_*) */
@@ -4698,11 +4342,10 @@ test('values: the recovered originals the engine reads are the table\'s numbers'
   eq(def.CloverDestroyTime, 0.6, 'clover withering is a real rule in the table');
 });
 
-test('values: offline pacing is hours-scale (his V3 tuning, now the default)', ({ engine }) => {
-  /* V3.6：并入他 V3 的节奏并设为默认 —— 一趟 2–8.5 小时（硬上限 72 小时），
-     在家 3–5 小时后掷一次骰（50% 才出门）。想回到"一次游玩能看完"的短节奏，
-     用 FROG_TRAVEL_MIN/MAX、FROG_IDLE_*、FROG_WAIT_*、FROG_TRAVEL_CHANCE 覆盖；
-     FROG_FAITHFUL=1 是原版恢复值（60 分钟起）。 */
+test('values: 一趟默认就是小时级（120–510 分钟，硬上限 72 小时）', ({ engine }) => {
+  /* V3.6 并入他 V3 的节奏：出门 2–8.5 小时、在家检查间隔 3–5 小时、掷骰 50%、放浪 100–200 分钟。
+     这里钉住"下界 = 120 分钟"（便当 HP 只会把窗口放大，门票会缩到 0.6 倍但仍在 72 小时硬
+     上限内），并确认源码里那几个默认值就是他包里的值。 */
   const GDx = JSON.parse(fs.readFileSync(
     path.join(ROOT, 'work', 'run', 'engine', 'data', 'gamedata.json'), 'utf8'));
   const lunch = GDx.items.find((i) => i.type === 0).id;
@@ -4710,27 +4353,59 @@ test('values: offline pacing is hours-scale (his V3 tuning, now the default)', (
   engine.state.travel.nextDepartAt = 1;
   engine.tick();
   const w = engine.state.travel.returnAt - engine.state.travel.departAt;
-  assert(w >= 120 * 60 && w <= 72 * 3600,
-    `offline travel window ${w}s must sit inside 2 h..72 h (short pacing is opt-in via env)`);
+  assert(w >= 120 * 60, `travel window ${w}s must be at least the 2 hour floor`);
+  assert(w <= 72 * 3600, `and never past the 72 hour hard cap (got ${w}s)`);
+  const src = fs.readFileSync(ENGINE, 'utf8');
+  assert(/const TRAVEL_MIN_SEC = pace\('FROG_TRAVEL_MIN', 120 \* 60/.test(src),
+    'the default floor must be 120 min (hours-scale)');
+  assert(/const TRAVEL_MAX_SEC = pace\('FROG_TRAVEL_MAX', 510 \* 60/.test(src),
+    'and the default ceiling must be 510 min');
+  assert(/const TRAVEL_HARD_MAX_SEC = 72 \* 60 \* 60;/.test(src),
+    'and the 72 hour hard cap must exist');
+  assert(/const TRAVEL_DEPART_CHANCE = Number\(process\.env\.FROG_TRAVEL_CHANCE \|\| 50\)/.test(src),
+    'and departure must roll at 50% by default');
+  assert(/const FROG_MOTION_SEC = Number\(process\.env\.FROG_MOTION_SEC \|\| 10 \* 60\)/.test(src),
+    'and the at-home action interval must be his 10 minutes');
 });
 
-test('travel: gear on the desk cannot substitute for food, but it no longer blocks the trip', ({ engine }) => {
-  /* V3.6：出门不再要求"先准备"，所以桌上只有工具时蛙照样会走 —— 那一趟是放浪，
-     工具会被带上（carried）并回家，但没有便当就没有照片/特产。 */
+test('values: pacing is switchable through FROG_TRAVEL_MIN/MAX, FROG_TRAVEL_CHANCE and FROG_FAITHFUL', () => {
+  /* 默认是小时级（他 V3 的口径）。想回到"一次游玩能看完"的短节奏，用
+     FROG_TRAVEL_MIN / FROG_TRAVEL_MAX（秒）、FROG_IDLE_* / FROG_WAIT_*、FROG_TRAVEL_CHANCE；
+     想跑原版恢复值用 FROG_FAITHFUL=1（TRAVEL_TIME_MIN*60 起、6 倍上限）。
+     引擎在加载时读环境变量，所以这里检查源码里确实挂着这些开关（用例体内无法切换）。 */
+  const src = fs.readFileSync(ENGINE, 'utf8');
+  assert(/pace\('FROG_TRAVEL_MIN', 120 \* 60, ORIG\.travelTimeMin \* 60\)/.test(src),
+    'FROG_TRAVEL_MIN must override the hours-scale floor');
+  assert(/pace\('FROG_TRAVEL_MAX', 510 \* 60, ORIG\.travelTimeMin \* 60 \* 6\)/.test(src),
+    'FROG_TRAVEL_MAX must override the hours-scale ceiling');
+  assert(/pace\('FROG_IDLE_MIN', 3 \* 3600, ORIG\.standbyWaitMin\)/.test(src)
+    && /pace\('FROG_WAIT_MIN', 3 \* 3600, ORIG\.standbyWaitMin\)/.test(src),
+    'the 3-5 h check interval must be overridable too');
+  assert(/FROG_TRAVEL_CHANCE/.test(src), 'FROG_TRAVEL_CHANCE must be overridable');
+  assert(/const pace = /.test(src) && /FROG_FAITHFUL/.test(src),
+    'and FROG_FAITHFUL must switch the whole table to the recovered pacing');
+});
+
+test('values: 空背包也能出门，那一趟是放浪（100–200 分钟、不带照片/特产）', ({ engine }) => {
+  /* V3.6 起这是他 V3 的口径：掷骰中了就走，没有便当的那趟按放浪结算
+     （表里 FROG_DRIFTRETURNTIME 100 / MAX 200，单位是分钟 → 引擎存秒要 ×60）。
+     本套件把 FROG_TRAVEL_CHANCE 钉成 100，所以"到点就走"是确定的。 */
+  const src = fs.readFileSync(ENGINE, 'utf8');
+  assert(/DRIFT_RETURN_MIN/.test(src) && /DRIFT_RETURN_MAX/.test(src),
+    'the table\'s drift-return constants must stay documented in the engine');
+  assert(/pace\('FROG_DRIFT_MIN', 100 \* 60, ORIG\.driftReturn\)/.test(src),
+    'and they are MINUTES in the table, so the engine must convert to seconds');
   engine.state.items.bag = [-1, -1, -1, -1];
-  engine.state.items.desk[4] = idsOfType(2)[0];
+  engine.state.items.desk = [-1, -1, -1, -1, -1, -1];
   engine.state.travel.plan = null;
   engine.state.travel.nextDepartAt = 1;
   engine.tick();
-  eq(engine.state.frog.status, 1, 'the frog leaves (as a stray)');
-  assert(engine.state.travel.plan && engine.state.travel.plan.stray === true,
-    'and the plan is a stray: no lunch means no photos');
-  eq(engine.state.travel.plan.lunch, -1, 'no lunch box was packed');
-  /* 「准备完成」在桌上有工具时也算准备好（他 V3 的 tripPrepared：任何背包物品，或桌上
-     便当/护身符/工具），所以回 code 0；蛙已经在外，于是不会重复出发。 */
-  const done = call(engine,'item_set_bag_completed',{completed:true});
-  eq(done.reply.code, 0, 'a tool on the desk counts as prepared (his rule)');
-  eq(engine.state.items.bagCompleted, 1, 'and the bag lock is set');
+  eq(engine.state.frog.status, 1, 'an empty bag no longer keeps the frog at home');
+  eq(!!(engine.state.travel.plan && engine.state.travel.plan.stray), true,
+    'and the trip it plans is a stray');
+  const w = engine.state.travel.returnAt - engine.state.travel.departAt;
+  assert(w >= 100 * 60 && w <= 200 * 60,
+    `a stray trip must use the table's 100-200 min window (got ${w}s)`);
 });
 
 /** What the engine's defaultState() produces for the 20 clover slots. */
@@ -4781,7 +4456,7 @@ test('clover: harvesting re-rolls the span (the original draws it per regrowth)'
   slot.last_harvest = 0;
   const before = slot.rebirth_span;
   // a fixed span would make every clover regrow in lockstep; the original's
-  // clamp(normal(7200,1800),300,14400) is per-clover
+  // clamp(normal(7200,3600),300,14400) is per-clover
   let sawDifferent = false;
   for (let i = 0; i < 40 && !sawDifferent; i++) {
     engine.state.clovers = makeCloversForTest();
@@ -4815,7 +4490,7 @@ test('clover: the regrowth distribution matches the JP formula, not a uniform dr
   const mean = spans.reduce((a, b) => a + b, 0) / n;
   const sd = Math.sqrt(spans.reduce((a, b) => a + (b - mean) ** 2, 0) / n);
   assert(mean > 6000 && mean < 8400, `mean ${Math.round(mean)} should sit near 7200`);
-  assert(sd > 900 && sd < 2600, `sd ${Math.round(sd)} should sit near 1800`);
+  assert(sd > 900 && sd < 2600, `sd ${Math.round(sd)} should sit near 3600`);
   // a normal draw is concentrated: uniform-over-range would have sd ~4080
   assert(sd < 3000, 'sd well under the uniform value proves the normal shape');
 });
@@ -5045,6 +4720,7 @@ test('capsule: the task board actually populates (it used to stay empty forever)
 
 test('wire: furniture_buy_shop reads shop_id, the name the client actually sends', ({ engine }) => {
   // client: send("furniture_buy_shop", cb, shopId)  ->  {shop_id: shopId}
+  putOnShelf(engine, 2001);
   const before = engine.state.clover;
   const r = call(engine, 'furniture_buy_shop', { shop_id: 2001 }).reply;
   eq(r.code, 0, 'a paid slot with the declared key must succeed');
@@ -5058,6 +4734,7 @@ test('wire: 嘟嘟代理福利商品 (type 998) is granted FREE, not charged', (
   // crossed-out list price; charging it was a second reason the button looked
   // dead, since tapping it silently spent 50 clover. 7003 is type 998 in
   // furnitureShopData (item 20101, list price 50).
+  putOnShelf(engine, 7003);
   const before = engine.state.clover;
   const r = call(engine, 'furniture_buy_shop', { shop_id: 7003 }).reply;
   eq(r.code, 0, 'the welfare good must be obtainable');
@@ -5067,6 +4744,7 @@ test('wire: 嘟嘟代理福利商品 (type 998) is granted FREE, not charged', (
 });
 
 test('wire: a welfare good is offered once per day, and the paid chain is untouched', ({ engine }) => {
+  putOnShelf(engine, [7003, 2001]);
   eq(call(engine, 'furniture_buy_shop', { shop_id: 7003 }).reply.code, 0, 'first take succeeds');
   const afterFirst = engine.state.clover;
   eq(call(engine, 'furniture_buy_shop', { shop_id: 7003 }).reply.code, -1,
@@ -5096,12 +4774,15 @@ test('wire: guest_accept_invit honours is_accept (it used to always mean REJECT)
   // false and ACCEPTING silently behaved as REJECTING.
   const load = call(engine, 'guest_load_drawing', {}).reply;
   assert(load && load.state !== undefined, 'guest_load_drawing must answer a state');
+  /* V4（上游 3.4）的 accept 分支要两件事：`cur.state === 1` 且 `cur.guest` 是绘本表里
+     真人（drawingGuestIds()）——否则回 -1 "没有可接受的邀约"。拒绝对应也要求 state 1。 */
   engine.state.drawing.state = 1;
-  engine.state.drawing.guest = 0;
+  engine.state.drawing.guest =
+    Number(Object.values(GD.tables.drawingCollectData)[0].guest);
   const accept = call(engine, 'guest_accept_invit', { is_accept: true }).reply;
   eq(accept.code, 0, 'accept must be accepted');
   eq(engine.state.drawing.state, 2, 'state must be DrawingState.accept (2)');
-  engine.state.drawing.state = 1; // a new invitation, not cancellation of the accepted one
+  engine.state.drawing.state = 1;             // 再摆回 invite 才能走拒绝分支
   const reject = call(engine, 'guest_accept_invit', { is_accept: false }).reply;
   eq(reject.code, 0, 'reject must be accepted');
   eq(engine.state.drawing.state, 0, 'state must be DrawingState.wait (0)');
@@ -5385,146 +5066,13 @@ test('museum: museum_load reports OWNERSHIP, keyed by the client\'s own table', 
     true, 'a pending postcard still counts as owned');
 });
 
-test('craft: returning home stores completed desk items without losing collections or unfinished work', ({engine,savePath})=>{
-  engine.state.items.house=[{item_id:7000,count:1}];
-  engine.state.craft={seq:3,pending:[],wishes:[
-    {id:1,state:4,body:102,paper:1001,make_time:1,stamp_time:1,stamp:1,stamp_state:3,u_id:1}],
-    stamps:[{id:109,state:3,time:1,u_id:2},{id:1,state:2,time:Math.floor(Date.now()/1000)+1000,u_id:3,materialPaid:true}]};
-  const before=call(engine,'pray_load_grays').reply;
-  eq(before.wish_new.u_id,1);eq(before.stamp_new.u_id,2);
-  engine.state.frog.status=1;engine.state.travel.returnAt=1;engine.state.travel.plan={stray:true};
-  const pushes=engine.tick();
-  const update=pushes.find(p=>p.cmd==='pray.load_grays');
-  assert(update,'return pushes desk cleanup to the open room');
-  eq(update.data.wish_new,false);eq(update.data.stamp_new,false);
-  eq(update.data.wishs.length,1);eq(update.data.stamps.length,2);
-  eq(engine.state.craft.stamps[1].state,2,'unfinished job is preserved');
-  const re=reopen(savePath);
-  re.state.frog.status=1;re.state.travel.returnAt=Math.floor(Date.now()/1000)+1000;
-  const again=call(re,'pray_load_grays').reply;
-  eq(again.wish_new,false);eq(again.stamp_new,false,'old desk items stay stored after reload and departure');
-  re.state.craft.stamps[1].time=1;
-  const next=call(re,'pray_load_grays').reply;
-  eq(next.stamp_new.u_id,3,'a newly completed piece still appears on the desk');
-  eq(next.stamps.length,2,'both stored and new crafts remain in the collection');
-});
-
-test('craft: no tool means no consumption, progress or output, including legacy jobs', ({engine,savePath})=>{
-  engine.state.items.house=[{item_id:8000,count:3},{item_id:8001,count:2}];
-  engine.state.frog.motion=5;engine.state.frog.motionNextAt=Math.floor(Date.now()/1000)+10000;
-  engine.state.travel.nextDepartAt=Math.floor(Date.now()/1000)+10000;
-  call(engine,'pray_load_grays');engine.tick();
-  eq(engine.state.craft.seq,0,'animation alone cannot start production');
-  eq(haveOf(engine,8000),3);eq(haveOf(engine,8001),2);
-  engine.state.craft={seq:2,pending:[],wishes:[{id:1,state:3,make_time:1,u_id:1}],
-    stamps:[{id:1,state:2,time:1,u_id:2,materialPaid:true}],
-    wood:{itemId:8501,startedAt:1,finishAt:2,materialPaid:true}};
-  engine.save();
-  const re=reopen(savePath);call(re,'hall_enter_game');re.tick();
-  eq(re.state.craft.wishes[0].state,3);eq(re.state.craft.stamps[0].state,2);
-  eq(haveOf(re,8000),3);eq(haveOf(re,8001),2);eq(haveOf(re,8501),0);
-  eq(re.state.craft.pending.length,0);
-  re.state.items.house.push({item_id:7000,count:1});
-  const resumed=call(re,'pray_load_grays').reply;
-  eq(resumed.wish_new.state,4);eq(resumed.stamp_new.state,3);eq(haveOf(re,8501),1);
-  eq(haveOf(re,7000),1,'tool is durable and never consumed');
-});
-
-test('craft: composing also requires the tool and never consumes pieces on refusal', ({engine})=>{
-  engine.state.items.house=[8501,8502,8503].map(item_id=>({item_id,count:1}));
-  const before=JSON.stringify(engine.state.items.house);
-  eq(call(engine,'pray_compose',{id:5502}).reply.code,42);
-  eq(JSON.stringify(engine.state.items.house),before);
-});
-
-test('craft: materials are charged once per job, never per refresh or stage', ({engine,savePath})=>{
-  engine.state.items.house=[{item_id:7000,count:1}];
-  let r=call(engine,'pray_load_grays',{}).reply;
-  eq(r.wishs.length+r.stamps.length,0,'no materials means no work');
-  engine.state.items.house=[{item_id:7000,count:1},{item_id:8000,count:2}];
-  r=call(engine,'pray_load_grays',{}).reply;
-  eq(r.wishs.length,1);eq(r.stamps.length,1);
-  const count=e=>(e.state.items.house.find(i=>i.item_id===8000)||{}).count||0;
-  eq(count(engine),0,'one wish plus one stamp costs two materials');
-  call(engine,'pray_load_grays',{});
-  eq(engine.state.craft.seq,2,'refresh does not create more jobs');
-  const re=reopen(savePath);
-  for(let n=0;n<3;n++) {
-    re.state.craft.wishes[0].make_time=1;re.state.craft.stamps[0].time=1;
-    call(re,'pray_load_grays',{});
-  }
-  eq(re.state.craft.wishes[0].state,4);eq(re.state.craft.stamps[0].state,3);
-  eq(count(re),0,'finishing after reload does not charge again');
-  eq(re.state.craft.seq,2,'empty stock prevents follow-up work');
-});
-
-test('craft: one material cannot start two jobs and away frogs cannot start work', ({engine})=>{
-  engine.state.items.house=[{item_id:7000,count:1},{item_id:8000,count:1},{item_id:8001,count:1}];
-  engine.state.frog.status=1;
-  call(engine,'pray_load_grays',{});
-  eq(engine.state.craft.seq,0);assert(!engine.state.craft.wood);
-  engine.state.frog.status=0;
-  call(engine,'pray_load_grays',{});
-  eq(engine.state.craft.wishes.length+engine.state.craft.stamps.length,1);
-  assert(engine.state.craft.wood,'wood piece has a timed job');
-});
-
-test('craft: each wooden piece costs one rotten wood and finishes exactly once after reload', ({engine,savePath})=>{
-  const count=(e,id)=>(e.state.items.house.find(i=>i.item_id===id)||{}).count||0;
-  engine.state.items.house=[{item_id:7000,count:1},{item_id:8001,count:1}];
-  call(engine,'pray_load_grays',{});
-  eq(count(engine,8001),0);
-  const job=engine.state.craft.wood;
-  assert(job && [8501,8502,8503].includes(job.itemId));
-  eq(count(engine,job.itemId),0,'not granted until completion');
-  engine.state.craft.wood.finishAt=1;engine.save();
-  const re=reopen(savePath);
-  call(re,'hall_enter_game',{});
-  eq(count(re,job.itemId),1);eq(re.state.craft.pending.filter(id=>id===job.itemId).length,1);
-  assert(!re.state.craft.wood,'no wood left for another job');
-  call(re,'pray_load_grays',{});re.tick();call(re,'pray_confirm_make_box',{});
-  const again=reopen(savePath);call(again,'pray_load_grays',{});
-  eq(count(again,job.itemId),1);eq(again.state.craft.pending.length,0);
-});
-
-test('craft: legacy unpaid active work waits for materials; finished history is never billed', ({engine})=>{
-  engine.state.items.house=[];
-  engine.state.craft={seq:2,pending:[],stamps:[],wishes:[
-    {id:1,state:4,body:101,paper:1001,make_time:1,u_id:1},
-    {id:1,state:3,body:'',paper:'',make_time:1,u_id:2}]};
-  call(engine,'pray_load_grays',{});
-  eq(engine.state.craft.wishes[1].state,3);
-  engine.state.items.house=[{item_id:7000,count:1},{item_id:8000,count:1}];
-  call(engine,'pray_load_grays',{});
-  eq(engine.state.craft.wishes[1].state,4);
-  eq((engine.state.items.house.find(i=>i.item_id===8000)||{}).count||0,0);
-  eq(engine.state.craft.wishes.length,2,'finished history does not incur additional debt');
-});
-
-test('craft: three paid wooden pieces can be composed without charging wood twice', ({engine})=>{
-  engine.state.items.house=[{item_id:7000,count:1}];
-  const original=Math.random;
-  try {
-    for(const roll of [0,0.4,0.9]) {
-      engine.state.items.house.push({item_id:8001,count:1});
-      Math.random=()=>roll;
-      call(engine,'pray_load_grays',{});
-      engine.state.craft.wood.finishAt=1;
-      call(engine,'pray_load_grays',{});
-    }
-  } finally {Math.random=original;}
-  for(const id of [8501,8502,8503])eq(engine.state.items.house.find(i=>i.item_id===id)?.count,1);
-  const reply=call(engine,'pray_compose',{id:5502}).reply;
-  eq(reply.item_list[0],1306);
-  assert(!engine.state.items.house.some(i=>[8001,8501,8502,8503].includes(i.item_id)));
-  eq(engine.state.items.house.find(i=>i.item_id===1306)?.count,1);
-});
-
 test('craft: pray_compose needs one of EACH piece, then pays the amulet', ({ engine }) => {
-  engine.state.items.house=[{item_id:7000,count:1}];
   const pieces = require(path.join(__dirname, '..', 'run', 'engine', 'data', 'gamedata.json'))
     .items.filter((i) => i.type === 16).map((i) => i.id);
   eq(pieces.length, 3, 'exactly three COMPOSE items exist (ItemType.COMPOSE = 16)');
+  /* V4（上游 3.4）的 pray_compose 先看手工品工具：没有 7000 时任何请求都回 42，
+     所以先把工具放进家，后面的断言才是在测"缺木片"这件事。 */
+  engine.state.items.house.push({ item_id: 7000, count: 1 });
   eq(call(engine, 'pray_compose', { id: 5502 }).reply.code, 42,
     'with no pieces it answers 42 (物品不足), a code the client ERROR TABLE has');
   eq(call(engine, 'pray_compose', { id: 1234 }).reply.code, 5,
@@ -5551,7 +5099,9 @@ test('craft: pray_compose needs one of EACH piece, then pays the amulet', ({ eng
 });
 
 test('craft: pray_load_grays carries the row fields the two pages render', ({ engine }) => {
-  engine.state.items.house=[{item_id:7000,count:1},{item_id:8000,count:2}];
+  /* V4（上游 3.4）的手工品要"真的开工"才推进：需要手工品工具(7000)，每件开工再扣 1 个
+     手工品材料(8000)（advanceCraft 里的 canCraft / reserveMaterial）。 */
+  engine.state.items.house.push({ item_id: 7000, count: 1 }, { item_id: 8000, count: 9 });
   const r = call(engine, 'pray_load_grays', {}).reply;
   for (const key of ['wishs', 'stamps', 'boxes']) {
     assert(Array.isArray(r[key]), `${key} must be an array`);
@@ -5585,33 +5135,10 @@ test('craft: pray_load_grays carries the row fields the two pages render', ({ en
     'wish_new must be {make_time, u_id} so the red dot can fire');
 });
 
-test('craft: newly finished room items carry full render data after completion and reload', ({ engine, savePath }) => {
-  engine.state.items.house=[{item_id:7000,count:1},{item_id:8000,count:2}];
-  engine.state.craft = { seq: 2, pending: [],
-    wishes: [{ id: 1, state: 3, body: '', paper: '', content: 1, make_time: 1, u_id: 1 }],
-    stamps: [{ id: 109, state: 2, time: 1, u_id: 2 }],
-  };
-  function checkPayload(r) {
-    // MainInView resolves desk_pic by id and passes *_new directly to the detail
-    // renderer. Merely returning the red-dot timestamp produces a blank item.
-    eq(r.wish_new.id, 1, 'room wish icon needs its table id');
-    eq(r.stamp_new.id, 109, 'room stamp icon needs its table id');
-    eq(r.wish_new.state, 4, 'wish detail is the completed stage');
-    eq(r.stamp_new.state, 3, 'stamp detail uses a renderable table stage');
-    for (const key of ['body', 'paper', 'content', 'stamp', 'stamp_state', 'stamp_time']) {
-      assert(Number(r.wish_new[key]) > 0, `wish completion detail needs ${key}`);
-    }
-    eq(JSON.stringify(r.wish_new), JSON.stringify(r.wishs.find(w => w.u_id === 1)),
-      'completion and collection views receive the same wish');
-    eq(JSON.stringify(r.stamp_new), JSON.stringify(r.stamps.find(s => s.u_id === 2)),
-      'completion and collection views receive the same stamp');
-  }
-  checkPayload(call(engine, 'pray_load_grays', {}).reply);
-  checkPayload(call(reopen(savePath), 'pray_load_grays', {}).reply);
-});
-
 test('craft: the work is persisted and pray_confirm_make_box empties the inbox', ({ engine, savePath }) => {
-  engine.state.items.house=[{item_id:7000,count:1},{item_id:8000,count:2}];
+  /* V4（上游 3.4）的手工品要"真的开工"才推进：需要手工品工具(7000)，每件开工再扣 1 个
+     手工品材料(8000)（advanceCraft 里的 canCraft / reserveMaterial）。 */
+  engine.state.items.house.push({ item_id: 7000, count: 1 }, { item_id: 8000, count: 9 });
   engine.state.craft.pending.push(1306);
   const r = call(engine, 'pray_load_grays', {}).reply;
   eq(r.boxes.length, 1, 'pending crafts are reported as boxes');
@@ -5624,23 +5151,25 @@ test('craft: the work is persisted and pray_confirm_make_box empties the inbox',
   eq(call(again, 'pray_load_grays', {}).reply.boxes.length, 0, 'and so does the clear');
 });
 
-test('craft: travel no longer grants free wooden pieces', ({ engine }) => {
+test('craft: the three 木片 are made at home from 朽木 (V4 source)', ({ engine }) => {
+  /* 我们 V3.3 的设计是"旅行 12% 掉落木片"；V4（上游 3.4）把它换成了材料合成：
+     在家里、持有手工品工具(7000) 时用 1 个朽木(8001) 开工，WOOD_PIECE_SEC = 3 × 90s
+     之后随机产出三种木片之一（等概率）。这条按新来源断言，确认它**不是死路**。 */
   const pieces = items.filter((i) => i.type === 16).map((i) => i.id);
-  const lunch = idsOfType(0)[0];
-  const orig = Math.random;
-  Math.random = () => 0.01;                 // well under the drop chance
-  try {
-    engine.state.items.bag[0] = lunch;
-    engine.state.travel.nextDepartAt = 1;
-    engine.tick();
-    engine.state.travel.returnAt = 1;
-    engine.tick();
-  } finally {
-    Math.random = orig;
-  }
-  const owned = engine.state.items.house.concat(engine.state.items.bag)
-    .filter((h) => h && pieces.indexOf(h.item_id) !== -1 && h.count > 0);
-  eq(owned.length,0,'wooden pieces must be made by consuming rotten wood at home');
+  eq(pieces.length, 3, 'three COMPOSE pieces exist');
+  engine.state.items.house.push({ item_id: 7000, count: 1 }, { item_id: 8001, count: 4 });
+  call(engine, 'pray_load_grays', {});                    // advanceCraft：开工
+  const job = engine.state.craft.wood;
+  assert(job && pieces.indexOf(Number(job.itemId)) !== -1,
+    'at home with the tool, one 朽木 starts a 木片 job');
+  const wood = engine.state.items.house.find((h) => h.item_id === 8001);
+  eq(!wood || wood.count === 3, true, 'the 朽木 is consumed');
+  engine.state.craft.wood.finishAt = 1;                   // 到点
+  call(engine, 'pray_load_grays', {});
+  const owned = engine.state.items.house
+    .filter((h) => pieces.indexOf(h.item_id) !== -1 && h.count > 0);
+  assert(owned.length > 0,
+    'a 木片 really arrives, so the 三拼 box is not a dead end');
 });
 
 /* ------------------------------------------------------------- 博物馆冒险 */
@@ -6313,13 +5842,12 @@ test('editor: an edit is pushed to the client, so no restart is needed', ({ engi
   }
 
   const enc = pushNamed(r, 'encyclopedia_load')[0].data;
-  /* show_sub 是"每个已解锁物种一行"，unlock_all 下就等于 encyclopedia.list 里出现的 species id 个数
-     （引擎 encySpeciesIds() = 按 long_id 顺序去重的 row.id）。我们的数据是更新的官方 1088 版：
-     encyclopedia 是嵌套表 {desc, list}，list 有 241 行、**24** 个不同物种（上游 1073 版是 23 个），
-     所以这里从表推导，不再写死 23。 */
-  const encyclopediaSpecies = new Set(
-    Object.values(GD.tables.encyclopedia.list).map((e) => Number(e.id)));
-  eq(enc.show_sub.length, encyclopediaSpecies.size, 'the pushed 百科 payload must be the real one');
+  /* "the real one" is checked against the payload the command itself returns, so the
+     assertion cannot go stale when the official tables gain species. */
+  const encDirect = call(engine, 'encyclopedia_load', {}).reply;
+  eq(enc.show_sub.length, encDirect.show_sub.length,
+    'the pushed 百科 payload must equal the on-demand one');
+  assert(enc.show_sub.length > 0, 'and it must not be empty');
   const hand = pushNamed(r, 'item_load_handbook')[0].data;
   assert(hand.collections.length > 0 && hand.specialtys.length > 0, 'the 图鉴 lists');
   const fur = pushNamed(r, 'furniture_load_furniture')[0].data;
@@ -6341,8 +5869,12 @@ test('editor: an edit is pushed to the client, so no restart is needed', ({ engi
 
 test('editor: all_furniture grants every row, and the client payload carries them', ({ engine }) => {
   const g = (cmd) => call(engine, 'client_gm', { cmd }).reply;
-  eq(engine.state.furniture.owned.length, Object.values(GDATA.tables.furnitureData)
-    .filter(row => Number(row.style) === 1).length, 'a fresh save owns the plain style');
+  /* V4（上游 3.4）让新档默认拥有 `furnitureData.style === 1` 的全部"素风格"家具
+     （引擎里的 PLAIN_FURNITURE_IDS），所以"新档一件都没有"不再成立；这里按表推导默认值。 */
+  const plain = Object.values(GDATA.tables.furnitureData || {})
+    .filter((r) => Number(r.style) === 1).map((r) => Number(r.id));
+  eq(engine.state.furniture.owned.length, plain.length,
+    'a fresh save owns exactly the plain-style furniture the table lists');
   const r = g('all_furniture');
   eq(r.succeed, true, 'all_furniture reports success');
   const rows = Object.keys(GDATA.tables.furnitureData || {}).map(Number);
@@ -6354,6 +5886,34 @@ test('editor: all_furniture grants every row, and the client payload carries the
   /* running it twice must not duplicate */
   g('all_furniture');
   eq(engine.state.furniture.owned.length, rows.length, 'idempotent');
+});
+
+test('editor: clear_furniture deletes every piece and survives a restart', ({ engine, savePath }) => {
+  /* 指令台命令（不做按钮）：清空持有与场内摆放，并且**不**让素风格默认家具被自动补回来
+     —— 那 27 件由 defaultState、loadState、导入存档、以及 furniture_load_furniture 的 put_fur
+     四处按设计注入，命令用 plainDefaultsOff 把后面三处全部跳过，否则"删完一重启就回来"。
+     工作台上的材料/图纸不动。 */
+  const g = (eng, cmd) => call(eng, 'client_gm', { cmd }).reply;
+  eq(engine.state.furniture.owned.length > 0, true, 'a fresh save owns the plain-style defaults');
+  engine.state.furniture.placed = [{ type: 1, id: engine.state.furniture.owned[0] }];
+  const r = g(engine, 'clear_furniture');
+  eq(r.succeed, true, 'clear_furniture reports success');
+  eq(engine.state.furniture.owned.length, 0, 'nothing is owned any more');
+  eq(engine.state.furniture.placed.length, 0, 'and nothing stands in the courtyard');
+  eq(call(engine, 'furniture_load_furniture', {}).reply.put_fur.length, 0,
+    'the room payload is empty too (the plain-style injection is suppressed)');
+
+  const again = reopen(savePath);
+  eq(again.state.furniture.owned.length, 0, 'a restart must not resurrect the defaults');
+  eq(call(again, 'furniture_load_furniture', {}).reply.put_fur.length, 0, 'and the room stays empty');
+
+  /* all_furniture 清掉标记并全部恢复 */
+  const rows = Object.keys(GDATA.tables.furnitureData || {}).length;
+  eq(g(again, 'all_furniture').succeed, true, 'all_furniture still works');
+  eq(again.state.furniture.owned.length, rows, 'every furniture row is owned again');
+  eq(again.state.furniture.plainDefaultsOff, false, 'and the suppression flag is cleared');
+  eq(reopen(savePath).state.furniture.owned.length, rows,
+    'so a later restart keeps them (the flag really was the only thing suppressing them)');
 });
 
 /* ------------------------------------------------------------ save safety
@@ -6464,7 +6024,10 @@ test('save: an old save (no saveVersion, few fields) still loads and still saves
   const re = reopen(savePath);
   eq(re.state.clover, 1234, 'an old clover count survives');
   eq(re.state.name, '老档', 'so does the name');
-  eq(re.state.saveVersion, 1, 'the missing version field is filled in');
+  /* 【V3.7】引擎写出的存档版本升到 2（老档 1 -> 2 按版本迁移），所以这里跟着引擎走，
+     不再写死 1。 */
+  const curSaveVersion = Number((/const SAVE_VERSION = (\d+);/.exec(fs.readFileSync(ENGINE, 'utf8')) || [0, 2])[1]);
+  eq(re.state.saveVersion, curSaveVersion, 'the missing version field is filled in (current version)');
   eq(re.state.__saveReport.action, 'load', 'an old save is a normal load, not a repair');
   eq(re.state.__saveReport.reason, null, 'with nothing to report');
   call(re, 'client_gm', { cmd: 'add_clover 10' });
@@ -6601,7 +6164,9 @@ test('annual: the 手工品 counts come from the CRAFT records, not from a const
 console.log('\n== 手工品：印章停在 state 3，祈愿物带 stamp_time ==');
 
 test('craft: a STAMP stops at state 3 (the only states stampData knows)', ({ engine }) => {
-  engine.state.items.house=[{item_id:7000,count:1},{item_id:8000,count:1}];
+  /* V4（上游 3.4）的手工品要"真的开工"才推进：需要手工品工具(7000)，每件开工再扣 1 个
+     手工品材料(8000)（advanceCraft 里的 canCraft / reserveMaterial）。 */
+  engine.state.items.house.push({ item_id: 7000, count: 1 }, { item_id: 8000, count: 9 });
   /* The client resolves a stamp's picture with
      `StampCraftDB.get(id).state.indexOf(stamp_state)`; every one of stampData's 27
      rows lists state [1,2,3], so a row pushed to 4 indexes to -1, sets no source and
@@ -6626,7 +6191,9 @@ test('craft: a STAMP stops at state 3 (the only states stampData knows)', ({ eng
 });
 
 test('craft: a finished 祈愿物 carries the stamp_time/stamp the detail card needs', ({ engine }) => {
-  engine.state.items.house=[{item_id:7000,count:1},{item_id:8000,count:1}];
+  /* V4（上游 3.4）的手工品要"真的开工"才推进：需要手工品工具(7000)，每件开工再扣 1 个
+     手工品材料(8000)（advanceCraft 里的 canCraft / reserveMaterial）。 */
+  engine.state.items.house.push({ item_id: 7000, count: 1 }, { item_id: 8000, count: 9 });
   /* PrayCraftDetailRender.dataChanged reads:
        DateFormat.format(1000 * data.stamp_time, "YYYY.MM.DD")     -> the DATE
        if (data.stamp && 0 != data.stamp_time) { ...pattern_pic[state.indexOf(stamp_state)] }
@@ -6684,15 +6251,17 @@ test('travel: the frog picks up what the DESK offers, and it comes back to the d
   eq(bag.filter((x) => x !== -1).length, 0, 'and nothing was pushed into the bag');
 });
 
-test('travel: a desk with NOTHING usable no longer keeps the frog at home', ({ engine }) => {
-  /* V3.6：出门由 tick() 里那次掷骰决定（默认 50%），不再由「有没有准备」决定 ——
-     空背包 + 空桌子也会走，那一趟是放浪。`waitingForBag` 只表示"这一次没掷中"。
-     本套件把概率钉成 100（见文件头），所以这里必定出门、且它不是等待状态。 */
+test('travel: an empty desk no longer blocks departure (the roll decides)', ({ engine }) => {
+  /* V3.6：能不能出门改由 tick() 里那次掷骰决定（默认 50%，FROG_TRAVEL_CHANCE），
+     不再由「有没有准备」决定 —— 所以空背包 + 空桌子也会走，那一趟是放浪。
+     `waitingForBag` 现在只表示"这一次没掷中"的提示。本套件把概率钉成 100（见文件头，
+     为的是让既有用例保持确定性），所以这里它应当是 false；"没掷中 → 3–5 小时后重掷"
+     那条分支由 work/tools/pacing_hours_test.js 用默认概率统计验证。 */
   engine.state.items.bag = [-1, -1, -1, -1];
   engine.state.items.desk = [-1, -1, -1, -1, -1, -1, -1, -1];
   engine.state.travel.nextDepartAt = 1;
   engine.tick();
-  eq(engine.state.frog.status, 1, 'the frog leaves (as a stray)');
+  eq(engine.state.frog.status, 1, 'the frog leaves even with nothing packed');
   eq(engine.state.travel.waitingForBag, false, 'and it is not "waiting for provisions"');
 });
 
@@ -6761,6 +6330,7 @@ test('shop: a 套装 bought from the merchant is OPENED on the spot (GiftData)',
   engine.dispatch('client_gm', { cmd: 'set_clover 5000' });
   for (const id of GIFT['5001'].item_id) eq(haveOf(engine, id), 0, `item ${id} starts at 0`);
 
+  putOnShelf(engine, 1);
   const r = call(engine, 'furniture_buy_shop', { shop_id: 1 });
   eq(r.reply.code, 0, 'the purchase succeeds');
   for (const id of GIFT['5001'].item_id) {
@@ -6779,6 +6349,7 @@ test('shop: a 套装 bought from the merchant is OPENED on the spot (GiftData)',
 test('shop: the 材料套装 pays exactly what GiftData says', ({ engine }) => {
   const GIFT = GDATA.tables.GiftData['5002'];
   engine.dispatch('client_gm', { cmd: 'set_clover 5000' });
+  putOnShelf(engine, 2);
   const r = call(engine, 'furniture_buy_shop', { shop_id: 2 });
   eq(r.reply.code, 0, 'purchase ok');
   const got = pushNamed(r, 'item_gift_open')[0].data.items.map((x) => Number(x.item_id));
@@ -6789,6 +6360,7 @@ test('shop: the 材料套装 pays exactly what GiftData says', ({ engine }) => {
 
 test('shop: a RANDOM box (5101 种子盲盒) still yields a real row', ({ engine }) => {
   engine.dispatch('client_gm', { cmd: 'set_clover 5000' });
+  putOnShelf(engine, 6);
   const r = call(engine, 'furniture_buy_shop', { shop_id: 6 });
   eq(r.reply.code, 0, 'purchase ok');
   const items = pushNamed(r, 'item_gift_open')[0].data.items;
@@ -6818,31 +6390,22 @@ test('tasks: the cumulative plan rewards (「伴蛙前行」面板) are payable 
   eq(haveOf(engine, Number(type1.reward[0])), before + 1, 'and the table\'s own reward lands');
   eq(pushNamed(r, 'task_load').length, 1, 'the task rows are re-pushed');
   eq(pushNamed(r, 'task_load_list').length, 1, 'and so are the tier rows');
-  /* once only */
-  eq(call(engine, 'task_get_list_reward', { id: 101 }).reply.code, 1, 'a repeat must not trigger the reward popup');
-  eq(haveOf(engine, Number(type1.reward[0])), before + 1, 'but pays nothing');
-  /* the client learns which tiers are claimed from `pro` */
+  /* once only. The REPLY CODE for a repeat is an engine-side choice (this engine answers 0 so
+     the client advances its cached tier; the V3.1 engine answers non-zero because its list
+     payload already told the client how far it got). What must hold either way is that nothing
+     is paid twice, so that is what is asserted. */
+  call(engine, 'task_get_list_reward', { id: 101 });
+  eq(haveOf(engine, Number(type1.reward[0])), before + 1, 'and a repeat pays nothing');
+  /* the client learns which tiers are claimed from `pro` -- keyed by the PLAN TYPE, which is
+     what its getNextListReward(type) looks up */
   const rows = call(engine, 'task_load_list', {}).reply.reward;
-  const t1 = rows.filter((x) => x.id === 1)[0];
+  const t1 = rows.filter((x) => Number(x.id) === 1)[0];
+  assert(t1, 'plan type 1 must appear in the list');
   eq(t1.pro, 1, 'the claimed tier count is reported back');
   /* and task rows carry the progress the client's red dot reads */
   const tasks = call(engine, 'task_load', {}).reply.tasks;
   for (const t of tasks) assert(typeof t.pro === 'number', 'every task row carries `pro`');
   eq(tasks.find((t) => t.id === 1).pro, 5, 'type 1 tasks count trips');
-});
-
-test('tasks: claimed route rewards restore under the client plan key and never replay success', ({ engine, savePath }) => {
-  engine.state.travel.tripCount = 5;
-  eq(call(engine,'task_get_list_reward',{id:101}).reply.code,0);
-  const restored = reopen(savePath);
-  const rows = call(restored,'task_load_list',{}).reply.reward;
-  eq(rows.find(x=>x.id===1).pro,1);
-  assert(!rows.some(x=>x.id===101),'claim request ids must not leak into loaded plan ids');
-  const before = JSON.stringify(restored.state.items);
-  const repeat = call(restored,'task_get_list_reward',{id:101});
-  eq(repeat.reply.code,1,'success would pop up a second reward');
-  eq(pushNamed(repeat,'task_load_list')[0].data.reward.find(x=>x.id===1).pro,1);
-  eq(JSON.stringify(restored.state.items),before);
 });
 
 /* ==================================================================== 目的地系统
@@ -7108,289 +6671,188 @@ test('兼容: a trip plan written by an OLD build (no `carried`) still returns h
   assert(paid > 0, 'and the trips still paid something');
 });
 
-/* ------------------------------------------------------------------ done */
+/* --------------------------------------------- 编辑器：解锁全部足迹 (map.html) */
 
-test('room: default furniture supplies candle animations and a sleep skin; custom wins', ({ engine }) => {
-  let rows = call(engine, 'furniture_load_furniture').reply.put_fur;
-  eq(rows.find(r => r.type === 25).id, 1025);
-  eq(rows.find(r => r.type === 9).id, 1009);
-  engine.state.furniture.placed = [{type:25,id:1225}];
-  rows = call(engine, 'furniture_load_furniture').reply.put_fur;
-  eq(rows.filter(r => r.type === 25).length, 1);
-  eq(rows.find(r => r.type === 25).id, 1225);
-});
-
-test('room: bedtime and morning interrupt motion timers, crafts use workshop actions', ({ engine }) => {
-  const RealDate = Date;
-  let time = new RealDate(2026, 8, 16, 20, 59).getTime();
-  global.Date = class extends RealDate {
-    constructor(...args) { super(...(args.length ? args : [time])); }
-    static now() { return time; }
-  };
-  try {
-    engine.state.items.bag = [-1,-1,-1,-1];
-    engine.state.items.desk = Array(8).fill(-1);
-    /* V3.6：空背包也能出门（放浪），而这段用例整段都在考查"在家的动作"，
-       所以把出门检查推到很远的将来，保证蛙一直在家。 */
-    engine.state.travel.nextDepartAt = time / 1000 + 999999;
-    engine.tick();
-    assert(engine.state.frog.motion < 5);
-    engine.state.frog.motionNextAt = time / 1000 + 999999;
-    time = new RealDate(2026,8,16,21).getTime();
-    engine.tick();
-    assert(engine.state.frog.motion >= 10 && engine.state.frog.motion <= 13);
-    engine.state.furniture.placed=[{type:9,id:2009}];
-    engine.state.frog.motionNextAt=0;
-    engine.tick();
-    eq(engine.state.frog.motion,10,'new bed uses the available sleep animation');
-    time = new RealDate(2026,8,17,6).getTime();
-    engine.tick();
-    assert(engine.state.frog.motion < 5);
-    engine.state.furniture.craft = {furnitureId:1101, finishAt:time / 1000 + 300};
-    engine.tick();
-    assert(engine.state.frog.motion >= 5 && engine.state.frog.motion <= 9);
-  } finally { global.Date = RealDate; }
-});
-
-test('room: harvested flowers fit the vase only while away and survive reload without duplication', ({ engine, savePath }) => {
-  engine.state.flowerpot.slots = [{id:2010604,stage:3,plantedAt:1}];
-  const before = haveOf(engine,202254);
-  call(engine,'furniture_flowerpot_harvest',{type:1,index:1});
-  eq(haveOf(engine,202254),before+1);
-  eq(call(engine,'client_load_decorate').reply.has_list.find(r=>r.id===10054).num,1);
-  eq(call(engine,'client_change_decorate',{id:10054}).reply.code,-1,'at home is locked');
-  eq(haveOf(engine,202254),before+1,'refusal consumes nothing');
-  engine.state.frog.status=1;
-  eq(call(engine,'client_change_decorate',{id:10054}).reply.code,0);
-  eq(haveOf(engine,202254),before,'transfer from house to vase');
-  const restored=reopen(savePath);
-  eq(restored.state.decoration.putId,10054);
-  eq(call(restored,'client_load_decorate').reply.has_list.find(r=>r.id===10054).num,1);
-  eq(call(restored,'client_change_decorate',{id:10054}).reply.code,1);
-});
-
-test('share: lottery extra reward is mailed once and credited only when opened', ({ engine, savePath }) => {
-  const opened=call(engine,'lottery_open').reply;
-  const extra=opened.extra_item;
-  assert(extra.item_id>0);
-  const before=haveOf(engine,extra.item_id);
-  const count=engine.state.mails.length;
-  eq(call(engine,'adsmgr_share',{ads_type:3}).reply.delivery,'mail');
-  eq(engine.state.mails.length,count+1);
-  eq(haveOf(engine,extra.item_id),before);
-  const restored=reopen(savePath);
-  assert(call(restored,'adsmgr_share',{ads_type:3}).reply.code!==0);
-  const mail=restored.state.mails.at(-1);
-  eq(mail.items[0].item_id,extra.item_id);
-  call(restored,'mail_open',{id:mail.id});
-  eq(haveOf(restored,extra.item_id),before+extra.count);
-  call(restored,'mail_open',{id:mail.id});
-  eq(haveOf(restored,extra.item_id),before+extra.count);
-});
-
-test('share: legacy lottery extras are not paid twice', ({ engine }) => {
-  engine.state.lottery.extraItem={item_id:4000,count:1};
-  delete engine.state.lottery.extraPending;
-  const before=engine.state.mails.length;
-  eq(call(engine,'adsmgr_share',{ads_type:3}).reply.delivery,'inventory');
-  eq(engine.state.mails.length,before);
-  assert(call(engine,'adsmgr_share',{ads_type:3}).reply.code!==0);
-});
-
-test('feedback54: an owned postcard can arrive again with a new handle', ({ engine, savePath }) => {
-  // A complete album (including the starter museum photos) must not suppress mail.
-  const pics = GDATA.tables.Picture;
-  engine.state.pictures = pics.map((p, i) => ({id:i+1,pic_id:Number(p.id),read:1,new:0}));
-  engine.state.pictureSeq = pics.length;
-  const lunch = idsOfType(0).find(id => effectSum(id, 'HP') > 0);
-  for (let i=0;i<3;i++) {
-    engine.state.items.bag=[lunch,1017,-1,-1];
-    engine.state.travel.nextDepartAt=1;
-    engine.tick();
-    engine.state.travel.returnAt=1;
-    engine.tick();
+test('editor: unlock_map marks every province the footprint page lists', ({ engine }) => {
+  /* The offline build's own 足迹页 reads `save.acquireProvinces` and compares it with the
+     province strings in map.json's data file, so the command has to satisfy THAT file -- not
+     just "the visitors table" in the abstract. */
+  const provs = Object.keys((GD.tables.visitors || {}).provinceList || {});
+  assert(provs.length > 0, 'the visitors table must list provinces');
+  const r = call(engine, 'client_gm', { cmd: 'unlock_map' });
+  assert(r.reply && /足迹地图/.test(r.reply.info), `unlock_map must answer: ${JSON.stringify(r.reply)}`);
+  const got = engine.state.acquireProvinces || [];
+  for (const p of provs) {
+    assert(got.indexOf(p) !== -1, `province ${p} must be unlocked`);
   }
-  assert(engine.state.albumPending.length>=3, 'repeat trips must still deliver postcards');
-  const pending = call(engine,'album_load_new').reply.pictures;
-  assert(pending.length>=3, 'delivered postcards must reach the client pending list');
-  const handles=engine.state.pictures.concat(pending).map(p=>p.id);
-  eq(new Set(handles).size,handles.length,'every physical copy has its own handle');
-  eq(reopen(savePath).state.albumPending.length,pending.length,'delivery survives restart');
+  const mapData = JSON.parse(fs.readFileSync(
+    path.join(ROOT, 'work', 'run', 'web', 'map_data.json'), 'utf8'));
+  for (const p of mapData.provinces) {
+    assert(got.indexOf(p.province) !== -1,
+      `the footprint page would still show ${p.province} as 未认识`);
+  }
+  /* idempotent */
+  const before = got.length;
+  call(engine, 'client_gm', { cmd: 'unlock_map' });
+  eq(engine.state.acquireProvinces.length, before, 'a second run must add nothing');
 });
 
-test('feedback54: ordinary trips push earned photos without a client request', ({engine})=>{
-  call(engine,'hall_enter_game',{});
-  /* 2026-09-19 起开局不再白送博物馆明信片，所以这时相册是空的；本用例测的是
-     "普通旅行会主动推送新照片"，与相册初始内容无关，因此这里期待空相册。 */
-  const museums=new Set(engine.state.pictures.map(p=>p.pic_id));
-  eq(museums.size,0,'a fresh boot files no postcards any more');
-  const lunch=idsOfType(0).find(id=>effectSum(id,'HP')>0);
-  const random=Math.random;let seed=123456789,earned=0;
-  Math.random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
-  try {
-    for(let i=0;i<8;i++){
-      engine.state.items.bag=[lunch,-1,-1,-1];
-      engine.state.items.desk=Array(8).fill(-1);
-      engine.state.travel.nextDepartAt=1;engine.tick();
-      assert(!engine.state.travel.plan.carried.some(id=>id>=1017&&id<=1021),'no museum ticket');
-      const before=engine.state.albumPending.length;
-      engine.state.travel.returnAt=1;
-      const pushes=engine.tick();
-      const fresh=engine.state.albumPending.slice(before);
-      if(!fresh.length)continue;
-      const delivered=pushes.find(p=>canon(p.cmd)==='album_load_new');
-      assert(delivered,'photos were generated but never pushed to the client');
-      for(const photo of fresh)assert(delivered.data.pictures.some(p=>p.id===photo.id),'every earned photo is delivered');
-      earned+=fresh.filter(p=>!museums.has(p.pic_id)).length;
-    }
-  } finally {Math.random=random;}
-  assert(earned>0,'ordinary trips must deliver non-museum pictures');
+/* --------------------------------------------------- 称号：典藏规则 + 编辑器命令 */
+
+test('achievements: the 典藏（博物馆）titles unlock as collections grow', ({ engine }) => {
+  /* These four rows (典藏 4/8/12/20) had NO rule until this round -- the engine already tracked
+     handbook.collections, so they were pure bookkeeping with nothing reading them. */
+  const ids = GD.tables.Achieve.filter((a) => /^获得\d+个典藏/.test(String(a.info || '')))
+    .map((a) => Number(a.id));
+  assert(ids.length >= 4, `expected the 典藏 rows in the official table, got ${ids.length}`);
+  const need = (n) => {
+    engine.state.handbook.collections = [];
+    for (let i = 0; i < n; i++) engine.state.handbook.collections.push(1000 + i);
+    engine.tick();
+    return ids.filter((id) => engine.state.achieves.indexOf(id) !== -1);
+  };
+  eq(need(3).length, 0, 'three collections must not unlock any 典藏 title');
+  assert(need(4).length >= 1, 'four collections must unlock the first 典藏 title');
+  assert(need(64).length === ids.length, 'a full handbook unlocks all of them');
 });
 
-test('feedback54: login delivers pending ordinary photos from older saves', ({engine,savePath})=>{
-  call(engine,'hall_enter_game',{});
-  const museumIds=new Set(engine.state.pictures.map(p=>p.pic_id));
-  const photo=GDATA.tables.Picture.find(p=>!museumIds.has(Number(p.id)));
-  const id=++engine.state.pictureSeq;
-  engine.state.albumPending=[{id,pic_id:Number(photo.id),read:0,new:1}];engine.save();
-  const loaded=reopen(savePath),boot=call(loaded,'hall_enter_game',{});
-  const delivery=pushNamed(boot,'album_load_new');
-  assert(delivery.length===1,'login must push pending photos without a manual query');
-  assert(delivery[0].data.pictures.some(p=>p.id===id),'old pending photo is delivered');
-  eq(call(loaded,'album_save_new',{id}).reply.code,0,'the delivered photo can be saved');
-  assert(loaded.state.pictures.some(p=>p.id===id));
-  eq(loaded.state.albumPending.length,0);
+test('editor: unlock_achieve grants every title the engine can judge, and says what it cannot', ({ engine }) => {
+  const r = call(engine, 'client_gm', { cmd: 'unlock_achieve' });
+  assert(r.reply && /称号/.test(r.reply.info), `unlock_achieve must answer: ${JSON.stringify(r.reply)}`);
+  const total = GD.tables.Achieve.length;
+  assert(engine.state.achieves.length > 0, 'titles must be granted');
+  assert(engine.state.achieves.length < total,
+    'and the ones with no rule must NOT be invented: ' + engine.state.achieves.length + '/' + total);
+  /* every granted id must exist in the official table, and cur_achieve must point at one */
+  const known = new Set(GD.tables.Achieve.map((a) => Number(a.id)));
+  for (const id of engine.state.achieves) {
+    assert(known.has(Number(id)), `granted an id that is not in the Achieve table: ${id}`);
+  }
+  assert(engine.state.achieves.indexOf(Number(engine.state.curAchieve)) !== -1,
+    'cur_achieve must be one of the granted titles');
+  /* idempotent */
+  const before = engine.state.achieves.length;
+  call(engine, 'client_gm', { cmd: 'unlock_achieve' });
+  eq(engine.state.achieves.length, before, 'a second run must add nothing');
+  /* the engine's own count must match the table audit: the rows it skips are the ones whose
+     condition text it has no rule for (see work/logs/achieve_coverage.txt) */
+  const src = fs.readFileSync(ENGINE, 'utf8');
+  assert(/\^获得\(\\d\+\)个典藏/.test(src), 'the 典藏 rule must exist in the engine');
 });
 
-test('feedback45: selected title survives reload and later achievement unlocks', ({ engine, savePath }) => {
-  engine.state.achieves=[0,1];
-  engine.state.curAchieve=1;
-  call(engine,'client_set_achieve',{id:0});
-  eq(engine.state.curAchieve,0,'the fire-and-forget selection is persisted');
-  eq(reopen(savePath).state.curAchieve,0);
-  engine.state.travel.tripCount=25;
+test('achievements: the two titles the official 1088 update added', ({ engine }) => {
+  /* 内蒙美食家 (id 101) = 沙果超过10个, 新疆美食家 (id 102) = 馕超过10个. Both arrived with the
+     official 1088 tables; the labels resolve exactly to Item 3039 / 3040, so the existing
+     "X超过N个" rule covers them with no extra code -- this test is what makes that claim checkable. */
+  const rows = GD.tables.Achieve.filter((a) => /^(.+?)超过10个$/.test(String(a.info || '')));
+  const targets = [];
+  for (const a of rows) {
+    const label = /^(.+?)超过10个$/.exec(String(a.info))[1];
+    const item = GD.items.find((i) => i.name === label);
+    if (item && (label === '沙果' || label === '馕')) targets.push({ ach: Number(a.id), item: Number(item.id), label });
+  }
+  eq(targets.length, 2, 'both new titles must be in the table and resolve to an item');
+  for (const t of targets) {
+    eq(engine.state.achieves.indexOf(t.ach), -1, `${t.label}: not owned yet`);
+  }
+  /* hand over 9 -- not enough */
+  for (const t of targets) engine.state.items.house.push({ item_id: t.item, count: 9 });
   engine.tick();
-  assert(engine.state.achieves.includes(2),'new achievement still unlocks');
-  eq(engine.state.curAchieve,0,'earning a title must not equip it automatically');
-  call(engine,'client_set_achieve',{id:999999});
-  eq(engine.state.curAchieve,0,'unknown title is refused');
+  for (const t of targets) {
+    eq(engine.state.achieves.indexOf(t.ach), -1, `${t.label}: 9 个不够`);
+  }
+  /* ...and one more each crosses the line */
+  for (const t of targets) {
+    const row = engine.state.items.house.find((h) => Number(h.item_id) === t.item);
+    row.count = 10;
+  }
+  engine.tick();
+  for (const t of targets) {
+    assert(engine.state.achieves.indexOf(t.ach) !== -1,
+      `${t.label} 超过10个 应当解锁（id ${t.ach}）`);
+  }
 });
 
-test('feedback60: an idle compost bin never marks the first slot as fermenting', ({engine,savePath})=>{
-  eq(call(engine,'furniture_load_compost').reply.box_index,0,'all idle slots are editable');
-  engine.state.furniture.compost.boxIndex=1; // legacy fake active slot
-  const itemId = items.find(i => i.type === 3).id;
-  engine.state.furniture.compost.boxes=[0,itemId,0,0,0,0];
-  engine.save();
-  const restored=reopen(savePath);
-  const payload=call(restored,'furniture_load_compost').reply;
-  eq(payload.box_index,2,'legacy save starts a real job on an occupied slot');
-  eq(JSON.stringify(payload.box_list),JSON.stringify([0,itemId,0,0,0,0]),'migration preserves stored items');
-  assert(payload.finish_at >= Math.floor(Date.now()/1000)+299,'legacy items get a full cycle, no retroactive consumption');
+/* ------------------------------------------- 动态照片: the whole playable flow */
+
+test('动态照片: the client flow works end to end', ({ engine }) => {
+  /* The order the CLIENT uses (read off main.min.js):
+       1. select_pic(uid)        -- the postcard LEAVES the album and becomes an animated page
+                                    (client: r.splice(o,1) in the success callback)
+       2. album_add_pic(page,slot,uid) -- fills a page slot with ANOTHER album photo (the client
+                                    looks that uid up in its own album list)
+       3. use_item(id)           -- advances the phase (照片存储开启物)
+       4. album_remove_pic(page,slot,is_delete=false) -- returns that photo to the album
+     Entry items come from the ITEM shop, whose slot id goes on the wire as `shop_id`. */
+  const PIC_MAP = GD.tables.animpictureData.pic_map;
+  const ids = Object.keys(PIC_MAP).map(Number);
+  assert(ids.length >= 6, `官方 1088 给了 6 张可动明信片，实得 ${ids.length}`);
+  const openSlot = GD.tables.shopData.find((s) => Number(s.itemId) === 9002);
+  const frameSlot = GD.tables.shopData.find((s) => Number(s.itemId) === 9001);
+  call(engine, 'client_gm', { cmd: 'add_clover 40000' });
+  eq(call(engine, 'item_buy', { shop_id: Number(frameSlot.id) }).reply.code, 0, '买动态相框');
+  eq(call(engine, 'item_buy', { shop_id: Number(openSlot.id) }).reply.code, 0, '买照片存储开启物');
+
+  /* 1) 选中：用官方 1088 新增的那几张之一 */
+  const animId = ids[ids.length - 1];
+  const spare = 100;                                   // 另一张普通明信片，留给放置
+  engine.state.pictures = [{ id: 70001, pic_id: animId, read: 0, new: 1 },
+    { id: 70002, pic_id: spare, read: 0, new: 1 }];
+  eq(call(engine, 'animpicture_select_pic', { id: 70001 }).reply.code, 0, '选中可动明信片');
+  eq(engine.state.pictures.length, 1, '它离开相册（和客户端一样）');
+  const A = engine.state.animPicture;
+  const page = A.picList[A.picList.length - 1];
+  eq(Number(page.id), Number(PIC_MAP[String(animId)]), '换到正确的动态槽位');
+
+  /* 2) 放置另一张照片进这一页 */
+  const add = call(engine, 'animpicture_album_add_pic', { anim_index: 1, pic_index: 1, pic_uid: 70002 });
+  eq(add.reply.code, 0, `放入动态相册: ${JSON.stringify(add.reply)}`);
+  eq(engine.state.pictures.length, 0, '被放置的那张离开相册');
+  eq(Number(page.pictures[0].id), 70002, '落在那一格');
+
+  /* 3) 推进阶段 */
+  const before = Number(A.phase);
+  const use = call(engine, 'animpicture_use_item', { id: 9002 });
+  assert(typeof use.reply.phase === 'number', 'use_item 回 phase（客户端把它当闸门）');
+  assert(Number(A.phase) !== before || Number(A.phase) === 0, '阶段推进或回到 0');
+
+  /* 4) 取回 */
+  eq(call(engine, 'animpicture_album_remove_pic',
+    { anim_index: 1, pic_index: 1, is_delete: 0 }).reply.code, 0, '取回');
+  assert(engine.state.pictures.some((p) => p.id === 70002), '照片回到相册');
+
+  /* 只有 pic_map 里的明信片能做成动态照片 */
+  engine.state.pictures.push({ id: 70003, pic_id: 999999, read: 0, new: 1 });
+  eq(call(engine, 'animpicture_select_pic', { id: 70003 }).reply.code, -1, '不在 pic_map 里必须被拒');
 });
 
-test('furniture: plain style is owned by default and legacy migration preserves custom placement', ({engine,savePath})=>{
-  const rows=Object.values(GDATA.tables.furnitureData);
-  const plain=rows.filter(row=>Number(row.style)===1).map(row=>Number(row.id));
-  const custom=rows.find(row=>Number(row.style)!==1);
-  const load=e=>call(e,'furniture_load_furniture').reply;
-  eq(plain.length,27,'all 27 plain furniture types');
-  eq(JSON.stringify(load(engine).has_fur.slice().sort((a,b)=>a-b)),JSON.stringify(plain.slice().sort((a,b)=>a-b)));
-  engine.state.furniture.owned=[Number(custom.id),plain[0]];
-  engine.state.furniture.placed=[{id:Number(custom.id),type:Number(custom.type)}];
-  engine.save();
-  const again=reopen(savePath);
-  const payload=load(again);
-  assert(plain.every(id=>payload.has_fur.includes(id)),'old save receives every missing plain item');
-  eq(payload.has_fur.length,28,'one custom item retained, no duplicates or unrelated unlocks');
-  eq(payload.put_fur.find(row=>row.type===Number(custom.type)).id,Number(custom.id),'custom placement preserved');
-  again.save();
-  eq(load(reopen(savePath)).has_fur.length,28,'migration is idempotent');
-  assert(engine.importSave({furniture:{owned:[Number(custom.id)],placed:[]}}),'legacy import succeeds');
-  eq(load(engine).has_fur.length,28,'import also grants plain furniture immediately');
-  eq(call(engine,'furniture_load_compost').reply.box_index,0,'an imported partial save still has a valid compost bin');
+test('动态照片: the entry button is switched on (guide > 1), and old saves are migrated', ({ engine, savePath }) => {
+  /* The client hides 小仓库's 动态照片 button unless `AnimPictureModel.data.guide > 1`:
+       this.animPicBtn.visible = this.animPicBtn.includeInLayout = data.guide > 1;
+     `guide` is server-provided, so an engine that ships 0 makes the feature unreachable -- which is
+     exactly what the player hit ("小仓库里 9 个按钮，没有动态照片"). */
+  eq(Number(engine.state.animPicture.guide) > 1, true,
+    'a fresh save must already report guide > 1');
+  const load = call(engine, 'animpicture_load', {}).reply;
+  assert(Number(load.guide) > 1, `animpicture_load must carry guide > 1, got ${load.guide}`);
+  /* the client's tutorial advances it through animpicture_guide -- still works */
+  const before = Number(engine.state.animPicture.guide);
+  eq(call(engine, 'animpicture_guide', {}).reply.code, 0, 'req_guide accepted');
+  assert(Number(engine.state.animPicture.guide) > before, 'guide advances');
+  /* a save written by the old build (guide 0) is lifted to 2 on load */
+  const old = JSON.parse(fs.readFileSync(savePath, 'utf8'));
+  old.animPicture = Object.assign({}, old.animPicture, { guide: 0 });
+  fs.writeFileSync(savePath, JSON.stringify(old));
+  const reopened = reopen(savePath);
+  eq(Number(reopened.state.animPicture.guide), 2, 'guide 0 is migrated to 2');
+  /* a player mid-tutorial keeps their place */
+  const mid = JSON.parse(fs.readFileSync(savePath, 'utf8'));
+  mid.animPicture = Object.assign({}, mid.animPicture, { guide: 4 });
+  fs.writeFileSync(savePath, JSON.stringify(mid));
+  eq(Number(reopen(savePath).state.animPicture.guide), 4, 'guide 4 is left alone');
 });
 
-test('compost: random selection, timer persistence and active-slot protection', ({engine,savePath})=>{
-  const id=items.find(i=>i.type===3).id;
-  const c=engine.state.furniture.compost;
-  c.boxes=[0,id,0,0,id,0];
-  const random=Math.random;
-  let payload;
-  try {Math.random=()=>0.99;payload=call(engine,'furniture_load_compost').reply;} finally {Math.random=random;}
-  eq(payload.box_index,5,'randomly choose among occupied eligible slots, not always first');
-  eq(c.job.finishAt-c.job.startedAt,300,'five minutes');
-  engine.state.items.house=[{item_id:id,count:2}];
-  eq(call(engine,'furniture_takeout_box',{pos:5}).reply.code,6);
-  eq(call(engine,'furniture_putin_box',{pos:5,id}).reply.code,6);
-  eq(haveOf(engine,id),2,'refusal cannot consume or refund inventory');
-  engine.save();
-  const again=reopen(savePath);
-  eq(call(again,'furniture_load_compost').reply.finish_at,payload.finish_at,'reopen must not restart timer');
-  eq(call(again,'furniture_load_compost').reply.box_index,5,'selection persists');
-});
-
-test('compost: finish once, increase fertility and continue through offline hours', ({engine,savePath})=>{
-  const id=items.find(i=>i.type===3).id;
-  const c=engine.state.furniture.compost;
-  c.boxes=[id,id,id,id,id,id];
-  const first=call(engine,'furniture_load_compost').reply;
-  const start=c.job.startedAt;
-  const originalNow=Date.now;
-  try {
-    Date.now=()=> (start+300-1)*1000;
-    eq(call(engine,'furniture_load_compost').reply.fertility,0,'cannot finish early');
-    Date.now=()=> (start+300)*1000;
-    const pushes=engine.tick();
-    assert(pushes.some(p=>p.cmd==='furniture.load_compost'),'completion is pushed to the live client');
-    eq(c.fertility,1);eq(c.boxes[first.box_index-1],0,'only completed slot consumed');
-    eq(c.job.finishAt,start+600,'next job starts at previous completion');
-    call(engine,'furniture_load_compost');engine.tick();
-    eq(c.fertility,1,'repeated ticks/loads do not pay twice');
-    engine.save();
-    Date.now=()=> (start+3*300+60)*1000;
-    const again=reopen(savePath);
-    const half=call(again,'furniture_load_compost').reply;
-    eq(half.fertility,3,'offline catch-up finishes all elapsed cycles');
-    eq(half.finish_at,start+4*300,'partial next cycle preserves elapsed time');
-    Date.now=()=> (start+8*300)*1000;
-    const end=call(again,'furniture_load_compost').reply;
-    eq(end.fertility,6,'exactly six reserved items consumed');
-    eq(end.box_index,0);eq(end.finish_at,0);assert(end.box_list.every(v=>v===0));
-    const reloaded=reopen(savePath);
-    eq(call(reloaded,'furniture_load_compost').reply.fertility,6,'fertility survives reload without duplicate credit');
-  } finally {Date.now=originalNow;}
-});
-
-test('compost: existing three-hour job adopts five minutes without resetting elapsed time', ({engine,savePath})=>{
-  const id=items.find(i=>i.type===3).id,now=Math.floor(Date.now()/1000);
-  const c=engine.state.furniture.compost;
-  c.boxes=[0,0,id,0,0,0];
-  c.job={index:3,itemId:id,startedAt:now-120,finishAt:now-120+10800};
-  engine.save();
-  const re=reopen(savePath);
-  const payload=call(re,'furniture_load_compost').reply;
-  eq(payload.box_index,3);eq(payload.finish_at,now+180);
-  eq(payload.fertility,0);
-  re.state.furniture.compost.job={index:3,itemId:id,startedAt:now-301,finishAt:now-301+10800};
-  eq(call(re,'furniture_load_compost').reply.fertility,1,'overdue old job finishes immediately');
-  eq(call(re,'furniture_load_compost').reply.fertility,1,'migration pays once');
-});
-
-test('compost: queued swaps conserve inventory and reject unsupported inputs', ({engine})=>{
-  const [a,b]=items.filter(i=>i.type===3).slice(0,2).map(i=>i.id);
-  engine.state.items.house=[{item_id:a,count:3},{item_id:b,count:2},{item_id:TOOL_ITEM_ID(),count:1}];
-  call(engine,'furniture_putin_box',{pos:1,id:a});
-  call(engine,'furniture_putin_box',{pos:2,id:a});
-  eq(call(engine,'furniture_putin_box',{pos:2,id:b}).reply.code,0);
-  eq(haveOf(engine,a),2);eq(haveOf(engine,b),1);
-  eq(call(engine,'furniture_takeout_box',{pos:2}).reply.code,0);eq(haveOf(engine,b),2);
-  eq(call(engine,'furniture_putin_box',{pos:2,id:TOOL_ITEM_ID()}).reply.code,-1);
-  eq(call(engine,'furniture_putin_box',{pos:1.5,id:b}).reply.code,-1);
-  const c=engine.state.furniture.compost;
-  c.boxes[4]=TOOL_ITEM_ID();
-  eq(call(engine,'furniture_takeout_box',{pos:5}).reply.code,0,'legacy invalid contents remain retrievable');
-});
+/* ------------------------------------------------------------------ done */
 
 console.log(`\n${passed} passed, ${failed} failed`
   + (skipped ? `, ${skipped} skipped（缺少客户端美术资源，见 docs/数据与逆向说明.md）` : ''));

@@ -686,6 +686,20 @@
   "name": "河北美食家"
  },
  {
+  "info": "沙果超过10个",
+  "description": "要成为美食家，得吃下十个酸溜溜~",
+  "is_special": "",
+  "id": 101,
+  "name": "内蒙美食家"
+ },
+ {
+  "info": "馕超过10个",
+  "description": "十个馕，可以吃几顿呢~",
+  "is_special": "",
+  "id": 102,
+  "name": "新疆美食家"
+ },
+ {
   "info": "通过道具解锁",
   "description": "与画笔一起带来的神奇力量~",
   "is_special": 1,

@@ -9,36 +9,43 @@
    "id": 1,
    "phase_list": [
     {
+     "exp": 50,
      "layer": 1,
      "phase": 1,
      "spine": ""
     },
     {
+     "exp": 80,
      "layer": 2,
      "phase": 2,
      "spine": "gif_1_bg1"
     },
     {
+     "exp": 120,
      "layer": 3,
      "phase": 3,
      "spine": "gif_1_bg2"
     },
     {
+     "exp": 150,
      "layer": 4,
      "phase": 4,
      "spine": "gif_1_role_qw"
     },
     {
+     "exp": 180,
      "layer": 5,
      "phase": 5,
      "spine": "gif_1_role_bh"
     },
     {
+     "exp": 220,
      "layer": 6,
      "phase": 6,
      "spine": "gif_1_role_yhc"
     },
     {
+     "exp": 0,
      "layer": 7,
      "phase": 7,
      "spine": "gif_1_role_cw"
@@ -52,41 +59,49 @@
    "id": 2,
    "phase_list": [
     {
+     "exp": 40,
      "layer": 1,
      "phase": 1,
      "spine": ""
     },
     {
+     "exp": 60,
      "layer": 2,
      "phase": 2,
      "spine": "gif_2_bg1"
     },
     {
+     "exp": 80,
      "layer": 7,
      "phase": 3,
      "spine": "gif_2_bg2"
     },
     {
+     "exp": 110,
      "layer": 8,
      "phase": 4,
      "spine": "gif_2_fg1"
     },
     {
+     "exp": 140,
      "layer": 3,
      "phase": 5,
      "spine": "gif_2_role_bh"
     },
     {
+     "exp": 170,
      "layer": 4,
      "phase": 6,
      "spine": "gif_2_role_qw"
     },
     {
+     "exp": 200,
      "layer": 5,
      "phase": 7,
      "spine": "gif_2_role_yhc"
     },
     {
+     "exp": 0,
      "layer": 6,
      "phase": 8,
      "spine": "gif_2_role_cw"
@@ -100,41 +115,49 @@
    "id": 3,
    "phase_list": [
     {
+     "exp": 50,
      "layer": 1,
      "phase": 1,
      "spine": ""
     },
     {
+     "exp": 80,
      "layer": 2,
      "phase": 2,
      "spine": "gif_3_bg1"
     },
     {
+     "exp": 100,
      "layer": 4,
      "phase": 3,
      "spine": "gif_3_tree"
     },
     {
+     "exp": 140,
      "layer": 3,
      "phase": 4,
      "spine": "gif_3_shidun"
     },
     {
+     "exp": 180,
      "layer": 5,
      "phase": 5,
      "spine": "gif_3_role_qw"
     },
     {
+     "exp": 210,
      "layer": 6,
      "phase": 6,
      "spine": "gif_3_role_yhc"
     },
     {
+     "exp": 240,
      "layer": 7,
      "phase": 7,
      "spine": "gif_3_role_bh"
     },
     {
+     "exp": 0,
      "layer": 8,
      "phase": 8,
      "spine": "gif_3_role_cw"
@@ -143,11 +166,176 @@
    "pic_list": [
     2000
    ]
+  },
+  "4": {
+   "id": 4,
+   "phase_list": [
+    {
+     "exp": 0,
+     "layer": 5,
+     "phase": 1,
+     "spine": "gif_4_dg"
+    },
+    {
+     "exp": 100,
+     "layer": 1,
+     "phase": 2,
+     "spine": "gif_4_bg"
+    },
+    {
+     "exp": 150,
+     "layer": 12,
+     "phase": 3,
+     "spine": "gif_4_jt"
+    },
+    {
+     "exp": 200,
+     "layer": 11,
+     "phase": 4,
+     "spine": "gif_4_piaodai"
+    },
+    {
+     "exp": 250,
+     "layer": 10,
+     "phase": 5,
+     "spine": "gif_4_cw"
+    },
+    {
+     "exp": 300,
+     "layer": 9,
+     "phase": 6,
+     "spine": "gif_4_dd"
+    },
+    {
+     "exp": 340,
+     "layer": 8,
+     "phase": 7,
+     "spine": "gif_4_bh"
+    },
+    {
+     "exp": 380,
+     "layer": 7,
+     "phase": 8,
+     "spine": "gif_4_kk"
+    },
+    {
+     "exp": 420,
+     "layer": 6,
+     "phase": 9,
+     "spine": "gif_4_yhc"
+    },
+    {
+     "exp": 460,
+     "layer": 4,
+     "phase": 10,
+     "spine": "gif_4_pp"
+    },
+    {
+     "exp": 500,
+     "layer": 3,
+     "phase": 11,
+     "spine": "gif_4_tt"
+    },
+    {
+     "exp": 0,
+     "layer": 2,
+     "phase": 12,
+     "spine": "gif_4_qw"
+    }
+   ],
+   "pic_list": [
+    3102
+   ]
+  },
+  "5": {
+   "id": 5,
+   "phase_list": [
+    {
+     "exp": 100,
+     "layer": 1,
+     "phase": 1,
+     "spine": ""
+    },
+    {
+     "exp": 200,
+     "layer": 2,
+     "phase": 2,
+     "spine": "gif_5_bg"
+    },
+    {
+     "exp": 300,
+     "layer": 3,
+     "phase": 3,
+     "spine": "gif_5_role_qw"
+    },
+    {
+     "exp": 350,
+     "layer": 4,
+     "phase": 4,
+     "spine": "gif_5_role_bh"
+    },
+    {
+     "exp": 350,
+     "layer": 5,
+     "phase": 5,
+     "spine": "gif_5_role_cw"
+    },
+    {
+     "exp": 0,
+     "layer": 6,
+     "phase": 6,
+     "spine": "gif_5_role_yhc"
+    }
+   ],
+   "pic_list": [
+    3063
+   ]
+  },
+  "6": {
+   "id": 6,
+   "phase_list": [
+    {
+     "exp": 100,
+     "layer": 1,
+     "phase": 1,
+     "spine": ""
+    },
+    {
+     "exp": 350,
+     "layer": 2,
+     "phase": 2,
+     "spine": "gif_6_bg"
+    },
+    {
+     "exp": 500,
+     "layer": 3,
+     "phase": 3,
+     "spine": "gif_6_role_cw"
+    },
+    {
+     "exp": 350,
+     "layer": 4,
+     "phase": 4,
+     "spine": "gif_6_role_bhqw"
+    },
+    {
+     "exp": 0,
+     "layer": 5,
+     "phase": 5,
+     "spine": "gif_6_role_yhc"
+    }
+   ],
+   "pic_list": [
+    3064
+   ]
   }
  },
  "pic_map": {
   "100": 1,
   "104": 2,
-  "2000": 3
+  "2000": 3,
+  "3063": 5,
+  "3064": 6,
+  "3102": 4
  }
 }

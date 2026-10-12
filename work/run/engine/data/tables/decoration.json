@@ -494,5 +494,21 @@
    "",
    ""
   ]
+ },
+ "106": {
+  "achieve": "",
+  "desc": "采一曰君子之兰 居室便有了君子之风",
+  "desc_handbook": "百合目/石蒜科/君子兰属 文雅俊秀有君子风姿",
+  "icon": "icon_liwu_junzilan",
+  "id": 106,
+  "name": "君子兰",
+  "pic": [
+   "chahua_liwu_junzilan_1",
+   "chahua_liwu_junzilan_2"
+  ],
+  "pic_growth": [
+   "",
+   ""
+  ]
  }
 }
