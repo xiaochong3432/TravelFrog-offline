@@ -49,6 +49,13 @@
    "3": "原产地北半球温带",
    "4": "花语：幸福终将到来"
   },
+  "109": {
+   "1": "百合目-石蒜科-君子兰属",
+   "2": "多年生草本植物",
+   "3": "原产于非洲南部亚热带森林中",
+   "4": "寓意：有才而不骄 得志而不傲",
+   "5": "长春市市花"
+  },
   "201": {
    "1": "伞形目-伞形科-胡萝卜属",
    "2": "一年生或二年生草本植物",
@@ -2012,6 +2019,47 @@
    ],
    "sub_id": 3,
    "sub_name": "蒙大拿",
+   "tab": 1
+  },
+  "1090101": {
+   "icon": "icon_liwu_junzilan",
+   "id": 109,
+   "long_id": 1090101,
+   "name": "君子兰",
+   "pic_id": 1,
+   "pic_img": "icon_liwu_junzilan",
+   "pic_name": "主图",
+   "pos": [
+    -2,
+    0
+   ],
+   "scale": 0.8,
+   "sub_id": 1,
+   "sub_name": "花园君子兰",
+   "tab": 1
+  },
+  "1090102": {
+   "icon": "icon_liwu_junzilan",
+   "id": 109,
+   "long_id": 1090102,
+   "name": "君子兰",
+   "pic_id": 2,
+   "pic_img": "chahua_liwu_junzilan_1",
+   "pic_name": "插花1",
+   "sub_id": 1,
+   "sub_name": "花园君子兰",
+   "tab": 1
+  },
+  "1090103": {
+   "icon": "icon_liwu_junzilan",
+   "id": 109,
+   "long_id": 1090103,
+   "name": "君子兰",
+   "pic_id": 3,
+   "pic_img": "chahua_liwu_junzilan_2",
+   "pic_name": "插花2",
+   "sub_id": 1,
+   "sub_name": "花园君子兰",
    "tab": 1
   },
   "2010101": {

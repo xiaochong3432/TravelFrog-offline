@@ -124,8 +124,16 @@ try {
 function withLayers(p) {
   if (!p) return p;
   const rec = pictureLayers[String(p.pic_id)];
-  const layers = (rec && Array.isArray(rec.layers)) ? rec.layers : [];
+  /* 【并入他 3.3】只有「这一行确实记录到了伙伴」时才替换伙伴图层；
+     没有伙伴信息的照片保持原图层（= 我们原来的画面，不做回退）。 */
+  const layers = (rec && Array.isArray(rec.layers))
+    ? (companionSlotForPicture(p) >= 0 ? pictureLayersFor(p, rec) : rec.layers) : [];
   const out = Object.assign({}, p, { layers });
+  /* 老档里的礼物盒好友照片没有内部 travelerSlot 字段，用 PictureTag 标记恢复，
+     而不是按轮换猜一个。 */
+  if (out.travelerSlot === undefined && isGiftBoxFriendPicture(out.pic_id)) {
+    out.travelerSlot = TV_PIC_FRIEND[Number(out.pic_id)];
+  }
   if (rec && rec.travelers) out.travelers = rec.travelers;
   return out;
 }
@@ -541,7 +549,8 @@ function tvWalk(areaId, effects, minutes, opts) {
        tool could never actually take its own route (the budget is 60..172 min). */
     if (path.length && used + base > minutes) break;
     used += cost;
-    path.push({ from: node, node: pick, e });
+    /* 【并入他 3.3】这一步有没有路遇伙伴，记在 path 上（照片要靠它）。 */
+    path.push({ from: node, node: pick, e, travelerSlot: tvEncounterSlot(e) });
     seen[String(pick)] = true;
     node = pick;
     /* The FIRST goal node the walk touches is the trip's destination. In most areas
@@ -578,9 +587,57 @@ function tvGapPicture(ownedTags, trip) {
 
 /** The postcards a trip brings home: one per photo slot that rolls under its own
     NodeEdge weight, plus the mandatory 目的地照 on arrival. */
+  /* V41-TRAVEL-MAP ================= 旅行地图伙伴（依赖 state） ================= */
+
+  /** 这条路上会遇到伙伴吗：按边的 enc_per(%) 掷一次，命中返回伙伴槽位（0–2），否则 -1。 */
+  function tvEncounterSlot(edge) {
+    const slot = TV_TRAVEL_FRIEND_SLOT[String((edge && edge.en) || '').toLowerCase()];
+    const per = Number((edge && edge.ep) || 0);
+    if (slot === undefined || per <= 0) return -1;
+    return Math.random() * 100 < per ? slot : -1;
+  }
+
+  /** 这次行程实际同行的那位（取路径上第一个记录到的伙伴槽位）。 */
+  function tvTripTravelerSlot(trip) {
+    if (!trip || !Array.isArray(trip.path)) return -1;
+    for (const step of trip.path) {
+      const slot = Number(step && step.travelerSlot);
+      if (slot >= 0 && slot <= 2) return slot;
+    }
+    return -1;
+  }
+
+  function companionSlotForPicture(p) {
+    const explicit = Number(p && p.travelerSlot);
+    if (explicit >= 0 && explicit <= 2) return explicit;
+    return -1;
+  }
+
+  /** 把 Picture 记录里角色为 bh 的伙伴图层换成"实际遇到的那位"；没遇到就去掉该图层。 */
+  function pictureLayersFor(p, rec) {
+    const slot = companionSlotForPicture(p);
+    return ((rec && rec.layers) || []).map((entry) => {
+      if (!entry || entry.role !== 'bh' || !entry.layer) return entry;
+      const variants = TV_COMPANION_LAYER_VARIANTS[Number(entry.layer[0])];
+      /* 合成美术（找不到成组图层）保持原样；可替换的伙伴图层在"没遇到伙伴"时移除。 */
+      if (!variants) return entry;
+      if (slot < 0 || variants[slot] === undefined) return null;
+      return Object.assign({}, entry, {
+        layer: [variants[slot], entry.layer[1], entry.layer[2]],
+      });
+    }).filter((entry) => entry !== null);
+  }
+
+  /** 礼物盒好友照片：这些图不该被"路遇/目标"发出来（配我们已有的 TV_PIC_FRIEND）。 */
+  function isGiftBoxFriendPicture(picId) {
+    return Object.prototype.hasOwnProperty.call(TV_PIC_FRIEND, Number(picId));
+  }
+
 function tvPhotos(trip, wantFill, ownedTags) {
   const cap = Math.max(1, Number(DEF('PICTURE_GETMAX', 4)));
   const out = [];
+  /* 【并入他 3.3】条目仍然是 id（下游按 id 消费）；
+     伙伴信息记在行程 path 上，由照片行自己的 travelerSlot 决定图层。 */
   const add = (id) => {
     if (id === undefined || id === null) return;
     if (out.indexOf(id) === -1 && out.length < cap) out.push(id);
@@ -595,13 +652,15 @@ function tvPhotos(trip, wantFill, ownedTags) {
         if (!slot[1] || out.length >= cap) return;
         if (Math.random() * 100 >= Number(slot[2] || 0)) return;
         const ids = TV_TAG_PICS[String(slot[1])] || [];
-        if (ids.length) add(ids[tvRand(0, ids.length - 1)]);
+        const routeIds = ids.filter((id) => !isGiftBoxFriendPicture(id));
+        if (routeIds.length) add(routeIds[tvRand(0, routeIds.length - 1)], step.travelerSlot);
       });
   });
   if (trip.goal) {
     const ids = (TV_TAG_PICS[String(trip.goal.picTag)] || [])
       .concat(TV_GOAL_PICS[String(trip.goal.place)] || []);
-    const fresh = ids.filter((id) => out.indexOf(id) === -1);
+    const fresh = ids.filter((id) => !isGiftBoxFriendPicture(id)
+      && out.indexOf(id) === -1);
     if (fresh.length) add(fresh[tvRand(0, fresh.length - 1)]);
   }
   if (!out.length && PICTURE_IDS.length) {
@@ -902,6 +961,60 @@ const CRAFT_MATERIALS_BY_STYLE = {
 const CRAFT_DEFAULT_MATERIALS = [{ item_id: 10001, count: 2 }];
 /* 【自设计】制作时长：原版在服务端。默认 15 分钟，可用 FROG_CRAFT_SEC 覆盖。 */
 const CRAFT_SECONDS = Math.max(5, Number(process.env.FROG_CRAFT_SEC || 15 * 60));
+
+/* V37-POCKET-TUMBLER 【并入他 3.3】口袋（挂兜）与不倒翁：
+   两张配方表与外观数据都来自客户端表（PocketData / TumblerData / TumblerPathData）。
+   台面 5–9 号位放绳 11102 做口袋、放果子 11001 做不倒翁；再放一件特殊材料就做专属款。 */
+const POCKET_BLUEPRINT_ID = 10601;
+const POCKET_ROPE_ID = 11102;
+const POCKET_TOOLS = ['knife', 'needle'];
+const POCKET_BASE_MATERIALS = [
+  { item_id: 10005, count: 1 },      // 粗布
+  { item_id: 10004, count: 1 },      // 灯芯草
+  { item_id: 10006, count: 1 },      // 毛边纸
+];
+const POCKET_DATA = new Map(Object.entries(gamedata.tables.pocketData || {})
+  .map(([id, row]) => [Number(id), row]));
+const POCKET_RECIPE_OUTPUTS = {
+  common: [22011, 22012, 22013],     // 三种绳编挂兜
+  special: new Map([
+    [10103, [22021]],                // 棕榈叶 -> 雨林挂兜
+    [10104, [22031]],                // 海螺贝 -> 海洋挂兜
+  ]),
+};
+const TUMBLER_BLUEPRINT_ID = 10401;
+const TUMBLER_FRUIT_ID = 11001;
+const TUMBLER_TOOLS = ['brush', 'knife'];
+const TUMBLER_BASE_MATERIALS = [
+  { item_id: 10001, count: 1 },      // 松木
+  { item_id: 10006, count: 1 },      // 毛边纸
+];
+const TUMBLER_DATA = new Map((gamedata.tables.tumblerData || [])
+  .map((row) => [Number(row.id), row]));
+const TUMBLER_PATH_DATA = new Map((gamedata.tables.tumblerPathData || [])
+  .map((row) => [Number(row.id), row]));
+const TUMBLER_RECIPE_OUTPUTS = {
+  common: [20011, 20021, 20031, 20041],   // 胡桃、尖栗、兰栗、橡子
+  special: new Map([
+    [10101, [20111]],                // 岩纹石 -> 石头
+    [10105, [20121]],                // 紫檀木 -> 蹴鞠
+    [10104, [20151]],                // 海螺贝 -> 海螺
+    [10107, [20131, 20141, 20171]],  // 秋芦荻 -> 南瓜、丑橘、萝卜
+  ]),
+};
+/* 特殊材料 <-> 风格（客户端 CRAFT_SPECIAL_BY_STYLE 的反查；后面「制作模型」阶段会用到） */
+const CRAFT_SPECIAL_BY_STYLE = {
+  2: 10101, 3: 10102, 4: 10103, 5: 10104, 6: 10105, 7: 10106, 8: 10107, 9: 10108,
+  10: 10102, 11: 10108,
+};
+const CRAFT_STYLE_BY_SPECIAL = new Map(
+  Object.entries(CRAFT_SPECIAL_BY_STYLE).map(([style, itemId]) => [Number(itemId), Number(style)]));
+const CRAFT_TOOL_VARIANTS = {
+  saw: [10201, 10211, 10221], brush: [10202, 10212, 10222], hammer: [10203, 10213, 10223],
+  needle: [10204, 10214, 10224], knife: [10205, 10215, 10225],
+};
+const CRAFT_TOOL_NAMES = { saw: '锯子', brush: '毛刷', hammer: '锤子', needle: '棒针', knife: '小刀' };
+
 const ITEM_TYPE_DRAWING = 13;      // 图册（图纸物品）
 const SPECIALTY_MAX = DEF('SPECIALTY_MAX', 100);
 
@@ -952,7 +1065,35 @@ const HANDCRAFT_MATERIAL_ID = 8000;
 const ROTTEN_WOOD_ID = 8001;
 const WOOD_PIECE_SEC = CRAFT_STAGE_SEC * 3;
 // Temporary user-requested pacing: one reserved item per 5 minutes, fertility +1.
-const COMPOST_DURATION_SEC = 5 * 60;
+const COMPOST_DURATION_SEC = 5 * 60;   // 我们 V3.6/V3.7 的统一时长（回退值）
+/* V40-PREFER-HIS 【V4.0】默认改用他的发酵时长：20001–3 立即（0 秒）、20004–6 三天。
+   想回到统一的 5 分钟：FROG_COMPOST_SEC=300。 */
+const COMPOST_HIS_RULES = new Map([[20001, 0], [20002, 0], [20003, 0],
+  [20004, 3 * 86400], [20005, 3 * 86400], [20006, 3 * 86400]]);
+const COMPOST_FLAT_SEC = process.env.FROG_COMPOST_SEC !== undefined
+  ? Math.max(0, Number(process.env.FROG_COMPOST_SEC) || 0) : null;
+/* V37-WISH-WORKCLOCK 【并入他 3.3 的可选项】手工品"要正在做手工才推进"：
+   他给手工品加了 work_left 工作时钟，只有蛙蛙正在做手工时才计时。
+   我们保留按阶段计时，只加上"到点时必须在做手工"这一条（等价、更简单）。
+   默认关（V3.6 的玩家说明写的是 86/129 分钟一阶段）；想照他的来设 1。 */
+/* V40-PREFER-HIS 【V4.0】默认启用他的工作时钟（只有蛙蛙在做手工时才推进）。
+   想回到 V3.7 的阶段墙钟：FROG_WISH_WORKCLOCK=0。 */
+const WISH_WORKCLOCK = String(process.env.FROG_WISH_WORKCLOCK || '1') !== '0';
+/* V40-PREFER-HIS 他的手工品不需要工具/材料；我们 V3.7 的门槛作为可选项保留。 */
+const HANDCRAFT_GATE = String(process.env.FROG_HANDCRAFT_GATE || '') === '1';
+/* V40-PREFER-HIS 他的"风格没有特殊材料就不可做"。默认关：官方 1088 表里目标件都是 style 14，
+   启用会让 27 种全部不可做（见 v37_craft_model_test.js 的断言）。 */
+const CRAFT_STRICT_SPECIAL = String(process.env.FROG_CRAFT_STRICT_SPECIAL || '') === '1';
+/* V37-SOIL-STARS 【并入他 3.3】土地肥力：点数 / 星级 / 每日衰减。
+   他那边每个发酵物的点数是 FERTILIZER_RULES（20001=10、20002=20、20003=30，
+   20004–20006 同为 10/20/30 但发酵要 3 天）。发酵**时长**保留我们这条线用户指定的
+   5 分钟，不采用他的 0/3 天。 */
+const SOIL_FERTILITY_MAX = 100;
+const SOIL_FERTILITY_DECAY_PERIOD_SEC = 86400;
+const SOIL_FERTILITY_DECAY_PER_PERIOD = 1;
+const SOIL_STAR_THRESHOLDS = [0, 20, 50, 80];      // 0/1/2/3 星
+const FERTILIZER_POINTS = new Map([[20001, 10], [20002, 20], [20003, 30],
+  [20004, 10], [20005, 20], [20006, 30]]);
 const COMPOSE_RECIPE_ID = 5502;      // Define.ComposeId, recovered
 const COMPOSE_AMULET_ID = 1306;      // 紫檀木护符 -- OUR reading, see above
 /* The three pieces, taken from the Item table rather than hard-coded so the list
@@ -1120,7 +1261,8 @@ const FURNITURE_TRIP_RELIEF = envNum('FROG_FURNITURE_TRIP_RELIEF', 5, 1);
 const FURNITURE_HANDCRAFT_RELIEF = envNum('FROG_FURNITURE_HANDCRAFT_RELIEF', 3, 1);
 const FURNITURE_CRAFT_RELIEF = envNum('FROG_FURNITURE_CRAFT_RELIEF', 2, 1);
 const FURNITURE_AUTO_REPLACE_MIN_SEC = envNum('FROG_FURNITURE_AUTO_REPLACE_MIN_SEC', 8 * 3600, 60);
-const FURNITURE_AUTO_REPLACE_MAX_SEC = envNum('FROG_FURNITURE_AUTO_REPLACE_MAX_SEC', 12 * 3600, 60);
+const FURNITURE_AUTO_REPLACE_MAX_SEC = Math.max(FURNITURE_AUTO_REPLACE_MIN_SEC,
+  Number(process.env.FROG_FURNITURE_AUTO_REPLACE_MAX_SEC || 12 * 60 * 60));
 const FURNITURE_AUTO_REPLACE_CHANCE = envNum('FROG_FURNITURE_AUTO_REPLACE_CHANCE', 35, 0);
 /* 见文件头"差异 1"：默认每拍检查，概率仍 35%；设成 10800 就是他的 3 小时。 */
 const FURNITURE_AUTO_CRAFT_MIN_SEC = envNum('FROG_FURNITURE_AUTO_CRAFT_MIN_SEC', 0, 0);
@@ -1161,7 +1303,7 @@ const FARM_SPECIALTY_IDS = ((gamedata.tables && gamedata.tables.Specialty) || []
   .filter((s) => FARM_PLACES.indexOf(s.place) !== -1)
   .map((s) => Number(s.itemId));
 
-const SAVE_VERSION = 1;
+const SAVE_VERSION = 2;
 const CLOVER_SLOTS = 20;
 /* Clover timing, now CONFIRMED rather than guessed: the Japanese original's
    decompiled CloverFarm uses
@@ -1197,7 +1339,7 @@ function rollCloverRebirth() {
          completely separate album_* channel.
      [5..] item ids (type Specialty=3 go to the gift box, others are drops)
    frog.status: 0 = home, 1 = travelling.                                  */
-const TIMER_EVENT = { NONE: 0, GoTravel: 1, BackHome: 2, Picture: 3, NewNote: 15, FurnitureFinish: 21, FurniturePut: 22 };
+const TIMER_EVENT = { NONE: 0, GoTravel: 1, BackHome: 2, Picture: 3, NewNote: 15, FurnitureFinish: 21, FurniturePut: 22, PartyGo: 23, PartyResult: 24 };
 const EV_GO_TRAVEL = TIMER_EVENT.GoTravel;
 const EV_BACK_HOME = TIMER_EVENT.BackHome;
 /* 15 = the client's own `TimerEvent.Type.NewNote` (Result.eventSystem's
@@ -1217,15 +1359,17 @@ const EV_FURNITURE_FINISH = TIMER_EVENT.FurnitureFinish;
    something playable, keep the original numbers documented here, allow env
    overrides. */
 const GUEST_ROLL_SEC = Number(process.env.FROG_GUEST_ROLL || 60);
-const GUEST_CHANCE = Number(process.env.FROG_GUEST_CHANCE || 35);/* 串门访客 pacing -- these are OUR choices (the original schedule was
+const GUEST_CHANCE = Number(process.env.FROG_GUEST_CHANCE || 50);/* 串门访客 pacing -- these are OUR choices (the original schedule was
    server-side), kept separate from the 邻居 guest knobs so each can be tuned. */
 const VISITOR_ROLL_SEC = Number(process.env.FROG_VISITOR_ROLL || 300);
 const VISITOR_CHANCE = Number(process.env.FROG_VISITOR_CHANCE || 25);
 const VISITOR_STAY_SEC = Number(process.env.FROG_VISITOR_STAY || 900);
 const VISITOR_COOL_SEC = Number(process.env.FROG_VISITOR_COOL || 600);
-const VISITOR_FOOD_MAX = Number(process.env.FROG_VISITOR_FOOD_MAX || 20);
+
 /* 友情绘本 (drawing) pacing -- OUR choices, the original schedule was server-side. */
-const DRAWING_CHANCE = Number(process.env.FROG_DRAWING_CHANCE || 75);
+/* V40-PREFER-HIS 【V4.0】默认改用他的邀约概率 20%（我们 V3.6/V3.7 是 75%）。
+   想回到 75%：FROG_DRAWING_CHANCE=75。 */
+const DRAWING_CHANCE = Number(process.env.FROG_DRAWING_CHANCE || 20);
 const DRAWING_TRIP_SEC = Number(process.env.FROG_DRAWING_TRIP || 600);
 /* The item that unlocks the whole feature: the client's `isOpen()` is
    `ItemModel.getHouseItemCount(Tabikaeru.ItemID.DRAWING_BOOK) > 0`, and that
@@ -1279,12 +1423,12 @@ const WISH_POOL_COIN_MAX = Number(process.env.FROG_WISH_COIN_MAX || 10);
 /* The visitor cooldown WE chose is 300 s for playability; the ORIGINAL is
    define.json's FRIEND_VISIT_COOL = 21600 (6 h). FROG_FAITHFUL=1 uses the real
    one, and FROG_GUEST_COOL always wins if set. */
-const GUEST_COOL_SEC = pace('FROG_GUEST_COOL', 300, ORIG.friendVisitCool);
+const GUEST_COOL_SEC = pace('FROG_GUEST_COOL', 0, ORIG.friendVisitCool);
 /* gameplay table: 串门/邻居 both have DurationFloor = DurationUpper = 30 minutes,
    so a visit lasts 1800 seconds. */
 /* 【并入他的 V3 的可选项】他是 3600（1 小时）；我们默认保留 3.4 的 30 分钟，
    想照他的来：FROG_GUEST_STAY=3600。 */
-const GUEST_STAY_SEC = Number(process.env.FROG_GUEST_STAY || 1800);
+const GUEST_STAY_SEC = Number(process.env.FROG_GUEST_STAY || 3600);
 const GUEST_POS_MAX = Number(DEF('FRIEND_RNDPOS_MAX', 3));
 
 // Offline pacing: the live game used 6-72h trips (TRAVEL_TIME_MIN = 60 in
@@ -1317,8 +1461,8 @@ const TRAVEL_WAIT_UNPREPARED_MAX = pace('FROG_WAIT_MAX', 5 * 3600, ORIG.restTick
    travel window -- now it uses the table's own numbers. */
 /* 表里这两项是**分钟**（10 / 20），引擎存的是秒，所以要 ×60 —— 他的口径。
    以前按秒用，一趟放浪只有 10–20 秒。 */
-const DRIFT_RETURN_MIN = Number(process.env.FROG_DRIFT_MIN || (ORIG.driftReturn * 60));
-const DRIFT_RETURN_MAX = Number(process.env.FROG_DRIFT_MAX || (ORIG.driftReturnMax * 60));
+const DRIFT_RETURN_MIN = pace('FROG_DRIFT_MIN', 100 * 60, ORIG.driftReturn);
+const DRIFT_RETURN_MAX = pace('FROG_DRIFT_MAX', 200 * 60, ORIG.driftReturnMax);
 
 /**
  * The upstream server PUSHES the whole game state right after hall_enter_game.
@@ -1418,6 +1562,8 @@ function defaultState() {
     achievesTime: [],
     frog: {
       status: 0, motion: 0, icon: 0, picShow: 0, todayStep: 0, taobaoData: null,
+      /* 【并入他 3.3】季节彩蛋 id（0 = 无）。 */
+      eggId: 0,
       // at-home activity sequence (see refreshFrogMotion)
       motionPattern: null, motionStep: 0, motionNextAt: 0,
     },
@@ -1530,7 +1676,11 @@ function defaultState() {
          decorationPutID: the decoration currently on display
          decorationStatus: 0/1 -> picks pic[0] (花苞) or pic[1] (花朵)
        They arrive as `{has_list, put_id, status}`. */
-    decoration: { hasList: [], putId: 0, status: 0 },
+    decoration: {
+      hasList: [], putId: 0, status: 0,
+      /* V37-FLOWER-VASE 【并入他 3.3】摆放时间 / 下一次自动更换时间 / 已自动更换次数。 */
+      startedAt: 0, nextAutoChangeAt: 0, autoChangeCount: 0, autoChangeLastAt: 0,
+    },
     /* ---- 料理 (CookingModel) ----
        The client's serverData, verbatim:
          {month, month_pro, week, complete, select, refresh_time, task_list}
@@ -1574,7 +1724,7 @@ function defaultState() {
                     (pray_load_grays.boxes -> BoxCraftShowView -> pray_confirm_make_box).
        seq        : monotonic `u_id`, which the client stores in a cookie to stop
                     re-announcing the same craft. */
-    craft: { wishes: [], stamps: [], pending: [], seq: 0 },
+    craft: { wishes: [], stamps: [], pending: [], seq: 0, workClockAt: 0 },
     /* ---- 春节贺卡 / 祝福贺卡 / 生日蛋糕 ----
        `card_info` is a REAL OBJECT with `tags` of length 3 -- the client indexes
        `card_info.tags[n]` and maps a slot to a card layer with `tags[slot]-1`, so an
@@ -1666,9 +1816,17 @@ function defaultState() {
        (the client slices 0..5 and 5..10 into two separate rows). The compost
        `box_list` uses 0 for empty instead -- do not unify them. */
     furniture: {
+      /* V37-MERCHANT-STARS 【并入他 3.3】当天的 8 个货位与它们属于哪一天。 */
+      shopOffers: {},
+      shopOffersDay: 0,
       bench: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
       benchLock: 0,         // bench_lock: 1 while a craft is running (client refuses edits)
       craft: null,          // 进行中的制作 {furnitureId, drawing, materials, startedAt, finishAt}
+      /* V37-FURNITURE-MOTION 【并入他 3.3】排队的活：等蛙蛙拿起对应工具的动作才开工。 */
+      craftQueued: 0,
+      craftQueuedFurnitureId: 0,
+      craftQueuedBenchSlot: -1,
+      nextCraftCheckAt: 0,
       owned: PLAIN_FURNITURE_IDS.slice(), // All default 素 furniture is owned.
       placed: [],           // put_fur: [{type, id}] currently in the courtyard
       replaceFur: [],       // replace_fur: furniture TYPEs being rotated out
@@ -1686,12 +1844,16 @@ function defaultState() {
       shopDailyBought: {},  // repeatable stock is replenished each local calendar day
       welfareTaken: {},     // shop id -> welfare goods taken on `welfareDay`
       welfareDay: {},       // shop id -> createDay() the welfare count belongs to
-      compost: { showIndex: 1, replaceIndex: 0, boxIndex: 0, boxes: [0, 0, 0, 0, 0, 0], list: [21000], job: null, fertility: 0 },
-      pocket: { showIndex: 0, replaceIndex: 0, clover: 0 },
-      tumbler: { showIndex: 0, replaceIndex: 0 },
+      compost: { showIndex: 1, replaceIndex: 0, boxIndex: 0, boxes: [0, 0, 0, 0, 0, 0], list: [21000], job: null, fertility: 0, fertilityDecayAt: 0 },
+      pocket: { showIndex: 0, replaceIndex: 0, clover: 0, list: [] },
+      tumbler: { showIndex: 0, replaceIndex: 0, list: [] },
     },
     tasks: [],
     taskList: [],
+    /* V37-RAIN-TASKS 【并入他 3.3】任务计数（按任务 id）/ 任务档位。 */
+    taskCounters: {},
+    taskTiers: {},
+
     events: [],
     handbook: { collections: [], specialtys: [] },
     createdAt: t,
@@ -1970,6 +2132,25 @@ function loadState(savePath) {
         s.furniture.compost.list = [21000];
         s.furniture.compost.showIndex = 1;
       }
+      /* 【并入他 3.3】老档没有 fertilityDecayAt：从现在起算衰减（不追溯扣分）；
+         肥力值夹到 [0, SOIL_FERTILITY_MAX]。 */
+      if (!Number.isFinite(Number(s.furniture.compost.fertilityDecayAt))
+          || Number(s.furniture.compost.fertilityDecayAt) <= 0) {
+        s.furniture.compost.fertilityDecayAt = nowSec();
+      }
+      s.furniture.compost.fertility = Math.max(0, Math.min(SOIL_FERTILITY_MAX,
+        Math.floor(Number(s.furniture.compost.fertility) || 0)));
+      /* 【并入他 3.3】老档没有口袋/不倒翁列表：补空数组；已有的列表过滤掉表里不存在的 id。 */
+      if (!Array.isArray(s.furniture.pocket.list)) s.furniture.pocket.list = [];
+      s.furniture.pocket.list = s.furniture.pocket.list
+        .map((id) => Number(id)).filter((id) => POCKET_DATA.has(id));
+      s.furniture.pocket.clover = Math.max(0, Math.floor(Number(s.furniture.pocket.clover) || 0));
+      if (!Array.isArray(s.furniture.tumbler.list)) s.furniture.tumbler.list = [];
+      s.furniture.tumbler.list = s.furniture.tumbler.list
+        .map((entry) => (entry && typeof entry === 'object'
+          ? { id: Number(entry.id), layers: Array.isArray(entry.layers) ? entry.layers : [] }
+          : { id: Number(entry), layers: [] }))
+        .filter((entry) => TUMBLER_DATA.has(Number(entry.id)));
       // Preserve today's purchases when migrating the old lifetime-only stock ledger.
       if (!(raw.furniture || {}).shopDailyBought) {
         s.furniture.shopDay = merchantDayAt(Number(raw.lastSeen) || nowSec());
@@ -1987,12 +2168,337 @@ function loadState(savePath) {
     report.reason = 'migrate-error';
   }
   // old saves predate the field, and a damaged one can hold anything
-  if (!(Number(s.saveVersion) >= 1)) s.saveVersion = SAVE_VERSION;
+  /* V37-WISH-WORKCLOCK 老档按版本迁移：v1 -> v2（V3.7 会回填新字段）；比本版新的档不动。 */
+  if (Number(s.saveVersion) < SAVE_VERSION) s.saveVersion = SAVE_VERSION;
+  /* %s 【抄他 3.3】他的进度模型用的字段：老档缺失就回填默认值（已有值不动）。
+     默认值取自跑他的引擎导出的新档。 */
+  {
+    const HIS_DEFAULTS = [
+      ['calendar', 'rewardVersion', 5],
+      ['flowerpot', 'plantingVersion', 2],
+      ['travel', 'scheduleVersion', 1],
+      ['travel', 'lastCheckAt', 0],
+      ['travel', 'lastCheckRoll', null],
+      ['travel', 'preparingUntil', 0],
+      ['furniture', 'shopStockDay', 0],
+      ['selectedAchieve', null, undefined],
+      ['drawingQueued', false, undefined],
+      ['drawingRestUntil', 0, undefined],
+    ];
+    for (const row of HIS_DEFAULTS) {
+      const [a, b, value] = row;
+      if (b === undefined) {
+        if (s[a] === undefined) s[a] = value;
+      } else {
+        if (!s[a] || typeof s[a] !== 'object') s[a] = {};
+        if (s[a][b] === undefined) s[a][b] = value;
+      }
+    }
+    if (s.furniture && typeof s.furniture === 'object') {
+      if (s.furniture.moodReplaceCount === undefined) s.furniture.moodReplaceCount = 0;
+      if (s.furniture.moodReplaceThreshold === undefined) s.furniture.moodReplaceThreshold = 0;
+      if (s.furniture.moodRecoverAutoFurniture === undefined) s.furniture.moodRecoverAutoFurniture = 0;
+      if (s.furniture.compost && typeof s.furniture.compost === 'object') {
+        if (s.furniture.compost.fermenting === undefined) s.furniture.compost.fermenting = null;
+        if (s.furniture.compost.fertilizerLoads === undefined) s.furniture.compost.fertilizerLoads = [];
+      }
+    }
+    if (s.craft && typeof s.craft === 'object'
+      && Number.isFinite(Number(s.craft.finishAt)) && (s.craft.workClockAt === undefined)) {
+      s.craft.workClockAt = 0;
+    }
+  }
+
+
   if (!Array.isArray(s.clovers) || s.clovers.length !== CLOVER_SLOTS) s.clovers = makeClovers();
   s.lastSeen = nowSec();
   s.__saveReport = report;
   return s;
 }
+
+/* V37-CALENDAR-EGGS ============ 天气（按日期与季节）/ 节气日 / 本地日键（纯函数，模块级） ============ */
+
+/* 5–10 月在家里"扇扇子"动作出彩蛋的概率（他的口径，可用 env 改）。 */
+const FROG_FAN_ACTION_CHANCE = Math.min(100, Math.max(0,
+  Number(process.env.FROG_FAN_ACTION_CHANCE || 10)));
+
+/* 24 节气的经验系数（他给的复原表）：
+   节气日 = floor(年份后两位 * 0.2422 + 系数) - floor((年份后两位 - 1) / 4)。 */
+const SOLAR_TERM_DAY_COEFFICIENTS = [
+  5.4055, 20.12, 3.87, 18.73, 5.63, 20.646,
+  4.81, 20.1, 5.52, 21.04, 5.678, 21.37,
+  7.108, 22.83, 7.5, 23.13, 7.646, 23.042,
+  8.318, 23.438, 7.438, 22.36, 7.18, 21.94,
+];
+
+function solarTermDay(year, termIndex) {
+  const yearInCentury = Number(year) % 100;
+  const coefficient = SOLAR_TERM_DAY_COEFFICIENTS[termIndex];
+  if (!Number.isFinite(yearInCentury) || coefficient === undefined) return 0;
+  return Math.floor(yearInCentury * 0.2422 + coefficient)
+    - Math.floor((yearInCentury - 1) / 4);
+}
+
+function seasonForMonth(month) {
+  if (month >= 3 && month <= 5) return 1;
+  if (month >= 6 && month <= 8) return 2;
+  if (month >= 9 && month <= 11) return 3;
+  return 4;
+}
+
+/* 每个季节的天气候选（重复项就是权重）。雪(8/9)只在冬天，霜(6)只在秋冬。 */
+const WEATHER_BY_SEASON = {
+  1: [1, 1, 2, 2, 2, 3, 3, 4, 5, 7],
+  2: [1, 1, 1, 2, 2, 3, 3, 3, 4, 5, 7],
+  3: [1, 1, 2, 2, 2, 3, 3, 4, 5, 6, 7],
+  4: [1, 1, 2, 2, 5, 6, 6, 7, 8, 8, 9],
+};
+
+function weatherForDate(year, month, day) {
+  const season = seasonForMonth(month);
+  const candidates = WEATHER_BY_SEASON[season];
+  const dayIndex = Math.floor(Date.UTC(year, month - 1, day) / 86400000);
+  return { season, weather: candidates[dayIndex % candidates.length] };
+}
+
+/* 本地日期键 YYYYMMDD（他的商店补货/货架与幸运日都按天归档用它）。 */
+function localDayKeyAt(at) {
+  const d = new Date(Number(at) * 1000);
+  return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+}
+
+/* V37-MERCHANT-STARS ============ 嘟嘟商店：星级货架 / 节气商店 / 特殊货架行 ============ */
+
+/* 家具礼包（内容物是"家具"而不是普通物品，开包时进 furniture.owned）。 */
+const FURNITURE_GIFT_BAG_IDS = new Set([204001, 204002]);
+
+/* 每天摆几个货位、以及各星级的抽中权重（他的复原值）。 */
+const MERCHANT_DAILY_OFFER_COUNT = 8;
+/* V40-PREFER-HIS 售罄行是否还列出来（V4.0 默认不列，与他的实现一致）。 */
+const SHOP_KEEP_SOLD_OUT = String(process.env.FROG_SHOP_KEEP_SOLD_OUT || '') === '1';
+const MERCHANT_STAR_WEIGHTS = new Map([[0, 35], [1, 30], [2, 18], [3, 10], [4, 5], [5, 2]]);
+
+/* 每档星级的候选货架。 */
+const MERCHANT_STAR_ROWS = new Map([
+  [0, [8024]],
+  [1, [8008, 7014, 7024, 7025, 7026, 7027, 7028]],
+  [2, [6001, 6002, 6003, 6004, 6005, 6006, 9001, 9002, 9003]],
+  [3, [3006, 8001, 8002, 8003, 8004, 8005, 8006, 8009,
+    8010, 8011, 8012, 8013, 8014, 8015, 8017, 8018, 8019, 8020, 8021, 8025]],
+  [4, [1001, 1002, 1003, 1004, 1005, ...Array.from({ length: 27 }, (_, i) => 4001 + i),
+    2001, 2002, 2003, 2004, 2005, 2006, 2007, 3001, 3003, 3004, 3005, 3008, 3009,
+    5, 6, 6007, 6008, 6009, 6010, 6011, 6012, 6013, 6014, 6015, 6016, 6019, 8027, 8035, 8036,
+    8053, 8054]],
+  [5, [1, 2, 3002, 3007, 3010, 3011, 8007, 8016, 8026, 8030, 8031, 8032, 8033, 8034]],
+]);
+
+/* 本地补的出售行。他那边补了 7 行（id 8030–8036），但**我们合并后的官方表里**：
+     · 201001/201002/201003/201004/201008（古琴书桌、森之国度系列）**本来就有出售行**，不用补；
+     · 8035/8036 这两个 id 已被官方行占用（卖的是南瓜豆沙糕 116 / 酥圈圈 117），不能覆盖；
+     · 只有 **不倒翁图鉴 10401** 与 **挂兜手工制作 10601** 这两件图纸在我们表里没有任何出售行。
+   所以只补这两行，并挪到空闲 id 8053/8054（价格/限购沿用他的：500、限 1、唯一）。
+   注意：客户端要显示这两行，还需要他客户端那段"把未知行加进 KeyGetter"的补丁（客户端批次）。 */
+const MERCHANT_SPECIAL_ROWS = [
+  { id: 8053, item_id: 10401, name: '不倒翁图鉴', price: 500, limit: 1, unique: true, info: '不倒翁家具制作图纸' },
+  { id: 8054, item_id: 10601, name: '挂兜手工制作', price: 500, limit: 1, unique: true, info: '挂兜制作图纸' },
+];
+for (const row of MERCHANT_SPECIAL_ROWS) {
+  if (!FURNITURE_SHOP.has(row.id)) FURNITURE_SHOP.set(row.id, Object.assign({
+    has_item: 0, limit: 0, shop_limit: 0, sign: 0, type: 999, order: 900,
+  }, row));
+}
+
+/* 24 节气 -> 节气货架（他的映射表）。 */
+const MERCHANT_SOLAR_TERM_OFFERS = [
+  { month: 1, term: 0, shopId: 113 }, { month: 1, term: 1, shopId: 101 },
+  { month: 2, term: 2, shopId: 102 }, { month: 2, term: 3, shopId: 114 },
+  { month: 3, term: 4, shopId: 103 }, { month: 3, term: 5, shopId: 115 },
+  { month: 4, term: 6, shopId: 116 }, { month: 4, term: 7, shopId: 104 },
+  { month: 5, term: 8, shopId: 117 }, { month: 5, term: 9, shopId: 105 },
+  { month: 6, term: 10, shopId: 118 }, { month: 6, term: 11, shopId: 106 },
+  { month: 7, term: 12, shopId: 119 }, { month: 7, term: 13, shopId: 107 },
+  { month: 8, term: 14, shopId: 108 }, { month: 8, term: 15, shopId: 120 },
+  { month: 9, term: 16, shopId: 121 }, { month: 9, term: 17, shopId: 109 },
+  { month: 10, term: 18, shopId: 122 }, { month: 10, term: 19, shopId: 110 },
+  { month: 11, term: 20, shopId: 111 }, { month: 11, term: 21, shopId: 123 },
+  { month: 12, term: 22, shopId: 112 }, { month: 12, term: 23, shopId: 124 },
+];
+
+/** 今天是节气吗？是的话返回那天的节气货架 id（否则 0）。 */
+function solarTermShopFor(dayKey) {
+  const day = Number(dayKey);
+  const year = Math.floor(day / 10000);
+  const month = Math.floor(day / 100) % 100;
+  const dayOfMonth = day % 100;
+  const term = MERCHANT_SOLAR_TERM_OFFERS.find((entry) => (
+    entry.month === month && solarTermDay(year, entry.term) === dayOfMonth
+  ));
+  return term ? term.shopId : 0;
+}
+
+/* V37-FLOWER-VASE ============ 花盆生长速度 / 花瓶生命周期与自动更换 ============ */
+
+const DAY_SEC = 24 * 60 * 60;
+
+/* 野草类装饰（会长出来又枯掉的那几种）。 */
+const WILD_GRASS_DECORATIONS = new Set([1001, 1002, 1003, 1004, 1005]);
+const CULTIVATED_DECORATION_MIN = 10011;
+const CULTIVATED_DECORATION_MAX = 10063;
+
+/* 花瓶自动更换：每 24 小时掷一次，35% 概率换成别的已拥有装饰（他的口径，可用 env 改）。 */
+const VASE_AUTO_CHANGE_SECONDS = Math.max(60,
+  Number(process.env.FROG_VASE_AUTO_CHANGE_SECONDS || 24 * 60 * 60));
+const VASE_AUTO_CHANGE_CHANCE = Math.min(100, Math.max(0,
+  Number(process.env.FROG_VASE_AUTO_CHANGE_CHANCE || 35)));
+
+/* V37-RAIN-TASKS ============ 雨天客人彩蛋 / 绘本出行节奏 ============ */
+
+/* 客人到达时若在下雨，这位客人有 30% 概率带上雨天装扮彩蛋（0/1/2 号 -> 103/104/102）。 */
+const RAIN_GUEST_CHANCE = 0.30;
+const RAIN_GUEST_EGG = { 0: 103, 1: 104, 2: 102 };
+
+/* 绘本（友情邀约）的出行节奏 —— 他的口径：伙伴出门 4–8 小时、回来在家歇 1 小时、
+   每隔 8 小时才重新看一次邀约条件。邀约**概率**仍是我们这条线用户指定的 75%。 */
+const DRAWING_CHECK_COOLDOWN_SEC = Number(process.env.FROG_DRAWING_ROLL || 8 * 60 * 60);
+const DRAWING_HOME_REST_SEC = Number(process.env.FROG_DRAWING_REST || 60 * 60);
+const DRAWING_TRIP_MIN_SEC = Number(process.env.FROG_DRAWING_TRIP_MIN || 4 * 60 * 60);
+const DRAWING_TRIP_MAX_SEC = Number(process.env.FROG_DRAWING_TRIP_MAX || 8 * 60 * 60);
+
+/* V37-FURNITURE-MOTION ============ 做家具的工具动画 / 排队开工 ============ */
+
+/* 做家具时的具体工具动画（FrogMotionNum.make = 3，工具动画是 5..9）。 */
+  const FURNITURE_TOOL_MOTION = {
+    saw: 5, brush: 6, hammer: 7, needle: 8, knife: 9,
+  };
+
+/* 每个家具 type 需要哪些工具（他的 27 行表）。本轮只用于"演哪段工具动画"，
+   真正的按 type 卡工具留到「制作模型」那一轮。 */
+const CRAFT_TOOLS_BY_TYPE = {
+  1: ['hammer'], 2: ['hammer'], 3: ['brush', 'saw', 'needle', 'hammer'],
+  4: ['brush', 'saw', 'needle'], 5: ['brush', 'saw', 'knife'],
+  6: ['brush', 'saw', 'hammer', 'knife'], 7: ['needle', 'knife'],
+  8: ['knife', 'hammer'], 9: ['brush', 'saw', 'needle', 'knife'],
+  10: ['needle', 'hammer'], 11: ['knife', 'hammer'],
+  12: ['brush', 'saw', 'hammer'], 13: ['needle', 'knife'],
+  14: ['brush', 'hammer', 'knife'], 15: ['knife', 'hammer'],
+  16: ['brush', 'saw', 'hammer', 'knife'], 17: ['brush', 'hammer'],
+  18: ['brush', 'saw'], 19: ['needle', 'knife'],
+  20: ['brush', 'saw', 'hammer'], 21: ['hammer'],
+  22: ['brush', 'saw', 'hammer'], 23: ['brush', 'saw', 'needle'],
+  24: ['brush', 'saw', 'knife'], 25: ['needle', 'hammer'],
+  26: ['brush', 'saw', 'needle'],
+  27: ['brush', 'saw', 'needle', 'hammer', 'knife'],
+};
+
+/* 他的"排队开工"是可选流程（默认关，见文件头说明）。 */
+/* V40-PREFER-HIS 【V4.0】默认启用他的排队开工（等蛙蛙拿起对应工具的动作才开工）。
+   想回到 V3.7 的"抽中即开工"：FROG_CRAFT_QUEUE=0。 */
+const FROG_CRAFT_QUEUE = String(process.env.FROG_CRAFT_QUEUE || '1') !== '0';
+
+/* V37-CRAFT-MODEL ============ 制作模型：27 个 type 的基材表（他的复原表） ============ */
+
+/* 每个家具 type 的基准材料（他按官方指南复原的那张表）。 */
+const CRAFT_BASE_MATERIALS_BY_TYPE = {
+  1: [{ item_id: 10003, count: 4 }, { item_id: 10007, count: 1 }],
+  2: [{ item_id: 10003, count: 4 }, { item_id: 10007, count: 1 }],
+  3: [{ item_id: 10001, count: 2 }, { item_id: 10002, count: 2 }, { item_id: 10004, count: 1 }, { item_id: 10007, count: 1 }],
+  4: [{ item_id: 10001, count: 1 }, { item_id: 10002, count: 1 }, { item_id: 10004, count: 1 }],
+  5: [{ item_id: 10001, count: 1 }, { item_id: 10002, count: 1 }, { item_id: 10006, count: 2 }],
+  6: [{ item_id: 10001, count: 1 }, { item_id: 10002, count: 1 }, { item_id: 10005, count: 1 }, { item_id: 10007, count: 1 }],
+  7: [{ item_id: 10005, count: 3 }],
+  8: [{ item_id: 10005, count: 1 }, { item_id: 10006, count: 1 }, { item_id: 10007, count: 2 }],
+  9: [{ item_id: 10001, count: 2 }, { item_id: 10002, count: 1 }, { item_id: 10004, count: 1 }, { item_id: 10005, count: 2 }],
+  10: [{ item_id: 10003, count: 3 }, { item_id: 10004, count: 1 }],
+  11: [{ item_id: 10006, count: 3 }, { item_id: 10007, count: 1 }],
+  12: [{ item_id: 10001, count: 1 }, { item_id: 10002, count: 1 }, { item_id: 10007, count: 2 }],
+  13: [{ item_id: 10004, count: 1 }, { item_id: 10005, count: 1 }, { item_id: 10006, count: 2 }],
+  14: [{ item_id: 10001, count: 2 }, { item_id: 10002, count: 2 }, { item_id: 10005, count: 1 }],
+  15: [{ item_id: 10003, count: 2 }, { item_id: 10006, count: 2 }],
+  16: [{ item_id: 10001, count: 1 }, { item_id: 10002, count: 1 }, { item_id: 10006, count: 1 }, { item_id: 10007, count: 1 }],
+  17: [{ item_id: 10001, count: 3 }, { item_id: 10007, count: 1 }],
+  18: [{ item_id: 10001, count: 1 }, { item_id: 10002, count: 2 }],
+  19: [{ item_id: 10004, count: 2 }, { item_id: 10005, count: 2 }],
+  20: [{ item_id: 10001, count: 1 }, { item_id: 10002, count: 1 }, { item_id: 10003, count: 2 }],
+  21: [{ item_id: 10003, count: 2 }],
+  22: [{ item_id: 10001, count: 1 }, { item_id: 10002, count: 1 }, { item_id: 10007, count: 1 }],
+  23: [{ item_id: 10001, count: 1 }, { item_id: 10002, count: 1 }, { item_id: 10004, count: 1 }],
+  24: [{ item_id: 10001, count: 1 }, { item_id: 10002, count: 1 }, { item_id: 10005, count: 2 }, { item_id: 10006, count: 2 }],
+  25: [{ item_id: 10007, count: 2 }],
+  26: [{ item_id: 10001, count: 2 }, { item_id: 10002, count: 2 }, { item_id: 10004, count: 2 }],
+  27: [{ item_id: 10001, count: 1 }, { item_id: 10002, count: 1 }, { item_id: 10003, count: 1 },
+       { item_id: 10004, count: 1 }, { item_id: 10005, count: 1 }, { item_id: 10006, count: 1 }],
+};
+
+/* V41-TRAVEL-MAP ============ 旅行地图：伙伴同行 / 路遇 / 照片伙伴图层 ============ */
+
+/* 能在旅途中路遇、并出现在旅行照片里的三位伙伴（对应 NodeEdge.enc_name）。 */
+const TV_TRAVEL_FRIEND_SLOT = { bh: 0, cw: 1, yhc: 2 };
+
+/* 某张照片里的伙伴图层 -> 三位伙伴各自的图层 id。
+   官方 resources 表里伙伴图层是按 `xxx_bh` / `xxx_cw` / `xxx_yhc`（可带 `_后缀`）成组的，
+   这里把同一组的三张登记在一起；登记不全的（合成图）不参与替换。 */
+const TV_COMPANION_LAYER_VARIANTS = {};
+(function indexCompanionLayers() {
+  const resources = (gamedata.tables && gamedata.tables.resources) || {};
+  const byPath = {};
+  Object.keys(resources).forEach((id) => { byPath[String(resources[id]).toLowerCase()] = Number(id); });
+  Object.keys(resources).forEach((id) => {
+    const source = String(resources[id]).toLowerCase();
+    const match = source.match(/^(.*)_bh(_[a-z0-9]+)?$/);
+    if (!match) return;
+    const tail = match[2] || '';
+    const variants = ['bh', 'cw', 'yhc'].map((suffix) => (
+      byPath[match[1] + '_' + suffix + tail] || byPath[match[1] + '_' + suffix]
+    ));
+    if (variants.every((value) => value !== undefined)) {
+      TV_COMPANION_LAYER_VARIANTS[Number(id)] = variants;
+    }
+  });
+})();
+
+/* V40-VISITOR-GAP ============ 访客食物 / 访客摇号（他的口径） ============ */
+
+const VISITOR_ACTION_LIST = ((gamedata.tables || {}).visitors || {}).actionList || {};
+const VISITOR_FOOD_IDS = Object.keys(VISITOR_ACTION_LIST).map(Number)
+  .filter((n) => Number.isFinite(n)).sort((a, b) => a - b);
+  const VISITOR_FOOD_MAX = Math.max(1, Math.min(VISITOR_FOOD_IDS.length || 1,
+  Number(process.env.FROG_VISITOR_FOOD_MAX || VISITOR_FOOD_IDS.length || 1)));
+/* 他的访客摇号区间：8–10 小时。我们默认仍用 GUEST_ROLL_SEC（60 秒一拍），
+   只有显式设了 MIN/MAX（或 FROG_GUEST_ROLL）才走他的随机区间。 */
+const GUEST_ROLL_MIN_SEC = Number(process.env.FROG_GUEST_ROLL_MIN || process.env.FROG_GUEST_ROLL || 8 * 3600);
+const GUEST_ROLL_MAX_SEC = Number(process.env.FROG_GUEST_ROLL_MAX || process.env.FROG_GUEST_ROLL || 10 * 3600);
+
+/* V40-MOOD-V2 常量（抄他 3.3） */
+const FURNITURE_ANGER_CHANCE = Math.min(100, Math.max(0,
+  Number(process.env.FROG_FURNITURE_ANGER_CHANCE || 75)));
+const FURNITURE_ANGER_MIN_CHANGES = Math.max(1,
+  Number(process.env.FROG_FURNITURE_ANGER_MIN_CHANGES || 3));
+const FURNITURE_ANGER_MAX_CHANGES = Math.max(FURNITURE_ANGER_MIN_CHANGES,
+  Number(process.env.FROG_FURNITURE_ANGER_MAX_CHANGES || 6));
+const FURNITURE_AUTO_REPLACE_RELIEF = Math.max(1,
+  Number(process.env.FROG_FURNITURE_AUTO_REPLACE_RELIEF || 5));
+const FURNITURE_CRAFT_CHECK_SECONDS = Math.max(60, Number(process.env.FROG_CRAFT_CHECK_SEC || 3 * 60 * 60));
+const FURNITURE_CRAFT_START_CHANCE = Math.min(1, Math.max(0,
+  Number(process.env.FROG_CRAFT_START_CHANCE || 0.35)));
+
+/* V40-REST 常量（抄他 3.3） */
+const FERTILIZER_RULES = new Map([
+    [20001, { points: 10, releaseSec: 0 }],
+    [20002, { points: 20, releaseSec: 0 }],
+    [20003, { points: 30, releaseSec: 0 }],
+    [20004, { points: 10, releaseSec: 3 * 86400 }],
+    [20005, { points: 20, releaseSec: 3 * 86400 }],
+    [20006, { points: 30, releaseSec: 3 * 86400 }],
+  ]);
+const CALENDAR_REWARD_VERSION = 5;
+const FLOWERPOT_STATE_VERSION = 2;
+const TRAVEL_SCHEDULE_VERSION = 1;
+const COMPOSE_PIECE_CHANCE = 12;
+const GIFTBOX_VISIT_TAGS = ['u_owl', 'u_rabbit', 'u_lotus', 'u_swan', 'u_light', 'u_mushroom', 'u_streetlight', 'u_snail'];
+const GUEST_BONUS_TICKET_CHANCE = Number(process.env.FROG_GUEST_BONUS_TICKET_CHANCE || 35);
+const GUEST_CLOVER_MIN = Number(process.env.FROG_GUEST_CLOVER_MIN || 50);
+const GUEST_CLOVER_MAX = Number(process.env.FROG_GUEST_CLOVER_MAX || 300);
+const FROG_MIRROR_PREP_SEC = Math.max(60, Number(process.env.FROG_MIRROR_PREP_SEC || 10 * 60));
 
 /* ---------------------------------------------------------------- engine */
 
@@ -2072,9 +2578,25 @@ function createEngine(opts) {
   })();
 
   /** 【自设计】某件家具需要的材料（原版配方在服务端）。 */
+  /* 【并入他 3.3】配方改成"按 type 的基准材料 + 该风格的特殊材料"。
+     说明：他的原版要求特殊材料**摆在工作台选择位**上，而且 style 没有登记就直接不可做；
+     我们这边台面没有"选择位"这一层，而且官方 1088 表里很多 type 的最高风格是 14/101
+     （他的 special 表只到 11），照搬会让这些件不可做。所以这里：
+       · 他的表里登记了该 type -> 用他的基材，并在该风格有 special 时追加一件；
+       · 没登记 -> 退回我们原来的 style/默认配方（保证 27 种都能做）。 */
   function craftMaterialsFor(furnitureId) {
     const def = FURNITURE_BY_ID.get(Number(furnitureId));
     if (!def) return null;
+    /* V40-PREFER-HIS 【V4.0 可选】他的原版规则：风格没有登记特殊材料 -> 这件不可做。
+       默认关（官方 1088 表里目标件都是 style 14，启用会让 27 种全不可做）。 */
+    if (CRAFT_STRICT_SPECIAL && !CRAFT_SPECIAL_BY_STYLE[Number(def.style)]) return null;
+    const base = CRAFT_BASE_MATERIALS_BY_TYPE[Number(def.type)];
+    if (Array.isArray(base) && base.length) {
+      const mats = base.map((m) => ({ item_id: Number(m.item_id), count: Number(m.count) }));
+      const special = CRAFT_SPECIAL_BY_STYLE[Number(def.style)];
+      if (special) mats.push({ item_id: Number(special), count: 1 });
+      return mats;
+    }
     const byStyle = CRAFT_MATERIALS_BY_STYLE[Number(def.style)];
     return (byStyle || CRAFT_DEFAULT_MATERIALS).map((m) => ({ item_id: m.item_id, count: m.count }));
   }
@@ -2084,7 +2606,129 @@ function createEngine(opts) {
   }
 
   /** 台面上那张图纸（在 5–9 号"物品位"里）-> 将要做出的家具；没有就返回 null。 */
-  function benchBlueprint() {
+  /* V37-POCKET-TUMBLER ---------- 口袋 / 不倒翁：工作台候选与开工 ---------- */
+  function craftMissingToolsFor(requirements) {
+    const tools = (state.furniture.bench || []).slice(0, 5).map(Number);
+    return (requirements || []).filter((tool) => !tools.some((id) =>
+      (CRAFT_TOOL_VARIANTS[tool] || []).includes(id)));
+  }
+
+  /** 不倒翁外观：`TumblerData.bg = bdw_<n>_base`，眼睛图层取 `bdw_eye_<n>`。 */
+  function tumblerAppearance(tumblerId) {
+    const def = TUMBLER_DATA.get(Number(tumblerId));
+    const match = String((def && def.bg) || '').match(/^bdw_(\d+)_base$/);
+    if (!match) return null;
+    const eye = Array.from(TUMBLER_PATH_DATA.values())
+      .find((part) => String(part.res) === 'bdw_eye_' + match[1]);
+    if (!eye) return null;
+    return { id: Number(tumblerId), layers: [{ layer: [Number(eye.id), 0, 0, 0, 0] }] };
+  }
+
+  /** 这条配方占的是哪个台面位（结算与替换时要清掉它）。 */
+  function craftRecipeSlot(bp) {
+    if (!bp) return -1;
+    if (Number.isInteger(bp.specialSlot)) return bp.specialSlot;
+    if (bp.kind === 'tumbler') {
+      return bp.tumblerSpecialSlot >= 0 ? bp.tumblerSpecialSlot : bp.tumblerFruitSlot;
+    }
+    if (bp.kind === 'pocket') {
+      return bp.pocketSpecialSlot >= 0 ? bp.pocketSpecialSlot : bp.pocketRopeSlot;
+    }
+    return -1;
+  }
+
+  /** 台面 5–9 号位里的"特殊材料"选择器（谁在台面上就做谁的专属款，他的做法）。 */
+  function benchSpecialSelectors() {
+    const bench = state.furniture.bench || [];
+    const selectors = [];
+    for (let i = 5; i < 10; i += 1) {
+      const itemId = Number(bench[i]);
+      if (itemId > 0 && CRAFT_STYLE_BY_SPECIAL.has(itemId)) selectors.push({ slot: i, itemId });
+    }
+    return selectors;
+  }
+
+  /** 台面上有没有可做的口袋/不倒翁（绳/果子 + 可选特殊材料 + 对应图纸在背包里）。 */
+  function benchPocketTumblerBlueprint(furnitureId, benchSlot) {
+    const bench = state.furniture.bench || [];
+    const selectors = benchSpecialSelectors();
+    const candidates = [];
+    const fruitSlot = bench.findIndex((id, i) => i >= 5 && Number(id) === TUMBLER_FRUIT_ID);
+    if (fruitSlot >= 0 && getHaveItem(TUMBLER_BLUEPRINT_ID) > 0) {
+      const matching = selectors.filter((s) => TUMBLER_RECIPE_OUTPUTS.special.has(s.itemId));
+      const recipes = selectors.length
+        ? matching.map((s) => ({ slot: s.slot, outputs: TUMBLER_RECIPE_OUTPUTS.special.get(s.itemId) || [] }))
+        : [{ slot: -1, outputs: TUMBLER_RECIPE_OUTPUTS.common }];
+      for (const recipe of recipes) {
+        for (const id of recipe.outputs) {
+          if (!TUMBLER_DATA.has(Number(id))) continue;
+          candidates.push({
+            kind: 'tumbler', itemId: TUMBLER_BLUEPRINT_ID, furnitureId: Number(id), type: 0, style: 0,
+            tumblerFruitSlot: fruitSlot, tumblerSpecialSlot: recipe.slot,
+          });
+        }
+      }
+    }
+    const ropeSlot = bench.findIndex((id, i) => i >= 5 && Number(id) === POCKET_ROPE_ID);
+    if (ropeSlot >= 0 && getHaveItem(POCKET_BLUEPRINT_ID) > 0) {
+      const matching = selectors.filter((s) => POCKET_RECIPE_OUTPUTS.special.has(s.itemId));
+      const recipes = selectors.length
+        ? matching.map((s) => ({ slot: s.slot, outputs: POCKET_RECIPE_OUTPUTS.special.get(s.itemId) || [] }))
+        : [{ slot: -1, outputs: POCKET_RECIPE_OUTPUTS.common }];
+      for (const recipe of recipes) {
+        for (const id of recipe.outputs) {
+          if (!POCKET_DATA.has(Number(id))) continue;
+          candidates.push({
+            kind: 'pocket', itemId: POCKET_BLUEPRINT_ID, furnitureId: Number(id), type: 0, style: 0,
+            pocketRopeSlot: ropeSlot, pocketSpecialSlot: recipe.slot,
+          });
+        }
+      }
+    }
+    const targetId = Number(furnitureId) || 0;
+    const slot = Number(benchSlot);
+    return candidates.find((c) => (!(targetId > 0) || c.furnitureId === targetId)
+      && (!(slot >= 0) || craftRecipeSlot(c) === slot)) || null;
+  }
+
+  function startCraftFromBench(startedAt, furnitureId, benchSlot) {
+    if (state.furniture.craft || furnitureMoodBlocked()) return false;
+    const bp = benchPocketTumblerBlueprint(furnitureId, benchSlot);
+    if (!bp) return false;
+    const info = craftMissing(bp);
+    if (!info || info.missing.length || (info.missingTools || []).length) return false;
+    const now = Number(startedAt) > 0 ? Number(startedAt) : nowSec();
+    const bench = state.furniture.bench;
+    if (bp.kind === 'tumbler') {
+      const appearance = tumblerAppearance(bp.furnitureId);
+      if (!appearance) return false;
+      for (const m of TUMBLER_BASE_MATERIALS) addHouseItem(m.item_id, -m.count);
+      bench[bp.tumblerFruitSlot] = -1;
+      if (bp.tumblerSpecialSlot >= 0) bench[bp.tumblerSpecialSlot] = -1;
+      state.furniture.craft = {
+        kind: 'tumbler', furnitureId: bp.furnitureId, drawing: TUMBLER_BLUEPRINT_ID,
+        materials: TUMBLER_BASE_MATERIALS.map((m) => ({ ...m })), tumbler: appearance,
+        startedAt: now, finishAt: now + CRAFT_SECONDS,
+      };
+    } else {
+      for (const m of POCKET_BASE_MATERIALS) addHouseItem(m.item_id, -m.count);
+      bench[bp.pocketRopeSlot] = -1;
+      if (bp.pocketSpecialSlot >= 0) bench[bp.pocketSpecialSlot] = -1;
+      state.furniture.craft = {
+        kind: 'pocket', furnitureId: bp.furnitureId, drawing: POCKET_BLUEPRINT_ID,
+        materials: POCKET_BASE_MATERIALS.map((m) => ({ ...m })),
+        startedAt: now, finishAt: now + CRAFT_SECONDS,
+      };
+    }
+    state.furniture.benchLock = 1;
+    save();
+    return true;
+  }
+
+  function benchBlueprint(furnitureId, benchSlot) {
+    /* 【并入他 3.3】先看台面上有没有"绳/果子 + 特殊材料"这样的口袋/不倒翁配方。 */
+    const extra = benchPocketTumblerBlueprint(furnitureId, benchSlot);
+    if (extra) return extra;
     const bench = state.furniture.bench || [];
     for (let i = 5; i < 10; i++) {
       const itemId = Number(bench[i]);
@@ -2109,18 +2753,33 @@ function createEngine(opts) {
     }
     const bp = benchBlueprint();
     if (!bp) return [];
-    const mats = craftMaterialsFor(bp.furnitureId) || [];
+    /* V40-PREFER-HIS 【V4.0】他的模型里「算不出配方」就是不可做；原来的 `|| []`
+       会把严格模式算出来的 null 当成「不缺材料」，于是 craft 能起来但材料列表是空的。 */
+    const mats = craftMaterialsFor(bp.furnitureId);
+    if (!mats) return null;
     const out = [];
     for (const m of mats) for (let i = 0; i < m.count; i++) out.push(m.item_id);
     return out;
   }
 
-  function craftMissing() {
-    const bp = benchBlueprint();
+  function craftMissing(blueprint) {
+    const bp = blueprint || benchBlueprint();
     if (!bp) return null;
-    const mats = craftMaterialsFor(bp.furnitureId) || [];
+    /* 【并入他 3.3】口袋/不倒翁有自己的基材与工具。 */
+    if (bp.kind === 'tumbler') {
+      const missing = TUMBLER_BASE_MATERIALS.filter((m) => getHaveItem(m.item_id) < m.count);
+      return { bp, missing, missingTools: craftMissingToolsFor(TUMBLER_TOOLS) };
+    }
+    if (bp.kind === 'pocket') {
+      const missing = POCKET_BASE_MATERIALS.filter((m) => getHaveItem(m.item_id) < m.count);
+      return { bp, missing, missingTools: craftMissingToolsFor(POCKET_TOOLS) };
+    }
+    /* V40-PREFER-HIS 【V4.0】他的模型里「算不出配方」就是不可做；原来的 `|| []`
+       会把严格模式算出来的 null 当成「不缺材料」，于是 craft 能起来但材料列表是空的。 */
+    const mats = craftMaterialsFor(bp.furnitureId);
+    if (!mats) return null;
     const missing = mats.filter((m) => getHaveItem(m.item_id) < m.count);
-    return missing.length ? { bp, missing } : { bp, missing: [] };
+    return missing.length ? { bp, missing, missingTools: [] } : { bp, missing: [], missingTools: [] };
   }
 
   /* 【并入他的 V3】自动换家具 / 自动开工的引擎侧胶水（要 ctx 推送，所以放在这里）。 */
@@ -2153,6 +2812,86 @@ function createEngine(opts) {
     return false;
   }
 
+  /* V37-FURNITURE-MOTION ================= 工具动画与排队开工（依赖 state） ================= */
+
+  /** V40-PREFER-HIS 排队模式的安全阀：需要的工具不在台面上就别排队（否则等不到工具动作）。
+      我们的家具制作不强制工具，所以这种活应当直接开工。 */
+  function canQueueCraft(bp) {
+    if (!bp) return false;
+    const tools = furnitureCraftTools(Number(bp.furnitureId), bp.kind);
+    return Array.isArray(tools) && tools.length > 0
+      && craftMissingToolsFor(tools).length === 0;
+  }
+
+  /** 这件东西需要哪些工具（口袋/不倒翁用各自的，其余按家具 type）。 */
+  function furnitureCraftTools(furnitureId, kind) {
+    if (kind === 'tumbler') return TUMBLER_TOOLS;
+    if (kind === 'pocket') return POCKET_TOOLS;
+    const row = FURNITURE_BY_ID.get(Number(furnitureId));
+    return CRAFT_TOOLS_BY_TYPE[Number(row && row.type)] || [];
+  }
+
+  /** "做"这个动作要演哪一段：按"需要的工具 ∩ 台面上有的工具"挑一个，按动作步数轮换。 */
+  function furnitureActionMotion() {
+    const craft = state.furniture.craft;
+    const queued = !craft && state.furniture.craftQueued;
+    if (!craft && !queued) return Number(FROGMOTIONNUM.make) || 0;
+    const furnitureId = craft ? craft.furnitureId : state.furniture.craftQueuedFurnitureId;
+    const bp = queued ? benchBlueprint(furnitureId, state.furniture.craftQueuedBenchSlot) : null;
+    const kind = craft ? craft.kind : bp && bp.kind;
+    const required = furnitureCraftTools(furnitureId, kind);
+    const benchTools = (state.furniture.bench || []).slice(0, 5).map(Number);
+    const available = required.filter((tool) => benchTools.some((id) =>
+      (CRAFT_TOOL_VARIANTS[tool] || []).includes(id)));
+    if (!available.length) {
+      /* 台面上没有对应工具时的退化：
+         · 他的做法是退回"做"这个通用动作（make = 3）；
+         · 但我们这条线的家具制作**目前不强制工具**（工具门槛属于他的「制作模型」大改，
+           留到那一轮），所以为了不出现"人在工作台却演读书动作"，这里退化成
+           我们原来的工作台动作 5..9（有工具时仍然演具体工具动画）。 */
+      return 5 + (Math.abs(Number(state.frog.motionStep) || 0) % 5);
+    }
+    const index = Math.abs(Number(state.frog.motionStep) || 0) % available.length;
+    return FURNITURE_TOOL_MOTION[available[index]] || Number(FROGMOTIONNUM.make) || 0;
+  }
+
+  function furnitureToolMotion(motion) {
+    return Object.values(FURNITURE_TOOL_MOTION).includes(Number(motion));
+  }
+
+  /** 排队的活：等蛙蛙进入"对应工具"的动作时才真的开工（他的做法）。 */
+  function tryStartQueuedCraft(at, ctx) {
+    if (!state.furniture.craftQueued || state.furniture.craft
+      || state.frog.status !== 0
+      || !furnitureToolMotion(state.frog.motion)
+      || furnitureMoodBlocked()) return false;
+    const queuedId = Number(state.furniture.craftQueuedFurnitureId) || 0;
+    const bp = benchBlueprint(queuedId, state.furniture.craftQueuedBenchSlot);
+    const furnitureId = Number(bp && bp.furnitureId) || queuedId;
+    if (!bp || !furnitureId) return false;
+    const required = furnitureCraftTools(furnitureId, bp && bp.kind);
+    const motionTool = Object.keys(FURNITURE_TOOL_MOTION)
+      .find((tool) => FURNITURE_TOOL_MOTION[tool] === Number(state.frog.motion));
+    if (!motionTool || !required.includes(motionTool)) return false;
+    if (!startCraftFromBench(at, state.furniture.craftQueuedFurnitureId,
+      state.furniture.craftQueuedBenchSlot)) {
+      /* 台面已经凑不齐了：取消排队，别卡着。 */
+      state.furniture.craftQueued = 0;
+      state.furniture.craftQueuedFurnitureId = 0;
+      state.furniture.craftQueuedBenchSlot = -1;
+      return false;
+    }
+    state.furniture.craftQueued = 0;
+    state.furniture.craftQueuedFurnitureId = 0;
+    state.furniture.craftQueuedBenchSlot = -1;
+    if (ctx) {
+      ctx.push('furniture_load_furniture', handlers.furniture_load_furniture({}));
+      ctx.push('item_load_items', handlers.item_load_items());
+    }
+    save();
+    return true;
+  }
+
   function autoCraftCheck(ctx, t) {
     if (state.furniture.craft) return false;
     if (!Number(state.furniture.nextAutoCraftAt)) {
@@ -2164,6 +2903,17 @@ function createEngine(opts) {
     if (furnitureMoodBlocked()) { save(); return false; }
     const chance = Math.max(0, Math.min(100, Number(FURNITURE_AUTO_CRAFT_CHANCE) || 0));
     if (Math.random() * 100 >= chance) { save(); return false; }
+    /* 【并入他 3.3 的可选项】FROG_CRAFT_QUEUE=1 时先排队，等蛙蛙拿起对应工具的动作再开工。 */
+    if (FROG_CRAFT_QUEUE && canQueueCraft(benchBlueprint())) {
+      const bp = benchBlueprint();
+      if (!bp) { save(); return false; }
+      state.furniture.craftQueued = 1;
+      state.furniture.craftQueuedFurnitureId = Number(bp.furnitureId) || 0;
+      state.furniture.craftQueuedBenchSlot = craftRecipeSlot(bp);
+      save();
+      ctx.push('furniture_load_furniture', handlers.furniture_load_furniture({}));
+      return true;
+    }
     if (!maybeStartCraft()) { save(); return false; }
     ctx.push('furniture_load_furniture', handlers.furniture_load_furniture({}));
     ctx.push('item_load_items', handlers.item_load_items());
@@ -2180,7 +2930,10 @@ function createEngine(opts) {
     const info = craftMissing();
     if (!info || info.missing.length) return false;
     const { bp } = info;
-    const mats = craftMaterialsFor(bp.furnitureId) || [];
+    /* V40-PREFER-HIS 【V4.0】他的模型里「算不出配方」就是不可做；原来的 `|| []`
+       会把严格模式算出来的 null 当成「不缺材料」，于是 craft 能起来但材料列表是空的。 */
+    const mats = craftMaterialsFor(bp.furnitureId);
+    if (!mats) return null;
     for (const m of mats) addHouseItem(m.item_id, -m.count);
     (state.furniture.bench)[bp.slot] = -1;          // 图纸被用掉
     const now = nowSec();
@@ -2203,10 +2956,34 @@ function createEngine(opts) {
     const fid = Number(craft.furnitureId);
     state.furniture.craft = null;
     state.furniture.benchLock = 0;
+    /* 【并入他的 V3】做出一件东西 = 安抚一次。 */
+    sootheFurnitureMood(FURNITURE_CRAFT_RELIEF, 'craft');
+    /* 【并入他 3.3】口袋/不倒翁不进家具收藏，进各自的列表。 */
+    if (craft.kind === 'tumbler') {
+      if (!Array.isArray(state.furniture.tumbler.list)) state.furniture.tumbler.list = [];
+      const entry = craft.tumbler || tumblerAppearance(fid);
+      if (entry) state.furniture.tumbler.list.push(entry);
+      save();
+      if (ctx) {
+        ctx.push('furniture_load_furniture', handlers.furniture_load_furniture({}));
+        ctx.push('furniture_load_tumbler', handlers.furniture_load_tumbler());
+        ctx.push('item_load_items', handlers.item_load_items());
+      }
+      return true;
+    }
+    if (craft.kind === 'pocket') {
+      if (!Array.isArray(state.furniture.pocket.list)) state.furniture.pocket.list = [];
+      if (state.furniture.pocket.list.indexOf(fid) === -1) state.furniture.pocket.list.push(fid);
+      save();
+      if (ctx) {
+        ctx.push('furniture_load_furniture', handlers.furniture_load_furniture({}));
+        ctx.push('furniture_load_pocket', handlers.furniture_load_pocket());
+        ctx.push('item_load_items', handlers.item_load_items());
+      }
+      return true;
+    }
     if (!Array.isArray(state.furniture.owned)) state.furniture.owned = [];
     if (state.furniture.owned.indexOf(fid) === -1) state.furniture.owned.push(fid);
-    /* 【并入他的 V3】做出一件家具 = 安抚一次。 */
-    sootheFurnitureMood(FURNITURE_CRAFT_RELIEF, 'craft');
     save();
     const ev = makeEvent(EV_FURNITURE_FINISH, [fid, craft.drawing || 0]);
     if (ctx) {
@@ -2324,6 +3101,14 @@ function createEngine(opts) {
       if (owned.has(pic)) continue;
       state.pictureSeq = (state.pictureSeq || 0) + 1;
       const row = { id: state.pictureSeq, pic_id: pic, read: 0, new: 1 };
+      /* 【并入他 3.3】这张照片是哪位伙伴同行；老档没有这个字段时按 PictureTag 救援。 */
+      {
+        const src0 = (Array.isArray(pictures) ? pictures : [])
+          .find((x) => x && typeof x === 'object' && Number(x.pic_id) === pic);
+        let slot = Number(src0 && src0.travelerSlot);
+        if (!(slot >= 0 && slot <= 2) && isGiftBoxFriendPicture(pic)) slot = TV_PIC_FRIEND[Number(pic)];
+        if (slot >= 0 && slot <= 2) row.travelerSlot = slot;
+      }
       if (visit) row.visit = true;
       if (sender >= 0) row.sender = sender;
       (visit ? state.albumPendingVisit : state.albumPending).push(row);
@@ -2431,7 +3216,159 @@ function createEngine(opts) {
      num > 0 and decrements it itself on success). Rows whose `has_item`
      prerequisite is not owned yet are withheld, which is exactly how the
      original chain gated them. */
+  /* V37-MERCHANT-STARS ============ 嘟嘟商店：每天的货架与营业窗口 ============ */
+
+  /** 前置商品是否已经在手上（家里 / 工作台 / 家具收藏都算）。 */
+  function hasShopPrerequisite(itemId) {
+    const id = Number(itemId);
+    return getHaveItem(id) > 0
+      || (state.furniture.bench || []).some((value) => Number(value) === id)
+      || (state.furniture.owned || []).some((value) => Number(value) === id);
+  }
+
+  /** 按 (uid, 日期) 生成当天 8 个货位：同一天恒定、换天才换（他的做法）。 */
+  function createFurnitureShopOffers(day) {
+    let seed = (Number(state.uid) || 0) ^ Number(day);
+    seed = Math.imul(seed ^ (seed >>> 16), 0x45d9f3b);
+    seed = Math.imul(seed ^ (seed >>> 16), 0x45d9f3b);
+    seed = (seed ^ (seed >>> 16)) >>> 0;
+    let randomState = seed || 0x9e3779b9;
+    const random = () => {
+      randomState = (randomState + 0x6d2b79f5) >>> 0;
+      let value = randomState;
+      value = Math.imul(value ^ (value >>> 15), value | 1);
+      value ^= value + Math.imul(value ^ (value >>> 7), value | 61);
+      return ((value ^ (value >>> 14)) >>> 0) / 4294967296;
+    };
+
+    const pools = new Map();
+    for (const [star, ids] of MERCHANT_STAR_ROWS) {
+      const rows = ids.map((id) => [id, FURNITURE_SHOP.get(id)])
+        .filter(([, row]) => row && row.item_id !== undefined)
+        .filter(([id, row]) => !(Number(row.limit) > 0
+          && (Number(state.furniture.shopBought[id]) || 0) >= Number(row.limit)))
+        .filter(([, row]) => !row.unique || getHaveItem(row.item_id) <= 0)
+        .filter(([, row]) => !row.has_item || hasShopPrerequisite(row.has_item))
+        .filter(([id, row]) => !(isWelfareRow(row)
+          && state.furniture.welfareDay && state.furniture.welfareDay[id] === createDay()
+          && (Number(state.furniture.welfareTaken && state.furniture.welfareTaken[id]) || 0) >= WELFARE_PER_DAY));
+      pools.set(star, rows);
+    }
+
+    const offers = {};
+    for (let slot = 0; slot < MERCHANT_DAILY_OFFER_COUNT; slot++) {
+      const available = [...pools.entries()].filter(([, rows]) => rows.length > 0);
+      if (!available.length) break;
+      const totalWeight = available.reduce((sum, [star]) => sum + MERCHANT_STAR_WEIGHTS.get(star), 0);
+      let roll = random() * totalWeight;
+      let chosenStar = available[available.length - 1][0];
+      for (const [star] of available) {
+        roll -= MERCHANT_STAR_WEIGHTS.get(star);
+        if (roll < 0) { chosenStar = star; break; }
+      }
+      const pool = pools.get(chosenStar);
+      const index = Math.floor(random() * pool.length);
+      const [shopId, row] = pool.splice(index, 1)[0];
+      const itemId = Number(row.item_id);
+      for (const rows of pools.values()) {
+        for (let i = rows.length - 1; i >= 0; i--) {
+          if (Number(rows[i][1].item_id) === itemId) rows.splice(i, 1);
+        }
+      }
+
+      let maxStock = 3;
+      if (Number(row.limit) > 0) {
+        maxStock = Math.min(maxStock, Number(row.limit) - (Number(state.furniture.shopBought[shopId]) || 0));
+      }
+      if (Number(row.shop_limit) > 0) maxStock = Math.min(maxStock, Number(row.shop_limit));
+      if (isWelfareRow(row)) maxStock = Math.min(maxStock, WELFARE_PER_DAY);
+      if (maxStock > 0) offers[shopId] = 1 + Math.floor(random() * maxStock);
+    }
+    /* 节气当天多摆一个节气货架（他的做法）。 */
+    /* solarTermShopFor 要的是 YYYYMMDD 日键（本地日），而这里的 day 是零点时间戳。 */
+    const solarTermShopId = solarTermShopFor(localDayKeyAt(day));
+    if (solarTermShopId && FURNITURE_SHOP.has(solarTermShopId)) {
+      offers[solarTermShopId] = 1 + Math.floor(random() * 3);
+    }
+    return offers;
+  }
+
+  /** 换天就重掷货架、清空当天已买账本（`shopDay`/`shopDailyBought` 是我们原来的账本）。
+      注意：这里**不写盘**。这个函数是从载荷构建（furnitureShopList）里调的，而载荷路径调
+      save() 会在每次 gm/推送之间插入一次额外提交，把 .bak 提前写脏（我们这条线的备份语义是
+      "备份 = 上一次完整存档"）。货架按 (uid, 日期) 确定性生成，重开一次结果相同，
+      交给下一次自然保存（购买 / tick / gm）持久化即可。 */
+  function ensureFurnitureShopStock(at) {
+    /* 日键必须与我们原有的账本一致（`merchantDayAt` = 本地零点时间戳），否则两边会在
+       不同时刻"换天"：曾出现 refreshMerchantDay 误判换天、又保存一次、还把当天已买清空。
+       `shopDay` / `shopDailyBought` 由 refreshMerchantDay 负责，这里只换货架。 */
+    const day = merchantDayAt(Number(at) || nowSec());
+    if (Number(state.furniture.shopOffersDay) !== day) {
+      state.furniture.shopOffers = createFurnitureShopOffers(day);
+      state.furniture.shopOffersDay = day;
+    }
+    return day;
+  }
+
+  /** 嘟嘟的营业窗口：12:00 之后到（按 uid+日期确定，最多晚 6 小时），21:00 走。 */
+  function furnitureShopWindow(at) {
+    const t = Number(at) || nowSec();
+    const date = new Date(t * 1000);
+    const noon = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 12, 0, 0, 0);
+    const evening = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 21, 0, 0, 0);
+    const day = localDayKeyAt(t);
+    let seed = (Number(state.uid) || 0) ^ day;
+    seed = Math.imul(seed ^ (seed >>> 16), 0x45d9f3b);
+    seed = Math.imul(seed ^ (seed >>> 16), 0x45d9f3b);
+    seed = (seed ^ (seed >>> 16)) >>> 0;
+    const arrival = Math.floor(noon.getTime() / 1000) + (seed % 361) * 60;
+    const leave = Math.floor(evening.getTime() / 1000);
+    return { start_time: arrival, leave_time: leave, open: t >= arrival && t < leave };
+  }
+
+  /* 【并入他 3.3】不再把整张表都列出来，只列"当天货架"上的（每天 8 个 + 节气货架）。 */
   function furnitureShopList() {
+    const now = nowSec();
+    refreshMerchantDay();
+    ensureFurnitureShopStock(now);
+    const offers = state.furniture.shopOffers || {};
+    const out = [];
+    for (const key of Object.keys(offers)) {
+      const shopId = Number(key);
+      const row = FURNITURE_SHOP.get(shopId);
+      if (!row) continue;
+      const limit = Number(row.limit) || 0;
+      const bought = Number(state.furniture.shopBought[shopId]) || 0;
+      const limitLeft = limit > 0 ? limit - bought : 99;
+      const stockLeft = Number(offers[key])
+        - (Number(state.furniture.shopDailyBought[shopId]) || 0);
+      const num = Math.max(0, Math.min(limitLeft, stockLeft));
+      /* V40-PREFER-HIS 【V4.0】他的实现是售罄就从货架上拿掉；
+         想恢复 V3.7/上游 3.4 的"卖完了看得见"：FROG_SHOP_KEEP_SOLD_OUT=1。 */
+      if (!SHOP_KEEP_SOLD_OUT && num <= 0) continue;
+      /* 【与上游 3.4 一致】售罄的行**仍然列出来**（num=0），这样玩家看到的是"卖完了"
+         而不是它凭空消失；他的实现是直接跳过，这里取 3.4 的行为。 */
+      if (isWelfareRow(row) && state.furniture.welfareDay
+          && state.furniture.welfareDay[shopId] === createDay()
+          && (Number((state.furniture.welfareTaken || {})[shopId]) || 0) >= WELFARE_PER_DAY) continue;
+      const need = Number(row.has_item) || 0;
+      if (need && !hasShopPrerequisite(need)) continue;
+      if (row.unique && getHaveItem(row.item_id) > 0) continue;
+      out.push({ shop_id: shopId, item_id: Number(row.item_id), num,
+        price: Number(row.price) || 0, name: String(row.name || ''),
+        info: String(row.info || ''), type: Number(row.type) || 0,
+        has_item: need, limit });
+    }
+    out.sort((a, b) => {
+      const oa = Number(FURNITURE_SHOP.get(a.shop_id).order) || 0;
+      const ob = Number(FURNITURE_SHOP.get(b.shop_id).order) || 0;
+      return oa - ob || a.shop_id - b.shop_id;
+    });
+    return out;
+  }
+
+  /* 旧的"整表 + 现算库存"实现保留给测试与回退用（默认不再走它）。 */
+  function furnitureShopListAllRows() {
     refreshMerchantDay();
     const out = [];
     for (const [shopId, row] of FURNITURE_SHOP) {
@@ -2458,6 +3395,12 @@ function createEngine(opts) {
   }
 
   function furnitureStock(row) {
+    /* 【并入他 3.3】有当天货架时，库存就是"货架上还剩几件"。 */
+    const shopId = Number(row && row.id);
+    const offerNum = Number((state.furniture.shopOffers || {})[shopId]);
+    if (Number.isFinite(offerNum) && offerNum > 0) {
+      return Math.max(0, offerNum - (Number(state.furniture.shopDailyBought[shopId]) || 0));
+    }
     const limit = Number(row.limit);
     if (limit > 0 && !isWelfareRow(row)) return Math.max(0, limit - (state.furniture.shopBought[row.id] || 0));
     const dailyLimit = isWelfareRow(row) ? WELFARE_PER_DAY : (Number(row.shop_limit) || 1);
@@ -2466,7 +3409,18 @@ function createEngine(opts) {
 
   function merchantShop() {
     const shop_list = furnitureShopList();
-    const now = nowSec(), day = merchantDayAt(now);
+    const now = nowSec();
+    /* 【并入他 3.3 的可选项】他的嘟嘟是"12:00 后到、21:00 走"（按 uid+日期确定）。
+       我们这条线的默认仍是**常开**（离线版按真实时间玩，早上/深夜都可能开游戏；
+       3.4 的文档也把"商店常开"写成本项目的自设计），所以默认不启用他的窗口；
+       想照他的来：FROG_SHOP_WINDOW=faithful。FROG_SHOP_HOURS 仍可指定固定时段。 */
+    /* V40-PREFER-HIS 【V4.0】默认改用他的营业窗口（12:00 后到、21:00 走）。
+       想恢复 V3.7 的常开：FROG_SHOP_WINDOW=always。 */
+    if (String(process.env.FROG_SHOP_WINDOW || 'faithful') !== 'always') {
+      const win = furnitureShopWindow(now);
+      return { shop_list, start_time: win.start_time, leave_time: win.leave_time };
+    }
+    const day = merchantDayAt(now);
     const next = new Date(day * 1000);
     next.setDate(next.getDate() + 1);
     const hours = Number(process.env.FROG_SHOP_HOURS || 0);
@@ -2717,6 +3671,10 @@ function advanceCraft(t) {
   const stampIds = Object.keys(stampRows);
   const atHome = !state.frog || state.frog.status === 0;
   const canCraft = getHaveItem(HANDCRAFT_TOOL_ID) > 0;
+  /* 【并入他 3.3 的可选项】蛙蛙此刻是不是正在做手工（FrogMotionNum.make = 3）。 */
+  const craftMotionNum = Number((defineData.maps && defineData.maps.FrogMotionNum || {}).make);
+  const doingHandcraft = atHome && Number(state.frog && state.frog.motion)
+    === (Number.isFinite(craftMotionNum) ? craftMotionNum : 3);
   let changed = false;
 
   // Reserve from storage and persist the receipt with the job. Stages, reloads
@@ -2768,7 +3726,11 @@ function advanceCraft(t) {
   }
 
   for (const w of c.wishes) {
-    if (!canCraft || w.state > 3 || !reserveMaterial(w, HANDCRAFT_MATERIAL_ID) || t < w.make_time) continue;
+    /* 【并入他 3.3 的可选项】WISH_WORKCLOCK=1 时，到点还不够，得蛙蛙正在做手工。 */
+    if (WISH_WORKCLOCK && !doingHandcraft) continue;
+    /* V40-PREFER-HIS 【V4.0】他的手工品不再要工具/材料；我们的门槛走 FROG_HANDCRAFT_GATE=1。 */
+    if (w.state > 3 || t < w.make_time) continue;
+    if (HANDCRAFT_GATE && (!canCraft || !reserveMaterial(w, HANDCRAFT_MATERIAL_ID))) continue;
     w.state += 1;
     if (w.state > 3) {
       /* The table's last stage lists the pieces that MAY be used ("102,103,104,
@@ -3517,17 +4479,57 @@ function mdPayload(s) {
     return !!item && (item.type === ITEM_TYPE_SPECIALTY || (item.type === 15 && item.sub_type === 1));
   }
 
+  /* 【并入他 3.3】星级：阈值 [0,20,50,80] → 0/1/2/3 星（客户端 pips 之外的真实星级）。 */
+  function soilStars(fertility) {
+    const value = Math.max(0, Number(fertility) || 0);
+    let stars = 0;
+    for (let i = 1; i < SOIL_STAR_THRESHOLDS.length; i += 1) {
+      if (value >= SOIL_STAR_THRESHOLDS[i]) stars = i;
+    }
+    return stars;
+  }
+
+  /* 一个发酵物完成时给多少肥力点（他的点数表；未登记的按 1 点，即我们原来的 +1）。 */
+  function compostPointsFor(id) {
+    const points = FERTILIZER_POINTS.get(Number(id));
+    return Number.isFinite(points) && points > 0 ? points : 1;
+  }
+
+  /** 他的发酵时长：20004–6 三天，其余立即；FROG_COMPOST_SEC 可强制统一时长。 */
+  function compostDurationFor(itemId) {
+    if (COMPOST_FLAT_SEC !== null) return COMPOST_FLAT_SEC;
+    const id = Number(itemId);
+    return COMPOST_HIS_RULES.has(id) ? Number(COMPOST_HIS_RULES.get(id)) : COMPOST_DURATION_SEC;
+  }
+
   function refreshCompost(t) {
     const c = state.furniture.compost;
     const before = JSON.stringify(c);
     c.boxes = Array.from({length: 6}, (_, i) => Number((c.boxes || [])[i]) || 0);
-    c.fertility = Number.isSafeInteger(c.fertility) && c.fertility >= 0 ? c.fertility : 0;
+    c.fertility = Number.isFinite(c.fertility) && c.fertility >= 0
+      ? Math.min(SOIL_FERTILITY_MAX, Math.floor(c.fertility)) : 0;
+    /* 【并入他 3.3】肥力每天 −1，离线期间同样补算；记在 fertilityDecayAt 上。 */
+    {
+      const at = Number(t) || nowSec();
+      const decayAt = Number(c.fertilityDecayAt);
+      if (!Number.isFinite(decayAt) || decayAt <= 0) {
+        c.fertilityDecayAt = at;
+      } else if (at > decayAt) {
+        const periods = Math.floor((at - decayAt) / SOIL_FERTILITY_DECAY_PERIOD_SEC);
+        if (periods > 0) {
+          c.fertility = Math.max(0,
+            c.fertility - periods * SOIL_FERTILITY_DECAY_PER_PERIOD);
+          c.fertilityDecayAt = decayAt + periods * SOIL_FERTILITY_DECAY_PERIOD_SEC;
+        }
+      }
+    }
     const job = c.job;
     if (job && !(Number.isInteger(job.index) && job.index >= 1 && job.index <= 6
         && isCompostItem(job.itemId) && c.boxes[job.index - 1] === job.itemId
         && Number.isFinite(job.startedAt) && job.startedAt > 0
         && Number.isFinite(job.finishAt)
-        && [COMPOST_DURATION_SEC, 3 * 60 * 60].includes(job.finishAt - job.startedAt))) {
+        && [compostDurationFor(job.itemId), COMPOST_DURATION_SEC, 3 * 60 * 60]
+          .includes(job.finishAt - job.startedAt))) {
       c.job = null; // Invalid job: keep its contents, restart a full cycle.
     }
     // Existing three-hour jobs keep their selected slot and elapsed time.
@@ -3539,12 +4541,13 @@ function mdPayload(s) {
         const candidates = c.boxes.map((id, index) => isCompostItem(id) ? index + 1 : 0).filter(Boolean);
         if (!candidates.length) break;
         const index = candidates[randInt(0, candidates.length - 1)];
-        c.job = {index, itemId: c.boxes[index - 1], startedAt: cursor, finishAt: cursor + COMPOST_DURATION_SEC};
+        c.job = {index, itemId: c.boxes[index - 1], startedAt: cursor,
+      finishAt: cursor + compostDurationFor(c.boxes[index - 1])};
       }
       if (t < c.job.finishAt) break;
       cursor = c.job.finishAt;
       c.boxes[c.job.index - 1] = 0;
-      c.fertility = Math.min(Number.MAX_SAFE_INTEGER, c.fertility + 1);
+      c.fertility = Math.min(SOIL_FERTILITY_MAX, c.fertility + compostPointsFor(c.job.itemId));
       c.job = null;
     }
     c.boxIndex = c.job ? c.job.index : 0;
@@ -3557,6 +4560,7 @@ function mdPayload(s) {
       show_index: c.showIndex, replace_index: c.replaceIndex,
       // Original pips light at 2/3/4; keep the uncapped total separately.
       state: Math.min(4, 1 + c.fertility), fertility: c.fertility,
+      fertility_stars: soilStars(c.fertility),
       box_index: c.boxIndex, box_list: c.boxes.slice(), compost_list: c.list || [],
       finish_at: c.job ? c.job.finishAt : 0,
     };
@@ -4039,6 +5043,7 @@ function mdPayload(s) {
     /* 【并入他的 V3】不再要求"先准备"：掷骰中了就能走；没便当的那一趟按放浪
        结算（DRIFT 短窗口，不带照片/特产回来）。 */
     state.travel.waitingForBag = false;
+    setFrogEgg(0);        // 【并入他 3.3】出门就不带家里的彩蛋了
     // Provisions are decided (and consumed) at DEPARTURE: the stray-or-not outcome
     // depends on whether a lunch box was packed, so it cannot be deferred.
     state.travel.plan = provisionTrip();
@@ -4119,6 +5124,8 @@ function mdPayload(s) {
     /* 【并入他的 V3】奖励在出发时已经掷好；老档（本次之前的行程）没有这个字段，
        就按老办法在回家时掷，行为与 V3.5 一致。 */
     const r = state.travel.rewards || rollTripRewards(plan);
+    /* 【并入他 3.3】他就是在这一行后面记任务的。 */
+    markTripTaskProgress(plan, r);
     const deliveredMidTrip = (state.travel.postcardPics || []).slice();
     state.frog.status = 0;                       // home again
     state.items.bagCompleted = 0;
@@ -4296,9 +5303,21 @@ function mdPayload(s) {
       ctx.push('furniture_load_compost', compostPayload());
     }
     refreshClovers(t);
+    /* 【并入他 3.3】花期推进 + 花瓶每 24 小时可能自动换花。 */
+    if (refreshDecoration(t, ctx)) save();
+    if (maybeAutoChangeVaseFlower(t, ctx)) save();
     // season / time-of-day / weather: only push when something actually changed
-    if (refreshWeather()) ctx.push('weather_load', weatherPayload());
-    if (refreshFrogMotion(t)) ctx.push('client_load_role', rolePayload());
+    if (refreshWeather()) {
+      ctx.push('weather_load', weatherPayload());
+      /* 【并入他 3.3】天气/季节变了，院子的彩蛋也要跟着换。 */
+      ctx.push('easteregg_load', eggPayload());
+    }
+    if (refreshFrogMotion(t)) {
+      ctx.push('easteregg_load', eggPayload());
+      ctx.push('client_load_role', rolePayload());
+    }
+    /* 【并入他 3.3】排队的活：趁刚才换了动作，看看是不是该开工了。 */
+    tryStartQueuedCraft(t, ctx);
     const away = state.frog.status === 1;
     if (!away) {
       if (!state.travel.nextDepartAt) {
@@ -4342,7 +5361,8 @@ function mdPayload(s) {
     maybeAutoReplaceFurniture(ctx, t);
     /* 【并入他的 V3】材料齐了却还没开工时，按 35% 概率自己开工
        （检查间隔默认每拍；设 FROG_FURNITURE_AUTO_CRAFT_MIN_SEC=10800 就是他的 3 小时）。 */
-    autoCraftCheck(ctx, t);
+    /* 抄他 3.3：工坊改成"每 3 小时检查一次 + 35% 开工"（我们原来的每拍检查不再调用）。 */
+    if (processFurnitureCraftChecks(t, ctx)) save();
     if (advanceCraft(t)) {
       save();
       ctx.push('item_load_items', handlers.item_load_items());
@@ -4391,21 +5411,574 @@ function mdPayload(s) {
   /* Cadence per Define: roll every FRIEND_VISIT_RNDSEC with FRIEND_VISIT_RNDPER%
      chance, then a FRIEND_VISIT_COOL cooldown after they leave. A visitor is
      cleared either by expiring or by `guest_finish`. */
+  /* V37-RAIN-TASKS ================= 任务计数（依赖 state） ================= */
+
+  /** 某个任务计数当前值（没有就是 0）。 */
+  function taskCounter(id) {
+    return Math.max(0, Number((state.taskCounters || {})[String(id)]) || 0);
+  }
+
+  function addTaskCounter(id, amount) {
+    const n = Math.max(0, Number(amount) || 0);
+    if (!n) return;
+    if (!state.taskCounters || typeof state.taskCounters !== 'object') state.taskCounters = {};
+    state.taskCounters[String(id)] = taskCounter(id) + n;
+  }
+
+  /** 记"这件事发生过一次"（计数不足 1 才记，避免重复累加）。 */
+  function completeTaskCounter(id) {
+    if (taskCounter(id) < 1) addTaskCounter(id, 1);
+  }
+
+  /* V40-TASKS2 顶层的任务计数（v37 那份被插在嵌套作用域里，顶层调用者看不到它们）。 */
+
+  function taskCounter(id) {
+    return Math.max(0, Number((state.taskCounters || {})[String(id)]) || 0);
+  }
+
+  function addTaskCounter(id, amount) {
+    const n = Math.max(0, Number(amount) || 0);
+    if (!n) return;
+    if (!state.taskCounters || typeof state.taskCounters !== 'object') state.taskCounters = {};
+    state.taskCounters[String(id)] = taskCounter(id) + n;
+  }
+
+  function completeTaskCounter(id) {
+    if (taskCounter(id) < 1) addTaskCounter(id, 1);
+  }
+
+  /* V40-WIRE1 已把挂空函数接上（ownsFurniture / furnitureBenchLocked / craftMissingTools） */
+  /* V40-TASKS2 ============ 任务计数（抄他 3.3 的实现） ============ */
+
+  function blueprintTaskId(itemId) {
+    const id = Number(itemId);
+    if (id >= 10301 && id <= 10327) return id - 9699;
+    if (id === 10401) return 629;
+    if (id === 10501) return 630;
+    return 0;
+  }
+
+  function blueprintTaskProgress(id) {
+    const n = Number(id);
+    let blueprint = 0;
+    if (n >= 602 && n <= 628) blueprint = 10300 + (n - 601);
+    else if (n === 629) blueprint = 10401;
+    else if (n === 630) blueprint = 10501;
+    if (blueprint && hasHouseItem(blueprint)) return 1;
+    /* A blueprint is consumed when work starts; owning the finished furniture
+       still proves that the corresponding learning task was completed. */
+    if (n >= 602 && n <= 628) {
+      const type = n - 601;
+      const target = CRAFTABLE_BY_TYPE.get(type);
+      if (target && ownsFurniture(target.furnitureId)) return 1;
+    }
+    return taskCounter(id);
+  }
+
+  function markTripTaskProgress(plan, reward) {
+    if (!plan || !reward || reward.stray) return;
+    if (reward.goal) completeTaskCounter(102);
+    if (reward.area) completeTaskCounter(103);
+
+    /* These five rows are the original food -> destination checklist. The
+       destination must be reached with the matching food, not merely bought. */
+    const foodAreas = {
+      408: ['A_WSOUTH', 'A_WNORTH', 'A_WSOUTH2'],
+      409: ['A_EAST', 'A_TAIWAN'],
+      410: ['A_SOUTH', 'A_SOUTH2', 'A_EAST'],
+      411: ['A_NORTH', 'A_ENORTH'],
+    };
+    const foodIds = { 408: 4, 409: 5, 410: 15, 411: 16, 412: 33 };
+    for (const id of Object.keys(foodIds)) {
+      const taskId = Number(id);
+      if (!tripCarries(plan, foodIds[taskId])) continue;
+      const areas = foodAreas[taskId];
+      if (!areas || areas.indexOf(String(reward.area)) !== -1 || taskId === 412) {
+        completeTaskCounter(taskId);
+      }
+    }
+
+    if (reward.museum) completeTaskCounter(501);
+    /* A returned specialty/material is one count toward「合适的材料带回家」. */
+    const materialCount = (reward.items || []).filter((id) => {
+      const item = ITEM_BY_ID.get(Number(id));
+      return item && (item.type === ITEM_TYPE_SPECIALTY || item.type === 10 || item.type === 11);
+    }).length;
+    if (materialCount) addTaskCounter(601, materialCount);
+    if (tripCarries(plan, 1)) completeTaskCounter(205);
+    if (tripCarries(plan, 2)) completeTaskCounter(302);
+    if (tripCarries(plan, 3)) completeTaskCounter(303);
+  }
+
+  /* V40-PRAY-STORY ============ 祈愿分层 / 剧情查找 / 邀约 ============ */
+
+  /** 这个 id 是不是合法的祈愿"层"（身体/图案表里有它）。 */
+  function validPrayLayer(id) {
+    const n = Number(id);
+    return Number.isFinite(n) && !!((gamedata.tables.prayBodyData || {})[String(n)]);
+  }
+
+  /** 把 "1,2,3" 这样的层列表拆开、只留下合法的那些。 */
+  function pickPrayLayer(v) {
+    return String(v == null ? '' : v).split(',')
+      .map((s) => Number(String(s).trim()))
+      .filter((n) => validPrayLayer(n));
+  }
+
+  /** 从多组候选层里挑一层：从最后一组往前找，找到就随机取一个（他的口径）。 */
+  function choosePrayLayer(parts) {
+    const rows = Array.isArray(parts) ? parts.slice().reverse() : [];
+    for (const raw of rows) {
+      const list = pickPrayLayer(raw);
+      if (list.length) return list[randInt(0, list.length - 1)];
+    }
+    return 0;
+  }
+
+  /** 剧情在客户端那边用的 id：优先 storyid，其次 id。 */
+  function storyClientId(story) {
+    const tableId = Number(story && story.storyid);
+    return tableId > 0 ? tableId : Number(story && story.id) || 0;
+  }
+
+  /** 在本地剧情簿里找一条剧情（按内部 id 或客户端 id 都认）。 */
+  function findStory(id) {
+    const wanted = Number(id);
+    const list = (state.storyBook && state.storyBook.list) || [];
+    return list.find((story) => Number(story.id) === wanted || storyClientId(story) === wanted);
+  }
+
+  /** 访客离开时留下"友情绘本"邀约：冷却到点 + 按概率 + 指定或随机一位伙伴。 */
+  function leaveDrawingInvitation(guestId, t) {
+    const d = state.drawing;
+    if (!d || (d.state !== 0 && d.state !== undefined && d.state !== null)) return false;
+    const at = Number(t || nowSec());
+    if (Number(state.drawingNextRollAt) > at) return false;
+    state.drawingNextRollAt = at + DRAWING_CHECK_COOLDOWN_SEC;
+    if (Math.random() * 100 >= DRAWING_CHANCE) return false;
+    const guests = drawingGuestIds();
+    if (!guests.length) return false;
+    let guest = Number(guestId);
+    if (guests.indexOf(guest) === -1) guest = guests[randInt(0, guests.length - 1)];
+    d.state = 1;
+    d.guest = guest;
+    d.bag = Array.isArray(d.bag) ? d.bag.map(() => -1) : [-1, -1, -1, -1];
+    d.invitationAccepted = false;
+    return true;
+  }
+
+  /* V40-VISITOR-GAP ================= 访客 / 剧情辅助（依赖 state） ================= */
+
+  /** 这次旅行有没有带某件道具（他的命名）。 */
+  function tripCarries(plan, itemId) {
+    return !!(plan && Array.isArray(plan.carried)
+      && plan.carried.some((id) => Number(id) === Number(itemId)));
+  }
+
+  /** 下一次摇访客的时间：设了 MIN/MAX 走他的随机区间，否则用我们的一分钟节奏。 */
+  function nextGuestRollAt(t) {
+    const at = Number(t) || nowSec();
+    if (GUEST_ROLL_MIN_SEC > 0 || GUEST_ROLL_MAX_SEC > 0) {
+      const min = Math.max(60, GUEST_ROLL_MIN_SEC || 8 * 3600);
+      const max = Math.max(min, GUEST_ROLL_MAX_SEC || min);
+      return at + randInt(min, max);
+    }
+    return at + GUEST_ROLL_SEC;
+  }
+
+  /** 把访客食物归一到合法 id（他的命名）。 */
+  function normalizeVisitorFood(food) {
+    const id = Number(food);
+    if (VISITOR_FOOD_IDS.indexOf(id) >= 0) return id;
+    return VISITOR_FOOD_IDS.length ? Number(VISITOR_FOOD_IDS[0]) : 0;
+  }
+
+  /** 心境编号 -> 中文标签（他的命名；面板与调试用）。 */
+  function furnitureMoodLabel(mood) {
+    return ({
+      1: '非常开心', 2: '开心', 3: '平静', 4: '生气', 5: '非常生气',
+    })[Number(mood)] || '未知';
+  }
+
+  /* V40-MISC-GAP ============ 他 3.3 的辅助函数（薄封装，行为等价） ============ */
+
+  /** 家里有没有某件东西（他的命名；我们原来直接调 getHaveItem）。 */
+  function hasHouseItem(itemId, count) {
+    const need = Math.max(1, Number(count) || 1);
+    return getHaveItem(Number(itemId)) >= need;
+  }
+
+  /** 这件家具是否已经拥有（他的命名）。 */
+  function ownsFurniture(furnitureId) {
+    const list = state.furniture.owned || [];
+    return list.some((id) => Number(id) === Number(furnitureId));
+  }
+
+  /** 工作台是否正锁着（他的命名）。 */
+  function furnitureBenchLocked() {
+    return !!state.furniture.benchLock;
+  }
+
+  /** 这套工具还缺哪几件（他的命名；我们叫 craftMissingToolsFor）。 */
+  function craftMissingTools(tools) {
+    return craftMissingToolsFor(tools);
+  }
+
+  /** 某个风格对应的特殊材料（他的命名；我们表叫 CRAFT_SPECIAL_BY_STYLE）。 */
+  function craftSpecialMaterialFor(style) {
+    const id = CRAFT_SPECIAL_BY_STYLE[Number(style)];
+    return id === undefined ? 0 : Number(id);
+  }
+
+  /** 工作台上所有可做的活（他的命名）：普通家具 + 口袋 + 不倒翁，按 benchBlueprint 的口径。 */
+  function benchBlueprintCandidates() {
+    const out = [];
+    const plain = benchBlueprint();
+    if (plain) out.push(plain);
+    const extra = benchPocketTumblerBlueprint();
+    if (extra && !out.some((bp) => Number(bp.furnitureId) === Number(extra.furnitureId))) out.push(extra);
+    return out;
+  }
+
+  /** 堆肥载荷（他的命名；我们叫 compostPayload）。 */
+  function compostDisplayState() {
+    return compostPayload();
+  }
+
+  /** 保证堆肥状态形状正确（他的命名；我们 refreshCompost 里已内联同一件事）。 */
+  function ensureCompostState() {
+    const c = state.furniture.compost || (state.furniture.compost = {});
+    c.boxes = Array.from({ length: 6 }, (_, i) => Number((c.boxes || [])[i]) || 0);
+    c.fertility = Math.max(0, Math.min(SOIL_FERTILITY_MAX, Number(c.fertility) || 0));
+    if (!Array.isArray(c.list) || !c.list.length) c.list = [21000];
+    return c;
+  }
+
+  /** 祈愿物做完时的图案落定（他抽成具名函数；我们原来是内联在 advanceCraft 里）。 */
+  function fillWishArt(wish) {
+    const bodyIds = Object.keys((gamedata.tables || {}).prayBodyData || {});
+    if (bodyIds.length && wish && !wish.body_id) {
+      wish.body_id = Number(bodyIds[randInt(0, bodyIds.length - 1)]);
+    }
+    return wish;
+  }
+
+  /** 已完成（state > 3）的祈愿物数量 / 已盖好的印章数量（他的命名）。 */
+  function finishedWishCount() {
+    const c = state.craft || {};
+    return (c.wishes || []).filter((w) => Number(w && w.state) > 3).length;
+  }
+
+  function finishedStampCount() {
+    const c = state.craft || {};
+    return (c.stamps || []).filter((s) => Number(s && s.state) > 3).length;
+  }
+
+  /** 他用来判断"这件是不是已经做完"的小工具（我们内联写的 state > 3）。 */
+  function done(job) {
+    return Number(job && job.state) > 3;
+  }
+
+  function doneStamps() {
+    const c = state.craft || {};
+    return (c.stamps || []).filter((s) => done(s));
+  }
+
+  /* 【抄他 3.3】recordFurnitureChange */
+  function recordFurnitureChange() {
+    const F = state.furniture;
+    recordFurnitureChange();   /* 抄他 3.3：换家具记一次（含强制乱掉判定） */
+    F.moodReplaceCount = Math.max(0, Number(F.moodReplaceCount) || 0) + 1;
+    if (!(Number(F.moodReplaceThreshold) > 0)) {
+      F.moodReplaceThreshold = randInt(FURNITURE_ANGER_MIN_CHANGES, FURNITURE_ANGER_MAX_CHANGES);
+    }
+    if (F.moodReplaceCount < Number(F.moodReplaceThreshold)) return false;
+
+    F.moodReplaceCount = 0;
+    F.moodReplaceThreshold = randInt(FURNITURE_ANGER_MIN_CHANGES, FURNITURE_ANGER_MAX_CHANGES);
+    if (Math.random() * 100 >= FURNITURE_ANGER_CHANCE) return false;
+    F.moodStress = Math.max(Number(F.moodStress) || 0, FURNITURE_MESS_STRESS);
+    normalizeFurnitureMood();
+    return true;
+  }
+
+  /* 【抄他 3.3】skipFurnitureCraftChecksUntil */
+  function skipFurnitureCraftChecksUntil(at) {
+    let next = Number(state.furniture.nextCraftCheckAt);
+    if (!(next > 0)) next = Number(at) + FURNITURE_CRAFT_CHECK_SECONDS;
+    while (next <= Number(at)) next += FURNITURE_CRAFT_CHECK_SECONDS;
+    state.furniture.nextCraftCheckAt = next;
+  }
+
+  /* 【抄他 3.3】rollFurnitureCraftCheck */
+  function rollFurnitureCraftCheck(at, ctx) {
+    const next = Number(state.furniture.nextCraftCheckAt) || (Number(at) + FURNITURE_CRAFT_CHECK_SECONDS);
+    state.furniture.nextCraftCheckAt = next + FURNITURE_CRAFT_CHECK_SECONDS;
+    if (state.frog.status !== 0 || state.furniture.craft || state.furniture.craftQueued
+      || furnitureMoodBlocked()) return false;
+    const ready = benchBlueprintCandidates().map((bp) => craftMissing(bp))
+      .filter((info) => info && !info.missing.length && !info.missingTools.length);
+    if (!ready.length || Math.random() >= FURNITURE_CRAFT_START_CHANCE) return true;
+    const groups = new Map();
+    for (const info of ready) {
+      const bp = info.bp;
+      const slot = craftRecipeSlot(bp);
+      const key = slot >= 0 ? 'slot:' + slot : 'candidate:' + groups.size;
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(bp);
+    }
+    const choices = Array.from(groups.values());
+    const group = choices.length > 1
+      ? choices[Math.floor(Math.random() * choices.length)] : choices[0];
+    const selected = (group.length > 1
+      ? group[Math.floor(Math.random() * group.length)] : group[0]);
+    state.furniture.craftQueued = 1;
+    state.furniture.craftQueuedFurnitureId = selected.furnitureId;
+    state.furniture.craftQueuedBenchSlot = craftRecipeSlot(selected);
+    tryStartQueuedCraft(at, ctx);
+    return true;
+  }
+
+  /* 【抄他 3.3】processFurnitureCraftChecks */
+  function processFurnitureCraftChecks(at, ctx) {
+    let changed = false;
+    let next = Number(state.furniture.nextCraftCheckAt);
+    if (!(next > 0)) next = Number(at) + FURNITURE_CRAFT_CHECK_SECONDS;
+    while (next <= Number(at)) {
+      state.furniture.nextCraftCheckAt = next;
+      rollFurnitureCraftCheck(next, ctx);
+      next = Number(state.furniture.nextCraftCheckAt);
+      changed = true;
+    }
+    if (state.furniture.nextCraftCheckAt !== next) {
+      state.furniture.nextCraftCheckAt = next;
+      changed = true;
+    }
+    return changed;
+  }
+
+  /* 【抄他 3.3】advanceFurnitureCraft */
+  function advanceFurnitureCraft(ctx, t) {
+    const craft = state.furniture.craft;
+    if (!craft) return false;
+    if (craft.work_left === undefined) {
+      craft.work_left = Math.max(0, Number(craft.finishAt || 0) - t);
+    }
+    const previous = Number(craft.workClockAt) > 0 ? Number(craft.workClockAt) : t;
+    const active = state.frog.status === 0
+      && furnitureToolMotion(state.frog.motion);
+    const motionEnd = Number(state.frog.motionNextAt) || 0;
+    const activeUntil = active && motionEnd > previous
+      ? Math.min(t, motionEnd) : previous;
+    const delta = active ? Math.max(0, activeUntil - previous) : 0;
+    craft.workClockAt = t;
+    if (delta > 0) craft.work_left = Math.max(0, Number(craft.work_left) - delta);
+    craft.finishAt = t + Math.max(0, Number(craft.work_left) || 0);
+    if (active && craft.work_left <= 0) {
+      return craftTick(ctx, t);
+    }
+    return delta > 0;
+  }
+
+  /* 【抄他 3.3】cookingPayload */
+  function cookingPayload() {
+    const C = refreshCooking();
+    return {
+      month: C.month,
+      month_pro: C.monthPro || 0,
+      week: C.week || 0,
+      complete: !!C.complete,
+      select: C.select || 1,
+      refresh_time: C.refreshTime || 0,
+      task_list: (C.taskList || []).map((t) => ({
+        id: t.id, pro: t.pro || 0, complete: !!t.complete,
+      })),
+    };
+  }
+  /* 【抄他 3.3】cookingResetDailyTasks */
+  function cookingResetDailyTasks(preserveWeekly) {
+    const C = state.cooking;
+    const oldWeekly = (C.taskList || []).find((row) => {
+      const def = COOKING_TASKS[String(row.id)];
+      return def && Number(def.type) === 1;
+    });
+    C.taskList = cookingTaskRows().map((r) => ({
+      id: Number(r.id), pro: 0, complete: false,
+    }));
+    if (preserveWeekly && oldWeekly) {
+      const weekly = C.taskList.find((row) => Number(row.id) === Number(oldWeekly.id));
+      if (weekly) {
+        weekly.pro = Number(oldWeekly.pro) || 0;
+        weekly.complete = !!oldWeekly.complete;
+      }
+    }
+  }
+  /* 【抄他 3.3】capsuleFastTask */
+  function capsuleFastTask(ctx, slot) {
+    const cost = Number(CAPSULE_FAST_COST) || 0;
+    if (!slot || slot.complete || state.clover < cost) return false;
+    state.clover -= cost;
+    slot.complete = true;
+    if (!state.capsule.doneTasks) state.capsule.doneTasks = [];
+    if (state.capsule.doneTasks.indexOf(Number(slot.id)) === -1) {
+      state.capsule.doneTasks.push(Number(slot.id));
+    }
+    state.capsule.preCoin = (Number(state.capsule.preCoin) || 0) + 1;
+    save();
+    if (ctx) {
+      ctx.push('clover_update', { clover: state.clover });
+      ctx.push('capsule_load_coin', {
+        coin: state.capsule.coin || 0,
+        pre_coin: state.capsule.preCoin,
+      });
+      ctx.push('capsule_load_task', { task_list: capsulePayload().task_list });
+    }
+    return true;
+  }
+  /* 【抄他 3.3】queuePartyResult */
+  function queuePartyResult(ctx, guest, page, coll) {
+    const event = {
+      id: state.eventSeq++,
+      evt_type: TIMER_EVENT.PartyResult,
+      evt_id: Number(guest),
+      evt_value: [page === null ? 0 : Number(page), coll === null ? 0 : Number(coll), 0, 0],
+      evt_string: [],
+      evt_pic: [],
+    };
+    if (!Array.isArray(state.pendingEvents)) state.pendingEvents = [];
+    state.pendingEvents.push(event);
+    ctx.push('notify_new_event', { event });
+    return event;
+  }
+  /* 【抄他 3.3】wishingPoolPayload */
+  function wishingPoolPayload(W) {
+    return {
+      end_time: W.endTime,
+      coin: W.coin,
+      items: W.items.map((item) => ({ id: item.id, num: item.num, limit: item.limit })),
+    };
+  }
+  /* 【抄他 3.3】resetWishPoolIfExhausted */
+  function resetWishPoolIfExhausted() {
+    const items = wishPoolItems();
+    if (!items.length || items.some((item) => Number(item.limit) > 0)) return false;
+    const fourLeaf = DEF('FourLeafCloverID', 1000);
+    for (const item of items) {
+      item.limit = Number(item.id) === fourLeaf ? 1 : 3;
+    }
+    return true;
+  }
+  /* 【抄他 3.3】advanceFurnitureOffline */
+  function advanceFurnitureOffline(ctx, t, from) {
+    if (state.frog.status !== 0) return false;
+    let cursor = Number(from) > 0 ? Number(from) : t;
+    let motion = Number(state.frog.motion);
+    let next = Number(state.frog.motionNextAt);
+    if (!(next > cursor)) next = cursor + FROG_MOTION_SEC;
+    let checkAt = Number(state.furniture.nextCraftCheckAt);
+    if (!(checkAt > 0)) checkAt = cursor + FURNITURE_CRAFT_CHECK_SECONDS;
+    while (checkAt <= cursor) checkAt += FURNITURE_CRAFT_CHECK_SECONDS;
+    state.furniture.nextCraftCheckAt = checkAt;
+    let consumed = 0;
+    let changed = false;
+    let guard = 0;
+    while ((cursor < t || checkAt <= t || next <= t) && guard++ < 200000) {
+      const end = Math.min(t, next, checkAt);
+      let craft = state.furniture.craft;
+      if (furnitureToolMotion(motion) && craft) {
+        const use = Math.max(0, end - cursor);
+        if (use > 0) {
+          const left = Math.max(0, Number(craft.work_left) || 0);
+          const used = Math.min(left, use);
+          craft.work_left = left - used;
+          consumed += used;
+          changed = changed || used > 0;
+          if (craft.work_left <= 0) {
+            const finishedAt = cursor + used;
+            craft.workClockAt = finishedAt;
+            craft.finishAt = finishedAt;
+            craftTick(ctx, finishedAt);
+          }
+        }
+      }
+      cursor = end;
+      if (checkAt <= cursor) {
+        state.furniture.nextCraftCheckAt = checkAt;
+        rollFurnitureCraftCheck(checkAt, ctx);
+        checkAt = Number(state.furniture.nextCraftCheckAt);
+        changed = true;
+      }
+      if (next <= cursor) {
+        motion = scheduledFurnitureMotion(cursor);
+        state.frog.motion = motion;
+        next = cursor + FROG_MOTION_SEC;
+        changed = true;
+        if (furnitureToolMotion(motion) && tryStartQueuedCraft(cursor, ctx)) changed = true;
+      }
+      if (cursor >= t && checkAt > t && next > t) break;
+    }
+    state.frog.motion = motion;
+    state.frog.motionNextAt = next;
+    const craft = state.furniture.craft;
+    if (craft) {
+      craft.workClockAt = t;
+      craft.finishAt = t + Math.max(0, Number(craft.work_left) || 0);
+    }
+    return changed || consumed > 0;
+  }
+  /* 【抄他 3.3】scheduledFurnitureMotion */
+  function scheduledFurnitureMotion(at) {
+    const keys = Object.keys(FROGPATTERN);
+    if (!keys.length) return Number(FROGMOTIONNUM.doku) || 0;
+    if (state.frog.motionPattern == null) {
+      const max = Math.max(1, Number(DEF('FrogPatternMax', 3)));
+      state.frog.motionPattern = Math.floor(Math.random() * max);
+      state.frog.motionStep = 0;
+    }
+    const seq = FROGPATTERN[String(state.frog.motionPattern)] || FROGPATTERN[keys[0]];
+    if (!Array.isArray(seq) || !seq.length) return Number(FROGMOTIONNUM.doku) || 0;
+    state.frog.motionStep = ((state.frog.motionStep || 0) + 1) % seq.length;
+    const token = seq[state.frog.motionStep];
+    const hour = new Date(at * 1000).getHours();
+    if (hour >= 21 || hour < 6) return 10 + state.frog.motionStep % 4;
+    const motion = Number(FROGMOTIONNUM[token]) || 0;
+    return token === 'make' ? furnitureActionMotion() : motion;
+  }
+
+  /* V40-UNIFY-HIS 【抄他 3.3】他进度模型的字段：顶层原始值会被启动包装掉，在 tick 里按他的默认补齐。 */
+  if (state.drawingQueued === undefined || typeof state.drawingQueued === 'object') state.drawingQueued = false;
+  if (state.drawingRestUntil === undefined || typeof state.drawingRestUntil === 'object') state.drawingRestUntil = 0;
+  if (state.cooking) {
+    if (state.cooking.lastWeek === undefined) state.cooking.lastWeek = 2962;
+    if (state.cooking.taskDay === undefined) state.cooking.taskDay = 20261011;
+  }
+  if (state.craft && state.craft.workClockAt === undefined) state.craft.workClockAt = 0;
+  if (state.furniture && state.furniture.compost && state.furniture.compost.state === undefined) state.furniture.compost.state = 0;
+
   function tickGuest(ctx, t) {
     if (state.guest) {
       finishGuest(ctx, t);
       return;
     }
     if (!state.guestNextRollAt) {
-      state.guestNextRollAt = t + GUEST_ROLL_SEC;
+      state.guestNextRollAt = nextGuestRollAt(t);
       save();
       return;
     }
     if (t < state.guestNextRollAt) return;
-    state.guestNextRollAt = t + GUEST_ROLL_SEC;
+    state.guestNextRollAt = nextGuestRollAt(t);
     if (t < (state.guestCoolUntil || 0)) { save(); return; }
     if (Math.random() * 100 >= GUEST_CHANCE) { save(); return; }
     state.guest = pickGuest();
+    /* V37-RAIN-TASKS 【并入他 3.3】下雨天来的客人有 30% 概率带"雨天装扮"彩蛋。 */
+    {
+      const wx = Number((state.weather || {}).weather) || 0;
+      const isRain = wx === 3 || wx === 4;
+      const guestId = Number(state.guest && state.guest.id);
+      if (isRain && RAIN_GUEST_EGG[guestId] && Math.random() < RAIN_GUEST_CHANCE) {
+        state.guest.rainEgg = RAIN_GUEST_EGG[guestId];
+      }
+    }
     state.guestVisits = (state.guestVisits || 0) + 1;
     if (!state.firstGuest) state.firstGuest = Number(state.guest.id) || 0;
     save();
@@ -4471,6 +6044,8 @@ function mdPayload(s) {
       state.drawing.guest = Number(g.id);
       state.drawingNextRollAt = 0;
     }
+    /* 【并入他 3.3】访客离开是"种花"的触发点之一（土不够肥就不种）。 */
+    plantRandomFlowerpot(t);
     state.guest = null;
     state.guestBonusTickets = 0;
     state.guestCoolUntil = t + GUEST_COOL_SEC;
@@ -4580,7 +6155,8 @@ function mdPayload(s) {
       if (!got.length) {
         // nothing left to give: fall through to the visit branch
         d.state = 4; // visit
-        state.drawingReturnAt += 60;
+        /* 【并入他 3.3】被邀约的伙伴出门 4–8 小时（原来是 60 秒）。 */
+        state.drawingReturnAt = t + randInt(DRAWING_TRIP_MIN_SEC, DRAWING_TRIP_MAX_SEC);
       } else {
         d.state = 0;
         if (verbose) console.log(`[engine] drawing trip returned ${got.join(',')}`);
@@ -4588,15 +6164,27 @@ function mdPayload(s) {
       changed = true;
     }
     if (d.state === 4) {
-      if (!state.drawingReturnAt) { state.drawingReturnAt = t + 60; changed = true; }
-      if (t >= state.drawingReturnAt) { d.state = 0; changed = true; }
+      if (!state.drawingReturnAt) {
+        state.drawingReturnAt = t + randInt(DRAWING_TRIP_MIN_SEC, DRAWING_TRIP_MAX_SEC);
+        changed = true;
+      }
+      if (t >= state.drawingReturnAt) {
+        d.state = 0;
+        /* 【并入他 3.3】回来先在家歇一小时，之后每 8 小时才重新看一次邀约条件。 */
+        state.drawingRestUntil = t + DRAWING_HOME_REST_SEC;
+        state.drawingNextRollAt = t + DRAWING_CHECK_COOLDOWN_SEC;
+        changed = true;
+      }
     }
     if (!changed) return;
     if (d.state === 0) {
       d.bag = (d.bag || []).map(() => -1);
       d.guest = -1;
       state.drawingReturnAt = 0;
-      state.drawingNextRollAt = 0;
+      /* 【并入他 3.3】回来后的 8 小时冷却由出行分支设置，这里别清零。 */
+      if (!Number(state.drawingNextRollAt)) {
+        state.drawingNextRollAt = t + DRAWING_CHECK_COOLDOWN_SEC;
+      }
     }
     save();
     ctx.push('guest_load_drawing', drawingPayload());
@@ -5751,20 +7339,29 @@ function mdPayload(s) {
        ended on the 28th, and the client's own claim check (which is keyed by
        day-of-month) could never fire for those days either. */
     const covered = state.calendar.st.length + state.calendar.lucky.length;
-    if (state.calendar.month === m && covered === maxDay) return;
+    if (state.calendar.month === m && covered === maxDay
+        && Number(state.calendar.rewardVersion) === CALENDAR_REWARD_VERSION) return;
+    const keepClaimed = state.calendar.month === m
+      ? new Set([...(state.calendar.claimedSt || []), ...(state.calendar.claimedLucky || [])])
+      : new Set();
     state.calendar.month = m;
     state.calendar.claimedLucky = [];
     state.calendar.claimedSt = [];
     const st = [];
     const lucky = [];
     for (let d = 1; d <= maxDay; d++) {
-      // every day of the month carries a reward, as the original's own month art
-      // did (every cell had an icon); the every-7th-day ticket is our design
-      if (d % 7 === 0) lucky.push({ day: d, item_id: ITEM_TICKET_RES });
-      else st.push({ day: d, item_id: ITEM_CLOVER_RES });
+      const reward = CALENDAR_MONTH_REWARDS[(d - 1) % CALENDAR_MONTH_REWARDS.length];
+      const row = { day: d, item_id: reward.item_id, num: reward.num };
+      // Fixed monthly rewards belong to st_days in the original client. The
+      // lucky_days branch is reserved for a separate current-day event.
+      st.push(row);
+      if (keepClaimed.has(d)) {
+        state.calendar.claimedSt.push(d);
+      }
     }
     state.calendar.st = st;
     state.calendar.lucky = lucky;
+    state.calendar.rewardVersion = CALENDAR_REWARD_VERSION;
     save();
   }
 
@@ -5904,6 +7501,12 @@ function mdPayload(s) {
      type 1 = 旅行  -> trips taken
      type 2 = 旅行笔记 -> notes collected (pictures stand in for notes here) */
   function taskProgress(t) {
+    /* 【并入他 3.3】他的进度是**按任务 id** 算的：602..630 是「图纸/学会做它」这一类，
+       看手上有没有图纸、或有没有已经把这件家具做出来；再与他自己的计数取大者。 */
+    const taskId = Number(t && t.id);
+    if (taskId >= 602 && taskId <= 630) {
+      return Math.max(taskCounter(taskId), blueprintTaskProgress(taskId));
+    }
     const type = Number(t && t.type);
     if (type === 1) return Number(state.travel.tripCount) || 0;
     if (type === 2) return (state.pictures || []).length;
@@ -6038,7 +7641,7 @@ function mdPayload(s) {
   }));
   /* Growth timing is not in any table we can read, so this is our choice:
      three stages over FROG_PLANT_SEC (default 10 minutes total). */
-  const PLANT_STAGE_SEC = Number(process.env.FROG_PLANT_STAGE_SEC || 200);
+  const PLANT_STAGE_SEC = Number(process.env.FROG_PLANT_STAGE_SEC || 3 * 86400);
 
   function plantList() {
     return (state.flowerpot.slots || []).map((s, i) => ({
@@ -6051,6 +7654,173 @@ function mdPayload(s) {
 
   /* The client has NO "plant" command -- the whole cycle is server-driven -- so a
      free slot is re-seeded here. Growth is by elapsed time. */
+  /* V37-FLOWER-VASE ================= 花盆与花瓶（依赖 state） ================= */
+
+  /** 星级越高长得越快：`PLANT_STAGE_SEC / 星级`（1–3 星封顶，最少 60 秒）。 */
+  function plantStageSeconds(stars) {
+    const level = Math.max(1, Math.min(3, Number(stars) || 1));
+    return Math.max(60, Math.round(PLANT_STAGE_SEC / level));
+  }
+
+  /** 花盆槽位形状（老档/损坏档补齐成 FLOWERPOT_SLOTS 个空槽）。 */
+  function ensureFlowerpotSlots() {
+    if (!Array.isArray(state.flowerpot.slots)
+        || state.flowerpot.slots.length !== FLOWERPOT_SLOTS) {
+      state.flowerpot.slots = [];
+      for (let i = 0; i < FLOWERPOT_SLOTS; i++) {
+        state.flowerpot.slots.push({ id: 0, stage: 0, plantedAt: 0 });
+      }
+      return true;
+    }
+    return false;
+  }
+
+  /** 他的触发：访客离开时种一株（土不够肥就空着）。空位随便挑、品种随便挑。 */
+  function plantRandomFlowerpot(t) {
+    refreshCompost(t);
+    const compost = state.furniture.compost || {};
+    ensureFlowerpotSlots();
+    const empty = [];
+    for (let i = 0; i < state.flowerpot.slots.length; i += 1) {
+      if (!state.flowerpot.slots[i].id) empty.push(i);
+    }
+    const stars = soilStars(Number(compost.fertility) || 0);
+    if (!empty.length || stars < 1 || !FLOWER_PLANTS.length) return false;
+    const slotIndex = empty[randInt(0, empty.length - 1)];
+    const plantId = Number(FLOWER_PLANTS[randInt(0, FLOWER_PLANTS.length - 1)]);
+    const plantedAt = Number(t) || nowSec();
+    state.flowerpot.slots[slotIndex] = {
+      id: plantId,
+      stage: 1,
+      plantedAt,
+      fertility: stars,
+      stageSec: plantStageSeconds(stars),
+      seededByGuest: true,
+    };
+    save();
+    return true;
+  }
+
+  /** 一件装饰的生命周期：[总时长, 转形态的时刻]（null = 不变形态）。 */
+  function decorationFlowerRule(id) {
+    if (WILD_GRASS_DECORATIONS.has(Number(id))) {
+      return { lifeSec: 2 * DAY_SEC, stage2Sec: 1 * DAY_SEC };
+    }
+    if (Number(id) === 100) {
+      // 蜡梅：含苞三天，开花两天，总计五天。
+      return { lifeSec: 5 * DAY_SEC, stage2Sec: 3 * DAY_SEC };
+    }
+    if (Number(id) >= CULTIVATED_DECORATION_MIN
+      && Number(id) <= CULTIVATED_DECORATION_MAX) {
+      // 角堇/葡风/风信子/鸢尾/郁金香/铃兰：美丽五天，枯萎一天。
+      return { lifeSec: 6 * DAY_SEC, stage2Sec: 5 * DAY_SEC };
+    }
+    // 木槿、桂花、丁香、建兰、水仙：保持同一形态七天。
+    return { lifeSec: 7 * DAY_SEC, stage2Sec: null };
+  }
+
+  /** 把某个装饰从库存里扣掉一件（撤下花瓶时用）。 */
+  function removeDisplayedDecoration(id) {
+    const list = state.decoration.hasList || [];
+    const entry = list.find((d) => Number(d.id) === Number(id));
+    if (!entry) return;
+    entry.num = Math.max(0, Number(entry.num) - 1);
+    if (entry.num <= 0) {
+      state.decoration.hasList = list.filter((d) => d !== entry);
+    }
+  }
+
+  function decorationPayload() {
+    return {
+      has_list: decorationInventory(),
+      put_id: state.decoration.putId || 0,
+      status: state.decoration.status || 0,
+    };
+  }
+
+  /** 推进当前摆着的花：到第二形态改 status、到寿命就撤下（`startedAt` 是我们新加的字段，
+      老档没有就按"现在开始"算，不会把老档的花直接判死）。 */
+  function refreshDecoration(t, ctx) {
+    const D = state.decoration;
+    const putId = Number(D.putId) || 0;
+    if (!putId) {
+      if (D.status || D.startedAt) {
+        D.status = 0;
+        D.startedAt = 0;
+        return true;
+      }
+      return false;
+    }
+    if (!DECORATIONS[String(putId)]) {
+      D.putId = 0;
+      D.status = 0;
+      D.startedAt = 0;
+      if (ctx) ctx.push('client_load_decorate', decorationPayload());
+      return true;
+    }
+    const rule = decorationFlowerRule(putId);
+    let startedAt = Number(D.startedAt) || 0;
+    let changed = false;
+    if (!startedAt) {
+      /* 老档没有摆放时间：本来已经是第二形态的就按"刚好进第二形态"倒推，否则从现在开始。 */
+      startedAt = Number(D.status) >= 2 && rule.stage2Sec ? t - rule.stage2Sec : t;
+      D.startedAt = startedAt;
+      changed = true;
+    }
+    const elapsed = Math.max(0, t - startedAt);
+    if (elapsed >= rule.lifeSec) {
+      removeDisplayedDecoration(putId);
+      D.putId = 0;
+      D.status = 0;
+      D.startedAt = 0;
+      if (ctx) ctx.push('client_load_decorate', decorationPayload());
+      return true;
+    }
+    const nextStatus = rule.stage2Sec !== null && elapsed >= rule.stage2Sec ? 2 : 1;
+    if (Number(D.status) !== nextStatus) {
+      D.status = nextStatus;
+      changed = true;
+      if (ctx) ctx.push('client_load_decorate', decorationPayload());
+    }
+    return changed;
+  }
+
+  /** 每 24 小时掷一次：35% 概率把花瓶换成另一件已拥有的装饰（换下来的退回库存）。 */
+  function maybeAutoChangeVaseFlower(at, ctx) {
+    const D = state.decoration;
+    if (!Number(D.nextAutoChangeAt)) {
+      D.nextAutoChangeAt = Number(at) + VASE_AUTO_CHANGE_SECONDS;
+      save();
+      return false;
+    }
+    if (Number(at) < Number(D.nextAutoChangeAt)) return false;
+    D.nextAutoChangeAt = Number(at) + VASE_AUTO_CHANGE_SECONDS;
+    save();
+    if (Math.random() * 100 >= VASE_AUTO_CHANGE_CHANCE) return false;
+    if (state.frog.status !== 0 || !(Number(D.putId) > 0)) return false;
+
+    const choices = decorationInventory().filter((row) => Number(row.id) !== Number(D.putId));
+    if (!choices.length) return false;
+    const nextId = Number(choices[randInt(0, choices.length - 1)].id);
+    const item = DECORATION_ITEMS.get(nextId);
+    const stored = (D.hasList || []).find((row) => Number(row.id) === nextId);
+    if ((!stored || Number(stored.num) <= 0)
+      && item && state.items.house.some((row) => Number(row.item_id) === item.id && row.count > 0)) {
+      addHouseItem(item.id, -1);
+      addDecoration(nextId, 1);
+      pushItemUpdate(ctx, item.id, getHaveItem(item.id));
+    }
+    removeDisplayedDecoration(D.putId);
+    D.putId = nextId;
+    D.status = 1;
+    D.startedAt = Number(at);
+    D.autoChangeCount = (Number(D.autoChangeCount) || 0) + 1;
+    D.autoChangeLastAt = Number(at);
+    save();
+    if (ctx) ctx.push('client_load_decorate', handlers.client_load_decorate());
+    return true;
+  }
+
   function refreshFlowerpot(t) {
     if (!state.flowerpot.slots || state.flowerpot.slots.length !== FLOWERPOT_SLOTS) {
       state.flowerpot.slots = [];
@@ -6059,17 +7829,23 @@ function mdPayload(s) {
       }
     }
     let changed = false;
+    /* 【并入他 3.3】生长速度由土地肥力的星级决定（1–3 星 -> 1/2/3 倍速）。 */
+    const stars = soilStars(Number((state.furniture.compost || {}).fertility) || 0);
+    const stageSec = plantStageSeconds(stars);
     for (const s of state.flowerpot.slots) {
       if (!s.id) {
         if (FLOWER_PLANTS.length) {
           s.id = Number(FLOWER_PLANTS[randInt(0, FLOWER_PLANTS.length - 1)]);
           s.stage = 1;
           s.plantedAt = t;
+          s.fertility = stars;
+          s.stageSec = stageSec;
           changed = true;
         }
         continue;
       }
-      const want = Math.min(3, 1 + Math.floor((t - (s.plantedAt || t)) / PLANT_STAGE_SEC));
+      const sec = Number(s.stageSec) || stageSec;
+      const want = Math.min(3, 1 + Math.floor((t - (s.plantedAt || t)) / sec));
       if (want !== s.stage) { s.stage = want; changed = true; }
     }
     if (changed) save();
@@ -6324,12 +8100,97 @@ function mdPayload(s) {
      a UTC+8 player selected the wrong season near a month boundary and, far more
      visibly, rendered the night courtyard during the local afternoon -- the
      player's own wall clock is what the artwork is supposed to reflect. */
+  /* V37-CALENDAR-EGGS ================= 月历奖励与季节性彩蛋（依赖 state，放在引擎内） ================= */
+
+  /* 月历每天的奖励表（他的复原表；用真实 ItemDB id，保证每个格子都能画出图标）。 */
+  const CALENDAR_MONTH_REWARDS = [
+    { item_id: ITEM_CLOVER_RES, num: 30 }, { item_id: 101, num: 1 },
+    { item_id: 1104, num: 1 }, { item_id: 3000, num: 1 },
+    { item_id: 1201, num: 1 }, { item_id: 5101, num: 1 },
+    { item_id: ITEM_TICKET_RES, num: 1 }, { item_id: 3002, num: 1 },
+    { item_id: 102, num: 1 }, { item_id: 1103, num: 1 },
+    { item_id: ITEM_CLOVER_RES, num: 50 }, { item_id: 3004, num: 1 },
+    { item_id: 1104, num: 1 }, { item_id: ITEM_TICKET_RES, num: 1 },
+    { item_id: 1201, num: 1 }, { item_id: 3012, num: 1 },
+    { item_id: 101, num: 1 }, { item_id: ITEM_CLOVER_RES, num: 30 },
+    { item_id: 5101, num: 1 }, { item_id: 3014, num: 1 },
+    { item_id: ITEM_TICKET_RES, num: 1 }, { item_id: 1104, num: 1 },
+    { item_id: ITEM_CLOVER_RES, num: 60 }, { item_id: 3017, num: 1 },
+    { item_id: 1103, num: 1 }, { item_id: 102, num: 1 },
+    { item_id: 1201, num: 1 }, { item_id: ITEM_TICKET_RES, num: 1 },
+    { item_id: ITEM_CLOVER_RES, num: 80 }, { item_id: 3008, num: 1 },
+    { item_id: 1104, num: 1 },
+  ];
+
+  function calendarTaskPayload() {
+    return (state.calendar.taskList || []).slice(0, 3).map((row, i) => ({
+      id: Number(row && row.id) || i + 1,
+      pro: Number(row && row.pro) || 0,
+      complete: 1,
+    }));
+  }
+
+  /** 月历奖励统一在这里发：三叶草 / 抽奖券 / 普通物品（他的做法）。 */
+  function grantCalendarReward(ctx, itemId, count) {
+    const id = Number(itemId);
+    const n = Math.max(1, Number(count) || 1);
+    if (id === ITEM_CLOVER_RES) {
+      state.clover += n;
+      ctx.push('clover_update', { clover: state.clover });
+      return;
+    }
+    if (id === ITEM_TICKET_RES) {
+      state.ticket += n;
+      ctx.push('item_update_ticket', { ticket: state.ticket });
+      return;
+    }
+    const have = addHouseItem(id, n);
+    pushItemUpdate(ctx, id, have);
+  }
+
+  /** 吃饭时的彩蛋：5/15–6 月是粽子季(4)，5–10 月有西瓜(5)，其余 10% 出(2)。 */
+  function seasonalMealEgg(t) {
+    const d = new Date(Number(t) * 1000);
+    const month = d.getMonth() + 1;
+    const zongziSeason = (month === 5 && d.getDate() >= 15) || month === 6;
+    if (zongziSeason && Math.random() < 0.5) return 4;
+    if (month >= 5 && month <= 10 && Math.random() < 0.5) return 5;
+    if (Math.random() < 0.1) return 2;
+    return 0;
+  }
+
+  /** 每次换动作时决定彩蛋：吃饭走季节款，5–10 月的其他动作按 10% 出扇子彩蛋(3)。 */
+  function rotationEgg(motion, t) {
+    if (Number(motion) === Number(FROGMOTIONNUM.eat)) return seasonalMealEgg(t);
+    const month = new Date(Number(t) * 1000).getMonth() + 1;
+    return month >= 5 && month <= 10
+      && Math.random() * 100 < FROG_FAN_ACTION_CHANCE ? 3 : 0;
+  }
+
+  function setFrogEgg(id) {
+    const next = Number(id) || 0;
+    if (Number(state.frog.eggId) === next) return false;
+    state.frog.eggId = next;
+    const momentByEgg = {
+      1: 'egg_1_dress', 2: 'egg_2_eat', 3: 'egg_3_cook',
+      4: 'zongzi', 5: 'egg_5_chixigua',
+    };
+    if (next && momentByEgg[next]) momentTrigger(2, momentByEgg[next]);
+    return true;
+  }
+
+  /** `easteregg_load` 的载荷：当前彩蛋 + 雨天访客彩蛋 + 夏天夜里的萤火虫(201)。 */
+  function eggPayload() {
+    const eggs = [];
+    const add = (id) => { if (id && eggs.indexOf(id) === -1) eggs.push(id); };
+    add(Number(state.frog.eggId));
+    if (state.guest && state.guest.rainEgg) add(Number(state.guest.rainEgg));
+    if (seasonNow() === 2 && hoursTypeNow() >= 3) add(201);
+    return { egg_list: eggs };
+  }
+
   function seasonNow() {
-    const m = new Date(nowSec() * 1000).getMonth() + 1;
-    if (m >= 3 && m <= 5) return 1;        // spring
-    if (m >= 6 && m <= 8) return 2;        // summer
-    if (m >= 9 && m <= 11) return 3;       // autumn
-    return 4;                              // winter
+    return seasonForMonth(new Date(nowSec() * 1000).getMonth() + 1);
   }
 
   function hoursTypeNow() {
@@ -6344,9 +8205,10 @@ function mdPayload(s) {
      we pin a VALID enum value -- WeatherType runs 1..9 and the old default of 0 was
      outside it -- and vary it deterministically by day so it is not always the
      same. This model is ours, not the original's. */
+  /* 【并入他 3.3】天气改成"按日期 + 季节"决定：同一天恒定、季节里只出应季天气。 */
   function weatherNow() {
     const d = new Date(nowSec() * 1000);
-    return ((d.getFullYear() * 372 + (d.getMonth() + 1) * 31 + d.getDate()) % 9) + 1;
+    return weatherForDate(d.getFullYear(), d.getMonth() + 1, d.getDate()).weather;
   }
 
   /** @returns true when the season/hours/weather actually changed. */
@@ -6386,7 +8248,10 @@ function mdPayload(s) {
     // Sleep only in the game's night/late-night states (3/4), never day/evening.
     // A day/night boundary must interrupt the previous activity's timer.
     const sleeping = hoursTypeNow() >= 3;
-    const mode = sleeping ? 'sleep' : state.furniture.craft ? 'craft' : 'awake';
+    /* V40-PREFER-HIS 【V4.0】排队的活也算制作中：不然蛙蛙永远进不了 craft 模式、
+       也就永远拿不到工具动作，tryStartQueuedCraft 的门槛永远不成立（实测卡死）。 */
+    const mode = sleeping ? 'sleep'
+      : (state.furniture.craft || state.furniture.craftQueued) ? 'craft' : 'awake';
     if (state.frog.motionMode === mode && t < (state.frog.motionNextAt || 0)) return false;
     state.frog.motionMode = mode;
     const keys = Object.keys(FROGPATTERN);
@@ -6409,7 +8274,10 @@ function mdPayload(s) {
       // The newest bed has no sleep_2..4 skin in the shipped Spine assets.
       if (bed && bed.id > 1909) state.frog.motion = 10;
     }
-    else if (mode === 'craft') state.frog.motion = 5 + state.frog.motionStep % 5;
+    /* 【并入他 3.3】做东西时按台面上的工具换成具体工具动画（锯/刷/锤/缝/刻）。 */
+    else if (mode === 'craft') state.frog.motion = furnitureActionMotion();
+    /* 【并入他 3.3】每换一个动作就重掷季节彩蛋（睡觉时清掉）。 */
+    setFrogEgg(sleeping ? 0 : rotationEgg(state.frog.motion, t));
     state.frog.motionNextAt = t + FROG_MOTION_SEC;
     save();
     // 回忆彩蛋 type 1 (frog_motion): the moment's param IS a FrogMotionName value
@@ -7569,16 +9437,20 @@ function mdPayload(s) {
       if (refreshCompost(nowSec())) save();
       return compostPayload();
     },
+    /* 【并入他 3.3】口袋/不倒翁的真正载荷（原来这里写死空列表）。 */
     furniture_load_pocket: () => ({
       show_index: state.furniture.pocket.showIndex,
       replace_index: state.furniture.pocket.replaceIndex,
-      list: [],
+      list: (state.furniture.pocket.list || []).filter((id) => POCKET_DATA.has(Number(id))),
       clover: state.furniture.pocket.clover,
     }),
     furniture_load_tumbler: () => ({
       show_index: state.furniture.tumbler.showIndex,
       replace_index: state.furniture.tumbler.replaceIndex,
-      tumbler_list: [],
+      tumbler_list: (state.furniture.tumbler.list || []).map((entry) => ({
+        id: Number(entry.id),
+        layers: (entry.layers || []).map((layer) => ({ layer: layer.layer.slice() })),
+      })),
     }),
 
     /* ================= furniture actions (contracts read from main.min.js) ====
@@ -7615,8 +9487,23 @@ function mdPayload(s) {
       if (prev > 0) addHouseItem(prev, 1);     // give the displaced one back
       addHouseItem(id, -1);                    // consume the one being placed
       state.furniture.bench[slot] = id;
-      /* 图纸进台面之后：材料够就自动开工（原版也是服务端看着台面决定、再推 FurnitureFinish） */
-      const started = maybeStartCraft();
+      /* 图纸进台面之后：材料够就自动开工（原版也是服务端看着台面决定、再推 FurnitureFinish）
+         【并入他 3.3】台面上若是口袋/不倒翁配方（绳 11102 / 果子 11001），走他那条开工路径。 */
+      const extraBp = benchPocketTumblerBlueprint();
+      let started = false;
+      if (FROG_CRAFT_QUEUE && canQueueCraft(extraBp || benchBlueprint())) {
+        /* 【并入他 3.3 的可选项】排队模式：放上台面也先排队，等蛙蛙拿起对应工具的动作。 */
+        const qbp = extraBp || benchBlueprint();
+        if (qbp) {
+          state.furniture.craftQueued = 1;
+          state.furniture.craftQueuedFurnitureId = Number(qbp.furnitureId) || 0;
+          state.furniture.craftQueuedBenchSlot = craftRecipeSlot(qbp);
+        }
+      } else if (extraBp) {
+        started = startCraftFromBench(nowSec(), extraBp.furnitureId, craftRecipeSlot(extraBp));
+      } else {
+        started = maybeStartCraft();
+      }
       save();
       /* ItemModel.addHouseItem/consumeHouseItem are validation-only stubs in the
          shipped client. Without an authoritative inventory push, the material
@@ -7695,7 +9582,12 @@ function mdPayload(s) {
        show_index and replace_index from it. */
     furniture_replace_tumbler: (d) => finishReplace('tumbler', d),
     furniture_replace_compost: (d) => finishReplace('compost', d),
-    furniture_replace_pocket: (d) => finishReplace('pocket', d),
+    furniture_replace_pocket: (d) => {
+      const index = Number(d && d.index);
+      const count = (state.furniture.pocket.list || []).filter((id) => POCKET_DATA.has(Number(id))).length;
+      if (!Number.isInteger(index) || index < 1 || index > count) return { code: -1 };
+      return finishReplace('pocket', d);
+    },
 
     /* Payload is the SHOP id (FurnitureShopDB row), not the item id. The client
        deducts the clovers and adds the item locally, so the server has to do the
@@ -7706,6 +9598,11 @@ function mdPayload(s) {
       const shopId = shopIdOf(d);
       const row = FURNITURE_SHOP.get(shopId);
       if (!row) return { code: -1 };
+      /* 【并入他 3.3】只能买"今天货架上"的东西：他不是整表常驻，每天只有 8 个货位。 */
+      ensureFurnitureShopStock(nowSec());
+      if (!Object.prototype.hasOwnProperty.call(state.furniture.shopOffers || {}, shopId)) {
+        return { code: -1 };
+      }
       const bought = state.furniture.shopBought[shopId] || 0;
       const welfare = isWelfareRow(row);
       /* A welfare row's `limit` is 0 (= unrestricted for the client); the old
@@ -7716,7 +9613,8 @@ function mdPayload(s) {
       const boughtToday = state.furniture.shopDailyBought[shopId] || 0;
       const limit = Number(row.limit) || (welfare ? WELFARE_PER_DAY : Number(row.shop_limit) || 1);
       if (furnitureStock(row) <= 0) return { code: -1 };
-      if (row.has_item && state.furniture.owned.indexOf(Number(row.has_item)) === -1) {
+      /* 【并入他 3.3】前置商品在家里/台面/收藏里都算（他的 hasShopPrerequisite）。 */
+      if (row.has_item && !hasShopPrerequisite(row.has_item)) {
         return { code: -1 };
       }
       /* Welfare goods are NOT paid for -- see FURNITURE_TYPE_WELFARE. */
@@ -8041,6 +9939,14 @@ function mdPayload(s) {
     /* task_load: `tasks` carries each task's claimed flag and `list` the progress.
        `pro` only moves for the mappings we can justify (see taskProgress); the
        rest stay at 0 rather than inventing progress. */
+    /* 【并入他 3.3】客户端打点：看过地图 / 加过笔友，各记一次任务。 */
+    task_client_pro: (d) => {
+      const param = String(firstDefined(d, ['param']) || '');
+      if (param === 'Map') completeTaskCounter(103);
+      if (param === 'NoteFriend') completeTaskCounter(306);
+      save();
+      return undefined;
+    },
     task_load: () => {
       const rows = taskRows();
       return {
@@ -8461,13 +10367,13 @@ function mdPayload(s) {
 
     /* 庭院装饰. Payload is {has_list, put_id, status}; the client's handler is
        `this.decorationList = convertArray(e.has_list)` plus the other two. */
-    client_load_decorate: () => ({
+    /* 【并入他 3.3】取载荷前先推进花期（到点转形态/枯萎撤下）。 */
+    client_load_decorate: () => {
+      if (refreshDecoration(nowSec())) save();
       // Harvested flower items remain in the house until selected for the vase.
       // Expose them with decoration IDs without copying/duplicating ownership.
-      has_list: decorationInventory(),
-      put_id: state.decoration.putId || 0,
-      status: state.decoration.status || 0,
-    }),
+      return decorationPayload();
+    },
 
     /* Payload is the decoration id to put on display. The client mirrors the
        server exactly on success:
@@ -8557,11 +10463,25 @@ function mdPayload(s) {
       for (let i = 0; i < day; i++) {
         flags.push(state.calendar.claimedBeginner.indexOf(i + 1) !== -1 ? 1 : 0);
       }
+      /* 【并入他 3.3】已领的日子不再下发（否则重启会重新长出红点），
+         每天的奖励套用他的月历表（真实 ItemDB id），并回传已领清单。 */
+      const claimedSt = new Set(state.calendar.claimedSt || []);
+      const claimedLucky = new Set(state.calendar.claimedLucky || []);
+      const stDays = (state.calendar.st || [])
+        .filter((row) => !claimedSt.has(row.day))
+        .map((row) => {
+          const d = Number(row.day);
+          const fixed = CALENDAR_MONTH_REWARDS[d - 1];
+          return fixed ? { day: d, item_id: fixed.item_id, num: fixed.num } : row;
+        });
+      const luckyDays = (state.calendar.lucky || []).filter((row) => !claimedLucky.has(row.day));
       return {
         new_flag: flags,
-        task_list: state.calendar.taskList.slice(0, 3),
-        lucky_days: state.calendar.lucky,
-        st_days: state.calendar.st,
+        task_list: calendarTaskPayload(),
+        lucky_days: luckyDays,
+        st_days: stDays,
+        claimed_st_days: [...claimedSt],
+        claimed_lucky_days: [...claimedLucky],
       };
     },
 
@@ -8601,25 +10521,34 @@ function mdPayload(s) {
     calendar_get_st_reward: (d, ctx) => {
       ensureCalendarMonth();
       const today = curDayOfMonth();
-      if (!state.calendar.st.some((e) => e.day === today)) return { code: -1 };
+      const row = state.calendar.st.find((e) => e.day === today);
+      if (!row) return { code: -1 };
       if (state.calendar.claimedSt.indexOf(today) !== -1) return { code: 0 };
       state.calendar.claimedSt.push(today);
-      state.clover += CALENDAR_ST_CLOVER;
+      /* 【并入他 3.3】按当天的月历奖励发（原来一律 30 三叶草）。 */
+      const fixed = CALENDAR_MONTH_REWARDS[today - 1] || row;
+      const rewardId = Number(fixed.item_id) || ITEM_CLOVER_RES;
+      const rewardCount = Math.max(1, Number(fixed.num) || 1);
+      grantCalendarReward(ctx, rewardId, rewardCount);
+      /* 【并入他 3.3】领「当日奖励」= 任务 407 记一次（他的写法，只有 st 奖励记）。 */
+      completeTaskCounter(407);
       save();
-      ctx.push('clover_update', { clover: state.clover });
-      return { code: 0 };
+      return { code: 0, item_id: rewardId, count: rewardCount };
     },
 
     calendar_get_luck_reward: (d, ctx) => {
       ensureCalendarMonth();
       const today = curDayOfMonth();
-      if (!state.calendar.lucky.some((e) => e.day === today)) return { code: -1 };
+      const row = state.calendar.lucky.find((e) => e.day === today);
+      if (!row) return { code: -1 };
       if (state.calendar.claimedLucky.indexOf(today) !== -1) return { code: 0 };
       state.calendar.claimedLucky.push(today);
-      state.ticket += CALENDAR_LUCKY_TICKETS;
+      /* 【并入他 3.3】幸运日同样按行里的奖励发。 */
+      const rewardId = Number(row.reward_item_id || row.item_id) || ITEM_TICKET_RES;
+      const rewardCount = Math.max(1, Number(row.num) || CALENDAR_LUCKY_TICKETS);
+      grantCalendarReward(ctx, rewardId, rewardCount);
       save();
-      ctx.push('item_update_ticket', { ticket: state.ticket });
-      return { code: 0 };
+      return { code: 0, item_id: rewardId, count: rewardCount };
     },
 
     /* Indexed by day-1; the values are calendarData.note keys (the newcomer tips). */
@@ -9119,7 +11048,8 @@ function mdPayload(s) {
     // pray_load_grays USED TO LIVE HERE TOO, with exactly the same problem: the real
     // implementation (祈愿木牌 / 印章 / 三箱) is above, and this stub would have
     // shadowed it. Removed -- the duplicate-handler test caught it again.
-    easteregg_load: () => ({ egg_list: [] }),
+    /* 【并入他 3.3】彩蛋载荷不再写死空列表：当前彩蛋 / 雨天访客彩蛋 / 夏天夜里萤火虫。 */
+    easteregg_load: () => eggPayload(),
     /* =============================================== 春节贺卡 (springcard)
        Every command in this family gates on a value the client reads straight out of
        the reply, and the callbacks test `0 == code` -- never getErrorInfo -- so a
@@ -10043,4 +11973,8 @@ function mdPayload(s) {
   };
 }
 
-module.exports = { createEngine, canon, toWire, nowSec, defaultState, makeClovers, CLOVER_SLOTS };
+module.exports = {
+  createEngine, canon, toWire, nowSec, defaultState, makeClovers, CLOVER_SLOTS,
+  /* 【并入他 3.3】他的引擎也导出 weatherForDate；这里连节气日与本地日键一起导出。 */
+  weatherForDate, solarTermDay, localDayKeyAt,
+};

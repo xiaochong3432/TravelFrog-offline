@@ -256,7 +256,8 @@
    "beijing2",
    "beijing3",
    "beijing4",
-   "beijing5"
+   "beijing5",
+   "beijing6"
   ],
   "tagType": "Goal"
  },
@@ -277,7 +278,8 @@
   "id": 2002,
   "picNames": [
    "chongqing1",
-   "chongqing2"
+   "chongqing2",
+   "chongqing3"
   ],
   "tagType": "Goal"
  },
@@ -373,7 +375,7 @@
   "picNames": [
    "haerbin1",
    "haerbin2",
-   "haerbin3"
+   "haerbin4"
   ],
   "tagType": "Goal"
  },
@@ -414,7 +416,8 @@
   "picNames": [
    "luoyang1",
    "luoyang2",
-   "luoyang3"
+   "luoyang3",
+   "zhengzhou1"
   ],
   "tagType": "Goal"
  },
@@ -424,7 +427,8 @@
   "picNames": [
    "xian1",
    "xian2",
-   "xian3"
+   "xian3",
+   "xian4"
   ],
   "tagType": "Goal"
  },
@@ -485,7 +489,8 @@
   "picNames": [
    "guizhou4",
    "guizhou5",
-   "guizhou6"
+   "guizhou6",
+   "guizhou7"
   ],
   "tagType": "Goal"
  },
@@ -545,7 +550,8 @@
   "id": 2028,
   "picNames": [
    "qingdao1",
-   "qingdao2"
+   "qingdao2",
+   "qingdao3"
   ],
   "tagType": "Goal"
  },
@@ -623,7 +629,8 @@
    "jilin1",
    "jilin2",
    "jilin3",
-   "jilin4"
+   "jilin4",
+   "haerbin3"
   ],
   "tagType": "Goal"
  },
@@ -666,6 +673,26 @@
    "hebei2",
    "hebei3",
    "hebei4"
+  ],
+  "tagType": "Goal"
+ },
+ {
+  "Tag": "g_neimenggu",
+  "id": 2041,
+  "picNames": [
+   "neimenggu1",
+   "neimenggu2",
+   "neimenggu3"
+  ],
+  "tagType": "Goal"
+ },
+ {
+  "Tag": "g_xinjiang",
+  "id": 2042,
+  "picNames": [
+   "xinjiang1",
+   "xinjiang2",
+   "xinjiang3"
   ],
   "tagType": "Goal"
  },
@@ -1554,6 +1581,86 @@
   "tagType": "Unique"
  },
  {
+  "Tag": "u_anniv",
+  "id": 3102,
+  "picNames": [
+   "anniv"
+  ],
+  "tagType": "Unique"
+ },
+ {
+  "Tag": "u_player",
+  "id": 3103,
+  "picNames": [
+   "player"
+  ],
+  "tagType": "Unique"
+ },
+ {
+  "Tag": "u_squirrel",
+  "id": 3104,
+  "picNames": [
+   "squirrel"
+  ],
+  "tagType": "Unique"
+ },
+ {
+  "Tag": "u_dog",
+  "id": 3105,
+  "picNames": [
+   "dog"
+  ],
+  "tagType": "Unique"
+ },
+ {
+  "Tag": "u_denglong",
+  "id": 3106,
+  "picNames": [
+   "denglong"
+  ],
+  "tagType": "Unique"
+ },
+ {
+  "Tag": "u_fengyanlian",
+  "id": 3107,
+  "picNames": [
+   "fengyanlian"
+  ],
+  "tagType": "Unique"
+ },
+ {
+  "Tag": "u_xieweijiao",
+  "id": 3108,
+  "picNames": [
+   "xieweijiao"
+  ],
+  "tagType": "Unique"
+ },
+ {
+  "Tag": "u_xiazhi_1",
+  "id": 3109,
+  "picNames": [
+   "xiazhi_1"
+  ],
+  "tagType": "Unique"
+ },
+ {
+  "Tag": "u_xiazhi_2",
+  "id": 3110,
+  "picNames": [
+   "xiazhi_2"
+  ],
+  "tagType": "Unique"
+ },
+ {
+  "Tag": "u_mid_autumn_2",
+  "id": 3111,
+  "picNames": [
+   "mid_autumn_2"
+  ],
+  "tagType": "Unique"
+ },
+ {
   "Tag": "u_month1_2",
   "id": 3148,
   "picNames": [
@@ -1746,6 +1853,30 @@
   "tagType": "Unique"
  },
  {
+  "Tag": "u_two_month9_3",
+  "id": 3180,
+  "picNames": [
+   "two_month9_3"
+  ],
+  "tagType": "Unique"
+ },
+ {
+  "Tag": "u_two_month10_3",
+  "id": 3181,
+  "picNames": [
+   "two_month10_3"
+  ],
+  "tagType": "Unique"
+ },
+ {
+  "Tag": "u_month11_3",
+  "id": 3182,
+  "picNames": [
+   "month11_3"
+  ],
+  "tagType": "Unique"
+ },
+ {
   "Tag": "u_lanhuateng",
   "id": 3201,
   "picNames": [
@@ -1786,18 +1917,66 @@
   "tagType": "Unique"
  },
  {
-  "Tag": "u_anniv",
-  "id": 3102,
+  "Tag": "u_month12_3",
+  "id": 3206,
   "picNames": [
-   "anniv"
+   "month12_3"
   ],
   "tagType": "Unique"
  },
  {
-  "Tag": "u_player",
-  "id": 3103,
+  "Tag": "u_anniv_2",
+  "id": 3207,
   "picNames": [
-   "player"
+   "anniv_2"
+  ],
+  "tagType": "Unique"
+ },
+ {
+  "Tag": "u_month1_3",
+  "id": 3208,
+  "picNames": [
+   "month1_3"
+  ],
+  "tagType": "Unique"
+ },
+ {
+  "Tag": "u_month2_3",
+  "id": 3209,
+  "picNames": [
+   "month2_3"
+  ],
+  "tagType": "Unique"
+ },
+ {
+  "Tag": "u_month3_3",
+  "id": 3210,
+  "picNames": [
+   "month3_3"
+  ],
+  "tagType": "Unique"
+ },
+ {
+  "Tag": "u_month4_3",
+  "id": 3211,
+  "picNames": [
+   "month4_3"
+  ],
+  "tagType": "Unique"
+ },
+ {
+  "Tag": "u_month5_3",
+  "id": 3212,
+  "picNames": [
+   "month5_3"
+  ],
+  "tagType": "Unique"
+ },
+ {
+  "Tag": "u_month6_3",
+  "id": 3213,
+  "picNames": [
+   "month6_3"
   ],
   "tagType": "Unique"
  }

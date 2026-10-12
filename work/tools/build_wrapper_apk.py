@@ -34,6 +34,7 @@ from pathlib import Path as _PortablePath
 # 不写死任何绝对路径 —— 换机器 / 换系统（Windows、Linux、macOS）都能直接跑。
 PROJECT_ROOT = _PortablePath(__file__).resolve().parents[2]
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -62,12 +63,49 @@ ANDROID_JAR = _toolchain.android_jar()
 MIN_SDK = "21"
 TARGET_SDK = "30"
 
+# Optional overrides, so one build can outrank another package that is already installed
+# (a handover build may sit at a higher versionCode than the manifest's). aapt2 applies
+# these on top of AndroidManifest.xml, so the shared manifest stays untouched.
+VERSION_CODE = os.environ.get("FROG_VERSION_CODE")
+VERSION_NAME = os.environ.get("FROG_VERSION_NAME")
+
 # assets that exist in the working tree but must not ship
 EXCLUDE_SUFFIX = (".clean", ".orig", ".bak")
 EXCLUDE_NAMES = {"__captest.html"}
 
 # the launcher icon is lifted from the original APK (it is the game's own art)
 ICON_SRC = "res/drawable-xxxhdpi/icon2.png"
+
+
+def stage_manifest():
+    """Manifest for this build, with the optional version overrides applied.
+
+    aapt2's --version-code/--version-name only INJECT a value when the manifest does not
+    already carry one, so they cannot raise an existing versionCode -- and a build that
+    must install over a handover APK sitting at a higher versionCode needs exactly that.
+    Staging a rewritten copy keeps the shared manifest untouched.
+    """
+    src = os.path.join(APP, "AndroidManifest.xml")
+    with open(src, "r", encoding="utf-8") as f:
+        text = f.read()
+    if not VERSION_CODE and not VERSION_NAME:
+        return src
+    if VERSION_CODE:
+        text, n = re.subn(r'android:versionCode="[^"]*"',
+                          'android:versionCode="%s"' % VERSION_CODE, text)
+        if n != 1:
+            raise SystemExit("could not set versionCode in the manifest (%d matches)" % n)
+    if VERSION_NAME:
+        text, n = re.subn(r'android:versionName="[^"]*"',
+                          'android:versionName="%s"' % VERSION_NAME, text)
+        if n != 1:
+            raise SystemExit("could not set versionName in the manifest (%d matches)" % n)
+    dst = os.path.join(BUILD, "AndroidManifest.staged.xml")
+    with open(dst, "w", encoding="utf-8") as f:
+        f.write(text)
+    log("    staged manifest: versionCode=%s versionName=%s"
+        % (VERSION_CODE or "(manifest)", VERSION_NAME or "(manifest)"))
+    return dst
 
 
 def log(*a):
@@ -115,6 +153,26 @@ def stage_icon():
     log(f"    {ICON_SRC} -> res/mipmap-xxxhdpi/ic_launcher.png ({len(data):,} bytes)")
 
 
+def stamp_probe_build_time(data):
+    """Rewrite the save-editor panel's 版本 line to the real build time.
+
+    The panel shows `版本 <BUILD_STAMP>` so a player can tell WHICH build they are running.
+    That literal used to be hand-edited, which meant two different APKs could claim the same
+    time (exactly the confusion that made "is your copy the fixed one?" unanswerable). Do it
+    at build time instead; the payload source keeps a placeholder value.
+    """
+    # V4 起外壳来自上游 3.4，那边写的是双引号（`var BUILD_STAMP = "3.4";`），
+    # 所以两种引号都要认；否则这条 WARNING 会让面板一直显示上游的版本号。
+    m = re.search(rb"var BUILD_STAMP = ['\"][^'\"]*['\"];", data)
+    if not m:
+        log("    WARNING: BUILD_STAMP not found in __probe.js -- the 版本 line keeps its old value")
+        return data
+    stamp = time.strftime("%Y-%m-%d %H:%M")
+    new = ("var BUILD_STAMP = '%s';" % stamp).encode("utf-8")
+    log("    存档面板的 版本 行 -> %s" % stamp)
+    return data[:m.start()] + new + data[m.end():]
+
+
 def collect_web():
     """assets/game/** from work/run/web/**, deflated."""
     out = {}
@@ -127,6 +185,8 @@ def collect_web():
                 continue
             with open(full, "rb") as f:
                 data = f.read()
+            if rel == "__probe.js":
+                data = stamp_probe_build_time(data)
             out["assets/game/" + rel] = Entry("assets/game/" + rel, data, 8, now, 0, 0)
     return out
 
@@ -165,13 +225,18 @@ def main():
     base_apk = os.path.join(BUILD, "base.apk")
     if os.path.exists(base_apk):
         os.remove(base_apk)
-    run([AAPT2, "link", "-o", base_apk,
-         "-I", ANDROID_JAR,
-         "--manifest", os.path.join(APP, "AndroidManifest.xml"),
-         "--min-sdk-version", MIN_SDK,
-         "--target-sdk-version", TARGET_SDK,
-         "--no-version-vectors",
-         res_zip])
+    link_cmd = [AAPT2, "link", "-o", base_apk,
+                "-I", ANDROID_JAR,
+                "--manifest", stage_manifest(),
+                "--min-sdk-version", MIN_SDK,
+                "--target-sdk-version", TARGET_SDK,
+                "--no-version-vectors"]
+    if VERSION_CODE:
+        log("    versionCode override: " + str(VERSION_CODE))
+    if VERSION_NAME:
+        log("    versionName override: " + str(VERSION_NAME))
+    link_cmd.append(res_zip)
+    run(link_cmd)
 
     log("[4/6] javac")
     classes = os.path.join(BUILD, "classes")

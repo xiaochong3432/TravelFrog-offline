@@ -136,7 +136,7 @@
    "type": 1
   },
   "16": {
-   "desc": "照个镜子\n保证帽子没带歪",
+   "desc": "照个镜子\n保证帽子没戴歪",
    "id": 16,
    "is_show": 1,
    "param": "egg_1_dress",
@@ -179,6 +179,24 @@
    "pic": "pic_egg_2",
    "rect": [],
    "type": 1
+  },
+  "20": {
+   "desc": "勤劳地浇水\n期待三叶草的丰收",
+   "id": 20,
+   "is_show": 1,
+   "param": "egg_6_jiaoshui",
+   "pic": "pic_egg_20",
+   "rect": [],
+   "type": 2
+  },
+  "21": {
+   "desc": "闭上双眼\n聆听雨滴轻舞",
+   "id": 21,
+   "is_show": 1,
+   "param": "egg_7_linyu",
+   "pic": "pic_egg_21",
+   "rect": [],
+   "type": 2
   },
   "3": {
    "desc": "除了旅行的见闻\n还有什么能记在小本本上",
